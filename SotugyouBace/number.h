@@ -29,7 +29,7 @@ public:
 	void Update() override;					// XVˆ—
 	void Draw() override;					// •`‰æˆ—
 
-	static CNumber *Create(const D3DXVECTOR3 &pos, float xsize, float ysize, const PRIORITY priority);	// ¶¬
+	static CNumber* Create(const D3DXVECTOR3 &pos, float xsize, float ysize, const PRIORITY priority);	// ¶¬
 
 private:
 	//****************

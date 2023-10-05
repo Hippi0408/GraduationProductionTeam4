@@ -38,15 +38,13 @@ public:
 	void SetScore(int nScore);				//スコアの設定処理
 	void AddScore(int nValue);				//スコアの加算処理
 
-	//void SetPosition(D3DXVECTOR3 pos) { pos; }					// 位置の設定
-
-	static CScore *Create();				// 生成
+	static CScore* Create();				// 生成
 
 private:
 	//****************
 	// privateな変数
 	//****************
-	CNumber *m_apNumber[MAX_DIGIT];			//スコアの数字(桁数)
+	CNumber* m_apNumber[MAX_DIGIT];			//スコアの数字(桁数)
 	int m_aPosTexU[MAX_DIGIT];				//各桁のスコアを格納
 	int m_nScore;							//スコア
 	
