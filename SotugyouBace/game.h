@@ -10,6 +10,9 @@
 
 #include"mode.h"
 
+class CScore;
+class CTime;
+
 class CGame : public CMode
 {
 public:
@@ -24,7 +27,8 @@ public:
 	static CGame* Create();
 
 private:
-
+	CScore* m_pScore;
+	CTime* m_pTime;
 };
 
 #endif // !_GAME_H_

@@ -22,6 +22,7 @@ public: /* 定義 */
 	{	
 		TEXTURE_FONT_JAPANESE,		// 日本語フォント
 		TEXTURE_FONT_ALPHABET,		// アルファベットフォント
+		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_MAX,
 		TEXTURE_NONE
 	};

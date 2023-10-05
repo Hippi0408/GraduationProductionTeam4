@@ -21,6 +21,7 @@ const char* CTexture::s_FileName[] =
 {// テクスチャのパス
 	"Data/texture/Font/Japanese2000unicode.png",	// 日本語フォント
 	"Data/texture/Font/Alphabet.png",				// アルファベットフォントフォント
+	"Data/texture/number.png"						// ナンバーのテクスチャ
 };
 
 static_assert(sizeof(CTexture::s_FileName) / sizeof(CTexture::s_FileName[0]) == CTexture::TEXTURE_MAX, "aho");

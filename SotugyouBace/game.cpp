@@ -11,6 +11,12 @@
 #include "input.h"
 #include "fontString.h"
 #include "player_manager.h"
+#include "score.h"
+#include "time.h"
+
+//==============================================================================================
+// 静的メンバ変数宣言
+//==============================================================================================
 
 //==============================================================================================
 // コンストラクタ
@@ -44,6 +50,12 @@ HRESULT CGame::Init()
 	// プレイヤーの生成(テスト)
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
+	// スコアの生成
+	m_pScore = CScore::Create();
+
+	// タイムの生成
+	m_pTime = CTime::Create();
+
 	return S_OK;
 }
 
@@ -52,7 +64,13 @@ HRESULT CGame::Init()
 //==============================================================================================
 void CGame::Uninit()
 {
-
+	// タイマーの終了処理
+	if (m_pTime != nullptr)
+	{
+		m_pTime->Uninit();
+		delete m_pTime;
+		m_pTime = nullptr;
+	}
 }
 
 //==============================================================================================
@@ -60,6 +78,9 @@ void CGame::Uninit()
 //==============================================================================================
 void CGame::Update()
 {
+	// タイマーの更新
+	m_pTime->Update();
+
 	CInput* pInput = CInput::GetKey();
 
 	for (int nCnt = 0; nCnt < 4; nCnt++)
@@ -110,6 +131,13 @@ void CGame::Update()
 			}
 		}
 	}
+
+	// スコアの加算
+	if (pInput->Press(DIK_L))
+	{
+		m_pScore->AddScore(10);
+	}
+
 #endif
 }
 

@@ -94,6 +94,15 @@
     <ClCompile Include="player_manager.cpp">
       <Filter>Code\06_Object\Model\Character</Filter>
     </ClCompile>
+    <ClCompile Include="number.cpp">
+      <Filter>Code\06_Object\Object2D</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>Code\06_Object\Object2D</Filter>
+    </ClCompile>
+    <ClCompile Include="time.cpp">
+      <Filter>Code\06_Object\Object2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debugProc.h">
@@ -191,6 +200,15 @@
     </ClInclude>
     <ClInclude Include="player_manager.h">
       <Filter>Code\06_Object\Model\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="number.h">
+      <Filter>Code\06_Object\Object2D</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>Code\06_Object\Object2D</Filter>
+    </ClInclude>
+    <ClInclude Include="time.h">
+      <Filter>Code\06_Object\Object2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
