@@ -129,19 +129,16 @@ void CScore::AddScore(int nValue)
 //=============================================================================
 // 生成処理
 //=============================================================================
-CScore * CScore::Create()
+CScore* CScore::Create()
 {
-	CScore *pScore = nullptr;
-
 	//クラスの生成
-	pScore = new CScore;				//ナンバーのインスタンス生成
+	CScore* pScore = new CScore;
 
 	//nullチェック
 	if (pScore != nullptr)
 	{
 		//初期化処理
 		pScore->Init();
-		//設定処理
 	}
 	else
 	{

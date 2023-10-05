@@ -77,12 +77,10 @@ void CNumber::Draw()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CNumber * CNumber::Create(const D3DXVECTOR3 & pos, float xsize, float ysize, const PRIORITY priority)
+CNumber* CNumber::Create(const D3DXVECTOR3 & pos, float xsize, float ysize, const PRIORITY priority)
 {
-	CNumber *pNumber = nullptr;
-
 	//クラスの生成
-	pNumber = new CNumber(priority);				//ナンバーのインスタンス生成
+	CNumber* pNumber = new CNumber(priority);
 
 	//nullチェック
 	if (pNumber != nullptr)
