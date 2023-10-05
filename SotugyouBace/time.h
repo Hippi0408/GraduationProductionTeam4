@@ -34,19 +34,17 @@ public:
 	HRESULT Init();						// 初期化処理
 	void Uninit();						// 終了処理
 	void Update();						// 更新処理
-	void Draw();						// 描画処理
 
 	void SetTime();						// 時間の設定
-	void SetRemainingTime(int time);	// 残り時間の設定処理
 	void ZoroCount();					// 先頭の0を消す処理
 
-	static CTime *Create();				// 生成
+	static CTime* Create();				// 生成
 
 private:
 	//****************
 	// privateな変数
 	//****************
-	CNumber *m_apNumber[TIME_DIGIT];		//ナンバーの桁数
+	CNumber* m_apNumber[TIME_DIGIT];		//ナンバーの桁数
 
 	int m_aPosTexU[TIME_DIGIT];				// 桁数
 	int m_nCntTime;							// 時間のカウント
