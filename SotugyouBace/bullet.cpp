@@ -46,6 +46,9 @@ HRESULT CBullet::Init()
 	// 弾のテクスチャ
 	SetTexture(CTexture::TEXTURE_BULLET);
 
+	// ビルボードの設定
+	Setbillboard(true);
+
 	return S_OK;
 }
 
