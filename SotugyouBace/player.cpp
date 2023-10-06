@@ -116,6 +116,6 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 rot = GetRot();
 
 	// íeÇÃê∂ê¨
-	CBullet::Create(D3DXVECTOR3(pos.x, 200.0f, pos.z), 20.0f, 20.0f, D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
+	CBullet::Create(D3DXVECTOR3(pos.x, pos.y + 200.0f, pos.z), D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
 
 }
