@@ -103,6 +103,9 @@
     <ClCompile Include="time.cpp">
       <Filter>Code\06_Object\Object2D</Filter>
     </ClCompile>
+    <ClCompile Include="halfsphere.cpp">
+      <Filter>Code\06_Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debugProc.h">
@@ -209,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="time.h">
       <Filter>Code\06_Object\Object2D</Filter>
+    </ClInclude>
+    <ClInclude Include="halfsphere.h">
+      <Filter>Code\06_Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

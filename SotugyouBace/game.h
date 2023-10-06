@@ -12,6 +12,7 @@
 
 class CScore;
 class CTime;
+class CHalfSphere;
 
 class CGame : public CMode
 {
@@ -29,6 +30,7 @@ public:
 private:
 	CScore* m_pScore;
 	CTime* m_pTime;
+	CHalfSphere* m_pHalfSphere;
 };
 
 #endif // !_GAME_H_
