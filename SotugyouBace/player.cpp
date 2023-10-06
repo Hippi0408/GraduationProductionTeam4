@@ -6,6 +6,8 @@
 //=============================================================================
 #include "player.h"
 #include "application.h"
+#include "input.h"
+#include "bullet.h"
 
 //=====================================
 // デフォルトコンストラクタ
@@ -49,6 +51,9 @@ void CPlayer::Uninit()
 //============================================================================
 void CPlayer::Update()
 {
+	// 攻撃処理
+	PlayerAttack();
+
 	// キャラクターの更新
 	CCharacter::Update();
 }
@@ -97,5 +102,25 @@ void CPlayer::ChangeMotion()
 
 		// キャラクターのモーション変更処理
 		CCharacter::ChangeMotion();
+	}
+}
+
+//============================================================================
+// プレイヤーの攻撃処理
+//============================================================================
+void CPlayer::PlayerAttack()
+{
+	// インプット
+	CInput* pInput = CInput::GetKey();
+
+	// 情報の取得
+	D3DXVECTOR3 pos = GetPos();
+	D3DXVECTOR3 rot = GetRot();
+
+	// 攻撃処理
+	if ((pInput->Trigger(DIK_B)))
+	{
+		// 弾の生成
+		CBullet::Create(D3DXVECTOR3(pos.x,200.0f,pos.z), 20.0f, 20.0f, D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
 	}
 }

@@ -10,6 +10,10 @@
 
 #include"mode.h"
 
+class CScore;
+class CTime;
+class CHalfSphere;
+
 // 前方宣言
 class CMeshField;
 
@@ -29,6 +33,9 @@ public:
 	static CMeshField *GetMeshField() { return pMeshField; }
 
 private:
+	CScore* m_pScore;
+	CTime* m_pTime;
+	CHalfSphere* m_pHalfSphere;
 	static CMeshField *pMeshField;		// メッシュフィールド
 };
 

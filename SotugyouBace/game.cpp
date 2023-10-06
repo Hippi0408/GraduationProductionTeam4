@@ -11,9 +11,16 @@
 #include "input.h"
 #include "fontString.h"
 #include "player_manager.h"
+#include "score.h"
+#include "time.h"
+#include "halfsphere.h"
 #include"meshfield.h"
 
 CMeshField *CGame::pMeshField = nullptr;
+
+//==============================================================================================
+// 静的メンバ変数宣言
+//==============================================================================================
 
 //==============================================================================================
 // コンストラクタ
@@ -47,6 +54,16 @@ HRESULT CGame::Init()
 	// プレイヤーの生成(テスト)
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
+	// スコアの生成
+	m_pScore = CScore::Create();
+
+	// タイムの生成
+	m_pTime = CTime::Create();
+
+	// ハーフスフィアの生成
+	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
+	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
+
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
 
@@ -58,7 +75,13 @@ HRESULT CGame::Init()
 //==============================================================================================
 void CGame::Uninit()
 {
-
+	// タイマーの終了処理
+	if (m_pTime != nullptr)
+	{
+		m_pTime->Uninit();
+		delete m_pTime;
+		m_pTime = nullptr;
+	}
 }
 
 //==============================================================================================
@@ -66,6 +89,9 @@ void CGame::Uninit()
 //==============================================================================================
 void CGame::Update()
 {
+	// タイマーの更新
+	m_pTime->Update();
+
 	CInput* pInput = CInput::GetKey();
 
 	for (int nCnt = 0; nCnt < 4; nCnt++)
@@ -116,6 +142,13 @@ void CGame::Update()
 			}
 		}
 	}
+
+	// スコアの加算
+	if (pInput->Press(DIK_L))
+	{
+		m_pScore->AddScore(10);
+	}
+
 #endif
 }
 
