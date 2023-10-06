@@ -23,6 +23,7 @@
 #include "input.h"
 #include "menu.h"
 #include "player_manager.h"
+#include "enemy_manager.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -43,6 +44,7 @@ CCamera* CApplication::m_pCamera = nullptr;
 CFade* CApplication::m_pFade = nullptr;
 CMenu* CApplication::m_pMenu = nullptr;
 CPlayerManager* CApplication::m_pPlayerManager = nullptr;
+CEnemyManager* CApplication::m_pEnemyManager = nullptr;
 
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
@@ -103,6 +105,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	m_pFade = CFade::Create();					// フェード
 
 	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
+	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
 
 	//リリース時はマウスポインターを消す
 	m_pInput->SetCursorErase(false);
@@ -206,14 +209,6 @@ void CApplication::Uninit()
 		m_pMenu = nullptr;
 	}
 
-	// メニューの破棄
-	if (m_pPlayerManager != nullptr)
-	{
-		m_pPlayerManager->Uninit();
-		delete m_pPlayerManager;
-		m_pPlayerManager = nullptr;
-	}
-
 	// サウンドの終了
 	if (m_pSound != nullptr)
 	{
@@ -223,6 +218,21 @@ void CApplication::Uninit()
 	}
 
 	CObject::ReleaseAll();
+
+	// プレイヤーマネージャーの破棄
+	if (m_pPlayerManager != nullptr)
+	{
+		m_pPlayerManager->Uninit();
+		delete m_pPlayerManager;
+		m_pPlayerManager = nullptr;
+	}
+
+	// 敵キャラマネージャーの破棄
+	if (m_pEnemyManager != nullptr)
+	{
+		delete m_pEnemyManager;
+		m_pEnemyManager = nullptr;
+	}
 }
 
 //==============================================================================================

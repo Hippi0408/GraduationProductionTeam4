@@ -51,9 +51,6 @@ void CPC::Update()
 	// モーション番号の設定
 	ChangeMotion();
 
-	// モーション
-	Motion();
-
 	// 入力処理
 	Input();
 

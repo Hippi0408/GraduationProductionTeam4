@@ -11,6 +11,8 @@
 #include "input.h"
 #include "fontString.h"
 #include "player_manager.h"
+#include "enemy_manager.h"
+#include "boss.h"
 #include "score.h"
 #include "time.h"
 #include "halfsphere.h"
@@ -50,6 +52,9 @@ HRESULT CGame::Init()
 
 	// プレイヤーの生成(テスト)
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+
+	// ボスキャラの生成
+	CBoss::Create({ 0.0f, 0.0f, 300.0f });
 
 	// スコアの生成
 	m_pScore = CScore::Create();
@@ -132,15 +137,29 @@ void CGame::Update()
 			}
 			else
 			{
-				pPlayerManager->PlayerRelease(nKey);
+				// 50ダメージ
+				pPlayer->Damage(50);
 			}
 		}
 	}
-
-	// スコアの加算
-	if (pInput->Press(DIK_L))
+	// LShiftキー無しの場合
+	else
 	{
-		m_pScore->AddScore(10);
+		// スコアの加算
+		if (pInput->Press(DIK_L))
+		{
+			m_pScore->AddScore(10);
+		}
+
+		// スコアの加算
+		if (pInput->Trigger(DIK_0))
+		{
+			for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+			{
+				// 50ダメージ
+				pEnemy->Damage(50);
+			}
+		}
 	}
 
 #endif

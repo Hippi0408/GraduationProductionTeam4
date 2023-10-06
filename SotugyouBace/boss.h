@@ -1,24 +1,23 @@
 //=============================================================================
 //
-// player.h
+// ボスキャラ　　　boss.h
 // Author : Tanimoto Kosuke
 //
 //=============================================================================
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef _BOSS_H_
+#define _BOSS_H_
 
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "character.h"
+#include "enemy.h"
 
 //---------------------------
 // クラス宣言
 //---------------------------
-class CPlayer : public CCharacter
+class CBoss : public CEnemy
 {
 	static const int FIRST_MAX_LIFE = 100;	// 初期最大体力の値
-
 public:
 
 	// モデルの配置情報
@@ -41,8 +40,8 @@ public:
 		MOTION_MAX,
 	};
 
-	CPlayer();
-	virtual ~CPlayer() override;
+	CBoss();
+	virtual ~CBoss() override;
 
 	virtual HRESULT Init() override;
 	virtual void Uninit() override;
@@ -51,12 +50,11 @@ public:
 
 	void ChangeMotion() override;		// モーションの切り替え
 
-	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
-
-	const int GetCharaIndex() { return m_nCharaIndex; }
+	static CBoss* Create(const D3DXVECTOR3 pos);
 
 private:
 	int m_nCharaIndex;					// 自身の番号
+
 };
 
-#endif// _PLAYER_H_
+#endif// _BOSS_H_

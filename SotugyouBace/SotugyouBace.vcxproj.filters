@@ -109,6 +109,12 @@
     <ClCompile Include="enemy.cpp">
       <Filter>Code\06_Object\Model\Character\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="boss.cpp">
+      <Filter>Code\06_Object\Model\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy_manager.cpp">
+      <Filter>Code\06_Object\Model\Character\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debugProc.h">
@@ -220,6 +226,12 @@
       <Filter>Code\06_Object</Filter>
     </ClInclude>
     <ClInclude Include="enemy.h">
+      <Filter>Code\06_Object\Model\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="boss.h">
+      <Filter>Code\06_Object\Model\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy_manager.h">
       <Filter>Code\06_Object\Model\Character\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
