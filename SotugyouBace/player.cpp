@@ -9,6 +9,7 @@
 #include "input.h"
 #include "bullet.h"
 #include "player_manager.h"
+#include"game.h"
 
 //=====================================
 // デフォルトコンストラクタ
@@ -115,7 +116,16 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 rot = GetRot();
 
-	// 弾の生成
-	CBullet::Create(D3DXVECTOR3(pos.x, 200.0f, pos.z), 20.0f, 20.0f, D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
+	// 敵の情報
+	CCharacter *pEnemy = CGame::GetBoss();
+	D3DXVECTOR3 Enemy_Pos = pEnemy->GetPos();
+	float Enemy_Radius = pEnemy->GetRadius();
 
+	// 弾の生成
+	CBullet *pBullet = CBullet::Create(D3DXVECTOR3(pos.x, 200.0f, pos.z), 20.0f, 20.0f, D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
+	
+	D3DXVECTOR3 Bullet_Pos = pBullet->GetPos();
+	D3DXVECTOR2 Bullet_Scale = pBullet->GetScale();
+
+	bool bCollision = Sphere_Collision(Bullet_Pos, Bullet_Scale.x, Enemy_Pos, Enemy_Radius);
 }

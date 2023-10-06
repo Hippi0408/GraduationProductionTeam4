@@ -57,12 +57,14 @@ public:
 	void AddMove(const D3DXVECTOR3 move) { m_move += move; }
 	void SetRotDest(const D3DXVECTOR3 rot) { m_rotDest = rot; }
 	void AddRotDest(const D3DXVECTOR3 rot) { m_rotDest += rot; }
+	void SetRadius(const float radius) { m_fRadius = radius; }
 	
 	const int GetMotion() { return m_nMotion; }
 	const int GetCurrentMotion() { return m_nCurrentMotion; }
 	const D3DXVECTOR3 GetPos() { return m_pos; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
+	const float GetRadius() { return m_fRadius; }
 	CObjectX* GetModel(const int index) { return m_ModelSet.empty() ? nullptr : m_ModelSet[index].m_pModel; }
 	std::vector<CObjectX*> GetModelAll();
 
@@ -107,6 +109,7 @@ private:
 	D3DXVECTOR3 m_move;					// 移動量
 	D3DXVECTOR3 m_rot;					// 現在の角度
 	D3DXVECTOR3 m_rotDest;				// 目的の角度
+	float m_fRadius;					// 当たり判定の半径
 
 	D3DXCOLOR m_col;					// モデルの色
 

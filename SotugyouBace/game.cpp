@@ -19,6 +19,7 @@
 #include"meshfield.h"
 
 CMeshField *CGame::pMeshField = nullptr;
+CCharacter *CGame::pBoss = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -57,7 +58,7 @@ HRESULT CGame::Init()
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 300.0f });
+	pBoss = CBoss::Create({ 0.0f, 0.0f, 300.0f });
 
 	// スコアの生成
 	m_pScore = CScore::Create();

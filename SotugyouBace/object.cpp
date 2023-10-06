@@ -190,8 +190,8 @@ void CObject::Death(const int nPriority)
 bool CObject::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius)
 {
 	// 位置同士の距離の計算用変数
-	D3DXVECTOR2 Distance = { otherPos.x - pos.x, otherPos.z - pos.z };
+	D3DXVECTOR3 Distance = otherPos - pos;
 
 	// 距離と大きさから計算し、衝突している場合
-	return sqrtf((Distance.x * Distance.x) + (Distance.y * Distance.y)) <= (radius + otherRadius);
+	return sqrtf((Distance.x * Distance.x) + (Distance.y * Distance.y) + (Distance.z * Distance.z)) <= (radius + otherRadius);
 }
