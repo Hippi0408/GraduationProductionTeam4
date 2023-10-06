@@ -53,15 +53,12 @@ void CPC::Update()
 	// モーション番号の設定
 	ChangeMotion();
 
-	// モーション
-	Motion();
-
 	// 入力処理
 	Input();
 
 	float a = CGame::GetMeshField()->MeshCollision(CCharacter::GetPos());
 
-	CCharacter::SetPos({ CCharacter::GetPos().x,a,CCharacter::GetPos().z });
+	CCharacter::SetPos({ CCharacter::GetPos().x, a, CCharacter::GetPos().z });
 
 	CPlayer::Update();
 }
@@ -173,6 +170,12 @@ void CPC::Input()
 	if (pInput->Trigger(DIK_F))
 	{
 		CGame::GetMeshField()->Ground_Broken(CCharacter::GetPos(), 50.0f, 5);
+	}
+	// 攻撃処理
+	if ((pInput->Trigger(DIK_SPACE)))
+	{
+		// プレイヤーの攻撃処理
+		PlayerAttack();
 	}
 
 	// 移動量を更新

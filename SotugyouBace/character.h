@@ -37,7 +37,9 @@ public:
 	virtual void ChangeMotion();		// モーションの切り替え
 	void Rotation();					// 回転方向へ振り向かせる処理
 	void NormalizeRot();				// 角度の正規化
-	void Death();						// 自身の終了処理
+	void Destroy();						// 自身を破壊する処理
+	void Damage(const int value);		// ダメージ処理
+	void Recovery(const int value);		// 回復処理
 
 	void LoadFile(const char* Xfilename);
 
@@ -46,6 +48,8 @@ public:
 
 	void SetMotion(const int motion) { m_nMotion = motion; }
 	void SetCurrentMotion(const int motion) { m_nCurrentMotion = motion; }
+	void SetLife(const int life) { m_nLife = life; }
+	void SetMaxLife(const int maxlife) { m_nMaxLife = maxlife; }
 	void SetSpeed(const float speed) { m_fSpeed = speed; }
 	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
@@ -110,6 +114,9 @@ private:
 	int m_nCurrentMotion;				// 現在のモーション番号
 	int m_nCountMotion;					// モーションカウンター
 	int m_nCurrentKey;					// 現在のキー番号
+
+	int m_nLife;						// 体力
+	int m_nMaxLife;						// 最大体力
 
 	float m_fSpeed;						// 移動速度
 	float m_fRotSpeed;					// 回転のスピード

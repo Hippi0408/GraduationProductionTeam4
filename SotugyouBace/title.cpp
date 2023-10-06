@@ -58,7 +58,7 @@ void CTitle::Update()
 
 	for (int nCnt = 0; nCnt < 4; nCnt++)
 	{
-		if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(DIK_SPACE) || pInput->Press(JOYPAD_B, nCnt) || pInput->Press(JOYPAD_A, nCnt)
+		if ((pInput->Trigger(DIK_RETURN) || pInput->Press(JOYPAD_B, nCnt) || pInput->Press(JOYPAD_A, nCnt)
 			|| pInput->Trigger(JOYPAD_START, nCnt))
 			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 		{

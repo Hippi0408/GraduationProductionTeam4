@@ -8,13 +8,16 @@
 #include "application.h"
 #include "input.h"
 #include "bullet.h"
+#include "player_manager.h"
 
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
 CPlayer::CPlayer()
 {
-
+	// プレイヤーの初期値を設定
+	SetMaxLife(FIRST_MAX_LIFE);
+	SetLife(FIRST_MAX_LIFE);
 }
 
 //=====================================
@@ -22,7 +25,8 @@ CPlayer::CPlayer()
 //=====================================
 CPlayer::~CPlayer()
 {
-
+	// プレイヤーマネージャーの自身を削除
+	CApplication::GetPlayerManager()->PlayerRelease(m_nCharaIndex);
 }
 
 //============================================================================
@@ -51,9 +55,6 @@ void CPlayer::Uninit()
 //============================================================================
 void CPlayer::Update()
 {
-	// 攻撃処理
-	PlayerAttack();
-
 	// キャラクターの更新
 	CCharacter::Update();
 }
@@ -110,17 +111,11 @@ void CPlayer::ChangeMotion()
 //============================================================================
 void CPlayer::PlayerAttack()
 {
-	// インプット
-	CInput* pInput = CInput::GetKey();
-
 	// 情報の取得
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 rot = GetRot();
 
-	// 攻撃処理
-	if ((pInput->Trigger(DIK_B)))
-	{
-		// 弾の生成
-		CBullet::Create(D3DXVECTOR3(pos.x,200.0f,pos.z), 20.0f, 20.0f, D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
-	}
+	// 弾の生成
+	CBullet::Create(D3DXVECTOR3(pos.x, 200.0f, pos.z), 20.0f, 20.0f, D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
+
 }
