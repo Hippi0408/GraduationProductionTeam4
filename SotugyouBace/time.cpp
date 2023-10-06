@@ -100,8 +100,9 @@ void CTime::SetTime()
 
 	if (m_nTime != 0)
 	{
-		m_aPosTexU[0] = m_nTime % 100 / 10;
-		m_aPosTexU[1] = m_nTime % 10 / 1;
+		m_aPosTexU[0] = m_nTime % 1000 / 100;
+		m_aPosTexU[1] = m_nTime % 100 / 10;
+		m_aPosTexU[2] = m_nTime % 10 / 1;
 
 		for (int nCnt = 0; nCnt < TIME_DIGIT; nCnt++)
 		{

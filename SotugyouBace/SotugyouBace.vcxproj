@@ -20,15 +20,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
     <ClCompile Include="DirectInput.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="enemy_manager.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="fontString.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="halfsphere.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="inputjoypad.cpp" />
     <ClCompile Include="inputkeyboard.cpp" />
@@ -36,6 +41,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="number.cpp" />
@@ -56,15 +62,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
     <ClInclude Include="DirectInput.h" />
+    <ClInclude Include="enemy.h" />
+    <ClInclude Include="enemy_manager.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="fontString.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="halfsphere.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="inputjoypad.h" />
     <ClInclude Include="inputkeyboard.h" />
@@ -73,6 +84,7 @@
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="meshfield.h" />
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="number.h" />

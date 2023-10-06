@@ -4,6 +4,8 @@
 // Author : Saito Shian
 //
 //==============================================
+#ifndef  _TIME_H_				//このマクロ定義がされてなかったら
+#define  _TIME_H_				//二重インクルード防止のマクロ定義
 
 //==============================================
 // インクルード
@@ -22,8 +24,8 @@ class CNumber;
 class CTime
 {
 public:
-	static const int TIME_DIGIT = 2;	// 時間の桁数
-	static const int MAX_TIME = 15;		// 最大時間
+	static const int TIME_DIGIT = 3;	// 時間の桁数
+	static const int MAX_TIME = 100;		// 最大時間
 
 	//****************
 	// publicな関数
@@ -52,3 +54,4 @@ private:
 	int m_nZeroCount;						// 0の数
 
 };
+#endif

@@ -1,34 +1,39 @@
 //=============================================================================
 //
-// cpu.cpp
+// enemy.cpp
 // Author : Tanimoto Kosuke
 //
 //=============================================================================
-#include "cpu.h"
+#include "enemy.h"
+#include "enemy_manager.h"
 #include "application.h"
 
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
-CCPU::CCPU()
+CEnemy::CEnemy()
 {
-
+	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	CApplication::GetEnemyManager()->SetEnemy(this);
 }
 
 //=====================================
 // デストラクタ
 //=====================================
-CCPU::~CCPU()
+CEnemy::~CEnemy()
 {
+	CEnemyManager* pManager = CApplication::GetEnemyManager();
 
+	// マネージャーが使用中の場合、解放時に自身のポインタを配列から除外する
+	if (pManager != nullptr) pManager->DestroyEnemy(this);
 }
 
 //============================================================================
 // 初期化処理
 //============================================================================
-HRESULT CCPU::Init()
+HRESULT CEnemy::Init()
 {
-	CPlayer::Init();
+	CCharacter::Init();
 
 	return S_OK;
 }
@@ -36,44 +41,24 @@ HRESULT CCPU::Init()
 //============================================================================
 // 終了処理
 //============================================================================
-void CCPU::Uninit()
+void CEnemy::Uninit()
 {
-	CPlayer::Uninit();
+	CCharacter::Uninit();
 }
 
 //============================================================================
 // 更新処理
 //============================================================================
-void CCPU::Update()
+void CEnemy::Update()
 {
-	// モーション番号の設定
-	ChangeMotion();
-
-	CPlayer::Update();
+	// キャラクターの更新
+	CCharacter::Update();
 }
 
 //============================================================================
 // 描画処理
 //============================================================================
-void CCPU::Draw()
+void CEnemy::Draw()
 {
-	CPlayer::Draw();
-}
-
-//============================================================================
-// 生成処理
-//============================================================================
-CCPU* CCPU::Create(const D3DXVECTOR3 pos, const int index)
-{
-	CCPU* pCPU = new CCPU;
-
-	if (FAILED(pCPU->Init()))
-	{
-		return nullptr;
-	}
-
-	pCPU->SetPos(pos);
-	pCPU->SetCharaIndex(index);
-
-	return pCPU;
+	CCharacter::Draw();
 }

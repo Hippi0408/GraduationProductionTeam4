@@ -24,6 +24,7 @@ class CInput;
 class CMenu;
 class CMode;
 class CPlayerManager;
+class CEnemyManager;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -65,6 +66,7 @@ public:
 	static CFade* GetFade() { return m_pFade; }
 	static CMenu* GetMenu() { return m_pMenu; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
+	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
 
 	static MODE GetModeType() { return m_modeType; }
 
@@ -83,6 +85,7 @@ private:
 	static CFade* m_pFade;
 	static CMenu* m_pMenu;
 	static CPlayerManager* m_pPlayerManager;
+	static CEnemyManager* m_pEnemyManager;
 	CInput* m_pInput;
 
 #ifdef _DEBUG

@@ -169,7 +169,14 @@ void CCamera::Move()
 		m_posV.y -= 10.0f;
 		m_posR.y -= 10.0f;
 	}
-
+	if (pInput->Press(DIK_Q))
+	{
+		m_rot.y -= m_fRotSpeed;
+	}
+	if (pInput->Press(DIK_E))
+	{
+		m_rot.y += m_fRotSpeed;
+	}
 
 	// Šp“x‚Ì³‹K‰»
 	if (m_rot.y > D3DX_PI)

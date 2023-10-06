@@ -1,24 +1,26 @@
 //=============================================================================
 //
-// cpu.cpp
+// ボスキャラ　　　boss.h
 // Author : Tanimoto Kosuke
 //
 //=============================================================================
-#include "cpu.h"
+#include "boss.h"
 #include "application.h"
 
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
-CCPU::CCPU()
+CBoss::CBoss()
 {
-
+	// プレイヤーの初期値を設定
+	SetMaxLife(FIRST_MAX_LIFE);
+	SetLife(FIRST_MAX_LIFE);
 }
 
 //=====================================
 // デストラクタ
 //=====================================
-CCPU::~CCPU()
+CBoss::~CBoss()
 {
 
 }
@@ -26,9 +28,12 @@ CCPU::~CCPU()
 //============================================================================
 // 初期化処理
 //============================================================================
-HRESULT CCPU::Init()
+HRESULT CBoss::Init()
 {
-	CPlayer::Init();
+	// プレイヤーのモデルを読み込む
+	LoadFile("Data\\text\\Motion\\motion_player.txt");
+
+	CEnemy::Init();
 
 	return S_OK;
 }
@@ -36,44 +41,83 @@ HRESULT CCPU::Init()
 //============================================================================
 // 終了処理
 //============================================================================
-void CCPU::Uninit()
+void CBoss::Uninit()
 {
-	CPlayer::Uninit();
+	CEnemy::Uninit();
 }
 
 //============================================================================
 // 更新処理
 //============================================================================
-void CCPU::Update()
+void CBoss::Update()
 {
-	// モーション番号の設定
+	// モーション変更
 	ChangeMotion();
 
-	CPlayer::Update();
+	// キャラクターの更新
+	CEnemy::Update();
 }
 
 //============================================================================
 // 描画処理
 //============================================================================
-void CCPU::Draw()
+void CBoss::Draw()
 {
-	CPlayer::Draw();
+	CEnemy::Draw();
+}
+
+//============================================================================
+// モーション変更処理
+//============================================================================
+void CBoss::ChangeMotion()
+{
+	// 現在のモーション
+	const int nCuttentMotion = GetCurrentMotion();
+	const int nMotion = GetMotion();
+
+	// 現在のモーションから変わった場合
+	if (nCuttentMotion != nMotion)
+	{
+		// 現在モーションの終了処理
+		switch (nCuttentMotion)
+		{
+		case MOTION_NEUTRAL:
+			break;
+		case MOTION_WALK:
+			break;
+		default:
+			break;
+		}
+
+		// 現在モーションの開始処理
+		switch (nMotion)
+		{
+		case MOTION_NEUTRAL:
+			break;
+		case MOTION_WALK:
+			break;
+		default:
+			break;
+		}
+
+		// キャラクターのモーション変更処理
+		CCharacter::ChangeMotion();
+	}
 }
 
 //============================================================================
 // 生成処理
 //============================================================================
-CCPU* CCPU::Create(const D3DXVECTOR3 pos, const int index)
+CBoss* CBoss::Create(const D3DXVECTOR3 pos)
 {
-	CCPU* pCPU = new CCPU;
+	CBoss* pBoss = new CBoss;
 
-	if (FAILED(pCPU->Init()))
+	if (FAILED(pBoss->Init()))
 	{
 		return nullptr;
 	}
 
-	pCPU->SetPos(pos);
-	pCPU->SetCharaIndex(index);
+	pBoss->SetPos(pos);
 
-	return pCPU;
+	return pBoss;
 }
