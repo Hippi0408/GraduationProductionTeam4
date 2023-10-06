@@ -25,6 +25,7 @@
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
     <ClCompile Include="DirectInput.cpp" />
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="fontString.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
     <ClInclude Include="DirectInput.h" />
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="fontString.h" />

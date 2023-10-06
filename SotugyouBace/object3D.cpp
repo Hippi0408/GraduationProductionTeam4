@@ -223,7 +223,7 @@ void CObject3D::UV()
 //==============================================================================================
 // テクスチャの分割
 //==============================================================================================
-void CObject3D::SetTexPos(float top, float row, float right, float left)
+void CObject3D::SetTexPos(const float top, const  float row, const float right, const float left)
 {
 	// 頂点バッファ
 	VERTEX_3D *pVtx;
@@ -243,7 +243,7 @@ void CObject3D::SetTexPos(float top, float row, float right, float left)
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CObject3D* CObject3D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXCOLOR col, const PRIORITY priority, const bool billboard)
+CObject3D* CObject3D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const PRIORITY priority, const D3DXCOLOR col, const bool billboard)
 {
 	CObject3D* pObject3D = new CObject3D(priority);
 

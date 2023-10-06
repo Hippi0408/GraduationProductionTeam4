@@ -27,9 +27,9 @@ public:
 
 	void UV();
 
-	static CObject3D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXCOLOR col = {1.0f,1.0f, 1.0f, 1.0f}, const PRIORITY priority = PRIORITY_CENTER, const bool billboard = false);
+	static CObject3D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const PRIORITY priority = PRIORITY_CENTER, const D3DXCOLOR col = {1.0f,1.0f, 1.0f, 1.0f}, const bool billboard = false);
 
-	void SetTexPos(float top, float row, float right, float left);			// テクスチャの分割
+	void SetTexPos(const float top, const float row, const float right, const float left);			// テクスチャの分割
 
 	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }

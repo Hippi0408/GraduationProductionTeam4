@@ -103,6 +103,9 @@
     <ClCompile Include="time.cpp">
       <Filter>Code\06_Object\Object2D</Filter>
     </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>Code\06_Object\Model\Character\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debugProc.h">
@@ -210,6 +213,9 @@
     <ClInclude Include="time.h">
       <Filter>Code\06_Object\Object2D</Filter>
     </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>Code\06_Object\Model\Character\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Code">
@@ -247,6 +253,12 @@
     </Filter>
     <Filter Include="Code\06_Object\Model\Character">
       <UniqueIdentifier>{cb190b71-7442-4db8-a4fa-4157cf63f2f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\06_Object\Model\Character\Enemy">
+      <UniqueIdentifier>{7ab09f6a-5512-449f-966f-f5742c2470f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\06_Object\Model\Character\Player">
+      <UniqueIdentifier>{07b91aeb-8e88-4db6-bbe2-ac73653f8f4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
