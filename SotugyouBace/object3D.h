@@ -32,6 +32,7 @@ public:
 	void SetTexPos(const float top, const float row, const float right, const float left);			// テクスチャの分割
 
 	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
+	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }
 	void SetCol(const D3DXCOLOR col) { m_col = col; }
@@ -41,6 +42,7 @@ public:
 	void SetTexture(CTexture::TEXTURE texture) { m_texture = texture; }
 
 	const D3DXVECTOR3 GetPos() { return m_pos; }
+	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR2 GetScale() { return m_size; }
 	const D3DXCOLOR GetCol() { return m_col; }
 	const D3DXMATRIX GetMtxWorld() { return m_mtxWorld; }
@@ -60,6 +62,7 @@ private:
 	D3DXMATRIX m_mtxWorld;					// ワールドマトリックス
 	D3DXVECTOR2 m_size;						// サイズ
 	D3DXVECTOR3 m_pos;						// ポリゴンの位置
+	D3DXVECTOR3 m_move;						// 移動量
 	D3DXVECTOR3 m_rot;						// 角度
 	D3DXCOLOR m_col;						// 色
 	CTexture::TEXTURE m_texture;			// テクスチャ

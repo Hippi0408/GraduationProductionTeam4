@@ -109,6 +109,9 @@
     <ClCompile Include="enemy.cpp">
       <Filter>Code\06_Object\Model\Character\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>Code\06_Object\Object3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debugProc.h">
@@ -221,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="enemy.h">
       <Filter>Code\06_Object\Model\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>Code\06_Object\Object3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
