@@ -13,6 +13,7 @@
 #include "player_manager.h"
 #include "score.h"
 #include "time.h"
+#include "halfsphere.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -55,6 +56,10 @@ HRESULT CGame::Init()
 
 	// タイムの生成
 	m_pTime = CTime::Create();
+
+	// ハーフスフィアの生成
+	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
+	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	return S_OK;
 }

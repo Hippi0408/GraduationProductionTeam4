@@ -138,14 +138,12 @@ void CTime::ZoroCount()
 //=============================================================================
 // タイムの生成
 //=============================================================================
-CTime *CTime::Create()
+CTime* CTime::Create()
 {
-	CTime *pTime = nullptr;
-
 	//クラスの生成
-	pTime = new CTime;				//タイムのインスタンス生成
+	CTime* pTime = new CTime;
 
-									//nullチェック
+	//nullチェック
 	if (pTime != nullptr)
 	{
 		//初期化処理
