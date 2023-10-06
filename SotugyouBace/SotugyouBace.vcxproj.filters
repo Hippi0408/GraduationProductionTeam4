@@ -94,6 +94,9 @@
     <ClCompile Include="player_manager.cpp">
       <Filter>Code\06_Object\Model\Character</Filter>
     </ClCompile>
+    <ClCompile Include="meshfield.cpp">
+      <Filter>Code\06_Object\Object3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debugProc.h">
@@ -191,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="player_manager.h">
       <Filter>Code\06_Object\Model\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="meshfield.h">
+      <Filter>Code\06_Object\Object3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

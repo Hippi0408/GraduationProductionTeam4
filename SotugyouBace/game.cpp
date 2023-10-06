@@ -11,6 +11,9 @@
 #include "input.h"
 #include "fontString.h"
 #include "player_manager.h"
+#include"meshfield.h"
+
+CMeshField *CGame::pMeshField = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -43,6 +46,9 @@ HRESULT CGame::Init()
 
 	// プレイヤーの生成(テスト)
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+
+	// メッシュフィールドの生成
+	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
 
 	return S_OK;
 }

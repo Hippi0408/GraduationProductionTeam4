@@ -13,10 +13,19 @@
 
 class CObject3D : public CObject
 {
+public:
 	// 3D頂点フォーマット
 	const DWORD FVF_VERTEX_3D = (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 
-public:
+	struct VERTEX_3D
+	{
+		D3DXVECTOR3 pos;		//頂点座標
+		D3DXVECTOR3 nor;		//法線ベクトル
+		D3DCOLOR col;			//頂点カラー
+		D3DXVECTOR2 tex;		//テクスチャ座標
+		bool broken;			//メッシュを削る
+	};
+
 	CObject3D(const PRIORITY priority);
 	~CObject3D() override;
 
@@ -46,14 +55,6 @@ public:
 	const D3DXMATRIX GetMtxWorld() { return m_mtxWorld; }
 
 private:
-
-	struct VERTEX_3D
-	{
-		D3DXVECTOR3 pos;		//頂点座標
-		D3DXVECTOR3 nor;		//法線ベクトル
-		D3DCOLOR col;			//頂点カラー
-		D3DXVECTOR2 tex;		//テクスチャ座標
-	};
 
 	// 頂点フォーマット
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		// 頂点バッファ

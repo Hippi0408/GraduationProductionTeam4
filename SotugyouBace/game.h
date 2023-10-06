@@ -10,6 +10,9 @@
 
 #include"mode.h"
 
+// 前方宣言
+class CMeshField;
+
 class CGame : public CMode
 {
 public:
@@ -23,8 +26,10 @@ public:
 
 	static CGame* Create();
 
-private:
+	static CMeshField *GetMeshField() { return pMeshField; }
 
+private:
+	static CMeshField *pMeshField;		// メッシュフィールド
 };
 
 #endif // !_GAME_H_
