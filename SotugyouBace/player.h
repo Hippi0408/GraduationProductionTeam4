@@ -55,6 +55,8 @@ public:
 
 	const int GetCharaIndex() { return m_nCharaIndex; }
 
+	void PlayerAttack();				// プレイヤーの攻撃処理
+
 private:
 	int m_nCharaIndex;					// 自身の番号
 };

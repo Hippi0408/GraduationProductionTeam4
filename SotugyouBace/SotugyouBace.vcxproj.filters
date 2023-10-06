@@ -109,7 +109,13 @@
     <ClCompile Include="enemy.cpp">
       <Filter>Code\06_Object\Model\Character\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="bullet.cpp">
     <ClCompile Include="boss.cpp">
+      <Filter>Code\06_Object\Object3D</Filter>
+    </ClCompile>
+    <ClCompile Include="meshfield.cpp">
+      <Filter>Code\06_Object\Object3D</Filter>
+    </ClCompile>
       <Filter>Code\06_Object\Model\Character\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="enemy_manager.cpp">
@@ -228,7 +234,13 @@
     <ClInclude Include="enemy.h">
       <Filter>Code\06_Object\Model\Character\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="bullet.h">
     <ClInclude Include="boss.h">
+      <Filter>Code\06_Object\Object3D</Filter>
+    </ClInclude>
+    <ClInclude Include="meshfield.h">
+      <Filter>Code\06_Object\Object3D</Filter>
+    </ClInclude>
       <Filter>Code\06_Object\Model\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="enemy_manager.h">

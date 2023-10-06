@@ -16,6 +16,9 @@
 #include "score.h"
 #include "time.h"
 #include "halfsphere.h"
+#include"meshfield.h"
+
+CMeshField *CGame::pMeshField = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -65,6 +68,9 @@ HRESULT CGame::Init()
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
+
+	// メッシュフィールドの生成
+	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
 
 	return S_OK;
 }
