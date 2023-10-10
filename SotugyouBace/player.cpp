@@ -122,11 +122,13 @@ void CPlayer::PlayerAttack()
 	float Enemy_Radius = pEnemy->GetRadius();
 
 	// ’e‚Ì¶¬
-	CBullet::Create(D3DXVECTOR3(pos.x, pos.y + 200.0f, pos.z), D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
-	CBullet *pBullet = CBullet::Create(D3DXVECTOR3(pos.x, 200.0f, pos.z), 20.0f, 20.0f, D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
+	CBullet *pBullet = CBullet::Create(D3DXVECTOR3(pos.x, pos.y + 200.0f, pos.z), D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
 	
 	D3DXVECTOR3 Bullet_Pos = pBullet->GetPos();
 	D3DXVECTOR2 Bullet_Scale = pBullet->GetScale();
 
-	bool bCollision = Sphere_Collision(Bullet_Pos, Bullet_Scale.x, Enemy_Pos, Enemy_Radius);
+	bool bCollision = Sphere_Collision(Bullet_Pos, Bullet_Scale.x, {0.0f,0.0f,0.0f}, 60);
+
+	if (bCollision)
+		int a = 0;
 }

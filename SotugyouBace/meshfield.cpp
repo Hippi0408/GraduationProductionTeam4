@@ -48,7 +48,7 @@ HRESULT CMeshField::Init()
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
 
 	m_nVertexNum = ((m_nXBlock + 1) * (m_nZBlock + 1));										// 頂点数
-	m_nIndexNum = (((m_nXBlock + 1) * 2) * (m_nZBlock  *(m_nZBlock - 1)) * m_nZBlock * 2);	// インデックスバッファ
+	//m_nIndexNum = (((m_nXBlock + 1) * 2) * (m_nZBlock  *(m_nZBlock - 1)) * m_nZBlock * 2);	// インデックスバッファ
 	m_nIndexNum = (m_nXBlock * 2 + 2) * m_nZBlock + 2 * (m_nZBlock - 1);
 	m_nPrimitiveNum = (m_nXBlock * m_nZBlock * 2 + 4 * (m_nZBlock - 1));					// プリミティブ数
 	m_nHeight = 50;		// 頂点の高さ(ランダムの最大値)

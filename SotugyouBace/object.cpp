@@ -192,6 +192,11 @@ bool CObject::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const 
 	// 位置同士の距離の計算用変数
 	D3DXVECTOR3 Distance = otherPos - pos;
 
+	float Dis = sqrtf((otherPos.x - pos.x) * (otherPos.x - pos.x)
+		+ (otherPos.y - pos.y) * (otherPos.y - pos.y));
+
 	// 距離と大きさから計算し、衝突している場合
-	return sqrtf((Distance.x * Distance.x) + (Distance.y * Distance.y) + (Distance.z * Distance.z)) <= (radius + otherRadius);
+	//return sqrtf((Distance.x * Distance.x) + (Distance.y * Distance.y) + (Distance.z * Distance.z)) <= (radius + otherRadius);
+
+	return false;
 }
