@@ -82,6 +82,7 @@ void CPlayer::ChangeMotion()
 		// 現在モーションの終了処理
 		switch (nCuttentMotion)
 		{
+			// ニュートラル
 		case MOTION_NEUTRAL:
 			break;
 		case MOTION_WALK:
