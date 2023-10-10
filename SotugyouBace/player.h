@@ -38,6 +38,8 @@ public:
 	{
 		MOTION_NEUTRAL = 0,	// ニュートラル
 		MOTION_WALK,		// 歩き
+		MOTION_JUMP,		// ジャンプ
+		MOTION_LANGIND,		// 着地
 		MOTION_MAX,
 	};
 
