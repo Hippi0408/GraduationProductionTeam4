@@ -38,7 +38,7 @@ public:
 		MODEL_LEFT_THIGH,		// [11]左腿
 		MODEL_LEFT_SHIN,		// [12]左脛
 		MODEL_LEFT_LEG,			// [13]左足
-		MODEL_MAX,			// モデルの最大数
+		MODEL_MAX,				// モデルの最大数
 	};
 
 	// モーションのタイプ

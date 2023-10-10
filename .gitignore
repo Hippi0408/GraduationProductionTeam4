@@ -242,4 +242,4 @@ ModelManifest.xml
 .fake/
 
 # 無視リスト
-*.exe
+SotugyouBace/*.exe
