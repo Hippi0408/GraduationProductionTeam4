@@ -34,7 +34,7 @@ public:
 	void SetLife(int life) { m_nLife = life; }	// ’e‚Ìõ–½‚Ìİ’è
 	int GetLife() { return m_nLife; }			// ’e‚Ìõ–½‚Ìæ“¾
 
-	static CBullet* Create(const D3DXVECTOR3 &pos, float xsize, float ysize, D3DXVECTOR3 move, int life, const PRIORITY priority);	// ¶¬
+	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move, const int life, const PRIORITY priority);	// ¶¬
 
 private:
 	//****************

@@ -31,7 +31,7 @@ CBoss::~CBoss()
 HRESULT CBoss::Init()
 {
 	// プレイヤーのモデルを読み込む
-	LoadFile("Data\\text\\Motion\\motion_player.txt");
+	LoadFile("Data\\text\\Motion\\motion_boss.txt");
 
 	CEnemy::Init();
 

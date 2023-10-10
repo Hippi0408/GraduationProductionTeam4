@@ -103,7 +103,7 @@ void CBullet::Draw()
 //=============================================================================
 // ¶¬ˆ—
 //=============================================================================
-CBullet* CBullet::Create(const D3DXVECTOR3 & pos, float xsize, float ysize, D3DXVECTOR3 move, int life, const PRIORITY priority)
+CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, int life, const PRIORITY priority)
 {
 	//ƒNƒ‰ƒX‚Ì¶¬
 	CBullet* pBullet = new CBullet(priority);
@@ -117,7 +117,7 @@ CBullet* CBullet::Create(const D3DXVECTOR3 & pos, float xsize, float ysize, D3DX
 		pBullet->SetPos(pos);
 		pBullet->SetMove(move);
 		pBullet->SetLife(life);
-		pBullet->SetSize(D3DXVECTOR2(xsize, ysize));
+		pBullet->SetSize(size);
 	}
 	else
 	{
