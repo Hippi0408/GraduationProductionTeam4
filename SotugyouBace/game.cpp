@@ -102,8 +102,7 @@ void CGame::Update()
 
 	for (int nCnt = 0; nCnt < 4; nCnt++)
 	{
-		if ((pInput->Trigger(DIK_RETURN) || pInput->Press(JOYPAD_B, nCnt) || pInput->Press(JOYPAD_A, nCnt)
-			|| pInput->Trigger(JOYPAD_START, nCnt))
+		if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_START, nCnt))
 			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 		{
 			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);

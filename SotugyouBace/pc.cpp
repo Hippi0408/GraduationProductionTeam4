@@ -172,7 +172,7 @@ void CPC::Input()
 		CGame::GetMeshField()->Ground_Broken(CCharacter::GetPos(), 50.0f, 5);
 	}
 	// UŒ‚ˆ—
-	if ((pInput->Trigger(DIK_SPACE)))
+	if ((pInput->Trigger(DIK_SPACE)) || (pInput->Press(JOYPAD_B, nIndex) && pInput->Press(JOYPAD_A, nIndex)))
 	{
 		// ƒvƒŒƒCƒ„[‚ÌUŒ‚ˆ—
 		PlayerAttack();
