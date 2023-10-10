@@ -116,19 +116,6 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 rot = GetRot();
 
-	// “G‚Ìî•ñ
-	CCharacter *pEnemy = CGame::GetBoss();
-	D3DXVECTOR3 Enemy_Pos = pEnemy->GetPos();
-	float Enemy_Radius = pEnemy->GetRadius();
-
 	// ’e‚Ì¶¬
-	CBullet *pBullet = CBullet::Create(D3DXVECTOR3(pos.x, pos.y + 200.0f, pos.z), D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
-	
-	D3DXVECTOR3 Bullet_Pos = pBullet->GetPos();
-	D3DXVECTOR2 Bullet_Scale = pBullet->GetScale();
-
-	bool bCollision = Sphere_Collision(Bullet_Pos, Bullet_Scale.x, {0.0f,0.0f,0.0f}, 60);
-
-	if (bCollision)
-		int a = 0;
+	m_pBullet = CBullet::Create(D3DXVECTOR3(pos.x, pos.y + 200.0f, pos.z), D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_CENTER);
 }

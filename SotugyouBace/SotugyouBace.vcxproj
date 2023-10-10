@@ -24,6 +24,7 @@
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="character.cpp" />
+    <ClCompile Include="collision.cpp" />
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
     <ClCompile Include="DirectInput.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
     <ClInclude Include="DirectInput.h" />

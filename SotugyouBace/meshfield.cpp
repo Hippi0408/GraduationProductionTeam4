@@ -17,7 +17,7 @@
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CMeshField::CMeshField() : CObject3D(PRIORITY_BACK_GROUND)
+CMeshField::CMeshField(const PRIORITY priority) : CObject3D(priority)
 {
 	m_nVertexNum = 0;		// 頂点数
 	m_nIndexNum = 0;		// インデックスバッファ
@@ -47,12 +47,11 @@ HRESULT CMeshField::Init()
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
 
-	m_nVertexNum = ((m_nXBlock + 1) * (m_nZBlock + 1));										// 頂点数
-	//m_nIndexNum = (((m_nXBlock + 1) * 2) * (m_nZBlock  *(m_nZBlock - 1)) * m_nZBlock * 2);	// インデックスバッファ
-	m_nIndexNum = (m_nXBlock * 2 + 2) * m_nZBlock + 2 * (m_nZBlock - 1);
+	m_nVertexNum = ((m_nXBlock + 1) * (m_nZBlock + 1));										// 頂点数	
+	m_nIndexNum = (m_nXBlock * 2 + 2) * m_nZBlock + 2 * (m_nZBlock - 1);					// インデックスバッファ
 	m_nPrimitiveNum = (m_nXBlock * m_nZBlock * 2 + 4 * (m_nZBlock - 1));					// プリミティブ数
 	m_nHeight = 50;		// 頂点の高さ(ランダムの最大値)
-	
+
 	// テクスチャの設定
 	//m_Texture = CTexture::TEXTURE_TILE;
 
@@ -252,7 +251,7 @@ CMeshField *CMeshField::Create(D3DXVECTOR3 pos, int Xblock, int Zblock, float si
 {
 	CMeshField *pMeshField = nullptr;
 
-	pMeshField = new CMeshField;
+	pMeshField = new CMeshField(PRIORITY_BACK_GROUND);
 
 	if (pMeshField != nullptr)
 	{
@@ -285,10 +284,11 @@ float CMeshField::MeshCollision(D3DXVECTOR3 pos)
 
 	memset(&Vec, 0, sizeof(Vec));
 
-	float fPosY = 0;
+	m_fPosY = 0;
 	m_bPorigon_Scope = false;
+	m_bHit = false;
 
-	for (int nCnt = 0; nCnt < m_nIndexNum/* - 2*/; nCnt++)
+	for (int nCnt = 0; nCnt < m_nIndexNum; nCnt++)
 	{
 		// 縮退ポリゴンは判定しない
 		if (pVtx[pIdx[nCnt]].pos == pVtx[pIdx[nCnt + 1]].pos) {
@@ -346,9 +346,12 @@ float CMeshField::MeshCollision(D3DXVECTOR3 pos)
 		if (m_nVecCount == 3)
 		{
 			// プレイヤーのY座標の算出
-			fPosY = pVtx[pIdx[nCnt]].pos.y - ((pos.x - pVtx[pIdx[nCnt]].pos.x) * m_NorVec.x + (pos.z - pVtx[pIdx[nCnt]].pos.z) * m_NorVec.z) / m_NorVec.y;
+			m_fPosY = pVtx[pIdx[nCnt]].pos.y - ((pos.x - pVtx[pIdx[nCnt]].pos.x) * m_NorVec.x + (pos.z - pVtx[pIdx[nCnt]].pos.z) * m_NorVec.z) / m_NorVec.y;
 			m_bPorigon_Scope = true;
 			m_nCntIndex = nCnt;
+
+			if (m_fPosY > pos.y)
+				m_bHit = true;
 			break;
 		}
 
@@ -361,7 +364,7 @@ float CMeshField::MeshCollision(D3DXVECTOR3 pos)
 
 	m_nPolyCount = 0;
 
-	return fPosY;
+	return m_fPosY;
 }
 
 //==============================================================================================
@@ -425,7 +428,7 @@ float CMeshField::Ground_Broken(D3DXVECTOR3 pos, float damage, int scope)
 					if (!pVtx[pIdx[nIndex + nCnt2]].broken)
 					{
 						// 一度も削れていない
-						pVtx[pIdx[nIndex + nCnt2]].pos.y = -damage;
+						pVtx[pIdx[nIndex + nCnt2]].pos.y = m_fPosY - damage;
 						pVtx[pIdx[nIndex + nCnt2]].broken = true;
 					}
 					else

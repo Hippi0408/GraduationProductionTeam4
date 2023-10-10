@@ -63,7 +63,7 @@ void CCharacter::Uninit()
 void CCharacter::Update()
 {
 	// ƒ‚[ƒVƒ‡ƒ“
-	Motion();
+	//Motion();
 
 	// ˆÚ“®—Ê‚Ìˆ—
 	Move();

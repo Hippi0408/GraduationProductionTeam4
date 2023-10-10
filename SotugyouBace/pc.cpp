@@ -56,9 +56,14 @@ void CPC::Update()
 	// “ü—Íˆ—
 	Input();
 
-	float a = CGame::GetMeshField()->MeshCollision(CCharacter::GetPos());
+	CMeshField *pMeshField = nullptr;
+	pMeshField = CGame::GetMeshField();
 
-	CCharacter::SetPos({ CCharacter::GetPos().x, a, CCharacter::GetPos().z });
+	if (pMeshField != nullptr)
+	{
+		float YPos = pMeshField->MeshCollision(CCharacter::GetPos());
+		CCharacter::SetPos({ CCharacter::GetPos().x, YPos, CCharacter::GetPos().z });
+	}
 
 	CPlayer::Update();
 }
@@ -169,7 +174,11 @@ void CPC::Input()
 	}
 	if (pInput->Trigger(DIK_F))
 	{
-		CGame::GetMeshField()->Ground_Broken(CCharacter::GetPos(), 50.0f, 5);
+		CMeshField *pMeshField = nullptr;
+		pMeshField = CGame::GetMeshField();
+
+		if (pMeshField != nullptr)
+			pMeshField->Ground_Broken(CCharacter::GetPos(), 50.0f, 5);
 	}
 	// UŒ‚ˆ—
 	if ((pInput->Trigger(DIK_SPACE)) || (pInput->Press(JOYPAD_B, nIndex) && pInput->Press(JOYPAD_A, nIndex)))

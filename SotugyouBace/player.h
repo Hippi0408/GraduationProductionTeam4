@@ -12,6 +12,8 @@
 //=============================================================================
 #include "character.h"
 
+class CBullet;
+
 //---------------------------
 // クラス宣言
 //---------------------------
@@ -57,8 +59,11 @@ public:
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
 
+	CBullet *GetBullet() { return m_pBullet; }
+
 private:
 	int m_nCharaIndex;					// 自身の番号
+	CBullet *m_pBullet;
 };
 
 #endif// _PLAYER_H_

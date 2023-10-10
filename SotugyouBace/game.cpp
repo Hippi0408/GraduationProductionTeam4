@@ -17,6 +17,7 @@
 #include "time.h"
 #include "halfsphere.h"
 #include"meshfield.h"
+#include"collision.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CCharacter *CGame::pBoss = nullptr;
@@ -72,6 +73,9 @@ HRESULT CGame::Init()
 
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
+
+	// 当たり判定の生成
+	pCollision = CCollision::Create();
 
 	return S_OK;
 }

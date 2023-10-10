@@ -193,10 +193,15 @@ bool CObject::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const 
 	D3DXVECTOR3 Distance = otherPos - pos;
 
 	float Dis = sqrtf((otherPos.x - pos.x) * (otherPos.x - pos.x)
-		+ (otherPos.y - pos.y) * (otherPos.y - pos.y));
+		+ (otherPos.z - pos.z) * (otherPos.z - pos.z));
 
-	// ‹——£‚Æ‘å‚«‚³‚©‚çŒvZ‚µAÕ“Ë‚µ‚Ä‚¢‚éê‡
-	//return sqrtf((Distance.x * Distance.x) + (Distance.y * Distance.y) + (Distance.z * Distance.z)) <= (radius + otherRadius);
+	float DisY = otherPos.y - pos.y;
+	if (DisY < 0)
+		DisY *= -1;
+
+		if (Dis <= radius + otherRadius
+			&& DisY <= radius + otherRadius)
+			return true;
 
 	return false;
 }

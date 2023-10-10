@@ -17,7 +17,7 @@
 class CMeshField : CObject3D
 {
 public:
-	CMeshField();
+	CMeshField(const PRIORITY priority);
 	~CMeshField() override;
 
 	HRESULT Init() override;		// 初期化処理
@@ -35,6 +35,8 @@ public:
 	void SetNumBlock(int Xblock, int Zblock) { m_nXBlock = Xblock; m_nZBlock = Zblock; }	// ブロックの数の設定
 	void SetSize(float size) { m_fSize = size; }		// サイズの設定
 
+	bool GetHit() { return m_bHit; }
+
 private:
 	int m_nVertexNum;						// 頂点数
 	int m_nIndexNum;						// インデックスバッファ
@@ -47,7 +49,9 @@ private:
 	int m_nScope;							// 抉れる範囲
 	int m_nCntIndex;						// 当たっている頂点番号
 	float m_fSize;							// サイズ
+	float m_fPosY;							// 当たった位置のY座標
 	bool m_bPorigon_Scope;					// ポリゴンの範囲
+	bool m_bHit;							// 攻撃が当たった
 	D3DXVECTOR3 m_Pos;						// 位置
 	D3DXVECTOR3 m_Rot;						// 向き
 	D3DXMATRIX m_MtxWorld;					// ワールドマトリックス
