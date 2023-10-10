@@ -86,6 +86,10 @@ void CPlayer::ChangeMotion()
 			break;
 		case MOTION_WALK:
 			break;
+		case MOTION_JUMP:
+			break;
+		case MOTION_LANGIND:
+			break;
 		default:
 			break;
 		}
@@ -96,6 +100,10 @@ void CPlayer::ChangeMotion()
 		case MOTION_NEUTRAL:
 			break;
 		case MOTION_WALK:
+			break;
+		case MOTION_JUMP:
+			break;
+		case MOTION_LANGIND:
 			break;
 		default:
 			break;
