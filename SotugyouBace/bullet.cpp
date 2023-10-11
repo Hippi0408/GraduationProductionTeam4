@@ -11,6 +11,8 @@
 #include "application.h"
 #include "renderer.h"
 #include "bullet.h"
+#include "game.h"
+#include "meshfield.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -43,6 +45,12 @@ HRESULT CBullet::Init()
 	//==================================================
 	// メンバ変数の初期化
 	//==================================================
+	// 当たり判定の生成
+	SetCollision();
+
+	// オブジェクトの種類にプレイヤーを設定
+	SetType(OBJ_TYPE_BULLET);
+
 	// 弾のテクスチャ
 	SetTexture(CTexture::TEXTURE_BULLET);
 
@@ -76,6 +84,12 @@ void CBullet::Update()
 	//前回の位置を保存
 	m_nPosOld = pos;
 
+	// 位置の設定
+	SetPos(pos);
+
+	// オブジェクト3Dの更新処理
+	CObject3D::Update();
+
 	// 寿命を減らす
 	m_nLife--;
 	if (m_nLife <= 0)
@@ -84,11 +98,8 @@ void CBullet::Update()
 		return;
 	}
 
-	// 位置の設定
-	SetPos(pos);
-
-	// オブジェクト3Dの更新処理
-	CObject3D::Update();
+	// 床の当たり判定
+	FieldCollision();
 }
 
 //=============================================================================
@@ -98,6 +109,28 @@ void CBullet::Draw()
 {
 	// オブジェクト3Dの描画処理
 	CObject3D::Draw();
+}
+
+//============================================================================
+// 床の当たり判定
+//============================================================================
+void CBullet::FieldCollision()
+{
+	// 現在の位置を定数として取得
+	const D3DXVECTOR3 pos = GetPos();
+
+	CMeshField* pMesfField = CGame::GetMeshField();
+
+	// 床の当たり判定から高さを定数として取得
+	const float a = pMesfField->MeshCollision(pos);
+
+	// メッシュフィールドより下の位置にいる場合
+	if (a >= pos.y)
+	{
+		Hit();
+
+		pMesfField->Ground_Broken(pos, 50.0f, 5);
+	}
 }
 
 //=============================================================================

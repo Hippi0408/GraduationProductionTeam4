@@ -34,6 +34,7 @@ public:
 	void Update() override;					// XVˆ—
 	void Draw() override;					// •`‰æˆ—
 
+	void FieldCollision();				//°‚Ì“–‚½‚è”»’è
 	void Hit() override;
 
 	void SetLife(const int life) { m_nLife = life; }		// ’e‚Ìõ–½‚Ìİ’è

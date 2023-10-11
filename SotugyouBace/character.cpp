@@ -189,11 +189,11 @@ void CCharacter::Landing(const D3DXVECTOR3 pos)
 //============================================================================
 void CCharacter::FieldCollision()
 {
-	// °‚Ì“–‚½‚è”»’è‚©‚ç‚‚³‚ğ’è”‚Æ‚µ‚Äæ“¾
-	const float a = CGame::GetMeshField()->MeshCollision(CCharacter::GetPos());
-
 	// Œ»İ‚ÌˆÊ’u‚ğ’è”‚Æ‚µ‚Äæ“¾
 	const D3DXVECTOR3 pos = CCharacter::GetPos();
+
+	// °‚Ì“–‚½‚è”»’è‚©‚ç‚‚³‚ğ’è”‚Æ‚µ‚Äæ“¾
+	const float a = CGame::GetMeshField()->MeshCollision(pos);
 
 	// Ú’n‚µ‚Ä‚¢‚éê‡
 	if (GetGround() == true)

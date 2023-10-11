@@ -26,7 +26,6 @@ public:
 	void Draw(void) override;		// 描画処理
 
 	void Stencil();		// ステンシル
-	static CMeshField *Create(D3DXVECTOR3 pos, int Xblock, int Zblock, float size);	// 生成処理
 	float MeshCollision(D3DXVECTOR3 pos);	// 当たり判定
 	float Ground_Broken(D3DXVECTOR3 pos, float damage, int scope);	// 地面が削れる
 	void Normal();			// 法線の設定
@@ -36,6 +35,8 @@ public:
 	void SetSize(float size) { m_fSize = size; }		// サイズの設定
 
 	bool GetHit() { return m_bHit; }
+
+	static CMeshField* Create(D3DXVECTOR3 pos, int Xblock, int Zblock, float size);	// 生成処理
 
 private:
 	int m_nVertexNum;						// 頂点数
