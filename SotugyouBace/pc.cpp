@@ -8,8 +8,8 @@
 #include "application.h"
 #include "input.h"
 #include "camera.h"
-#include"game.h"
-#include"meshfield.h"
+#include "game.h"
+#include "meshfield.h"
 
 //=====================================
 // デフォルトコンストラクタ

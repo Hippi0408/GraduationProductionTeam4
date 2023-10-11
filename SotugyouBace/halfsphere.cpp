@@ -138,6 +138,8 @@ HRESULT CHalfSphere::Init(void)
 			pIdx += 2;
 		}
 	}
+
+	// インデックスの開放
 	m_pIdxBuff->Unlock();
 
 	// テクスチャの反映
@@ -288,6 +290,7 @@ CHalfSphere* CHalfSphere::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 
 
 	if (pSphere != nullptr)
 	{
+		// 設定
 		pSphere->SetPos(pos);
 		pSphere->SetSize(size);
 		pSphere->SetRot(rot);
