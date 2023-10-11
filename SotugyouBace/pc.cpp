@@ -191,7 +191,7 @@ void CPC::Input()
 		pMeshField = CGame::GetMeshField();
 
 		if (pMeshField != nullptr)
-			pMeshField->Ground_Broken(CCharacter::GetPos(), 5.0f, 30);
+			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
 	}
 	// ƒWƒƒƒ“ƒvˆ—
 	if ((pInput->Trigger(DIK_SPACE)) || pInput->Press(JOYPAD_A, nIndex))
