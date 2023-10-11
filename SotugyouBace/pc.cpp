@@ -193,7 +193,7 @@ void CPC::Input()
 	if ((pInput->Trigger(DIK_SPACE)) || pInput->Press(JOYPAD_A, nIndex))
 	{
 		// プレイヤーのジャンプ処理
-		PlayerJump();
+		JumpStart();
 	}
 
 	// 攻撃処理

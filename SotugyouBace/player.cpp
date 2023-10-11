@@ -49,6 +49,8 @@ HRESULT CPlayer::Init()
 void CPlayer::Uninit()
 {
 	CCharacter::Uninit();
+
+	CObject::Release();
 }
 
 //============================================================================
@@ -140,7 +142,7 @@ void CPlayer::PlayerAttack()
 //============================================================================
 // プレイヤーのジャンプ処理
 //============================================================================
-void CPlayer::PlayerJump()
+void CPlayer::JumpStart()
 {
 	// 接地している場合のみ
 	if (GetGround() == true)
