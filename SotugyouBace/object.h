@@ -19,6 +19,7 @@ public:
 		PRIORITY_NONE = 0,		// •`‰æ‡_ˆê”Ô‰œ
 		PRIORITY_BACK_GROUND,	// •`‰æ‡_”wŒi
 		PRIORITY_BACK,			// •`‰æ‡_Œã‚ë‘¤
+		PRIORITY_MODEL,			// •`‰æ‡_ƒ‚ƒfƒ‹
 		PRIORITY_CENTER,		// •`‰æ‡_’†‰›
 		PRIORITY_FRONT,			// •`‰æ‡_‘O‘¤
 		PRIORITY_SCREEN,		// •`‰æ‡_‰æ–ÊŽè‘O

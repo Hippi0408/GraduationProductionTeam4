@@ -10,6 +10,7 @@
 #include "bullet.h"
 #include "player_manager.h"
 
+const float CPlayer::PLAYER_JUMP_POWER = 10.0f;
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -74,7 +75,15 @@ void CPlayer::ChangeMotion()
 {
 	// 現在のモーション
 	const int nCuttentMotion = GetCurrentMotion();
-	const int nMotion = GetMotion();
+
+	// 着地モーションが終了した場合
+	if (nCuttentMotion == MOTION_LANDING && GetMotionStop() == true)
+	{
+		SetMotion(MOTION_NEUTRAL);
+	}
+
+	int nMotion = GetMotion();
+
 
 	// 現在のモーションから変わった場合
 	if (nCuttentMotion != nMotion)
@@ -82,9 +91,14 @@ void CPlayer::ChangeMotion()
 		// 現在モーションの終了処理
 		switch (nCuttentMotion)
 		{
+			// ニュートラル
 		case MOTION_NEUTRAL:
 			break;
 		case MOTION_WALK:
+			break;
+		case MOTION_JUMP:
+			break;
+		case MOTION_LANDING:
 			break;
 		default:
 			break;
@@ -96,6 +110,10 @@ void CPlayer::ChangeMotion()
 		case MOTION_NEUTRAL:
 			break;
 		case MOTION_WALK:
+			break;
+		case MOTION_JUMP:
+			break;
+		case MOTION_LANDING:
 			break;
 		default:
 			break;
@@ -116,6 +134,36 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 rot = GetRot();
 
 	// 弾の生成
-	CBullet::Create(D3DXVECTOR3(pos.x, pos.y + 200.0f, pos.z), D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_BACK_GROUND);
+	CBullet::Create({ pos.x, pos.y + 100.0f, pos.z }, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)));
+}
 
+//============================================================================
+// プレイヤーのジャンプ処理
+//============================================================================
+void CPlayer::PlayerJump()
+{
+	// 接地している場合のみ
+	if (GetGround() == true)
+	{
+		// ジャンプモーションを設定
+		SetMotion(MOTION_JUMP);
+
+		// 離着状態にする
+		SetGround(false);
+
+		// 上に上昇する
+		AddMove({ 0.0f, PLAYER_JUMP_POWER, 0.0f });
+	}
+}
+
+//============================================================================
+// プレイヤーの着地処理
+//============================================================================
+void CPlayer::Landing(const D3DXVECTOR3 pos)
+{
+	// 着地モーションを設定
+	SetMotion(MOTION_LANDING);
+
+	// キャラクターの着地処理
+	CCharacter::Landing(pos);
 }
