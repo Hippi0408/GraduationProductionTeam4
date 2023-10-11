@@ -78,22 +78,6 @@ void CCollision::Draw()
 }
 
 //=============================================================================
-// ¶¬ˆ—
-//=============================================================================
-CCollision *CCollision::Create(CMove_Object* pParent)
-{
-	CCollision *pCollision = new CCollision;
-
-	if (pCollision != nullptr)
-	{
-		pCollision->Init();
-		pCollision->m_pMove_Object = pParent;
-	}
-
-	return pCollision;
-}
-
-//=============================================================================
 // “–‚½‚è”»’è
 //=============================================================================
 void CCollision::Collision()
@@ -147,4 +131,20 @@ void CCollision::Collision()
 	//		m_pBullet->SetLife(0);
 	//	}
 	//}
+}
+
+//=============================================================================
+// ¶¬ˆ—
+//=============================================================================
+CCollision *CCollision::Create(CMove_Object* pParent)
+{
+	CCollision *pCollision = new CCollision;
+
+	if (pCollision != nullptr)
+	{
+		pCollision->Init();
+		pCollision->m_pMove_Object = pParent;
+	}
+
+	return pCollision;
 }

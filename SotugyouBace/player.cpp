@@ -39,6 +39,12 @@ HRESULT CPlayer::Init()
 	// プレイヤーのモデルを読み込む
 	LoadFile("Data\\text\\Motion\\motion_player.txt");
 
+	// オブジェクトの種類にプレイヤーを設定
+	SetType(OBJ_TYPE_PLAYER);
+
+	// 当たり判定の生成
+	SetCollision();
+
 	CCharacter::Init();
 
 	return S_OK;

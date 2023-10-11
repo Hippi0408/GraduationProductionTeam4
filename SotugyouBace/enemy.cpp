@@ -33,6 +33,12 @@ CEnemy::~CEnemy()
 //============================================================================
 HRESULT CEnemy::Init()
 {
+	// 当たり判定の生成
+	SetCollision();
+
+	// オブジェクトの種類に敵キャラを設定
+	SetType(OBJ_TYPE_ENEMY);
+
 	CCharacter::Init();
 
 	return S_OK;
