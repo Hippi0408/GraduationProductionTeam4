@@ -20,6 +20,7 @@ class CBullet;
 class CPlayer : public CCharacter
 {
 	static const int FIRST_MAX_LIFE = 100;	// 初期最大体力の値
+	static const float PLAYER_JUMP_POWER;	// プレイヤーのジャンプ力
 
 public:
 
@@ -49,7 +50,7 @@ public:
 		MOTION_NEUTRAL = 0,	// ニュートラル
 		MOTION_WALK,		// 歩き
 		MOTION_JUMP,		// ジャンプ
-		MOTION_LANGIND,		// 着地
+		MOTION_LANDING,		// 着地
 		MOTION_MAX,
 	};
 
@@ -64,11 +65,13 @@ public:
 	void ChangeMotion() override;		// モーションの切り替え
 	void Hit() override;
 
+	void PlayerAttack();				// プレイヤーの攻撃処理
+	void PlayerJump();					// プレイヤーのジャンプ処理
+	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
+
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 
 	const int GetCharaIndex() { return m_nCharaIndex; }
-
-	void PlayerAttack();				// プレイヤーの攻撃処理
 
 	CBullet *GetBullet() { return m_pBullet; }
 

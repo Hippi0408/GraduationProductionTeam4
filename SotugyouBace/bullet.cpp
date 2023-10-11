@@ -15,12 +15,14 @@
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-
+const float CBullet::BULLET_SPEED = 15.0f;	// 弾の速度
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CBullet::CBullet(const CObject::PRIORITY priority) : CObject3D(priority)
 {
+	m_nLife = BULLET_LIFE;
+	m_fSpeed = BULLET_SPEED;
 }
 
 //=============================================================================
@@ -41,8 +43,6 @@ HRESULT CBullet::Init()
 	//==================================================
 	// メンバ変数の初期化
 	//==================================================
-	m_nLife = 0;			// 寿命の初期化
-
 	// 弾のテクスチャ
 	SetTexture(CTexture::TEXTURE_BULLET);
 
@@ -71,7 +71,7 @@ void CBullet::Update()
 	D3DXVECTOR3 move = GetMove();
 
 	//弾の位置更新
-	pos += move;
+	pos += move * m_fSpeed;
 
 	//前回の位置を保存
 	m_nPosOld = pos;
@@ -111,7 +111,8 @@ void CBullet::Hit()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, int life, const CObject::PRIORITY priority)
+
+CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, const PRIORITY priority)
 {
 	//クラスの生成
 	CBullet* pBullet = new CBullet(priority);
@@ -124,7 +125,6 @@ CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECT
 		//設定処理
 		pBullet->SetPos(pos);
 		pBullet->SetMove(move);
-		pBullet->SetLife(life);
 		pBullet->SetSize(size);
 	}
 	else

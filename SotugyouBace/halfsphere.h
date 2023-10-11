@@ -48,7 +48,7 @@ public:
 	//****************
 	// publicな関数
 	//****************
-	CHalfSphere(const PRIORITY nPriority);				// コンストラクタ
+	CHalfSphere();				// コンストラクタ
 	~CHalfSphere() override;							// デストラクタ
 
 	HRESULT Init(void) override;						// 初期化処理
