@@ -277,7 +277,7 @@ const D3DXVECTOR3 CHalfSphere::GetRot(void)
 //==============================================
 CHalfSphere* CHalfSphere::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, SPHERE_TEX tex)
 {
-	CHalfSphere* pSphere = new CHalfSphere(PRIORITY_BACK_GROUND);
+	CHalfSphere* pSphere = new CHalfSphere;
 
 	if (pSphere != nullptr)
 	{

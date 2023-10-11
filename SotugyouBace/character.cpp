@@ -122,7 +122,7 @@ void CCharacter::Move()
 	m_move -= m_move * CHARACTER_MOVE_INERTIE;
 
 	// 位置更新
-	m_pos += m_move * m_fSpeed;
+	AddPos(m_move * m_fSpeed);
 }
 
 //==============================================================================================
@@ -178,7 +178,7 @@ void CCharacter::Destroy()
 void CCharacter::Landing(const D3DXVECTOR3 pos)
 {
 	// 位置を設定する
-	m_pos = pos;
+	SetPos(pos);
 
 	// 着地判定を真にする
 	m_bGround = true;
