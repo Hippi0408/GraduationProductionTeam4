@@ -9,6 +9,7 @@
 #include "input.h"
 #include "bullet.h"
 #include "player_manager.h"
+#include"game.h"
 
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;
 //=====================================
@@ -135,8 +136,12 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 rot = GetRot();
 
+	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
+	pos_vec *= 120.f;
+	pos_vec += pos;
+
 	// 弾の生成
-	CBullet::Create({ pos.x, pos.y + 100.0f, pos.z }, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)));
+	CBullet::Create({pos_vec.x, pos_vec.y + 200.0f, pos_vec.z}, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)));
 }
 
 //============================================================================
@@ -168,4 +173,12 @@ void CPlayer::Landing(const D3DXVECTOR3 pos)
 
 	// キャラクターの着地処理
 	CCharacter::Landing(pos);
+}
+
+//============================================================================
+// 被弾処理
+//============================================================================
+void CPlayer::Hit()
+{
+	Damage(30);
 }

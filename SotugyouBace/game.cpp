@@ -17,8 +17,10 @@
 #include "time.h"
 #include "halfsphere.h"
 #include"meshfield.h"
+#include"collision.h"
 
 CMeshField *CGame::pMeshField = nullptr;
+CCharacter *CGame::pBoss = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -57,7 +59,7 @@ HRESULT CGame::Init()
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 300.0f });
+	pBoss = CBoss::Create({ 0.0f, 0.0f, 300.0f });
 
 	// スコアの生成
 	m_pScore = CScore::Create();
@@ -71,6 +73,9 @@ HRESULT CGame::Init()
 
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
+
+	// 当たり判定の生成
+	//pCollision = CCollision::Create();
 
 	return S_OK;
 }

@@ -12,6 +12,8 @@
 //=============================================================================
 #include "character.h"
 
+class CBullet;
+
 //---------------------------
 // クラス宣言
 //---------------------------
@@ -62,6 +64,7 @@ public:
 	virtual void Draw() override;
 
 	void ChangeMotion() override;		// モーションの切り替え
+	void Hit() override;
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
 	void JumpStart();					// プレイヤーのジャンプ処理

@@ -15,10 +15,9 @@
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CObject3D::CObject3D(const PRIORITY priority) : CObject(priority)
+CObject3D::CObject3D(const CObject::PRIORITY priority) : CMove_Object(priority)
 {
 	m_pVtxBuff = nullptr;					// 頂点バッファ
-	m_pos = { 0.0f,0.0f,0.0f };				// ポリゴンの位置
 	m_texture = CTexture::TEXTURE_NONE;		// テクスチャ
 	m_bBillboard = false;					// ビルボードかどうか
 }
@@ -81,6 +80,8 @@ HRESULT CObject3D::Init()
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 
+	CMove_Object::Init();
+
 	return S_OK;
 }
 
@@ -95,6 +96,8 @@ void CObject3D::Uninit()
 		m_pVtxBuff->Release();
 		m_pVtxBuff = nullptr;
 	}
+
+	CMove_Object::Uninit();
 
 	Release();
 }
@@ -149,7 +152,7 @@ void CObject3D::Draw()
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	//位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 	//ワールドマトリックスの設定
@@ -243,7 +246,7 @@ void CObject3D::SetTexPos(const float top, const  float row, const float right, 
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CObject3D* CObject3D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const PRIORITY priority, const D3DXCOLOR col, const bool billboard)
+CObject3D* CObject3D::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const CObject::PRIORITY priority, const D3DXCOLOR col, const bool billboard)
 {
 	CObject3D* pObject3D = new CObject3D(priority);
 

@@ -12,12 +12,13 @@
 //=============================================================================
 #include "object.h"
 #include "objectX.h"
+#include"move_object.h"
 #include <vector>
 
 //---------------------------
 // クラス宣言
 //---------------------------
-class CCharacter : public CObject
+class CCharacter : public CMove_Object
 {
 	static const float CHARACTER_FIRST_MOVE_SPEED;	// キャラクターの初期移動速度
 
@@ -61,7 +62,8 @@ class CCharacter : public CObject
 
 public:
 
-	CCharacter(const PRIORITY priority = PRIORITY_MODEL);
+
+	CCharacter(const CObject::PRIORITY priority = CObject::PRIORITY_MODEL);
 	virtual ~CCharacter() override;
 
 	virtual HRESULT Init() override;
@@ -79,6 +81,7 @@ public:
 	virtual void ChangeMotion();		// モーションの切り替え
 	void Rotation();					// 回転方向へ振り向かせる処理
 	void NormalizeRot();				// 角度の正規化
+	virtual void Hit() override = 0;
 
 	void SetGround(const bool ground) { m_bGround = ground; }
 	void SetMotion(const int motion) { m_nMotion = motion; }
@@ -86,7 +89,6 @@ public:
 	void SetLife(const int life) { m_nLife = life; }
 	void SetMaxLife(const int maxlife) { m_nMaxLife = maxlife; }
 	void SetSpeed(const float speed) { m_fSpeed = speed; }
-	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
 	void AddMove(const D3DXVECTOR3 move) { m_move += move; }
@@ -100,7 +102,6 @@ public:
 	const bool GetMotionStop() { return m_MotionSet[GetMotion()].bStop; }	// 現在モーションの終了判定を読み込む
 	const int GetMotion() { return m_nMotion; }
 	const int GetCurrentMotion() { return m_nCurrentMotion; }
-	const D3DXVECTOR3 GetPos() { return m_pos; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
@@ -113,7 +114,6 @@ public:
 private:
 
 	D3DXMATRIX m_mtxWorld;				// ワールドマトリックス
-	D3DXVECTOR3 m_pos;					// 位置
 	D3DXVECTOR3 m_posOld;				// 過去の位置
 	D3DXVECTOR3 m_move;					// 移動量
 	D3DXVECTOR3 m_rot;					// 現在の角度
