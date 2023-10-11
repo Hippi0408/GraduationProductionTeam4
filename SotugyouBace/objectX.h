@@ -26,11 +26,12 @@ public:
 	void DrawShadow(const LPDIRECT3DDEVICE9 device, CModel::ModelPattern model);
 	void Stencil();
 
-	static CObjectX* Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, const PRIORITY priority = PRIORITY_BACK);
+	static CObjectX* Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, const PRIORITY priority = PRIORITY_MODEL);
 
 	void SetShadow(const bool shadow) { m_bShadow = shadow; }
 	void SetIndex(const int index) { m_nIndex = index; }
 	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
+	void AddPos(const D3DXVECTOR3 pos) { m_pos += pos; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetSize(const D3DXVECTOR3 size) { m_size = size; }
 	void SetParent(CObjectX* pModel) { m_pParent = pModel; }
@@ -45,7 +46,7 @@ public:
 	const D3DXVECTOR3 GetPos() { return m_pos; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXMATRIX GetMatrix() { return m_mtxWorld; }
-	const CObjectX* GetParent() { return m_pParent; }
+	CObjectX* GetParent() { return m_pParent; }
 	const D3DXVECTOR3 GetMaxSize() { return m_vtxMaxModel; }
 	const D3DXVECTOR3 GetMinSize() { return m_vtxMinModel; }
 

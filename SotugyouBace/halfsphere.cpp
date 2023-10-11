@@ -14,16 +14,7 @@
 //==============================================
 // コンストラクタ
 //==============================================
-CHalfSphere::CHalfSphere()
-{
-	m_pVtxBuff = nullptr;
-	m_pIdxBuff = nullptr;
-}
-
-//==============================================
-// コンストラクタ
-//==============================================
-CHalfSphere::CHalfSphere(const PRIORITY priority) : CObject(priority)
+CHalfSphere::CHalfSphere() : CObject(PRIORITY_BACK_GROUND)
 {
 	m_pVtxBuff = nullptr;
 	m_pIdxBuff = nullptr;
