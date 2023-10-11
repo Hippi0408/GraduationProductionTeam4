@@ -17,7 +17,7 @@ const float CCharacter::CHARACTER_GRAVITY = 0.25f;
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
-CCharacter::CCharacter(const PRIORITY priority) : CObject(priority)
+CCharacter::CCharacter(const CObject::PRIORITY priority) : CMove_Object(priority)
 {
 	m_fSpeed = CHARACTER_FIRST_MOVE_SPEED;
 	m_fRotSpeed = CHARACTER_ROT_SPEED;
@@ -44,6 +44,8 @@ HRESULT CCharacter::Init()
 
 	m_move = { 0.0f, 0.0f, 0.0f };
 
+	CMove_Object::Init();
+
 	return S_OK;
 }
 
@@ -58,6 +60,8 @@ void CCharacter::Uninit()
 		m_ModelSet.back().pModel->Uninit();
 		m_ModelSet.pop_back();
 	}
+
+	CMove_Object::Uninit();
 
 	Release();
 }
@@ -101,7 +105,7 @@ void CCharacter::Draw()
 		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 		//位置を反映
-		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+		D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
 		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 		//ワールドマトリックスの設定
@@ -118,7 +122,7 @@ void CCharacter::Move()
 	m_move -= m_move * CHARACTER_MOVE_INERTIE;
 
 	// 位置更新
-	m_pos += m_move * m_fSpeed;
+	AddPos(m_move * m_fSpeed);
 }
 
 //==============================================================================================
@@ -148,12 +152,15 @@ void CCharacter::Recovery(const int value)
 	// 体力 + 回復量
 	m_nLife += value;
 
+	
 	// 体力チェック
 	if (m_nLife > m_nMaxLife)
 	{
 		// 体力の最大値を超えないようにする
 		m_nLife = m_nMaxLife;
 	}
+	// 位置更新
+	AddPos(m_move * m_fSpeed);
 }
 
 //==============================================================================================
@@ -171,7 +178,7 @@ void CCharacter::Destroy()
 void CCharacter::Landing(const D3DXVECTOR3 pos)
 {
 	// 位置を設定する
-	m_pos = pos;
+	SetPos(pos);
 
 	// 着地判定を真にする
 	m_bGround = true;

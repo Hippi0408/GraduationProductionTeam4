@@ -24,6 +24,7 @@
 #include "menu.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
+#include "collision_manager.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -45,6 +46,7 @@ CFade* CApplication::m_pFade = nullptr;
 CMenu* CApplication::m_pMenu = nullptr;
 CPlayerManager* CApplication::m_pPlayerManager = nullptr;
 CEnemyManager* CApplication::m_pEnemyManager = nullptr;
+CCollision_Manager* CApplication::m_pCollision_Manager = nullptr;
 
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
@@ -78,6 +80,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	m_pModel = new CModel;						// モデル
 	m_pLight = new CLight;						// ライト
 	m_pCamera = new CCamera;					// カメラ
+	m_pCollision_Manager = new CCollision_Manager;
 
 	//入力処理
 	m_pInput = CInput::Create();
@@ -232,6 +235,13 @@ void CApplication::Uninit()
 	{
 		delete m_pEnemyManager;
 		m_pEnemyManager = nullptr;
+	}
+
+	// コリジョンマネージャーの破棄
+	if (m_pCollision_Manager != nullptr)
+	{
+		delete m_pCollision_Manager;
+		m_pCollision_Manager = nullptr;
 	}
 }
 

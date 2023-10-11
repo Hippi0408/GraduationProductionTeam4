@@ -12,6 +12,7 @@
 //==============================================
 #include "main.h"
 #include "object3D.h"
+#include"move_object.h"
 
 //==============================================
 // 弾クラス
@@ -25,13 +26,15 @@ public:
 	//****************
 	// publicな関数
 	//****************
-	CBullet(const PRIORITY priority);		// ナンバーのコンストラクタ
+	CBullet(const CObject::PRIORITY priority);		// ナンバーのコンストラクタ
 	~CBullet() override;					// ナンバーのデストラクタ
 
 	HRESULT Init() override;				// 初期化処理
 	void Uninit() override;					// 終了処理
 	void Update() override;					// 更新処理
 	void Draw() override;					// 描画処理
+
+	void Hit() override;
 
 	void SetLife(const int life) { m_nLife = life; }		// 弾の寿命の設定
 	void SetSpeed(const float speed) { m_fSpeed = speed; }	// 弾の速度の設定

@@ -187,13 +187,17 @@ void CPC::Input()
 
 	if (pInput->Trigger(DIK_F))
 	{
-		CGame::GetMeshField()->Ground_Broken(CCharacter::GetPos(), 50.0f, 5);
+		CMeshField *pMeshField = nullptr;
+		pMeshField = CGame::GetMeshField();
+
+		if (pMeshField != nullptr)
+			pMeshField->Ground_Broken(CCharacter::GetPos(), 50.0f, 5);
 	}
 	// ジャンプ処理
 	if ((pInput->Trigger(DIK_SPACE)) || pInput->Press(JOYPAD_A, nIndex))
 	{
 		// プレイヤーのジャンプ処理
-		PlayerJump();
+		JumpStart();
 	}
 
 	// 攻撃処理
