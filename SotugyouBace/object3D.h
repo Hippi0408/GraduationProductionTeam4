@@ -10,8 +10,9 @@
 #include <d3dx9.h>
 #include"object.h"
 #include"texture.h"
+#include"move_object.h"
 
-class CObject3D : public CObject
+class CObject3D : public CMove_Object
 {
 public:
 	// 3D頂点フォーマット
@@ -26,7 +27,7 @@ public:
 		bool broken;			//メッシュを削る
 	};
 
-	CObject3D(const PRIORITY priority);
+	CObject3D(const CObject::PRIORITY priority = CObject::PRIORITY_CENTER);
 	~CObject3D() override;
 
 	HRESULT Init() override;
@@ -35,12 +36,12 @@ public:
 	void Draw()  override;
 
 	void UV();
+	virtual void Hit() override {};
 
-	static CObject3D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const PRIORITY priority = PRIORITY_CENTER, const D3DXCOLOR col = {1.0f,1.0f, 1.0f, 1.0f}, const bool billboard = false);
+	static CObject3D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const CObject::PRIORITY priority = CObject::PRIORITY_CENTER, const D3DXCOLOR col = {1.0f,1.0f, 1.0f, 1.0f}, const bool billboard = false);
 
 	void SetTexPos(const float top, const float row, const float right, const float left);			// テクスチャの分割
 
-	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }
@@ -50,7 +51,6 @@ public:
 	void Setbillboard(const bool billboard) { m_bBillboard = billboard; }
 	void SetTexture(CTexture::TEXTURE texture) { m_texture = texture; }
 
-	const D3DXVECTOR3 GetPos() { return m_pos; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR2 GetScale() { return m_size; }
 	const D3DXCOLOR GetCol() { return m_col; }
@@ -62,7 +62,6 @@ private:
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		// 頂点バッファ
 	D3DXMATRIX m_mtxWorld;					// ワールドマトリックス
 	D3DXVECTOR2 m_size;						// サイズ
-	D3DXVECTOR3 m_pos;						// ポリゴンの位置
 	D3DXVECTOR3 m_move;						// 移動量
 	D3DXVECTOR3 m_rot;						// 角度
 	D3DXCOLOR m_col;						// 色

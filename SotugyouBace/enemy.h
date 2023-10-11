@@ -27,6 +27,8 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
+	void Hit() override;
+
 private:
 };
 

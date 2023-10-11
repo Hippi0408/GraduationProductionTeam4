@@ -48,7 +48,6 @@ public:
 	//****************
 	// publicな関数
 	//****************
-	CHalfSphere();
 	CHalfSphere(const PRIORITY nPriority);				// コンストラクタ
 	~CHalfSphere() override;							// デストラクタ
 

@@ -19,7 +19,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CBullet::CBullet(const PRIORITY priority) : CObject3D(priority)
+CBullet::CBullet(const CObject::PRIORITY priority) : CObject3D(priority)
 {
 }
 
@@ -101,9 +101,17 @@ void CBullet::Draw()
 }
 
 //=============================================================================
+// 被弾処理
+//=============================================================================
+void CBullet::Hit()
+{
+ 	Uninit();
+}
+
+//=============================================================================
 // 生成処理
 //=============================================================================
-CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, int life, const PRIORITY priority)
+CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, int life, const CObject::PRIORITY priority)
 {
 	//クラスの生成
 	CBullet* pBullet = new CBullet(priority);

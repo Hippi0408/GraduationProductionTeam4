@@ -12,19 +12,20 @@
 //=============================================================================
 #include "object.h"
 #include "objectX.h"
+#include"move_object.h"
 #include <vector>
 
 //---------------------------
 // クラス宣言
 //---------------------------
-class CCharacter : public CObject
+class CCharacter : public CMove_Object
 {
 	static const float MOVE_INERTIE;		// キャラクターの移動慣性
 	static const float CHARACTER_ROT_SPEED;	// キャラクターの回転する速度
 
 public:
 
-	CCharacter(const PRIORITY priority = PRIORITY_BACK);
+	CCharacter(const CObject::PRIORITY priority = CObject::PRIORITY_BACK);
 	virtual ~CCharacter() override;
 
 	virtual HRESULT Init() override;
@@ -40,6 +41,7 @@ public:
 	void Destroy();						// 自身を破壊する処理
 	void Damage(const int value);		// ダメージ処理
 	void Recovery(const int value);		// 回復処理
+	virtual void Hit() override = 0;
 
 	void LoadFile(const char* Xfilename);
 
@@ -51,20 +53,16 @@ public:
 	void SetLife(const int life) { m_nLife = life; }
 	void SetMaxLife(const int maxlife) { m_nMaxLife = maxlife; }
 	void SetSpeed(const float speed) { m_fSpeed = speed; }
-	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
 	void AddMove(const D3DXVECTOR3 move) { m_move += move; }
 	void SetRotDest(const D3DXVECTOR3 rot) { m_rotDest = rot; }
 	void AddRotDest(const D3DXVECTOR3 rot) { m_rotDest += rot; }
-	void SetRadius(const float radius) { m_fRadius = radius; }
 	
 	const int GetMotion() { return m_nMotion; }
 	const int GetCurrentMotion() { return m_nCurrentMotion; }
-	const D3DXVECTOR3 GetPos() { return m_pos; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
-	const float GetRadius() { return m_fRadius; }
 	CObjectX* GetModel(const int index) { return m_ModelSet.empty() ? nullptr : m_ModelSet[index].m_pModel; }
 	std::vector<CObjectX*> GetModelAll();
 
@@ -104,12 +102,10 @@ private:
 	std::vector<MODEL_SET> m_ModelSet;
 
 	D3DXMATRIX m_mtxWorld;				// ワールドマトリックス
-	D3DXVECTOR3 m_pos;					// 位置
 	D3DXVECTOR3 m_posOld;				// 過去の位置
 	D3DXVECTOR3 m_move;					// 移動量
 	D3DXVECTOR3 m_rot;					// 現在の角度
 	D3DXVECTOR3 m_rotDest;				// 目的の角度
-	float m_fRadius;					// 当たり判定の半径
 
 	D3DXCOLOR m_col;					// モデルの色
 

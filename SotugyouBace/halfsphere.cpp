@@ -14,15 +14,6 @@
 //==============================================
 // コンストラクタ
 //==============================================
-CHalfSphere::CHalfSphere()
-{
-	m_pVtxBuff = nullptr;
-	m_pIdxBuff = nullptr;
-}
-
-//==============================================
-// コンストラクタ
-//==============================================
 CHalfSphere::CHalfSphere(const PRIORITY priority) : CObject(priority)
 {
 	m_pVtxBuff = nullptr;
@@ -284,7 +275,7 @@ const D3DXVECTOR3 CHalfSphere::GetRot(void)
 //==============================================
 CHalfSphere* CHalfSphere::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, SPHERE_TEX tex)
 {
-	CHalfSphere* pSphere = new CHalfSphere;
+	CHalfSphere* pSphere = new CHalfSphere(PRIORITY_BACK_GROUND);
 
 	if (pSphere != nullptr)
 	{

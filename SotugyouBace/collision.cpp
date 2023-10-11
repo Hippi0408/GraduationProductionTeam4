@@ -11,12 +11,14 @@
 #include"application.h"
 #include"player_manager.h"
 #include"meshfield.h"
+#include"collision_manager.h"
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CCollision::CCollision()
 {
+	CApplication::GetCollision_Manager()->SetCollision(this);
 }
 
 //=============================================================================
@@ -24,6 +26,12 @@ CCollision::CCollision()
 //=============================================================================
 CCollision::~CCollision()
 {
+	CCollision_Manager* pManager = CApplication::GetCollision_Manager();
+
+	if (pManager != nullptr)
+	{
+		pManager->DestroyCollision(this);
+	}
 }
 
 //=============================================================================
@@ -36,6 +44,8 @@ HRESULT CCollision::Init()
 	m_fRadius = 0.0f;
 	m_fOtherRadius = 0.0f;
 
+	m_bCollision_Death = false;
+
 	return S_OK;
 }
 
@@ -44,7 +54,7 @@ HRESULT CCollision::Init()
 //=============================================================================
 void CCollision::Uninit()
 {
-
+	Release();
 }
 
 //=============================================================================
@@ -53,13 +63,10 @@ void CCollision::Uninit()
 void CCollision::Update()
 {
 	// 情報の取得
-	m_pPlayerManager = CApplication::GetPlayerManager();	// プレイヤーマネージャー
-	m_pCharacter = m_pPlayerManager->GetPlayer(0);			// プレイヤー
-	m_pBullet = m_pCharacter->GetBullet();					// 弾
-	m_pBoss = CGame::GetBoss();								// ボス
+	m_pMove_Object;
 
-	// 弾の当たり判定
-	Bullet_Collision();
+	// 当たり判定
+	Collision();
 }
 
 //=============================================================================
@@ -73,60 +80,71 @@ void CCollision::Draw()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CCollision *CCollision::Create()
+CCollision *CCollision::Create(CMove_Object* pParent)
 {
 	CCollision *pCollision = new CCollision;
 
 	if (pCollision != nullptr)
 	{
 		pCollision->Init();
+		pCollision->m_pMove_Object = pParent;
 	}
 
 	return pCollision;
 }
 
 //=============================================================================
-// 弾の当たり判定
+// 当たり判定
 //=============================================================================
-void CCollision::Bullet_Collision()
+void CCollision::Collision()
 {
-	// 位置と半径の取得
-	if (m_pBullet != nullptr)
+	// 自分の位置
+	D3DXVECTOR3 pos = m_pMove_Object->GetPos();
+	// 半径
+	float fRadius = m_pMove_Object->GetRadius();
+	
+	for (auto pCollision : CApplication::GetCollision_Manager()->GetAllCollision())
 	{
-		// 弾の情報
-		m_Pos = m_pBullet->GetPos();
-		m_fRadius = m_pBullet->GetScale().x;
-
-		if (m_pBoss != nullptr)
+		if (pCollision != nullptr && pCollision != this)
 		{
-			// ボスの情報
-			m_OtherPos = m_pBoss->GetPos();
-			m_fOtherRadius = m_pBoss->GetRadius();
-		}
+			// 相手のmoveobjectの情報
+			CMove_Object* pMove_Object = pCollision->GetParent();
 
-		// 円の当たり判定
-		bool Collision = Sphere_Collision(m_Pos, m_fRadius, { m_OtherPos.x,m_OtherPos.y + 200,m_OtherPos.z }, 100);
+			// 相手の位置
+			D3DXVECTOR3 OtherPos = pMove_Object->GetPos();
+			// 半径
+			float fOtherRadius = pMove_Object->GetRadius();
 
-		// 弾が当たった場合
-		if (Collision)
-		{
-			m_pBullet->SetLife(0);
-		}
+			bool Hit = Sphere_Collision(pos, 50, { OtherPos.x,OtherPos.y + 200,OtherPos.z }, 50);
 
-		// メッシュと弾の当たり判定
-		CMeshField *pMeshField = nullptr;
-		pMeshField = CGame::GetMeshField();
-		bool hit = false;
-
-		if (pMeshField != nullptr)
-		{
-			pMeshField->MeshCollision(m_Pos);
-			hit = pMeshField->GetHit();
-		}
-		if (hit)
-		{
-			pMeshField->Ground_Broken(m_Pos, 10.0f, 1);
-			m_pBullet->SetLife(0);
+			if (Hit)
+			{
+				m_pMove_Object->Hit();
+				pMove_Object->Hit();
+			}
+			if (m_bCollision_Death)
+			{
+				return;
+			}
 		}
 	}
+
+	//	// メッシュと弾の当たり判定
+	//	CMeshField *pMeshField = nullptr;
+	//	pMeshField = CGame::GetMeshField();
+	//	bool bHit = false;
+
+	//	if (pMeshField != nullptr)
+	//	{
+	//		// 地面に当たったか
+	//		pMeshField->MeshCollision(m_Pos);
+	//		bHit = pMeshField->GetHit();
+	//	}
+	//	if (bHit)
+	//	{
+	//		// 地面をへこませる
+	//		pMeshField->Ground_Broken(m_Pos, 10.0f, 1);
+	//		m_pBullet->SetLife(0);
+	//	}
+	//}
 }

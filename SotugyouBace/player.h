@@ -62,6 +62,7 @@ public:
 	virtual void Draw() override;
 
 	void ChangeMotion() override;		// ƒ‚[ƒVƒ‡ƒ“‚ÌØ‚è‘Ö‚¦
+	void Hit() override;
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 

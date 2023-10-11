@@ -125,6 +125,18 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 rot = GetRot();
 
+	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
+	pos_vec *= 200.f;
+	pos_vec += pos;
+
 	// íeÇÃê∂ê¨
-	m_pBullet = CBullet::Create(D3DXVECTOR3(pos.x, pos.y + 200.0f, pos.z), D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CBullet::PRIORITY_CENTER);
+	m_pBullet = CBullet::Create(D3DXVECTOR3(pos_vec.x, pos_vec.y + 200.0f, pos_vec.z), D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y) * 15.0f, sinf(rot.x) * 15.0f, -cosf(rot.y) * 15.0f), 50, CObject::PRIORITY_BACK_GROUND);
+}
+
+//============================================================================
+// îÌíeèàóù
+//============================================================================
+void CPlayer::Hit()
+{
+	Damage(10);
 }

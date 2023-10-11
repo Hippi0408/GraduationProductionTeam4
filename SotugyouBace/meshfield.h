@@ -30,8 +30,8 @@ public:
 	float MeshCollision(D3DXVECTOR3 pos);	// 当たり判定
 	float Ground_Broken(D3DXVECTOR3 pos, float damage, int scope);	// 地面が削れる
 	void Normal();			// 法線の設定
-	
-	void SetPos(D3DXVECTOR3 pos) { m_Pos = pos; }		// 位置の設定
+	void Hit() override;
+
 	void SetNumBlock(int Xblock, int Zblock) { m_nXBlock = Xblock; m_nZBlock = Zblock; }	// ブロックの数の設定
 	void SetSize(float size) { m_fSize = size; }		// サイズの設定
 
@@ -52,7 +52,6 @@ private:
 	float m_fPosY;							// 当たった位置のY座標
 	bool m_bPorigon_Scope;					// ポリゴンの範囲
 	bool m_bHit;							// 攻撃が当たった
-	D3DXVECTOR3 m_Pos;						// 位置
 	D3DXVECTOR3 m_Rot;						// 向き
 	D3DXMATRIX m_MtxWorld;					// ワールドマトリックス
 	D3DXVECTOR3 m_NorVec;					// 法線面のベクトル

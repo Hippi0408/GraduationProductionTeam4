@@ -75,7 +75,7 @@ HRESULT CGame::Init()
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
 
 	// “–‚½‚è”»’è‚Ì¶¬
-	pCollision = CCollision::Create();
+	//pCollision = CCollision::Create();
 
 	return S_OK;
 }

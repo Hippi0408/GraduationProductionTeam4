@@ -17,7 +17,7 @@
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CMeshField::CMeshField(const PRIORITY priority) : CObject3D(priority)
+CMeshField::CMeshField(const CObject::PRIORITY priority) : CObject3D(priority)
 {
 	m_nVertexNum = 0;		// 頂点数
 	m_nIndexNum = 0;		// インデックスバッファ
@@ -83,7 +83,7 @@ HRESULT CMeshField::Init()
 		{
 			int index = nCntX + (m_nXBlock + 1) * nCntZ;
 
-			pVtx[index].pos = D3DXVECTOR3(-(m_fSize * m_nXBlock) / 2 + nCntX * m_fSize, 0.0f + m_Pos.y, (m_fSize * m_nZBlock) / 2 - nCntZ * m_fSize);
+			pVtx[index].pos = D3DXVECTOR3(-(m_fSize * m_nXBlock) / 2 + nCntX * m_fSize, 0.0f + GetPos().y, (m_fSize * m_nZBlock) / 2 - nCntZ * m_fSize);
 			pVtx[index].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 			pVtx[index].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 			pVtx[index].tex = D3DXVECTOR2((float)nCntX, (float)nCntZ);
@@ -187,7 +187,7 @@ void CMeshField::Draw(void)
 	D3DXMatrixMultiply(&m_MtxWorld, &m_MtxWorld, &mtxRot);
 
 	//位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_Pos.x, m_Pos.y, m_Pos.z);
+	D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
 	D3DXMatrixMultiply(&m_MtxWorld, &m_MtxWorld, &mtxTrans);
 
 	//ワールドマトリックスの設定
@@ -251,7 +251,7 @@ CMeshField *CMeshField::Create(D3DXVECTOR3 pos, int Xblock, int Zblock, float si
 {
 	CMeshField *pMeshField = nullptr;
 
-	pMeshField = new CMeshField(PRIORITY_BACK_GROUND);
+	pMeshField = new CMeshField(CObject::PRIORITY_BACK_GROUND);
 
 	if (pMeshField != nullptr)
 	{
@@ -661,4 +661,12 @@ void CMeshField::Normal()
 
 	//インデックスバッファをアンロックする
 	m_pIdxBuff->Unlock();
+}
+
+//==============================================================================================
+// 被弾処理
+//==============================================================================================
+void CMeshField::Hit()
+{
+
 }

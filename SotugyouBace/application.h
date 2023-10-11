@@ -25,6 +25,7 @@ class CMenu;
 class CMode;
 class CPlayerManager;
 class CEnemyManager;
+class CCollision_Manager;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -67,6 +68,7 @@ public:
 	static CMenu* GetMenu() { return m_pMenu; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
 	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
+	static CCollision_Manager* GetCollision_Manager() { return m_pCollision_Manager; }
 
 	static MODE GetModeType() { return m_modeType; }
 
@@ -86,6 +88,7 @@ private:
 	static CMenu* m_pMenu;
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;
+	static CCollision_Manager* m_pCollision_Manager;
 	CInput* m_pInput;
 
 #ifdef _DEBUG

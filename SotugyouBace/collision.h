@@ -10,10 +10,7 @@
 #include"object.h"
 
 // 前方宣言
-class CPlayerManager;
-class CPlayer;
-class CBullet;
-class CCharacter;
+class CMove_Object;
 
 class CCollision : public CObject
 {
@@ -26,9 +23,12 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	static CCollision *Create();
+	void Collision();
+	CMove_Object* GetParent() { return m_pMove_Object; }
 
-	void Bullet_Collision();
+	void SetCollision_Death(const bool death) { m_bCollision_Death = death; }
+
+	static CCollision *Create(CMove_Object* pParent);
 
 private:
 	D3DXVECTOR3 m_Pos;
@@ -36,10 +36,8 @@ private:
 	float m_fRadius;
 	float m_fOtherRadius;
 
-	CPlayerManager *m_pPlayerManager;	// プレイヤーマネージャー
-	CPlayer *m_pCharacter;				// プレイヤー
-	CBullet *m_pBullet;					// 弾
-	CCharacter *m_pBoss;				// ボス
+	CMove_Object* m_pMove_Object;
+	bool m_bCollision_Death;
 };
 
 #endif // !_COLLISION_H_
