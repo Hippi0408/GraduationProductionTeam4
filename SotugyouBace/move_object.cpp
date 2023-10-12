@@ -5,13 +5,13 @@
 //
 //==============================================================================================
 #include"move_object.h"
-#include"collision.h"
 
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
 CMove_Object::CMove_Object(const PRIORITY priority) : CObject(priority)
 {
+	m_CenterPos = { 0.0f, 0.0f, 0.0f };
 }
 
 //==============================================================================================
@@ -26,9 +26,6 @@ CMove_Object::~CMove_Object()
 //==============================================================================================
 HRESULT CMove_Object::Init()
 {
-	// 当たり判定の生成
-	m_pCollision = CCollision::Create(this);
-
 	return S_OK;
 }
 
@@ -39,7 +36,6 @@ void CMove_Object::Uninit()
 {
 	if (m_pCollision != nullptr)
 	{
-		m_pCollision->SetCollision_Death(true);
 		m_pCollision->Uninit();
 		m_pCollision = nullptr;
 	}

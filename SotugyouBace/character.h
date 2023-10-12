@@ -56,7 +56,7 @@ class CCharacter : public CMove_Object
 		D3DXVECTOR3 InitPos;	// 初期位置
 		D3DXVECTOR3 InitRot;	// 初期回転
 		CObjectX* pModel;		// モデル
-		int nParentIndex;			// 親モデルの番号
+		int nParentIndex;		// 親モデルの番号
 	};
 	std::vector<MODEL_SET> m_ModelSet;
 
@@ -94,6 +94,7 @@ public:
 	void AddMove(const D3DXVECTOR3 move) { m_move += move; }
 	void SetRotDest(const D3DXVECTOR3 rot) { m_rotDest = rot; }
 	void AddRotDest(const D3DXVECTOR3 rot) { m_rotDest += rot; }
+	void SetBoost(const bool boost) { m_bBoost = boost; }
 	
 	CObjectX* SetModel(const int index, const int parent, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const char* Xfilename);								// モデルパーツの設定
 	void SetMotionData(const int maxkey, const int key, const int parts, const int motion, const int frame, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const bool loop);	// モーション値の読み込み
@@ -108,6 +109,7 @@ public:
 	MODEL_SET GetModelSet(const int index) { return m_ModelSet[index]; }
 	CObjectX* GetModel(const int index) { return m_ModelSet.empty() ? nullptr : m_ModelSet[index].pModel; }
 	std::vector<CObjectX*> GetModelAll();
+	const bool GetBoost() { return m_bBoost; }
 
 	void LoadFile(const char* Xfilename);
 
@@ -133,6 +135,8 @@ private:
 
 	float m_fSpeed;						// 移動速度
 	float m_fRotSpeed;					// 回転のスピード
+
+	bool m_bBoost;						// ブーストしているか
 };
 
 #endif// _CHARACTER_H_

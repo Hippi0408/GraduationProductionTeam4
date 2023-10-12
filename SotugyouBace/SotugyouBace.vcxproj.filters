@@ -47,10 +47,10 @@
       <Filter>03_mode</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
-      <Filter>02_Resource</Filter>
+      <Filter>03_mode\02_Resource</Filter>
     </ClCompile>
     <ClCompile Include="sound.cpp">
-      <Filter>02_Resource</Filter>
+      <Filter>03_mode\02_Resource</Filter>
     </ClCompile>
     <ClCompile Include="meshfield.cpp">
       <Filter>04_object</Filter>
@@ -166,6 +166,7 @@
     </ClCompile>
     <ClCompile Include="move_object.cpp" />
     <ClCompile Include="collision_manager.cpp" />
+    <ClCompile Include="energy_gauge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -217,10 +218,10 @@
       <Filter>03_mode</Filter>
     </ClInclude>
     <ClInclude Include="texture.h">
-      <Filter>02_Resource</Filter>
+      <Filter>03_mode\02_Resource</Filter>
     </ClInclude>
     <ClInclude Include="sound.h">
-      <Filter>02_Resource</Filter>
+      <Filter>03_mode\02_Resource</Filter>
     </ClInclude>
     <ClInclude Include="meshfield.h">
       <Filter>04_object</Filter>
@@ -337,6 +338,7 @@
     </ClInclude>
     <ClInclude Include="move_object.h" />
     <ClInclude Include="collision_manager.h" />
+    <ClInclude Include="energy_gauge.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00_main">
@@ -344,9 +346,6 @@
     </Filter>
     <Filter Include="01_Input">
       <UniqueIdentifier>{f6120526-c511-4380-aec5-a6ec2118c048}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Resource">
-      <UniqueIdentifier>{764bb922-febb-4590-b733-f3fdeebae8a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="03_mode">
       <UniqueIdentifier>{85fbd010-116f-4c8e-8a7e-ec57abf06998}</UniqueIdentifier>
@@ -371,6 +370,9 @@
     </Filter>
     <Filter Include="04_object\objectX\Character\01_Enemy">
       <UniqueIdentifier>{0d05b4ff-535b-44f4-98bc-96579e9af2ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_mode\02_Resource">
+      <UniqueIdentifier>{764bb922-febb-4590-b733-f3fdeebae8a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

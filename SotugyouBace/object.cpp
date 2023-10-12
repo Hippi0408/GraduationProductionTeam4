@@ -183,25 +183,3 @@ void CObject::Death(const int nPriority)
 
 	delete this;
 }
-
-//==============================================================================================
-// オブジェクトを継承したものの当たり判定
-//==============================================================================================
-bool CObject::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius)
-{
-	// 位置同士の距離の計算用変数
-	D3DXVECTOR3 Distance = otherPos - pos;
-
-	float Dis = sqrtf((otherPos.x - pos.x) * (otherPos.x - pos.x)
-		+ (otherPos.z - pos.z) * (otherPos.z - pos.z));
-
-	float DisY = otherPos.y - pos.y;
-	if (DisY < 0)
-		DisY *= -1;
-
-		if (Dis <= radius + otherRadius
-			&& DisY <= radius + otherRadius)
-			return true;
-
-	return false;
-}

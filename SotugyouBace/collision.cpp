@@ -39,13 +39,6 @@ CCollision::~CCollision()
 //=============================================================================
 HRESULT CCollision::Init()
 {
-	m_Pos = { 0.0f,0.0f,0.0f };
-	m_OtherPos = { 0.0f,0.0f,0.0f };
-	m_fRadius = 0.0f;
-	m_fOtherRadius = 0.0f;
-
-	m_bCollision_Death = false;
-
 	return S_OK;
 }
 
@@ -63,7 +56,7 @@ void CCollision::Uninit()
 void CCollision::Update()
 {
 	// 情報の取得
-	m_pMove_Object;
+	m_pParent;
 
 	// 当たり判定
 	Collision();
@@ -78,6 +71,65 @@ void CCollision::Draw()
 }
 
 //=============================================================================
+// 当たり判定
+//=============================================================================
+void CCollision::Collision()
+{
+	// 自分の位置
+	D3DXVECTOR3 pos = m_pParent->GetCenterPos();
+	// 半径
+	float fRadius = m_pParent->GetRadius();
+	
+	// 全ての当たり判定を個別に判定
+	for (auto pCollision : CApplication::GetCollision_Manager()->GetAllCollision())
+	{
+		// 当たり判定が存在する場合 && 当たり判定が自身ではない場合
+		if (pCollision != nullptr && pCollision != this)
+		{
+			// 相手のmoveobjectの情報
+			CMove_Object* pMove_Object = pCollision->GetParent();
+
+			// 相手の位置
+			D3DXVECTOR3 OtherPos = pMove_Object->GetCenterPos();
+			// 半径
+			float fOtherRadius = pMove_Object->GetRadius();
+
+			// 円同士の当たり判定の計算
+			bool Hit = Sphere_Collision(pos, fRadius, { OtherPos.x, OtherPos.y, OtherPos.z }, fOtherRadius);
+
+			// ヒットした場合
+			if (Hit)
+			{
+				m_pParent->Hit();
+				pMove_Object->Hit();
+			}
+		}
+	}
+}
+
+//==============================================================================================
+// オブジェクトを継承したものの当たり判定
+//==============================================================================================
+bool CCollision::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius)
+{
+	// 位置同士の距離の計算用変数
+	D3DXVECTOR3 Distance = otherPos - pos;
+
+	float Dis = sqrtf((otherPos.x - pos.x) * (otherPos.x - pos.x)
+		+ (otherPos.z - pos.z) * (otherPos.z - pos.z));
+
+	float DisY = otherPos.y - pos.y;
+	if (DisY < 0)
+		DisY *= -1;
+
+	if (Dis <= radius + otherRadius
+		&& DisY <= radius + otherRadius)
+		return true;
+
+	return false;
+}
+
+//=============================================================================
 // 生成処理
 //=============================================================================
 CCollision *CCollision::Create(CMove_Object* pParent)
@@ -87,64 +139,8 @@ CCollision *CCollision::Create(CMove_Object* pParent)
 	if (pCollision != nullptr)
 	{
 		pCollision->Init();
-		pCollision->m_pMove_Object = pParent;
+		pCollision->m_pParent = pParent;
 	}
 
 	return pCollision;
-}
-
-//=============================================================================
-// 当たり判定
-//=============================================================================
-void CCollision::Collision()
-{
-	// 自分の位置
-	D3DXVECTOR3 pos = m_pMove_Object->GetPos();
-	// 半径
-	float fRadius = m_pMove_Object->GetRadius();
-	
-	for (auto pCollision : CApplication::GetCollision_Manager()->GetAllCollision())
-	{
-		if (pCollision != nullptr && pCollision != this)
-		{
-			// 相手のmoveobjectの情報
-			CMove_Object* pMove_Object = pCollision->GetParent();
-
-			// 相手の位置
-			D3DXVECTOR3 OtherPos = pMove_Object->GetPos();
-			// 半径
-			float fOtherRadius = pMove_Object->GetRadius();
-
-			bool Hit = Sphere_Collision(pos, 50, { OtherPos.x,OtherPos.y + 200,OtherPos.z }, 50);
-
-			if (Hit)
-			{
-				m_pMove_Object->Hit();
-				pMove_Object->Hit();
-			}
-			if (m_bCollision_Death)
-			{
-				return;
-			}
-		}
-	}
-
-	//	// メッシュと弾の当たり判定
-	//	CMeshField *pMeshField = nullptr;
-	//	pMeshField = CGame::GetMeshField();
-	//	bool bHit = false;
-
-	//	if (pMeshField != nullptr)
-	//	{
-	//		// 地面に当たったか
-	//		pMeshField->MeshCollision(m_Pos);
-	//		bHit = pMeshField->GetHit();
-	//	}
-	//	if (bHit)
-	//	{
-	//		// 地面をへこませる
-	//		pMeshField->Ground_Broken(m_Pos, 10.0f, 1);
-	//		m_pBullet->SetLife(0);
-	//	}
-	//}
 }

@@ -245,26 +245,6 @@ void CMeshField::Stencil()
 }
 
 //==============================================================================================
-// 生成処理
-//==============================================================================================
-CMeshField *CMeshField::Create(D3DXVECTOR3 pos, int Xblock, int Zblock, float size)
-{
-	CMeshField *pMeshField = nullptr;
-
-	pMeshField = new CMeshField(CObject::PRIORITY_BACK_GROUND);
-
-	if (pMeshField != nullptr)
-	{
-		pMeshField->SetSize(size);					// サイズの設定
-		pMeshField->SetNumBlock(Xblock, Zblock);	// ブロックの数
-		pMeshField->SetPos(pos);					// 位置の設定
-		pMeshField->Init();							// 初期化処理
-	}
-
-	return pMeshField;
-}
-
-//==============================================================================================
 // メッシュの当たり判定
 //==============================================================================================
 float CMeshField::MeshCollision(D3DXVECTOR3 pos)
@@ -427,8 +407,14 @@ float CMeshField::Ground_Broken(D3DXVECTOR3 pos, float damage, int scope)
 					// 地面を抉る
 					if (!pVtx[pIdx[nIndex + nCnt2]].broken)
 					{
+						float fDamage = 0.0f;
+						if (nCnt <= 0)
+							fDamage = m_fPosY - damage;
+						else
+							fDamage = damage;
+
 						// 一度も削れていない
-						pVtx[pIdx[nIndex + nCnt2]].pos.y = m_fPosY - damage;
+						pVtx[pIdx[nIndex + nCnt2]].pos.y = fDamage;
 						pVtx[pIdx[nIndex + nCnt2]].broken = true;
 					}
 					else
@@ -669,4 +655,24 @@ void CMeshField::Normal()
 void CMeshField::Hit()
 {
 
+}
+
+//==============================================================================================
+// 生成処理
+//==============================================================================================
+CMeshField* CMeshField::Create(D3DXVECTOR3 pos, int Xblock, int Zblock, float size)
+{
+	CMeshField* pMeshField = nullptr;
+
+	pMeshField = new CMeshField(CObject::PRIORITY_BACK_GROUND);
+
+	if (pMeshField != nullptr)
+	{
+		pMeshField->SetSize(size);					// サイズの設定
+		pMeshField->SetNumBlock(Xblock, Zblock);	// ブロックの数
+		pMeshField->SetPos(pos);					// 位置の設定
+		pMeshField->Init();							// 初期化処理
+	}
+
+	return pMeshField;
 }

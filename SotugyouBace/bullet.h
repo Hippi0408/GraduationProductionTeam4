@@ -12,21 +12,21 @@
 //==============================================
 #include "main.h"
 #include "object3D.h"
-#include"move_object.h"
 
 //==============================================
 // 弾クラス
 //==============================================
 class CBullet : public CObject3D
 {
-	static const int BULLET_LIFE = 50;		// 弾の寿命
-	static const float BULLET_SPEED;		// 弾の速度
+	static const int BULLET_LIFE = 50;			// 弾の寿命
+	static const float BULLET_SPEED;			// 弾の速度
+	static const float BULLET_COLLISION_RADIUS;	// 弾の当たり判定の大きさ
 public:
 
 	//****************
 	// publicな関数
 	//****************
-	CBullet(const CObject::PRIORITY priority);		// ナンバーのコンストラクタ
+	CBullet(const PRIORITY priority);		// ナンバーのコンストラクタ
 	~CBullet() override;					// ナンバーのデストラクタ
 
 	HRESULT Init() override;				// 初期化処理
@@ -34,6 +34,7 @@ public:
 	void Update() override;					// 更新処理
 	void Draw() override;					// 描画処理
 
+	void FieldCollision();				//床の当たり判定
 	void Hit() override;
 
 	void SetLife(const int life) { m_nLife = life; }		// 弾の寿命の設定

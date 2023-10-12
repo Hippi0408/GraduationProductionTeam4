@@ -15,6 +15,7 @@ class CMove_Object;
 class CCollision : public CObject
 {
 public:
+
 	CCollision();
 	~CCollision();
 
@@ -24,20 +25,15 @@ public:
 	void Draw() override;
 
 	void Collision();
-	CMove_Object* GetParent() { return m_pMove_Object; }
+	bool Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius);	// 円の当たり判定
 
-	void SetCollision_Death(const bool death) { m_bCollision_Death = death; }
+	CMove_Object* GetParent() { return m_pParent; }
 
 	static CCollision *Create(CMove_Object* pParent);
 
 private:
-	D3DXVECTOR3 m_Pos;
-	D3DXVECTOR3	m_OtherPos;
-	float m_fRadius;
-	float m_fOtherRadius;
 
-	CMove_Object* m_pMove_Object;
-	bool m_bCollision_Death;
+	CMove_Object* m_pParent;	// 親オブジェクト
 };
 
 #endif // !_COLLISION_H_

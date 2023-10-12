@@ -33,6 +33,9 @@ CEnemy::~CEnemy()
 //============================================================================
 HRESULT CEnemy::Init()
 {
+	// “–‚½‚è”»’è‚Ì¶¬
+	SetCollision();
+
 	CCharacter::Init();
 
 	return S_OK;

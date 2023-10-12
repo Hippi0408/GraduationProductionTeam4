@@ -11,7 +11,9 @@
 #include "player_manager.h"
 #include"game.h"
 
-const float CPlayer::PLAYER_JUMP_POWER = 10.0f;
+const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
+const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
+const float CPlayer::MAX_HOVER_POWER = 10.0f;			// プレイヤーの最大ホバー力
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -20,6 +22,7 @@ CPlayer::CPlayer()
 	// プレイヤーの初期値を設定
 	SetMaxLife(FIRST_MAX_LIFE);
 	SetLife(FIRST_MAX_LIFE);
+	SetRadius(PLAYER_COLLISION_RADIUS);
 }
 
 //=====================================
@@ -38,6 +41,9 @@ HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
 	LoadFile("Data\\text\\Motion\\motion_player.txt");
+
+	// 当たり判定の生成
+	SetCollision();
 
 	CCharacter::Init();
 
@@ -133,15 +139,15 @@ void CPlayer::ChangeMotion()
 void CPlayer::PlayerAttack()
 {
 	// 情報の取得
-	D3DXVECTOR3 pos = GetPos();
+	D3DXVECTOR3 pos = GetCenterPos();
 	D3DXVECTOR3 rot = GetRot();
 
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
-	pos_vec *= 120.f;
+	pos_vec *= 100.f;
 	pos_vec += pos;
 
 	// 弾の生成
-	CBullet::Create({pos_vec.x, pos_vec.y + 200.0f, pos_vec.z}, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)));
+	CBullet::Create({pos_vec.x, pos_vec.y, pos_vec.z}, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)));
 }
 
 //============================================================================
