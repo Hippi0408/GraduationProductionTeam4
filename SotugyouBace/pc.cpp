@@ -216,16 +216,21 @@ void CPC::Input()
 		PlayerAttack();
 	}
 
-	if (pInput->Press(DIK_LSHIFT) && bWalk)
+	// エネルギーゲージの取得
+	CEnergy_Gauge* pGauge = CGame::GetEnergy_Gauge();
+	
+	if (pInput->Press(DIK_LSHIFT) && bWalk
+		&& !pGauge->GetConsumption())
 	{
 		// ブーストする
 		SetBoost(true);
 
 		// エネルギーを消費する
-		CGame::GetEnergy_Gauge()->Consumption_Gauge();
+		
+		pGauge->Consumption_Gauge();
 	}
 
-	if (pInput->Trigger(DIK_C))
+	if (pInput->Trigger(DIK_C) && !pGauge->GetConsumption())
 	{
 		CGame::GetEnergy_Gauge()->Avoidance();
 	}

@@ -74,7 +74,7 @@ HRESULT CGame::Init()
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	// メッシュフィールドの生成
-	//pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
+	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
 
 	// エネルギーゲージ
 	m_pEnergy_Gauge = CEnergy_Gauge::Create({ SCREEN_WIDTH / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });

@@ -25,9 +25,11 @@ public:
 	void Consumption_Gauge();	// エネルギーの消費
 	void Avoidance();			// 回避時のエネルギー消費
 
-	void SetRecovery_Speed(float recovery) { m_fRecovery_Speed = recovery; }				// 回復速度の設定
-	void SetConsumption_Speed(float consumption) { m_fConsumption_Speed = consumption; }	// 消費速度の設定
-	void SetAvoidance_amount(float avoidance) { m_fAvoidance = avoidance; }					// 消費速度の設定
+	void SetRecovery_Speed(const float recovery) { m_fRecovery_Speed = recovery; }				// 回復速度の設定
+	void SetConsumption_Speed(const float consumption) { m_fConsumption_Speed = consumption; }	// 消費速度の設定
+	void SetAvoidance_amount(const float avoidance) { m_fAvoidance = avoidance; }				// 消費速度の設定
+
+	const bool GetConsumption() { return m_bAllConsumption; }
 
 private:
 	void Recovery_Gauge();		// エネルギーの回復
