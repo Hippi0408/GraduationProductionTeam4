@@ -37,6 +37,7 @@ HRESULT CEnergy_Gauge::Init()
 	m_bConsumption = false;			// 消費中か
 	m_bAllRecovery = true;			// 回復が出来る状態か
 	m_bAllConsumption = false;		// エネルギーを全て消費した
+	m_bRecovery_Pause = false;		// 回復が一時停止中
 
 	// 後ろのゲージの設定
 	m_pBackGauge = CObject2D::Create(GetPos(), GetSize(), PRIORITY_FRONT);
@@ -67,7 +68,19 @@ void CEnergy_Gauge::Update()
 	// ゲージの色の設定
 	GaugeColor();
 
-	if (m_bAllConsumption && !m_bAllRecovery)
+	if (m_bRecovery_Pause)
+	{
+		Pause_Count++;
+
+		if (Pause_Count >= BasePause_Count)
+		{
+			m_bRecovery_Pause = false;
+			m_bAllRecovery = true;		// 回復できない状態にする
+			m_bAllConsumption = false;	// エネルギーを全て消費した
+			Pause_Count = 0;
+		}
+	}
+	else if (m_bAllConsumption && !m_bAllRecovery && !m_bRecovery_Pause)
 		// 最後まで減らす
 		m_fFluctuation = m_fBaseSize;
 
@@ -75,6 +88,8 @@ void CEnergy_Gauge::Update()
 	SetHalfSize({ m_fFluctuation,0.0f });
 
 	CObject2D::Update();
+
+	CDebugProc::Print("%d", m_bAllConsumption);
 }
 
 //==============================================================================================
@@ -196,7 +211,7 @@ void CEnergy_Gauge::GaugeColor()
 	m_BackGauge_Col = { 0.0f,0.0f,0.0f,1.0f };
 
 	// エネルギーを全て消費した
-	if (!m_bAllRecovery)
+	if (!m_bAllRecovery && !m_bRecovery_Pause)
 	{
 		// 赤く点滅させる
 		Col_Count++;
@@ -208,4 +223,19 @@ void CEnergy_Gauge::GaugeColor()
 
 	// 後ろのゲージの色の設定
 	m_pBackGauge->SetCol(m_BackGauge_Col);
+}
+
+//==============================================================================================
+// ゲージ回復を一時停止
+//==============================================================================================
+void CEnergy_Gauge::Recovery_Pause(int count)
+{
+	if (m_bAllRecovery && !m_bAllConsumption)
+	{
+		m_bAllRecovery = false;		// 回復できない状態にする
+		m_bAllConsumption = true;	// エネルギーを全て消費した
+		m_bRecovery_Pause = true;	// 停止中
+
+		BasePause_Count = count;
+	}
 }

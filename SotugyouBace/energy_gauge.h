@@ -25,9 +25,13 @@ public:
 	void Consumption_Gauge();	// エネルギーの消費
 	void Avoidance();			// 回避時のエネルギー消費
 
+	void Recovery_Pause(int count);
+
 	void SetRecovery_Speed(const float recovery) { m_fRecovery_Speed = recovery; }				// 回復速度の設定
 	void SetConsumption_Speed(const float consumption) { m_fConsumption_Speed = consumption; }	// 消費速度の設定
 	void SetAvoidance_amount(const float avoidance) { m_fAvoidance = avoidance; }				// 消費速度の設定
+	void SetConsumption(const bool consumption) { m_bAllConsumption = consumption; }
+	void SetAllRecovery(const bool allRecovery) { m_bAllRecovery = allRecovery; }
 
 	const bool GetConsumption() { return m_bAllConsumption; }
 
@@ -45,9 +49,12 @@ private:
 	bool m_bConsumption;			// 消費中か
 	bool m_bAllRecovery;			// 回復が出来る状態か
 	bool m_bAllConsumption;			// エネルギーを全て消費した
+	bool m_bRecovery_Pause;			// 回復の一時停止
 	CObject2D* m_pBackGauge;		// 後ろのゲージ
 	D3DXCOLOR m_BackGauge_Col;		// 後ろのゲージの色
-	int Col_Count;
+	int Col_Count;					// 点滅のカウント
+	int Pause_Count;				// 回復の一時停止中のカウント
+	int BasePause_Count;			// 回復の一時停止中のカウントのベース
 };
 
 #endif // !_ENERGY_GAUGE_H_
