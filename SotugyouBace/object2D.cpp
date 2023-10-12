@@ -23,6 +23,7 @@ CObject2D::CObject2D(const PRIORITY priority) : CObject(priority)
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_texture = CTexture::TEXTURE_NONE;
+	m_Subsize = { 0.0f,0.0f };
 
 	m_nAnimColumn = 0;
 
@@ -189,7 +190,7 @@ void CObject2D::UV()
 	pVtx[0].pos.y = m_pos.y - cosf(fAngle + m_rot.y) * fLength;
 	pVtx[0].pos.z = m_pos.z;
 
-	pVtx[1].pos.x = m_pos.x + sinf(fAngle - m_rot.x) * fLength;
+	pVtx[1].pos.x = m_pos.x + sinf(fAngle - m_rot.x) * fLength - m_Subsize.x;
 	pVtx[1].pos.y = m_pos.y - cosf(fAngle - m_rot.y) * fLength;
 	pVtx[1].pos.z = m_pos.z;
 
@@ -197,7 +198,7 @@ void CObject2D::UV()
 	pVtx[2].pos.y = m_pos.y + cosf(fAngle - m_rot.y) * fLength;
 	pVtx[2].pos.z = m_pos.z;
 
-	pVtx[3].pos.x = m_pos.x + sinf(fAngle + m_rot.x) * fLength;
+	pVtx[3].pos.x = m_pos.x + sinf(fAngle + m_rot.x) * fLength - m_Subsize.x;
 	pVtx[3].pos.y = m_pos.y + cosf(fAngle + m_rot.y) * fLength;
 	pVtx[3].pos.z = m_pos.z;
 
