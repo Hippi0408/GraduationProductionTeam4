@@ -27,7 +27,7 @@ public:
 		bool broken;			//メッシュを削る
 	};
 
-	CObject3D(const CObject::PRIORITY priority = CObject::PRIORITY_CENTER);
+	CObject3D(const PRIORITY priority = PRIORITY_CENTER);
 	~CObject3D() override;
 
 	HRESULT Init() override;
@@ -38,7 +38,7 @@ public:
 	void UV();
 	virtual void Hit() override {};
 
-	static CObject3D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const CObject::PRIORITY priority = CObject::PRIORITY_CENTER, const D3DXCOLOR col = {1.0f,1.0f, 1.0f, 1.0f}, const bool billboard = false);
+	static CObject3D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const PRIORITY priority = PRIORITY_CENTER, const D3DXCOLOR col = {1.0f,1.0f, 1.0f, 1.0f}, const bool billboard = false);
 
 	void SetTexPos(const float top, const float row, const float right, const float left);			// テクスチャの分割
 

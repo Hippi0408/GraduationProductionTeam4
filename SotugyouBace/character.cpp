@@ -22,6 +22,7 @@ CCharacter::CCharacter(const CObject::PRIORITY priority) : CMove_Object(priority
 	m_fSpeed = CHARACTER_FIRST_MOVE_SPEED;
 	m_fRotSpeed = CHARACTER_ROT_SPEED;
 	m_bGround = false;
+	m_bBoost = false;
 }
 
 //=====================================
@@ -192,8 +193,12 @@ void CCharacter::FieldCollision()
 	// Œ»İ‚ÌˆÊ’u‚ğ’è”‚Æ‚µ‚Äæ“¾
 	const D3DXVECTOR3 pos = CCharacter::GetPos();
 
+	CMeshField* pMesh = CGame::GetMeshField();
+	float a = 0.0f;
+
 	// °‚Ì“–‚½‚è”»’è‚©‚ç‚‚³‚ğ’è”‚Æ‚µ‚Äæ“¾
-	const float a = CGame::GetMeshField()->MeshCollision(pos);
+	if (pMesh != nullptr)
+		a = pMesh->MeshCollision(pos);
 
 	// Ú’n‚µ‚Ä‚¢‚éê‡
 	if (GetGround() == true)

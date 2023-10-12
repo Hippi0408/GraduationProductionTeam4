@@ -35,6 +35,7 @@ public:
 	void AddPos(const D3DXVECTOR3 add) { m_pos += add; }							// 位置の加算設定
 	void SetMove(const D3DXVECTOR3 move);											// 移動量の設定
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }							// サイズの設定
+	void SetHalfSize(const D3DXVECTOR2 halfsize) { m_Subsize = halfsize; }			// 半分のサイズ
 	void SetRot(const D3DXVECTOR2 rot) { m_rot = rot; }								// 角度の設定
 	void AddRot(const D3DXVECTOR2 add) { m_rot += add; }							// 角度の設定
 	void SetTexPos(float top, float row, float right, float left);					// テクスチャ座標の設定
@@ -68,6 +69,7 @@ private:
 	D3DXVECTOR3 m_pos;						// ポリゴンの位置
 	D3DXVECTOR3 m_move;						// 移動量
 	D3DXVECTOR2 m_size;						// サイズ
+	D3DXVECTOR2 m_Subsize;						// 減少するサイズ
 	D3DXVECTOR2 m_rot;						// ポリゴンの角度
 	D3DXCOLOR m_col;						// 色
 	CTexture::TEXTURE m_texture;			// テクスチャ

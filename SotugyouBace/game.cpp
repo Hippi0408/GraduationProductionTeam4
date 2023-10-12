@@ -18,9 +18,11 @@
 #include "halfsphere.h"
 #include"meshfield.h"
 #include"collision.h"
+#include"energy_gauge.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CCharacter *CGame::pBoss = nullptr;
+CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -72,10 +74,10 @@ HRESULT CGame::Init()
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	// メッシュフィールドの生成
-	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
+	//pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
 
-	// 当たり判定の生成
-	//pCollision = CCollision::Create();
+	// エネルギーゲージ
+	m_pEnergy_Gauge = CEnergy_Gauge::Create({ SCREEN_WIDTH / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });
 
 	return S_OK;
 }
@@ -100,7 +102,8 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	// タイマーの更新
-	m_pTime->Update();
+	if (m_pTime != nullptr)
+		m_pTime->Update();
 
 	CInput* pInput = CInput::GetKey();
 

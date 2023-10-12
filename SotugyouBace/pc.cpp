@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "game.h"
 #include "meshfield.h"
+#include "energy_gauge.h"
 
 //=====================================
 // デフォルトコンストラクタ
@@ -84,6 +85,14 @@ void CPC::Input()
 	// 移動量
 	D3DXVECTOR3 move = GetMove();
 
+	D3DXVECTOR3 boostMove = { 1.0f,1.0f,1.0f };
+
+	// ブースト中は移動速度が上がる
+	if (GetBoost())
+		boostMove *= 1.8f;
+
+	SetBoost(false);
+
 	// 目的の角度
 	D3DXVECTOR3 rotDest = GetRotDest();
 
@@ -114,20 +123,20 @@ void CPC::Input()
 			if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
 			{// 左前
 				rotDest.y = rotCamera.y + D3DX_PI * 3 / 4;
-				move.x = -sinf(rotCamera.y + D3DX_PI * 3 / 4);
-				move.z = -cosf(rotCamera.y + D3DX_PI * 3 / 4);
+				move.x = -sinf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.x;
+				move.z = -cosf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.z;
 			}
 			else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
 			{// 右前
 				rotDest.y = rotCamera.y - D3DX_PI * 3 / 4;
-				move.x = sinf(rotCamera.y + D3DX_PI / 4);
-				move.z = cosf(rotCamera.y + D3DX_PI / 4);
+				move.x = sinf(rotCamera.y + D3DX_PI / 4) * boostMove.x;
+				move.z = cosf(rotCamera.y + D3DX_PI / 4) * boostMove.z;
 			}
 			else
 			{// 前
 				rotDest.y = rotCamera.y + D3DX_PI;
-				move.x = sinf(rotCamera.y);
-				move.z = cosf(rotCamera.y);
+				move.x = sinf(rotCamera.y) * boostMove.x;
+				move.z = cosf(rotCamera.y) * boostMove.z;
 			}
 		}
 		else if ((pInput->Press(DIK_S) && nIndex == 0) || pInput->Press(JOYPAD_DOWN, nIndex))
@@ -135,33 +144,33 @@ void CPC::Input()
 			if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
 			{// 左下
 				rotDest.y = rotCamera.y + D3DX_PI / 4;
-				move.x = -sinf(rotCamera.y + D3DX_PI / 4);
-				move.z = -cosf(rotCamera.y + D3DX_PI / 4);
+				move.x = -sinf(rotCamera.y + D3DX_PI / 4) * boostMove.x;
+				move.z = -cosf(rotCamera.y + D3DX_PI / 4) * boostMove.z;
 			}
 			else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
 			{// 右下
 				rotDest.y = rotCamera.y - D3DX_PI / 4;
-				move.x = sinf(rotCamera.y + D3DX_PI * 3 / 4);
-				move.z = cosf(rotCamera.y + D3DX_PI * 3 / 4);
+				move.x = sinf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.x;
+				move.z = cosf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.z;
 			}
 			else
 			{// 下
 				rotDest.y = rotCamera.y;
-				move.x = -sinf(rotCamera.y);
-				move.z = -cosf(rotCamera.y);
+				move.x = -sinf(rotCamera.y) * boostMove.x;
+				move.z = -cosf(rotCamera.y) * boostMove.z;
 			}
 		}
 		else if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
 		{// 左
 			rotDest.y = rotCamera.y + D3DX_PI / 2;
-			move.x = -sinf(rotCamera.y + D3DX_PI / 2);
-			move.z = -cosf(rotCamera.y + D3DX_PI / 2);
+			move.x = -sinf(rotCamera.y + D3DX_PI / 2) * boostMove.x;
+			move.z = -cosf(rotCamera.y + D3DX_PI / 2) * boostMove.z;
 		}
 		else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
 		{// 右
 			rotDest.y = rotCamera.y - D3DX_PI / 2;
-			move.x = sinf(rotCamera.y + D3DX_PI / 2);
-			move.z = cosf(rotCamera.y + D3DX_PI / 2);
+			move.x = sinf(rotCamera.y + D3DX_PI / 2) * boostMove.x;
+			move.z = cosf(rotCamera.y + D3DX_PI / 2) * boostMove.z;
 		}
 
 		// 接地している場合に歩きモーション
@@ -205,6 +214,20 @@ void CPC::Input()
 	{
 		// プレイヤーの攻撃処理
 		PlayerAttack();
+	}
+
+	if (pInput->Press(DIK_LSHIFT) && bWalk)
+	{
+		// ブーストする
+		SetBoost(true);
+
+		// エネルギーを消費する
+		CGame::GetEnergy_Gauge()->Consumption_Gauge();
+	}
+
+	if (pInput->Trigger(DIK_C))
+	{
+		CGame::GetEnergy_Gauge()->Avoidance();
 	}
 }
 
