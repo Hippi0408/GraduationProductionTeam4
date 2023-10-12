@@ -7,6 +7,7 @@
 #include "boss.h"
 #include "application.h"
 
+const float CBoss::BOSS_COLLISION_RADIUS = 100.0f;	// ボスの当たり判定の大きさ
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -15,6 +16,7 @@ CBoss::CBoss()
 	// プレイヤーの初期値を設定
 	SetMaxLife(FIRST_MAX_LIFE);
 	SetLife(FIRST_MAX_LIFE);
+	SetRadius(BOSS_COLLISION_RADIUS);
 }
 
 //=====================================

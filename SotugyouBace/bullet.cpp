@@ -17,7 +17,8 @@
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-const float CBullet::BULLET_SPEED = 15.0f;	// 弾の速度
+const float CBullet::BULLET_SPEED = 15.0f;				// 弾の速度
+const float CBullet::BULLET_COLLISION_RADIUS = 30.0f;	// 弾の当たり判定の大きさ
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -25,6 +26,7 @@ CBullet::CBullet(const CObject::PRIORITY priority) : CObject3D(priority)
 {
 	m_nLife = BULLET_LIFE;
 	m_fSpeed = BULLET_SPEED;
+	SetRadius(BULLET_COLLISION_RADIUS);
 }
 
 //=============================================================================
@@ -47,9 +49,6 @@ HRESULT CBullet::Init()
 	//==================================================
 	// 当たり判定の生成
 	SetCollision();
-
-	// オブジェクトの種類にプレイヤーを設定
-	SetType(OBJ_TYPE_BULLET);
 
 	// 弾のテクスチャ
 	SetTexture(CTexture::TEXTURE_BULLET);

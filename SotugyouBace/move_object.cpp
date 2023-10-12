@@ -11,6 +11,7 @@
 //==============================================================================================
 CMove_Object::CMove_Object(const PRIORITY priority) : CObject(priority)
 {
+	m_CenterPos = { 0.0f, 0.0f, 0.0f };
 }
 
 //==============================================================================================
@@ -35,7 +36,6 @@ void CMove_Object::Uninit()
 {
 	if (m_pCollision != nullptr)
 	{
-		m_pCollision->SetCollision_Death(true);
 		m_pCollision->Uninit();
 		m_pCollision = nullptr;
 	}

@@ -56,7 +56,7 @@ class CCharacter : public CMove_Object
 		D3DXVECTOR3 InitPos;	// 初期位置
 		D3DXVECTOR3 InitRot;	// 初期回転
 		CObjectX* pModel;		// モデル
-		int nParentIndex;			// 親モデルの番号
+		int nParentIndex;		// 親モデルの番号
 	};
 	std::vector<MODEL_SET> m_ModelSet;
 

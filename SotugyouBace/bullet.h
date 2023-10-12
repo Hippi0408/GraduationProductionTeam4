@@ -12,15 +12,15 @@
 //==============================================
 #include "main.h"
 #include "object3D.h"
-#include"move_object.h"
 
 //==============================================
 // ’eƒNƒ‰ƒX
 //==============================================
 class CBullet : public CObject3D
 {
-	static const int BULLET_LIFE = 50;		// ’e‚ÌŽõ–½
-	static const float BULLET_SPEED;		// ’e‚Ì‘¬“x
+	static const int BULLET_LIFE = 50;			// ’e‚ÌŽõ–½
+	static const float BULLET_SPEED;			// ’e‚Ì‘¬“x
+	static const float BULLET_COLLISION_RADIUS;	// ’e‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³
 public:
 
 	//****************

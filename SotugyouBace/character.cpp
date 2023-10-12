@@ -152,13 +152,13 @@ void CCharacter::Recovery(const int value)
 	// 体力 + 回復量
 	m_nLife += value;
 
-	
 	// 体力チェック
 	if (m_nLife > m_nMaxLife)
 	{
 		// 体力の最大値を超えないようにする
 		m_nLife = m_nMaxLife;
 	}
+
 	// 位置更新
 	AddPos(m_move * m_fSpeed);
 }
@@ -204,16 +204,14 @@ void CCharacter::FieldCollision()
 	// 接地していない場合
 	else
 	{
+		// メッシュフィールドの上にいる場合は重力をかける
+		CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+
 		// メッシュフィールドより下の位置にいる場合
 		if (a >= pos.y)
 		{
 			// 着地処理を読み込む
 			Landing({ pos.x, a, pos.z });
-		}
-		// メッシュフィールドの上にいる場合は重力をかける
-		else
-		{
-			CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
 		}
 	}
 }
@@ -269,6 +267,13 @@ void CCharacter::Motion()
 
 					m_ModelSet[nCnt].pModel->SetPos(Pos);	// 位置の設定
 					m_ModelSet[nCnt].pModel->SetRot(Rot);	// 回転の設定
+
+					// 親モデルの位置を中心位置に設定
+					if (m_ModelSet[nCnt].nParentIndex < 0)
+					{
+						// 中心位置の設定
+						SetCenterPos(Pos);
+					}
 				}
 			}
 
