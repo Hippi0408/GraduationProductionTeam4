@@ -407,8 +407,14 @@ float CMeshField::Ground_Broken(D3DXVECTOR3 pos, float damage, int scope)
 					// ínñ ÇùPÇÈ
 					if (!pVtx[pIdx[nIndex + nCnt2]].broken)
 					{
+						float fDamage = 0.0f;
+						if (nCnt <= 0)
+							fDamage = m_fPosY - damage;
+						else
+							fDamage = damage;
+
 						// àÍìxÇ‡çÌÇÍÇƒÇ¢Ç»Ç¢
-						pVtx[pIdx[nIndex + nCnt2]].pos.y = m_fPosY - damage;
+						pVtx[pIdx[nIndex + nCnt2]].pos.y = fDamage;
 						pVtx[pIdx[nIndex + nCnt2]].broken = true;
 					}
 					else
