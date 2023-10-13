@@ -77,10 +77,10 @@ void CPC::Input()
 	CInput* pInput = CInput::GetKey();
 
 	// 自身の番号
-	const int nIndex = GetCharaIndex();
+	//const int nIndex = GetCharaIndex();
 
 	// カメラの角度
-	const D3DXVECTOR3 rotCamera = CApplication::GetCamera()->GetRot();
+	D3DXVECTOR3 rotCamera = CApplication::GetCamera()->GetRot();
 
 	// 移動量
 	D3DXVECTOR3 move = GetMove();
@@ -99,14 +99,8 @@ void CPC::Input()
 	// 歩き判定
 	bool bWalk = false;
 
-	if ((pInput->Press(DIK_W) && nIndex == 0)
-		|| (pInput->Press(DIK_A) && nIndex == 0)
-		|| (pInput->Press(DIK_S) && nIndex == 0)
-		|| (pInput->Press(DIK_D) && nIndex == 0)
-		|| pInput->Press(JOYPAD_RIGHT, nIndex)
-		|| pInput->Press(JOYPAD_LEFT, nIndex)
-		|| pInput->Press(JOYPAD_UP, nIndex)
-		|| pInput->Press(JOYPAD_DOWN, nIndex))
+	if (pInput->Press(JOYPAD_UP) || pInput->Press(JOYPAD_DOWN)
+		|| pInput->Press(JOYPAD_RIGHT)|| pInput->Press(JOYPAD_LEFT))
 	{
 		// 回転させる
 		Rotation();
@@ -118,15 +112,15 @@ void CPC::Input()
 	if (bWalk == true)
 	{
 		// プレイヤーの移動
-		if ((pInput->Press(DIK_W) && nIndex == 0) || pInput->Press(JOYPAD_UP, nIndex))
+		if ((pInput->Press(DIK_W)) || pInput->Press(JOYPAD_UP))
 		{
-			if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
+			if ((pInput->Press(DIK_A)) || pInput->Press(JOYPAD_LEFT))
 			{// 左前
 				rotDest.y = rotCamera.y + D3DX_PI * 3 / 4;
 				move.x = -sinf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.x;
 				move.z = -cosf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.z;
 			}
-			else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
+			else if ((pInput->Press(DIK_D)) || pInput->Press(JOYPAD_RIGHT))
 			{// 右前
 				rotDest.y = rotCamera.y - D3DX_PI * 3 / 4;
 				move.x = sinf(rotCamera.y + D3DX_PI / 4) * boostMove.x;
@@ -139,15 +133,15 @@ void CPC::Input()
 				move.z = cosf(rotCamera.y) * boostMove.z;
 			}
 		}
-		else if ((pInput->Press(DIK_S) && nIndex == 0) || pInput->Press(JOYPAD_DOWN, nIndex))
+		else if ((pInput->Press(DIK_S)) || pInput->Press(JOYPAD_DOWN))
 		{
-			if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
+			if ((pInput->Press(DIK_A)) || pInput->Press(JOYPAD_LEFT))
 			{// 左下
 				rotDest.y = rotCamera.y + D3DX_PI / 4;
 				move.x = -sinf(rotCamera.y + D3DX_PI / 4) * boostMove.x;
 				move.z = -cosf(rotCamera.y + D3DX_PI / 4) * boostMove.z;
 			}
-			else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
+			else if ((pInput->Press(DIK_D)) || pInput->Press(JOYPAD_RIGHT))
 			{// 右下
 				rotDest.y = rotCamera.y - D3DX_PI / 4;
 				move.x = sinf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.x;
@@ -160,13 +154,13 @@ void CPC::Input()
 				move.z = -cosf(rotCamera.y) * boostMove.z;
 			}
 		}
-		else if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
+		else if ((pInput->Press(DIK_A)) || pInput->Press(JOYPAD_LEFT))
 		{// 左
 			rotDest.y = rotCamera.y + D3DX_PI / 2;
 			move.x = -sinf(rotCamera.y + D3DX_PI / 2) * boostMove.x;
 			move.z = -cosf(rotCamera.y + D3DX_PI / 2) * boostMove.z;
 		}
-		else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
+		else if ((pInput->Press(DIK_D)) || pInput->Press(JOYPAD_RIGHT))
 		{// 右
 			rotDest.y = rotCamera.y - D3DX_PI / 2;
 			move.x = sinf(rotCamera.y + D3DX_PI / 2) * boostMove.x;
@@ -203,18 +197,21 @@ void CPC::Input()
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
 	}
 	// ジャンプ処理
-	if ((pInput->Trigger(DIK_SPACE)) || pInput->Press(JOYPAD_A, nIndex))
+	if ((pInput->Trigger(DIK_SPACE)) || pInput->Press(JOYPAD_A))
 	{
 		// プレイヤーのジャンプ処理
 		JumpStart();
 	}
 
 	// 攻撃処理
-	if ((pInput->Trigger(DIK_B)) || pInput->Press(JOYPAD_B, nIndex))
+	if ((pInput->Trigger(DIK_B)) || pInput->Press(JOYPAD_R2))
 	{
 		// プレイヤーの攻撃処理
 		PlayerAttack();
 	}
+
+	// 視点処理
+	Perspective();
 
 	// エネルギーゲージの取得
 	CEnergy_Gauge* pGauge = CGame::GetEnergy_Gauge();
@@ -234,6 +231,36 @@ void CPC::Input()
 		pGauge->Avoidance();
 		pGauge->Recovery_Pause(30);
 	}
+
+	//======================================
+	//  カメラの角度の正規化
+	//======================================
+	if (rotCamera.y > D3DX_PI)
+	{
+		rotCamera.y = rotCamera.y - D3DX_PI * 2;
+	}
+	else if (rotCamera.y < -D3DX_PI)
+	{
+		rotCamera.y = rotCamera.y + D3DX_PI * 2;
+	}
+}
+
+//============================================================================
+// 視点の向きの処理
+//============================================================================
+void CPC::Perspective()
+{
+	//入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
+	// カメラの角度
+	D3DXVECTOR3 rotCamera = CApplication::GetCamera()->GetRot();
+
+	if ((pInput->VectorMoveJoyStick(0,true).y < -0.5f))
+	{	//UPキーを押しているとき
+		rotCamera.x += 1.0f;		//カメラの上方向の加算
+	}
+	//カメラの向きの設定
+	CApplication::GetCamera()->SetRot(rotCamera);
 }
 
 //============================================================================
