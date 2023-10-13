@@ -237,20 +237,25 @@ void CPC::Input()
 		// 地上にいる場合
 		if (GetGround())
 		{
+			// 消費速度
 			pGauge->SetConsumption_Speed(3.0f);
+			// 回復速度
 			pGauge->SetRecovery_Speed(10.0f);
 		}
 		// 空中にいる場合
 		else
 		{
-			pGauge->SetConsumption_Speed(7.0f);
+			// 消費速度
+			pGauge->SetConsumption_Speed(6.0f);
+			// 回復速度
 			pGauge->SetRecovery_Speed(0.3f);
 		}
 
+		// エネルギーが残っている状態
 		if (!pGauge->GetConsumption())
 		{
 			if (GetJump_Boost())
-				// ジャンプブースト開始
+				// ジャンプブースト
 				JumpBoost();
 
 			if ((pInput->Press(DIK_LSHIFT)) && bWalk)
