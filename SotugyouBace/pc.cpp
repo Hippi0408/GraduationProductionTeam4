@@ -99,14 +99,10 @@ void CPC::Input()
 	// 歩き判定
 	bool bWalk = false;
 
-	if ((pInput->Press(DIK_W) && nIndex == 0)
-		|| (pInput->Press(DIK_A) && nIndex == 0)
-		|| (pInput->Press(DIK_S) && nIndex == 0)
-		|| (pInput->Press(DIK_D) && nIndex == 0)
-		|| pInput->Press(JOYPAD_RIGHT, nIndex)
-		|| pInput->Press(JOYPAD_LEFT, nIndex)
-		|| pInput->Press(JOYPAD_UP, nIndex)
-		|| pInput->Press(JOYPAD_DOWN, nIndex))
+	if (pInput->StickPress(JOYKEY_CROSS_UP) || 
+		pInput->StickPress(JOYKEY_CROSS_DOWN) || 
+		pInput->StickPress(JOYKEY_CROSS_RIGHT) || 
+		pInput->StickPress(JOYKEY_CROSS_LEFT))
 	{
 		// 回転させる
 		Rotation();
@@ -118,60 +114,64 @@ void CPC::Input()
 	if (bWalk == true)
 	{
 		// プレイヤーの移動
-		if ((pInput->Press(DIK_W) && nIndex == 0) || pInput->Press(JOYPAD_UP, nIndex))
-		{
-			if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
-			{// 左前
-				rotDest.y = rotCamera.y + D3DX_PI * 3 / 4;
-				move.x = -sinf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.x;
-				move.z = -cosf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.z;
-			}
-			else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
-			{// 右前
-				rotDest.y = rotCamera.y - D3DX_PI * 3 / 4;
-				move.x = sinf(rotCamera.y + D3DX_PI / 4) * boostMove.x;
-				move.z = cosf(rotCamera.y + D3DX_PI / 4) * boostMove.z;
-			}
-			else
-			{// 前
-				rotDest.y = rotCamera.y + D3DX_PI;
-				move.x = sinf(rotCamera.y) * boostMove.x;
-				move.z = cosf(rotCamera.y) * boostMove.z;
-			}
-		}
-		else if ((pInput->Press(DIK_S) && nIndex == 0) || pInput->Press(JOYPAD_DOWN, nIndex))
-		{
-			if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
-			{// 左下
-				rotDest.y = rotCamera.y + D3DX_PI / 4;
-				move.x = -sinf(rotCamera.y + D3DX_PI / 4) * boostMove.x;
-				move.z = -cosf(rotCamera.y + D3DX_PI / 4) * boostMove.z;
-			}
-			else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
-			{// 右下
-				rotDest.y = rotCamera.y - D3DX_PI / 4;
-				move.x = sinf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.x;
-				move.z = cosf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.z;
-			}
-			else
-			{// 下
-				rotDest.y = rotCamera.y;
-				move.x = -sinf(rotCamera.y) * boostMove.x;
-				move.z = -cosf(rotCamera.y) * boostMove.z;
-			}
-		}
-		else if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
-		{// 左
-			rotDest.y = rotCamera.y + D3DX_PI / 2;
-			move.x = -sinf(rotCamera.y + D3DX_PI / 2) * boostMove.x;
-			move.z = -cosf(rotCamera.y + D3DX_PI / 2) * boostMove.z;
-		}
-		else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
-		{// 右
-			rotDest.y = rotCamera.y - D3DX_PI / 2;
-			move.x = sinf(rotCamera.y + D3DX_PI / 2) * boostMove.x;
-			move.z = cosf(rotCamera.y + D3DX_PI / 2) * boostMove.z;
-		}
+		//if ((pInput->Press(DIK_W) && nIndex == 0) || pInput->Press(JOYPAD_UP, nIndex))
+		//{
+		//	if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
+		//	{// 左前
+		//		rotDest.y = rotCamera.y + D3DX_PI * 3 / 4;
+		//		move.x = -sinf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.x;
+		//		move.z = -cosf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.z;
+		//	}
+		//	else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
+		//	{// 右前
+		//		rotDest.y = rotCamera.y - D3DX_PI * 3 / 4;
+		//		move.x = sinf(rotCamera.y + D3DX_PI / 4) * boostMove.x;
+		//		move.z = cosf(rotCamera.y + D3DX_PI / 4) * boostMove.z;
+		//	}
+		//	else
+		//	{// 前
+		//		rotDest.y = rotCamera.y + D3DX_PI;
+		//		move.x = sinf(rotCamera.y) * boostMove.x;
+		//		move.z = cosf(rotCamera.y) * boostMove.z;
+		//	}
+		//}
+		//else if ((pInput->Press(DIK_S) && nIndex == 0) || pInput->Press(JOYPAD_DOWN, nIndex))
+		//{
+		//	if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
+		//	{// 左下
+		//		rotDest.y = rotCamera.y + D3DX_PI / 4;
+		//		move.x = -sinf(rotCamera.y + D3DX_PI / 4) * boostMove.x;
+		//		move.z = -cosf(rotCamera.y + D3DX_PI / 4) * boostMove.z;
+		//	}
+		//	else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
+		//	{// 右下
+		//		rotDest.y = rotCamera.y - D3DX_PI / 4;
+		//		move.x = sinf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.x;
+		//		move.z = cosf(rotCamera.y + D3DX_PI * 3 / 4) * boostMove.z;
+		//	}
+		//	else
+		//	{// 下
+		//		rotDest.y = rotCamera.y;
+		//		move.x = -sinf(rotCamera.y) * boostMove.x;
+		//		move.z = -cosf(rotCamera.y) * boostMove.z;
+		//	}
+		//}
+		//else if ((pInput->Press(DIK_A) && nIndex == 0) || pInput->Press(JOYPAD_LEFT, nIndex))
+		//{// 左
+		//	rotDest.y = rotCamera.y + D3DX_PI / 2;
+		//	move.x = -sinf(rotCamera.y + D3DX_PI / 2) * boostMove.x;
+		//	move.z = -cosf(rotCamera.y + D3DX_PI / 2) * boostMove.z;
+		//}
+		//else if ((pInput->Press(DIK_D) && nIndex == 0) || pInput->Press(JOYPAD_RIGHT, nIndex))
+		//{// 右
+		//	rotDest.y = rotCamera.y - D3DX_PI / 2;
+		//	move.x = sinf(rotCamera.y + D3DX_PI / 2) * boostMove.x;
+		//	move.z = cosf(rotCamera.y + D3DX_PI / 2) * boostMove.z;
+		//}
+
+		D3DXVECTOR3 VectorMove = pInput->VectorMove();
+		move.x = VectorMove.x * boostMove.x;
+		move.z = VectorMove.y * boostMove.z;
 
 		// 接地している場合に歩きモーション
 		if (GetGround() == true)

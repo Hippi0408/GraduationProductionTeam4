@@ -273,6 +273,7 @@ HRESULT CInputJoyPad::JoyPadDeviceRegistration(HWND hWnd)
 			m_JoyPadData[nCnt].pInputDevice = nullptr;
 		}
 	}
+	m_nJoyNumCnt = 0;
 	ZeroMemory(&m_JoyPadData, sizeof(m_JoyPadData));
 
 	//データの挿入と被りのチェック
@@ -308,6 +309,8 @@ HRESULT CInputJoyPad::JoyPadDeviceRegistration(HWND hWnd)
 		{
 			return E_FAIL;
 		}
+
+		m_nJoyNumCnt++;
 	}
 
 	return S_OK;

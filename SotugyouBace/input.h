@@ -51,6 +51,8 @@ public:
 	bool Trigger(STAN_DART_INPUT_KEY key, int nNum) { return KeyChackNum(key, 2, nNum); }	// トリガー
 	bool Release(STAN_DART_INPUT_KEY key, int nNum) { return KeyChackNum(key, 3, nNum); }	// リリース
 
+	D3DXVECTOR3 VectorMove(); //移動用ベクトルの取得
+
 	// 入力しているデバイスを返す
 	std::vector<int> PressDevice(STAN_DART_INPUT_KEY key);		// プレス
 	std::vector<int> TriggerDevice(STAN_DART_INPUT_KEY key);	// トリガー
@@ -65,7 +67,7 @@ public:
 	bool Press(DirectJoypad key, int nNum = 0);			//ジョイパットプレス
 	bool Trigger(DirectJoypad key, int nNum = 0);		//ジョイパットトリガー
 	bool Release(DirectJoypad key, int nNum = 0);		//ジョイパットリリース
-	bool StickPress(JOYKEY_DIRECT_CROSS key, int nNum = 0, bool bleftandright = false, float frot = 0.5f); //スティックのプレス
+	bool StickPress(JOYKEY_DIRECT_CROSS key, int nNum = 0, bool bleftandright = false, float frot = 0.25f); //スティックのプレス
 
 	D3DXVECTOR3 VectorMoveKey(int nNum);				//十字キー式のベクトル取得
 	D3DXVECTOR3 VectorMoveJoyStick(int nNum = 0, bool bleftandright = false); //ジョイスティックのベクトル取得
