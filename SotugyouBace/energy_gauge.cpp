@@ -206,11 +206,11 @@ void CEnergy_Gauge::GaugeColor()
 	float Gauge_Percent = (m_fBaseSize - m_fFluctuation) / m_fBaseSize * 100;
 
 	// 色の設定
-	if (Gauge_Percent <= 20.0f || m_bAllConsumption && !m_bRecovery_Pause)
-		// 残量20%以下or全て消費した後、全回復するまで(赤)
+	if (Gauge_Percent <= 25.0f || m_bAllConsumption && !m_bRecovery_Pause)
+		// 残量25%以下or全て消費した後、全回復するまで(赤)
 		SetCol({ 1.0f,0.0f,0.0f,1.0f });
 	else if (Gauge_Percent > 20.0f || !m_bAllConsumption)
-		// 残量21%以上(白)
+		// 残量26%以上(白)
 		SetCol({ 1.0f,1.0f,1.0f,1.0f });
 
 	// 後ろのゲージの色
@@ -224,8 +224,13 @@ void CEnergy_Gauge::GaugeColor()
 		m_BackGauge_Col.r = sinf(Col_Count * 0.07f);
 	}
 	else
+	{
+		// 点滅のリセット
+		Col_Count = 0;
+
 		// 黒
 		m_BackGauge_Col = { 0.0f,0.0f,0.0f,1.0f };
+	}
 
 	// 後ろのゲージの色の設定
 	m_pBackGauge->SetCol(m_BackGauge_Col);

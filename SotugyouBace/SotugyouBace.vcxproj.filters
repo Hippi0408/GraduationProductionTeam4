@@ -52,9 +52,6 @@
     <ClCompile Include="sound.cpp">
       <Filter>03_mode\02_Resource</Filter>
     </ClCompile>
-    <ClCompile Include="meshfield.cpp">
-      <Filter>04_object</Filter>
-    </ClCompile>
     <ClCompile Include="object.cpp">
       <Filter>04_object</Filter>
     </ClCompile>
@@ -166,7 +163,12 @@
     </ClCompile>
     <ClCompile Include="move_object.cpp" />
     <ClCompile Include="collision_manager.cpp" />
-    <ClCompile Include="energy_gauge.cpp" />
+    <ClCompile Include="meshfield.cpp">
+      <Filter>04_object\object3D</Filter>
+    </ClCompile>
+    <ClCompile Include="energy_gauge.cpp">
+      <Filter>04_object\object2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -222,9 +224,6 @@
     </ClInclude>
     <ClInclude Include="sound.h">
       <Filter>03_mode\02_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="meshfield.h">
-      <Filter>04_object</Filter>
     </ClInclude>
     <ClInclude Include="object.h">
       <Filter>04_object</Filter>
@@ -338,7 +337,12 @@
     </ClInclude>
     <ClInclude Include="move_object.h" />
     <ClInclude Include="collision_manager.h" />
-    <ClInclude Include="energy_gauge.h" />
+    <ClInclude Include="meshfield.h">
+      <Filter>04_object\object3D</Filter>
+    </ClInclude>
+    <ClInclude Include="energy_gauge.h">
+      <Filter>04_object\object2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00_main">
