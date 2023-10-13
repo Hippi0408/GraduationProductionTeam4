@@ -12,7 +12,7 @@
 
 class CLight
 {
-	static const int MAX_LIGHT = 8;				// ライトの最大数
+	static const int MAX_LIGHT = 4;				// ライトの最大数
 	static const D3DXCOLOR LIGHT_DIFFUSE_COLOR;	// ライトの環境光の色
 
 public:

@@ -55,8 +55,9 @@ HRESULT CGame::Init()
 	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
 	pCamera->SetPosR({ 0.0f, 0.0f, 1000.0f });
 
-	CFontString::Create({ 515.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "ゲーム");
-
+	//CFontString::Create({ 515.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "ゲーム");
+	CFontString::Create({ SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2 - 200.0f, 0.0f }, { 50.0f, 50.0f }, "ブーストできた");
+	
 	// プレイヤーの生成(テスト)
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
