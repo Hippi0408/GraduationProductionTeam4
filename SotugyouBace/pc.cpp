@@ -198,7 +198,7 @@ void CPC::Input()
 	}
 
 	// ジャンプ処理
-	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A, nIndex))
+	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A, 0))
 	{
 		// ジャンプ入力時間の加算
 		AddJump_PressCount(1);
