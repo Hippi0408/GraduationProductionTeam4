@@ -229,10 +229,11 @@ void CPC::Input()
 		pGauge->Consumption_Gauge();
 	}
 
+	// 回避
 	if (pInput->Trigger(DIK_C) && !pGauge->GetConsumption())
 	{
-		pGauge->Avoidance();
-		pGauge->Recovery_Pause(30);
+		pGauge->Avoidance();			// エネルギー消費
+		pGauge->Recovery_Pause(30);		// クールタイム
 	}
 }
 
