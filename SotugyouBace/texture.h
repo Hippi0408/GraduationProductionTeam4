@@ -24,6 +24,7 @@ public: /* 定義 */
 		TEXTURE_FONT_ALPHABET,		// アルファベットフォント
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_BULLET,				// 弾
+		TEXTURE_FLOOR,				// 地面
 		TEXTURE_MAX,
 		TEXTURE_NONE
 	};

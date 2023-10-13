@@ -29,11 +29,12 @@ HRESULT CEnergy_Gauge::Init()
 	CObject2D::Init();
 
 	m_fRecovery_Speed = 10.0f;		// 回復速度
-	m_fConsumption_Speed = 2.0f;	// 消費速度
-	m_fAvoidance = 200.0f;			// 回避時の消費量
+	m_fConsumption_Speed = 3.0f;	// 消費速度
+	m_fAvoidance = 300.0f;			// 回避時の消費量
 	m_fFluctuation = 0.0f;			// 増減するゲージの量
 	m_fBaseSize = GetSize().x;		// 元のゲージサイズ
 	m_fRecovery_Interval = 300.0f;	// 回復し始めるまでのインターバル
+	m_fReuse_Percent = 30.0f;		// 全消費からの回復時に再利用できるタイミング
 	m_bConsumption = false;			// 消費中か
 	m_bAllRecovery = true;			// 回復が出来る状態か
 	m_bAllConsumption = false;		// エネルギーを全て消費した
@@ -88,8 +89,6 @@ void CEnergy_Gauge::Update()
 	SetHalfSize({ m_fFluctuation,0.0f });
 
 	CObject2D::Update();
-
-	CDebugProc::Print("%d", m_bAllConsumption);
 }
 
 //==============================================================================================
@@ -128,9 +127,16 @@ void CEnergy_Gauge::Recovery_Gauge()
 			// 回復するエネルギー量
 			m_fFluctuation -= m_fRecovery_Speed;
 
+		// 現在のゲージ残量の割合
+		float Gauge_Percent = (m_fBaseSize - m_fFluctuation) / m_fBaseSize * 100;
+
+		// 回復途中エネルギーを使えるようにするタイミング
+		if (Gauge_Percent >= m_fReuse_Percent)
+			m_bAllConsumption = false;
+
 		// 全回復した
 		if (m_fFluctuation <= 0)
-			m_bAllConsumption = false;
+			m_fFluctuation = 0;
 	}
 	else
 	{
@@ -180,7 +186,7 @@ void CEnergy_Gauge::Avoidance()
 		// 消費するエネルギー量
 		m_fFluctuation += m_fAvoidance;
 
-		if (m_fFluctuation <= m_fBaseSize)
+		if (m_fFluctuation < m_fBaseSize)
 			// エネルギー消費中
 			m_bConsumption = true;
 		else
@@ -200,11 +206,11 @@ void CEnergy_Gauge::GaugeColor()
 	float Gauge_Percent = (m_fBaseSize - m_fFluctuation) / m_fBaseSize * 100;
 
 	// 色の設定
-	if (Gauge_Percent <= 20.0f || m_bAllConsumption)
-		// 残量20%以下or全て消費した後、全回復するまで
+	if (Gauge_Percent <= 25.0f || m_bAllConsumption && !m_bRecovery_Pause)
+		// 残量25%以下or全て消費した後、全回復するまで(赤)
 		SetCol({ 1.0f,0.0f,0.0f,1.0f });
 	else if (Gauge_Percent > 20.0f || !m_bAllConsumption)
-		// 残量21%以上
+		// 残量26%以上(白)
 		SetCol({ 1.0f,1.0f,1.0f,1.0f });
 
 	// 後ろのゲージの色
@@ -218,8 +224,13 @@ void CEnergy_Gauge::GaugeColor()
 		m_BackGauge_Col.r = sinf(Col_Count * 0.07f);
 	}
 	else
+	{
+		// 点滅のリセット
+		Col_Count = 0;
+
 		// 黒
 		m_BackGauge_Col = { 0.0f,0.0f,0.0f,1.0f };
+	}
 
 	// 後ろのゲージの色の設定
 	m_pBackGauge->SetCol(m_BackGauge_Col);
