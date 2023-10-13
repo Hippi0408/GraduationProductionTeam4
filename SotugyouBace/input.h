@@ -65,6 +65,7 @@ public:
 	bool Press(DirectJoypad key, int nNum = 0);			//ジョイパットプレス
 	bool Trigger(DirectJoypad key, int nNum = 0);		//ジョイパットトリガー
 	bool Release(DirectJoypad key, int nNum = 0);		//ジョイパットリリース
+	bool StickPress(JOYKEY_DIRECT_CROSS key, int nNum = 0, bool bleftandright = false, float frot = 0.5f); //スティックのプレス
 
 	D3DXVECTOR3 VectorMoveKey(int nNum);				//十字キー式のベクトル取得
 	D3DXVECTOR3 VectorMoveJoyStick(int nNum = 0, bool bleftandright = false); //ジョイスティックのベクトル取得

@@ -280,6 +280,43 @@ bool CInput::Release(DirectJoypad key, int nNum)
 }
 
 //*************************************************************************************
+//スティックのプレス
+//*************************************************************************************
+bool CInput::StickPress(JOYKEY_DIRECT_CROSS key, int nNum, bool bleftandright, float frot)
+{
+	switch (key)
+	{
+	case JOYKEY_CROSS_UP:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	case JOYKEY_CROSS_UP_RIGHT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot) && (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	case JOYKEY_CROSS_RIGHT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	case JOYKEY_CROSS_DOWN_RIGHT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot) && (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	case JOYKEY_CROSS_DOWN:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	case JOYKEY_CROSS_DOWN_LEFT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot) && (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	case JOYKEY_CROSS_LEFT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	case JOYKEY_CROSS_UP_LEFT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot) && (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	default:
+		assert(false);
+	}
+	return false;
+}
+
+//*************************************************************************************
 //プレス処理(マウス)
 //*************************************************************************************
 bool CInput::Press(MOUSE_KEY Key)
