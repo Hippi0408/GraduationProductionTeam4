@@ -196,12 +196,25 @@ void CPC::Input()
 		if (pMeshField != nullptr)
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
 	}
+
 	// ジャンプ処理
-	if ((pInput->Trigger(DIK_SPACE)) || pInput->Press(JOYPAD_A))
+	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A, nIndex))
 	{
-		// プレイヤーのジャンプ処理
-		JumpStart();
+		// ジャンプ入力時間の加算
+		AddJump_PressCount(1);
+
+		if (GetJump_PressCount() < 20)
+			// プレイヤーのジャンプ処理
+			JumpStart();
+		else
+			SetJump_Boost(true);
 	}
+	else
+		SetJump_Boost(false);
+
+	if (GetGround())
+		// ジャンプ入力時間のリセット
+		SetJump_PressCount(0);
 
 	// 攻撃処理
 	if ((pInput->Trigger(DIK_B)) || pInput->Press(JOYPAD_R2))
@@ -215,21 +228,49 @@ void CPC::Input()
 
 	// エネルギーゲージの取得
 	CEnergy_Gauge* pGauge = CGame::GetEnergy_Gauge();
-	
-	if ((pInput->Press(DIK_LSHIFT))
-		&& bWalk && !pGauge->GetConsumption())
-	{
-		// ブーストする
-		SetBoost(true);
 
-		// エネルギーを消費する
-		pGauge->Consumption_Gauge();
-	}
-
-	if (pInput->Trigger(DIK_C) && !pGauge->GetConsumption())
+	if (pGauge != nullptr)
 	{
-		pGauge->Avoidance();
-		pGauge->Recovery_Pause(30);
+		// 地上にいる場合
+		if (GetGround())
+		{
+			// 消費速度
+			pGauge->SetConsumption_Speed(3.0f);
+			// 回復速度
+			pGauge->SetRecovery_Speed(10.0f);
+		}
+		// 空中にいる場合
+		else
+		{
+			// 消費速度
+			pGauge->SetConsumption_Speed(6.0f);
+			// 回復速度
+			pGauge->SetRecovery_Speed(0.3f);
+		}
+
+		// エネルギーが残っている状態
+		if (!pGauge->GetConsumption())
+		{
+			if (GetJump_Boost())
+				// ジャンプブースト
+				JumpBoost();
+
+			if ((pInput->Press(DIK_LSHIFT)) && bWalk)
+			{
+				// ブーストする
+				SetBoost(true);
+
+				// エネルギーを消費する
+				pGauge->Consumption_Gauge();
+			}
+
+			// 回避
+			if (pInput->Trigger(DIK_C))
+			{
+				pGauge->Avoidance();			// エネルギー消費
+				pGauge->Recovery_Pause(30);		// クールタイム
+			}
+		}
 	}
 
 	//======================================
