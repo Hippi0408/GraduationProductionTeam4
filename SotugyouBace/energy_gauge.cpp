@@ -138,7 +138,7 @@ void CEnergy_Gauge::Recovery_Gauge()
 		if (m_fFluctuation <= 0)
 			m_fFluctuation = 0;
 	}
-	else
+	else if(!m_bAllRecovery && !m_bRecovery_Pause)
 	{
 		// インターバルのカウント
 		m_nInterval_Count++;
@@ -150,6 +150,8 @@ void CEnergy_Gauge::Recovery_Gauge()
 			m_nInterval_Count = 0;
 		}
 	}
+
+	CDebugProc::Print("%d", m_nInterval_Count);
 }
 
 //==============================================================================================
