@@ -45,14 +45,19 @@ void CLight::Init(void)
 	}
 
 	// ƒ‰ƒCƒg‚ÌŠp“x
-	vecDir[0] = D3DXVECTOR3(-10.0f, -8.0f, 0.0f);
+	/*vecDir[0] = D3DXVECTOR3(-10.0f, -8.0f, 0.0f);
 	vecDir[1] = D3DXVECTOR3(10.0f, -8.0f, 0.0f);
 	vecDir[2] = D3DXVECTOR3(0.0f, -8.0f, 10.0f);
 	vecDir[3] = D3DXVECTOR3(0.0f, -8.0f, -10.0f);
 	vecDir[4] = D3DXVECTOR3(-10.0f, -8.0f, 0.0f);
 	vecDir[5] = D3DXVECTOR3(10.0f, -8.0f, 0.0f);
 	vecDir[6] = D3DXVECTOR3(0.0f, -8.0f, 10.0f);
-	vecDir[7] = D3DXVECTOR3(0.0f, -8.0f, -10.0f);
+	vecDir[7] = D3DXVECTOR3(0.0f, -8.0f, -10.0f);*/
+
+	vecDir[0] = D3DXVECTOR3(1.0f, -0.5f, 0.0f);
+	vecDir[1] = D3DXVECTOR3(-1.0f, -0.5f, 0.0f);
+	vecDir[2] = D3DXVECTOR3(0.0f, -0.5f, 1.0f);
+	vecDir[3] = D3DXVECTOR3(0.0f, -0.5f, -1.0f);
 
 	for (int nCnt = 0; nCnt < MAX_LIGHT; nCnt++)
 	{

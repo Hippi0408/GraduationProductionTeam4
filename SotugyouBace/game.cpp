@@ -18,9 +18,11 @@
 #include "halfsphere.h"
 #include"meshfield.h"
 #include"collision.h"
+#include"energy_gauge.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CCharacter *CGame::pBoss = nullptr;
+CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -53,10 +55,11 @@ HRESULT CGame::Init()
 	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
 	pCamera->SetPosR({ 0.0f, 0.0f, 1000.0f });
 
-	CFontString::Create({ 515.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "ゲーム");
-
+	//CFontString::Create({ 515.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "ゲーム");
+	CFontString::Create({ SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2 - 200.0f, 0.0f }, { 50.0f, 50.0f }, "ジャンプながおし");
+	
 	// プレイヤーの生成(テスト)
-	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	CApplication::GetPlayerManager()->SetPlayer({ 100.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ボスキャラの生成
 	pBoss = CBoss::Create({ 0.0f, 0.0f, 300.0f });
@@ -74,8 +77,8 @@ HRESULT CGame::Init()
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
 
-	// 当たり判定の生成
-	//pCollision = CCollision::Create();
+	// エネルギーゲージ
+	m_pEnergy_Gauge = CEnergy_Gauge::Create({ SCREEN_WIDTH / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });
 
 	return S_OK;
 }
@@ -100,7 +103,8 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	// タイマーの更新
-	m_pTime->Update();
+	if (m_pTime != nullptr)
+		m_pTime->Update();
 
 	CInput* pInput = CInput::GetKey();
 

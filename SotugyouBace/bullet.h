@@ -27,7 +27,7 @@ public:
 	//****************
 	// publicな関数
 	//****************
-	CBullet(const CObject::PRIORITY priority);		// ナンバーのコンストラクタ
+	CBullet(const PRIORITY priority);		// ナンバーのコンストラクタ
 	~CBullet() override;					// ナンバーのデストラクタ
 
 	HRESULT Init() override;				// 初期化処理

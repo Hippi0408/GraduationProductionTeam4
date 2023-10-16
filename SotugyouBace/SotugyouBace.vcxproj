@@ -31,6 +31,7 @@
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemy_manager.cpp" />
+    <ClCompile Include="energy_gauge.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="fontString.cpp" />
@@ -76,6 +77,7 @@
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemy_manager.h" />
+    <ClInclude Include="energy_gauge.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="fontString.h" />

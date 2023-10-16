@@ -10,6 +10,7 @@
 #include "bullet.h"
 #include "player_manager.h"
 #include"game.h"
+#include "energy_gauge.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
@@ -155,7 +156,7 @@ void CPlayer::PlayerAttack()
 void CPlayer::JumpStart()
 {
 	// 接地している場合のみ
-	if (GetGround() == true)
+	if (GetGround())
 	{
 		// ジャンプモーションを設定
 		SetMotion(MOTION_JUMP);
@@ -163,8 +164,30 @@ void CPlayer::JumpStart()
 		// 離着状態にする
 		SetGround(false);
 
-		// 上に上昇する
+		// 上昇する
 		AddMove({ 0.0f, PLAYER_JUMP_POWER, 0.0f });
+	}
+}
+
+//============================================================================
+// プレイヤーのジャンプブースト処理
+//============================================================================
+void CPlayer::JumpBoost()
+{
+	// エネルギーゲージの取得
+	CEnergy_Gauge* pGauge = CGame::GetEnergy_Gauge();
+
+	if (pGauge != nullptr)
+	{
+		// 空中にいる場合、エネルギーが残っている場合
+		if (!GetGround() && !pGauge->GetConsumption())
+		{
+			// 上昇する
+			AddMove({ 0.0f, 0.5f, 0.0f });
+
+			// エネルギーを消費する
+			pGauge->Consumption_Gauge();
+		}
 	}
 }
 

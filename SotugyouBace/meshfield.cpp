@@ -53,7 +53,7 @@ HRESULT CMeshField::Init()
 	m_nHeight = 50;		// 頂点の高さ(ランダムの最大値)
 
 	// テクスチャの設定
-	//m_Texture = CTexture::TEXTURE_TILE;
+	m_Texture = CTexture::TEXTURE_FLOOR;
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * m_nVertexNum,

@@ -68,6 +68,7 @@ public:
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
 	void JumpStart();					// プレイヤーのジャンプ処理
+	void JumpBoost();					// プレイヤーのジャンプブースト処理
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
