@@ -157,6 +157,46 @@ CInput *CInput::Create()
 }
 
 //*************************************************************************************
+//移動用ベクトルの取得
+//*************************************************************************************
+D3DXVECTOR3 CInput::VectorMove()
+{
+	D3DXVECTOR3 KeyboardVec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 JoypadVec = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	bool bright = false;
+	bool bup = false;
+
+	if (Press(DIK_W))
+	{
+		KeyboardVec.y = -0.5f;
+	}
+	if (Press(DIK_S))
+	{
+		KeyboardVec.y = 0.5f;
+	}
+	if (Press(DIK_A))
+	{
+		KeyboardVec.x = -0.5f;
+	}
+	if (Press(DIK_D))
+	{
+		KeyboardVec.x = 0.5f;
+	}
+
+	//長さ１のベクトル変換
+	D3DXVec3Normalize(&KeyboardVec, &KeyboardVec);
+
+	JoypadVec = VectorMoveJoyStick();
+
+	if (JoypadVec.x > KeyboardVec.x || JoypadVec.x < KeyboardVec.x || JoypadVec.y > KeyboardVec.y || JoypadVec.y < KeyboardVec.y)
+	{
+		return JoypadVec;
+	}
+
+	return KeyboardVec;
+}
+
+//*************************************************************************************
 // 入力したデバイスの番号を取得 (Press)
 //*************************************************************************************
 std::vector<int> CInput::PressDevice(STAN_DART_INPUT_KEY key)
@@ -277,6 +317,44 @@ bool CInput::Trigger(DirectJoypad key, int nNum)
 bool CInput::Release(DirectJoypad key, int nNum)
 {
 	return m_pJoyPad->GetRelease(key, nNum);
+}
+
+//*************************************************************************************
+//スティックのプレス
+//*************************************************************************************
+bool CInput::StickPress(JOYKEY_DIRECT_CROSS key, int nNum, bool bleftandright, float frot)
+{
+
+	switch (key)
+	{
+	case JOYKEY_CROSS_UP:
+		return (VectorMoveJoyStick(nNum, bleftandright).y < -frot);
+		break;
+	case JOYKEY_CROSS_UP_RIGHT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y < -frot) && (VectorMoveJoyStick(nNum, bleftandright).x > frot);
+		break;
+	case JOYKEY_CROSS_RIGHT:
+		return (VectorMoveJoyStick(nNum, bleftandright).x > frot);
+		break;
+	case JOYKEY_CROSS_DOWN_RIGHT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot) && (VectorMoveJoyStick(nNum, bleftandright).x > frot);
+		break;
+	case JOYKEY_CROSS_DOWN:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot);
+		break;
+	case JOYKEY_CROSS_DOWN_LEFT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot) && (VectorMoveJoyStick(nNum, bleftandright).x < -frot);
+		break;
+	case JOYKEY_CROSS_LEFT:
+		return (VectorMoveJoyStick(nNum, bleftandright).x < -frot);
+		break;
+	case JOYKEY_CROSS_UP_LEFT:
+		return (VectorMoveJoyStick(nNum, bleftandright).y > frot) && (VectorMoveJoyStick(nNum, bleftandright).x < -frot);
+		break;
+	default:
+		assert(false);
+	}
+	return false;
 }
 
 //*************************************************************************************

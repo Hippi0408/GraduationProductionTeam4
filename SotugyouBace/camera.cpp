@@ -3,11 +3,15 @@
 // カメラの処理[camera.cpp]
 // Author：tutida ryousei
 // Author：tanimoto kosuke
+// Author：saito shian
 //
 //==============================================
-#include"camera.h"
-#include"input.h"
-#include"application.h"
+#include "camera.h"
+#include "input.h"
+#include "application.h"
+#include "player_manager.h"
+#include "application.h"
+#include "mode.h"
 
 //==============================================
 //コンストラクタ
@@ -37,6 +41,8 @@ void CCamera::Init(void)
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 角度
 	m_fRotSpeed = 0.03f;							// 回転速度
 	m_CPos = { 0.0f,0.0f,0.0f };
+	m_posVDest = D3DXVECTOR3(0.0f, 300.0f, -300.0f);
+	m_posRDest = D3DXVECTOR3(0.0f, 0.0f, -300.0f);
 }
 
 //==============================================
@@ -52,6 +58,9 @@ void CCamera::Uninit(void)
 //==============================================
 void CCamera::Update(void)
 {
+	// カメラの追従
+	Perspective();
+
 	// 行列を使ったカメラ制御
 	Matrix();
 
@@ -187,5 +196,49 @@ void CCamera::Move()
 	{
 		m_rot.y += D3DX_PI * 2;
 	}
+}
+
+//==============================================
+// カメラの視点
+//==============================================
+void CCamera::Perspective()
+{
+	if (CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
+	{	// プレイヤーが使われていたら実行
+
+		//取得処理
+		D3DXVECTOR3 PlayerPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
+
+		//============================================
+		// カメラの追従処理
+		//============================================
+		//目的の注視点の設定
+		m_posRDest.x = PlayerPos.x + sinf(m_rot.y) * 600.0f;
+		m_posRDest.y = (PlayerPos.y + 150.0f) + sinf(m_rot.y);
+		m_posRDest.z = PlayerPos.z + cosf(m_rot.y);
+
+		//目的の視点の設定												
+		m_posVDest.x = PlayerPos.x - sinf(m_rot.y) * 600.0f;
+		m_posVDest.y = (PlayerPos.y + 150.0f) - sinf(m_rot.y);
+		m_posVDest.z = PlayerPos.z - cosf(m_rot.y) * 600.0f;
+
+		//視点の減衰処理
+		m_posR.x += (m_posRDest.x - m_posR.x) * 1.0f;
+		m_posR.y += (m_posRDest.y - m_posR.y) * 1.0f;
+		m_posR.z += (m_posRDest.z - m_posR.z) * 1.0f;
+
+		m_posV.x += (m_posVDest.x - m_posV.x) * 1.0f;
+		m_posV.y += (m_posVDest.y - m_posV.y) * 1.0f;
+		m_posV.z += (m_posVDest.z - m_posV.z) * 1.0f;
+	}
+}
+
+//============================================
+// 距離の設定
+//============================================
+void CCamera::SetOffset(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
+{
+	m_OffsetV = posV;
+	m_OffsetR = posR;
 }
 #endif
