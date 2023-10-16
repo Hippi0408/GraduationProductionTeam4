@@ -51,6 +51,10 @@ public:
 	bool Trigger(STAN_DART_INPUT_KEY key, int nNum) { return KeyChackNum(key, 2, nNum); }	// トリガー
 	bool Release(STAN_DART_INPUT_KEY key, int nNum) { return KeyChackNum(key, 3, nNum); }	// リリース
 
+	//本ゲーム専用
+	bool MovePress(BOOK_GAME_DEDICATED_MOVE_KEY key);
+
+
 	D3DXVECTOR3 VectorMove(); //移動用ベクトルの取得
 
 	// 入力しているデバイスを返す

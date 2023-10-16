@@ -99,10 +99,7 @@ void CPC::Input()
 	// 歩き判定
 	bool bWalk = false;
 
-	if (pInput->StickPress(JOYKEY_CROSS_UP) || 
-		pInput->StickPress(JOYKEY_CROSS_DOWN) || 
-		pInput->StickPress(JOYKEY_CROSS_RIGHT) || 
-		pInput->StickPress(JOYKEY_CROSS_LEFT))
+	if (pInput->MovePress(GAME_MOVE_ALL))
 	{
 		// 回転させる
 		Rotation();
@@ -117,14 +114,14 @@ void CPC::Input()
 		float rotY = rotCamera.y;
 
 		//視点移動
-		if (pInput->StickPress(JOYKEY_CROSS_UP))
+		if (pInput->MovePress(GAME_MOVE_UP))
 		{//上キーが押された
-			if (pInput->StickPress(JOYKEY_CROSS_LEFT))
+			if (pInput->MovePress(GAME_MOVE_LEFT))
 			{
 				move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
 			}
-			else if (pInput->StickPress(JOYKEY_CROSS_RIGHT))
+			else if (pInput->MovePress(GAME_MOVE_RIGHT))
 			{
 				move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
@@ -135,14 +132,14 @@ void CPC::Input()
 				move.z = cosf(rotY) * boostMove.z;
 			}
 		}
-		else if (pInput->StickPress(JOYKEY_CROSS_DOWN))
+		else if (pInput->MovePress(GAME_MOVE_DOWN))
 		{//下キーが押された
-			if (pInput->StickPress(JOYKEY_CROSS_LEFT))
+			if (pInput->MovePress(GAME_MOVE_LEFT))
 			{
 				move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
 			}
-			else if (pInput->StickPress(JOYKEY_CROSS_RIGHT))
+			else if (pInput->MovePress(GAME_MOVE_RIGHT))
 			{
 				move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
@@ -153,12 +150,12 @@ void CPC::Input()
 				move.z = cosf(rotY + D3DX_PI) * boostMove.z;
 			}
 		}
-		else if (pInput->StickPress(JOYKEY_CROSS_LEFT))
+		else if (pInput->MovePress(GAME_MOVE_LEFT))
 		{//左キーが押された
 			move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
 			move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
 		}
-		else if (pInput->StickPress(JOYKEY_CROSS_RIGHT))
+		else if (pInput->MovePress(GAME_MOVE_RIGHT))
 		{//右キーが押された
 			move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
 			move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
