@@ -157,6 +157,34 @@ CInput *CInput::Create()
 }
 
 //*************************************************************************************
+//本ゲーム専用移動key
+//*************************************************************************************
+bool CInput::MovePress(BOOK_GAME_DEDICATED_MOVE_KEY key)
+{
+	switch (key)
+	{
+	case GAME_MOVE_UP:
+		return (Press(DIK_W) || StickPress(JOYKEY_CROSS_UP));
+		break;
+	case GAME_MOVE_DOWN:
+		return (Press(DIK_S) || StickPress(JOYKEY_CROSS_DOWN));
+		break;
+	case GAME_MOVE_LEFT:
+		return (Press(DIK_A) || StickPress(JOYKEY_CROSS_LEFT));
+		break;
+	case GAME_MOVE_RIGHT:
+		return (Press(DIK_D) || StickPress(JOYKEY_CROSS_RIGHT));
+		break;
+	case GAME_MOVE_ALL:
+		return (MovePress(GAME_MOVE_UP) || MovePress(GAME_MOVE_DOWN) || MovePress(GAME_MOVE_LEFT) || MovePress(GAME_MOVE_RIGHT));
+		break;
+	default:
+		assert(false);
+	}
+	return false;
+}
+
+//*************************************************************************************
 //移動用ベクトルの取得
 //*************************************************************************************
 D3DXVECTOR3 CInput::VectorMove()
