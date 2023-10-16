@@ -161,11 +161,11 @@
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
-    <ClCompile Include="collision.cpp">
-      <Filter>04_object</Filter>
-    </ClCompile>
     <ClCompile Include="move_object.cpp" />
     <ClCompile Include="collision_manager.cpp" />
+    <ClCompile Include="collision.cpp">
+      <Filter>04_object\collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -332,11 +332,11 @@
     <ClInclude Include="texture.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
-    <ClInclude Include="collision.h">
-      <Filter>04_object</Filter>
-    </ClInclude>
     <ClInclude Include="move_object.h" />
     <ClInclude Include="collision_manager.h" />
+    <ClInclude Include="collision.h">
+      <Filter>04_object\collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00_main">
@@ -371,6 +371,9 @@
     </Filter>
     <Filter Include="04_object\objectX\Character\01_Enemy">
       <UniqueIdentifier>{0d05b4ff-535b-44f4-98bc-96579e9af2ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_object\collision">
+      <UniqueIdentifier>{e3d39ca3-805d-46d8-be61-a38bdcbe07d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

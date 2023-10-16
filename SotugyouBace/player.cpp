@@ -13,7 +13,6 @@
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
-const float CPlayer::MAX_HOVER_POWER = 10.0f;			// プレイヤーの最大ホバー力
 //=====================================
 // デフォルトコンストラクタ
 //=====================================

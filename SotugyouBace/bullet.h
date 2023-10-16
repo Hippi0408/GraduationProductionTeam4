@@ -19,6 +19,7 @@
 class CBullet : public CObject3D
 {
 	static const int BULLET_LIFE = 50;			// ’e‚Ìõ–½
+	static const int BULLET_POWER = 30;			// ’e‚ÌˆĞ—Í
 	static const float BULLET_SPEED;			// ’e‚Ì‘¬“x
 	static const float BULLET_COLLISION_RADIUS;	// ’e‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³
 public:
@@ -39,11 +40,13 @@ public:
 
 	void SetLife(const int life) { m_nLife = life; }		// ’e‚Ìõ–½‚Ìİ’è
 	void SetSpeed(const float speed) { m_fSpeed = speed; }	// ’e‚Ì‘¬“x‚Ìİ’è
+	void SetPower(const int power) { m_nPower = power; }
 
 	const int GetLife() { return m_nLife; }			// ’e‚Ìõ–½‚Ìæ“¾
 	const float GetSpeed() { return m_fSpeed; }		// ’e‚Ì‘¬“x‚Ìæ“¾
+	const int GetPower() { return m_nPower; }		// ˆĞ—Í‚Ìæ“¾
 
-	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move, const PRIORITY priority = PRIORITY_BACK);	// ¶¬
+	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move,  const PRIORITY priority = PRIORITY_BACK);	// ¶¬
 
 private:
 	//****************
@@ -51,6 +54,7 @@ private:
 	//****************
 	D3DXVECTOR3 m_nPosOld;					// ‘O‰ñ‚ÌˆÊ’u
 	int m_nLife;							// ’e‚Ìõ–½
+	int m_nPower;							// ’e‚ÌˆĞ—Í
 	float m_fSpeed;							// ’e‚ÌƒXƒs[ƒh
 };
 #endif

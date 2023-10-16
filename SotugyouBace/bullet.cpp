@@ -25,6 +25,7 @@ const float CBullet::BULLET_COLLISION_RADIUS = 30.0f;	// ’e‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³
 CBullet::CBullet(const CObject::PRIORITY priority) : CObject3D(priority)
 {
 	m_nLife = BULLET_LIFE;
+	SetPower(BULLET_POWER);
 	m_fSpeed = BULLET_SPEED;
 	SetRadius(BULLET_COLLISION_RADIUS);
 }
