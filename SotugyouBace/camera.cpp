@@ -38,12 +38,12 @@ void CCamera::Init(void)
 	//視点・注視点・上方向を設定する
 	m_posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 視点(オフセット)
 	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 注視点(オフセット)
-	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);			// 上方向ベクトル
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 角度
 	m_fRotSpeed = 0.03f;							// 回転速度
-	m_CPos = { 0.0f,0.0f,0.0f };
-	m_posVDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);
+	m_CPos = { 0.0f,0.0f,0.0f };					// キャラクターの位置
+	m_posVDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 目的の視点
+	m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);	// 目的の注視点
 }
 
 //==============================================
@@ -60,7 +60,8 @@ void CCamera::Uninit(void)
 void CCamera::Update(void)
 {
 	if (CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
-	{
+	{// プレイヤーが使用されていたら
+
 		// 視点移動
 		Perspective();
 	}
@@ -132,7 +133,6 @@ void CCamera::Matrix(D3DXVECTOR3 rot,D3DXVECTOR3 pos)
 	D3DXVec3TransformCoord(&m_worldCameraPosR, &m_posR, &m_mtxWorld);
 }
 
-#ifdef _DEBUG
 //==============================================
 // カメラの移動
 //==============================================
@@ -214,13 +214,3 @@ void CCamera::Perspective()
 		Matrix(m_rot, PlayerPos);
 	}
 }
-
-//============================================
-// 距離の設定
-//============================================
-void CCamera::SetOffset(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
-{
-	m_OffsetV = posV;
-	m_OffsetR = posR;
-}
-#endif
