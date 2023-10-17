@@ -21,7 +21,6 @@
 #include"energy_gauge.h"
 
 CMeshField *CGame::pMeshField = nullptr;
-CCharacter *CGame::pBoss = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
 
 //==============================================================================================
@@ -62,7 +61,7 @@ HRESULT CGame::Init()
 	CApplication::GetPlayerManager()->SetPlayer({ 100.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ボスキャラの生成
-	pBoss = CBoss::Create({ 0.0f, 0.0f, 300.0f });
+	CBoss::Create({ 0.0f, 0.0f, 300.0f });
 
 	// スコアの生成
 	m_pScore = CScore::Create();
@@ -94,6 +93,12 @@ void CGame::Uninit()
 		m_pTime->Uninit();
 		delete m_pTime;
 		m_pTime = nullptr;
+	}
+
+	// エネルギーゲージの終了処理
+	if (m_pTime != nullptr)
+	{
+		m_pEnergy_Gauge = nullptr;
 	}
 }
 

@@ -105,5 +105,15 @@ enum MOUSE_KEY
 	MOUSE_INPUT_8,				//マウスボタン8
 };
 
+//本ゲーム専用移動KEY
+enum BOOK_GAME_DEDICATED_MOVE_KEY
+{
+	GAME_MOVE_UP = 0,
+	GAME_MOVE_DOWN,
+	GAME_MOVE_LEFT,
+	GAME_MOVE_RIGHT,
+	GAME_MOVE_ALL
+};
+
 #endif
 
