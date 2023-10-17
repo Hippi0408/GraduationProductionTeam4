@@ -12,6 +12,8 @@
 #include "meshfield.h"
 #include "energy_gauge.h"
 
+#include"player_manager.h"
+
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -269,18 +271,6 @@ void CPC::Input()
 			}
 		}
 	}
-
-	//======================================
-	//  カメラの角度の正規化
-	//======================================
-	if (rotCamera.y > D3DX_PI)
-	{
-		rotCamera.y = rotCamera.y - D3DX_PI * 2;
-	}
-	else if (rotCamera.y < -D3DX_PI)
-	{
-		rotCamera.y = rotCamera.y + D3DX_PI * 2;
-	}
 }
 
 //============================================================================
@@ -293,10 +283,34 @@ void CPC::Perspective()
 	// カメラの角度
 	D3DXVECTOR3 rotCamera = CApplication::GetCamera()->GetRot();
 
-	if ((pInput->VectorMoveJoyStick(0,true).y < -0.5f))
+	if (pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
 	{	//UPキーを押しているとき
-		rotCamera.x += 1.0f;		//カメラの上方向の加算
+		rotCamera.x -= 0.015f;		//カメラの上方向の加算
+		if (rotCamera.x <= -0.5f)
+		{
+			rotCamera.x = -0.5f;
+		}
+
 	}
+	if (pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
+	{	//DOWNキーを押しているとき
+		rotCamera.x += 0.015f;		//カメラの上方向の加算
+		if (rotCamera.x >= 0.5f)
+		{
+			rotCamera.x = 0.5f;
+		}
+	}
+
+	if (pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
+	{	//LEFTキーを押しているとき
+		rotCamera.y -= 0.015f;		//カメラの上方向の加算
+	}
+
+	if (pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
+	{	//LEFTキーを押しているとき
+		rotCamera.y += 0.015f;		//カメラの上方向の加算
+	}
+
 	//カメラの向きの設定
 	CApplication::GetCamera()->SetRot(rotCamera);
 }

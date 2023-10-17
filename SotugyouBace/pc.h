@@ -33,7 +33,7 @@ public:
 	static CPC* Create(const D3DXVECTOR3 pos, const int index);
 
 private:
-
+	D3DXVECTOR3 m_rotDest;					//–Ú“I‚ÌŒü‚«
 };
 
 #endif// _PC_H_
