@@ -2,6 +2,7 @@
 //
 // 3Dポリゴン　　　Object3D.h
 // Author : tutida ryousei
+// Author : tanimoto kosuke
 //
 //==============================================================================================
 #ifndef _OBJECT3D_H_
@@ -11,6 +12,9 @@
 #include"object.h"
 #include"texture.h"
 
+//==============================================
+// オブジェクト3Dクラス
+//==============================================
 class CObject3D : public CObject
 {
 public:
