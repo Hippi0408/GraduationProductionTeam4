@@ -35,21 +35,15 @@ CCamera::~CCamera()
 //==============================================
 void CCamera::Init(void)
 {
-
-		//視点・注視点・上方向を設定する
-		m_posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 視点(オフセット)
-		m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 注視点(オフセット)
-		m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-		m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 角度
-		m_fRotSpeed = 0.03f;							// 回転速度
-		m_CPos = { 0.0f,0.0f,0.0f };
-		m_posVDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);
-
-		
-
-	//m_posRDest.x = PlayerPos.x + sinf(m_rot.y) * 600.0f;
-	////m_posRDest.y = (PlayerPos.y + 150) + sinf(m_rot.y);
+	//視点・注視点・上方向を設定する
+	m_posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 視点(オフセット)
+	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 注視点(オフセット)
+	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 角度
+	m_fRotSpeed = 0.03f;							// 回転速度
+	m_CPos = { 0.0f,0.0f,0.0f };
+	m_posVDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);
 }
 
 //==============================================
@@ -65,25 +59,15 @@ void CCamera::Uninit(void)
 //==============================================
 void CCamera::Update(void)
 {
-	// 入力デバイスの情報
-	CInput* pInput = CInput::GetKey();
-	if (pInput->Press(DIK_K))
-	{
-		m_posRDest.y += m_fRotSpeed;
-		//SetRot(m_rot);
-	}
-
 	if (CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
 	{
+		// 視点移動
 		Perspective();
 	}
 
-	// 行列を使ったカメラ制御
-//	Matrix();
-
 #ifdef _DEBUG
 	// カメラの移動
-	//Move();
+	Move();
 #endif
 }
 
@@ -126,9 +110,6 @@ void CCamera::SetCamera(void)
 //==============================================
 void CCamera::Matrix(D3DXVECTOR3 rot,D3DXVECTOR3 pos)
 {
-	//取得処理
-	D3DXVECTOR3 PlayerPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
-
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
 	D3DXMATRIX mtxRot, mtxTrans;		//計算用のマトリックス
@@ -137,11 +118,11 @@ void CCamera::Matrix(D3DXVECTOR3 rot,D3DXVECTOR3 pos)
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// 行列を回転に反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	// 行列に移動を反映(プレイヤーの位置)
-	D3DXMatrixTranslation(&mtxTrans, PlayerPos.x, PlayerPos.y, PlayerPos.z);
+	D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 	// ワールドマトリックスの設定
@@ -229,19 +210,6 @@ void CCamera::Perspective()
 		//取得処理
 		D3DXVECTOR3 PlayerPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
 
-		//============================================
-		// カメラの追従処理
-		//============================================
-		////目的の注視点の設定
-		//m_posRDest.x = PlayerPos.x + sinf(m_rot.y) * 600.0f;
-		////m_posRDest.y = (PlayerPos.y + 150) + sinf(m_rot.y);
-		//m_posRDest.z = PlayerPos.z + cosf(m_rot.y) * 600.0f;
-
-		////目的の視点の設定												
-		//m_posVDest.x = PlayerPos.x - sinf(m_rot.y) * 600.0f;
-		//m_posVDest.y = (PlayerPos.y + 150.0f) - sinf(m_rot.y);
-		// m_posVDest.z = PlayerPos.z - cosf(m_rot.y) * 600.0f;
-
 		// 行列を使ったカメラ制御
 		Matrix(m_rot, PlayerPos);
 	}
@@ -255,29 +223,4 @@ void CCamera::SetOffset(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
 	m_OffsetV = posV;
 	m_OffsetR = posR;
 }
-void CCamera::SetTarget()
-{
-	//プレイヤー情報
-	D3DXVECTOR3 pPlayerPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
-
-	//計算用マトリックス
-	D3DXMATRIX mtxRot, mtxTrans;
-
-	D3DXMATRIX mtxa;
-
-	//ワールドマトリックスの初期化
-	D3DXMatrixIdentity(&mtxa);        //行列初期化関数(第一引数の行列を単位行列に初期化)
-
-	 //向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);//行列回転関数(第一引数にヨー(y)ピッチ(x)ロール(z)方向の回転行列を作成)
-	D3DXMatrixMultiply(&mtxa, &mtxa, &mtxRot);//行列掛け算関数(第2引数 * 第三引数を第一引数に格納)
-
-	 //位置を反映
-	D3DXMatrixTranslation(&mtxTrans, pPlayerPos.x, pPlayerPos.y, pPlayerPos.z);//行列移動関数(第一引数にx,y,z方向の移動行列を作成)
-	D3DXMatrixMultiply(&mtxa, &mtxa, &mtxTrans);
-
-	D3DXVec3TransformCoord(&m_posV, &m_posV, &mtxa);//ワールド変換行列
-	D3DXVec3TransformCoord(&m_posR, &m_posR, &mtxa);//ワールド変換行列
-}
-
 #endif
