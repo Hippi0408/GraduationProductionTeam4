@@ -12,6 +12,7 @@
 #include "player_manager.h"
 #include "application.h"
 #include "mode.h"
+#include "fade.h"
 
 //==============================================
 //コンストラクタ
@@ -35,14 +36,14 @@ CCamera::~CCamera()
 void CCamera::Init(void)
 {
 	//視点・注視点・上方向を設定する
-	m_posV = D3DXVECTOR3(0.0f, 500.0f, -1000.0f);	// 視点(オフセット)
-	m_posR = D3DXVECTOR3(0.0f, 0.0f, 1000.0f);		// 注視点(オフセット)
-	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	m_posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 視点(オフセット)
+	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 注視点(オフセット)
+	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);			// 上方向ベクトル
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);			// 角度
 	m_fRotSpeed = 0.03f;							// 回転速度
-	m_CPos = { 0.0f,0.0f,0.0f };
-	m_posVDest = D3DXVECTOR3(0.0f, 300.0f, -300.0f);
-	m_posRDest = D3DXVECTOR3(0.0f, 0.0f, -300.0f);
+	m_CPos = { 0.0f,0.0f,0.0f };					// キャラクターの位置
+	m_posVDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 目的の視点
+	m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);	// 目的の注視点
 }
 
 //==============================================
@@ -58,11 +59,12 @@ void CCamera::Uninit(void)
 //==============================================
 void CCamera::Update(void)
 {
-	// カメラの追従
-	Perspective();
+	if (CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
+	{// プレイヤーが使用されていたら
 
-	// 行列を使ったカメラ制御
-	Matrix();
+		// 視点移動
+		Perspective();
+	}
 
 #ifdef _DEBUG
 	// カメラの移動
@@ -107,7 +109,7 @@ void CCamera::SetCamera(void)
 //==============================================
 // 行列を使ったカメラ制御
 //==============================================
-void CCamera::Matrix()
+void CCamera::Matrix(D3DXVECTOR3 rot,D3DXVECTOR3 pos)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
@@ -117,11 +119,11 @@ void CCamera::Matrix()
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// 行列を回転に反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	// 行列に移動を反映(プレイヤーの位置)
-	D3DXMatrixTranslation(&mtxTrans, m_CPos.x, m_CPos.y, m_CPos.z);
+	D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 	// ワールドマトリックスの設定
@@ -131,7 +133,6 @@ void CCamera::Matrix()
 	D3DXVec3TransformCoord(&m_worldCameraPosR, &m_posR, &m_mtxWorld);
 }
 
-#ifdef _DEBUG
 //==============================================
 // カメラの移動
 //==============================================
@@ -209,36 +210,7 @@ void CCamera::Perspective()
 		//取得処理
 		D3DXVECTOR3 PlayerPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
 
-		//============================================
-		// カメラの追従処理
-		//============================================
-		//目的の注視点の設定
-		m_posRDest.x = PlayerPos.x + sinf(m_rot.y) * 600.0f;
-		m_posRDest.y = (PlayerPos.y + 150.0f) + sinf(m_rot.y);
-		m_posRDest.z = PlayerPos.z + cosf(m_rot.y);
-
-		//目的の視点の設定												
-		m_posVDest.x = PlayerPos.x - sinf(m_rot.y) * 600.0f;
-		m_posVDest.y = (PlayerPos.y + 150.0f) - sinf(m_rot.y);
-		m_posVDest.z = PlayerPos.z - cosf(m_rot.y) * 600.0f;
-
-		//視点の減衰処理
-		m_posR.x += (m_posRDest.x - m_posR.x) * 1.0f;
-		m_posR.y += (m_posRDest.y - m_posR.y) * 1.0f;
-		m_posR.z += (m_posRDest.z - m_posR.z) * 1.0f;
-
-		m_posV.x += (m_posVDest.x - m_posV.x) * 1.0f;
-		m_posV.y += (m_posVDest.y - m_posV.y) * 1.0f;
-		m_posV.z += (m_posVDest.z - m_posV.z) * 1.0f;
+		// 行列を使ったカメラ制御
+		Matrix(m_rot, PlayerPos);
 	}
 }
-
-//============================================
-// 距離の設定
-//============================================
-void CCamera::SetOffset(D3DXVECTOR3 posV, D3DXVECTOR3 posR)
-{
-	m_OffsetV = posV;
-	m_OffsetR = posR;
-}
-#endif

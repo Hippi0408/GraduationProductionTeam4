@@ -39,19 +39,19 @@ ALL_PARTSET
 	END_PARTSSET
 	
 	PARTSSET
-		PARENT = -1					# (親)NULL
+		PARENT = 0					# (親)胴
 		POS = 0.0 0.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 	
 	PARTSSET
-		PARENT = 0					# (親)体
+		PARENT = 0					# (親)胴
 		POS = 0.0 26.0 0.0
 		ROT = 0.02 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET
-		PARENT = 0					# (親)体
+		PARENT = 0					# (親)胴
 		POS = -11.0 18.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
@@ -69,7 +69,7 @@ ALL_PARTSET
 	END_PARTSSET
 
 	PARTSSET
-		PARENT = 0					# (親)体
+		PARENT = 0					# (親)胴
 		POS = 11.0 18.0 0.0
 		ROT = 0.0 59.7 0.0
 	END_PARTSSET
@@ -87,7 +87,7 @@ ALL_PARTSET
 	END_PARTSSET
 
 	PARTSSET
-		PARENT = 1					# (親)体
+		PARENT = 1					# (親)腰
 		POS = -8.0 -2.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
@@ -105,7 +105,7 @@ ALL_PARTSET
 	END_PARTSSET
 
 	PARTSSET
-		PARENT = 1					# (親)体
+		PARENT = 1					# (親)腰
 		POS = 8.0 -2.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET

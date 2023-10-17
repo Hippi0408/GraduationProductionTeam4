@@ -2,6 +2,7 @@
 //
 // collision.h
 // Author : Tutida Ryousei
+// Author : Tanimoto Kosuke
 //
 //=============================================================================
 #ifndef _COLLISION_H_
@@ -27,12 +28,13 @@ public:
 	void Collision();
 	bool Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius);	// 円の当たり判定
 
+	void SetParent(CMove_Object* parent) { m_pParent = parent; }
+
 	CMove_Object* GetParent() { return m_pParent; }
 
-	static CCollision *Create(CMove_Object* pParent);
+	static CCollision* Create(CMove_Object* pParent);
 
 private:
-
 	CMove_Object* m_pParent;	// 親オブジェクト
 };
 

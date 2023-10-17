@@ -2,6 +2,7 @@
 //
 // 弾.h (Bullet.h)
 // Author : Saito Shian
+// Author : Tanimoto Kosuke
 //
 //==============================================
 #ifndef  _BULLET_H_				//このマクロ定義がされてなかったら
@@ -11,14 +12,20 @@
 // インクルード
 //==============================================
 #include "main.h"
-#include "object3D.h"
+#include "move_object.h"
+
+//==============================================
+// 前方宣言
+//==============================================
+class CObject3D;
 
 //==============================================
 // 弾クラス
 //==============================================
-class CBullet : public CObject3D
+class CBullet : public CMove_Object
 {
 	static const int BULLET_LIFE = 50;			// 弾の寿命
+	static const int BULLET_POWER = 30;			// 弾の威力
 	static const float BULLET_SPEED;			// 弾の速度
 	static const float BULLET_COLLISION_RADIUS;	// 弾の当たり判定の大きさ
 public:
@@ -39,18 +46,30 @@ public:
 
 	void SetLife(const int life) { m_nLife = life; }		// 弾の寿命の設定
 	void SetSpeed(const float speed) { m_fSpeed = speed; }	// 弾の速度の設定
+	void SetPower(const int power) { m_nPower = power; }
+	void SetMove(const D3DXVECTOR3 move) { m_move = move; }	// 移動量の設定
+	void AddMove(const D3DXVECTOR3 move) { m_move += move; }// 移動量の加算
+	void SetSize(const D3DXVECTOR2 size) { m_size = size; }	// サイズの設定
 
 	const int GetLife() { return m_nLife; }			// 弾の寿命の取得
 	const float GetSpeed() { return m_fSpeed; }		// 弾の速度の取得
+	const int GetPower() { return m_nPower; }		// 威力の取得
+	const D3DXVECTOR3 GetMove() { return m_move; }	// 移動量の取得
+	const D3DXVECTOR2 GetSize() { return m_size; }	// サイズの取得
 
-	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move, const PRIORITY priority = PRIORITY_BACK);	// 生成
+	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move,  const PRIORITY priority = PRIORITY_BACK);	// 生成
 
 private:
 	//****************
 	// privateな変数
 	//****************
+	D3DXVECTOR3 m_move;						// 弾の移動量
 	D3DXVECTOR3 m_nPosOld;					// 前回の位置
+	D3DXVECTOR2 m_size;						// 弾のサイズ
 	int m_nLife;							// 弾の寿命
+	int m_nPower;							// 弾の威力
 	float m_fSpeed;							// 弾のスピード
+
+	CObject3D* m_pObj3D;					// オブジェクト3Dのポインタ
 };
 #endif

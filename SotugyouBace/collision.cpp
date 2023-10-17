@@ -30,6 +30,7 @@ CCollision::~CCollision()
 
 	if (pManager != nullptr)
 	{
+		// ìñÇΩÇËîªíËÇè¡Ç∑
 		pManager->DestroyCollision(this);
 	}
 }
@@ -55,9 +56,6 @@ void CCollision::Uninit()
 //=============================================================================
 void CCollision::Update()
 {
-	// èÓïÒÇÃéÊìæ
-	m_pParent;
-
 	// ìñÇΩÇËîªíË
 	Collision();
 }
@@ -95,10 +93,10 @@ void CCollision::Collision()
 			float fOtherRadius = pMove_Object->GetRadius();
 
 			// â~ìØémÇÃìñÇΩÇËîªíËÇÃåvéZ
-			bool Hit = Sphere_Collision(pos, fRadius, { OtherPos.x, OtherPos.y, OtherPos.z }, fOtherRadius);
+			bool bHit = Sphere_Collision(pos, fRadius, { OtherPos.x, OtherPos.y, OtherPos.z }, fOtherRadius);
 
 			// ÉqÉbÉgÇµÇΩèÍçá
-			if (Hit)
+			if (bHit)
 			{
 				m_pParent->Hit();
 				pMove_Object->Hit();
@@ -132,9 +130,9 @@ bool CCollision::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, con
 //=============================================================================
 // ê∂ê¨èàóù
 //=============================================================================
-CCollision *CCollision::Create(CMove_Object* pParent)
+CCollision* CCollision::Create(CMove_Object* pParent)
 {
-	CCollision *pCollision = new CCollision;
+	CCollision* pCollision = new CCollision;
 
 	if (pCollision != nullptr)
 	{
