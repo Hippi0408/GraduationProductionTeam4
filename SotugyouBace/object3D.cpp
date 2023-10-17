@@ -15,7 +15,7 @@
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CObject3D::CObject3D(const CObject::PRIORITY priority) : CMove_Object(priority)
+CObject3D::CObject3D(const CObject::PRIORITY priority) : CObject(priority)
 {
 	m_pVtxBuff = nullptr;					// 頂点バッファ
 	m_texture = CTexture::TEXTURE_NONE;		// テクスチャ
@@ -80,8 +80,6 @@ HRESULT CObject3D::Init()
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 
-	CMove_Object::Init();
-
 	return S_OK;
 }
 
@@ -96,8 +94,6 @@ void CObject3D::Uninit()
 		m_pVtxBuff->Release();
 		m_pVtxBuff = nullptr;
 	}
-
-	CMove_Object::Uninit();
 
 	Release();
 }

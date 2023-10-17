@@ -29,9 +29,9 @@ public:
 	void SetRadius(const float radius) { m_fRadius = radius; }			// 半径の設定
 	void SetCollision() { m_pCollision = CCollision::Create(this); }	// 当たり判定の生成
 
-	D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
-	D3DXVECTOR3 GetCenterPos() { return m_pos + m_CenterPos; }	// 中心位置の取得
-	float GetRadius() { return m_fRadius; }						// 半径の取得
+	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
+	const D3DXVECTOR3 GetCenterPos() { return m_pos + m_CenterPos; }	// 中心位置の取得
+	const float GetRadius() { return m_fRadius; }						// 半径の取得
 
 private:
 	D3DXVECTOR3 m_pos;			// 位置
