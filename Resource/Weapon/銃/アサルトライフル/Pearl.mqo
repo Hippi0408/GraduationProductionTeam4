@@ -2,13 +2,13 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos 17.8981 -112.3036 1922.5670
+	pos 17.8981 -112.3036 1201.6044
 	lookat 0.0000 0.0000 0.0000
-	head -7.1418
-	pich 0.1192
+	head -7.8918
+	pich 0.0692
 	bank -0.0100
 	ortho 0
-	zoom2 3.9010
+	zoom2 6.2416
 	amb 0.250 0.250 0.250
 	dirlights 1 {
 		light {
@@ -27,7 +27,7 @@ Material 6 {
 }
 Object "obj9" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -219,7 +219,7 @@ Object "obj9" {
 }
 Object "obj10" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -273,7 +273,7 @@ Object "obj10" {
 }
 Object "obj5" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -369,7 +369,7 @@ Object "obj5" {
 }
 Object "obj17" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -411,7 +411,7 @@ Object "obj17" {
 }
 Object "obj19" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -617,7 +617,7 @@ Object "obj19" {
 }
 Object "obj20" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -694,7 +694,7 @@ Object "obj20" {
 }
 Object "obj21" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -770,7 +770,7 @@ Object "obj21" {
 }
 Object "obj11" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -891,7 +891,7 @@ Object "obj11" {
 }
 Object "obj22" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -971,7 +971,7 @@ Object "obj22" {
 }
 Object "obj18" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -1013,7 +1013,7 @@ Object "obj18" {
 }
 Object "obj23" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -1090,7 +1090,7 @@ Object "obj23" {
 }
 Object "obj1" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
@@ -1222,7 +1222,7 @@ Object "obj1" {
 }
 Object "obj24" {
 	visible 15
-	locking 1
+	locking 0
 	shading 1
 	facet 59.5
 	color 0.898 0.498 0.698
