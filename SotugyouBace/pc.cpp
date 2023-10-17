@@ -101,7 +101,10 @@ void CPC::Input()
 	// 歩き判定
 	bool bWalk = false;
 
-	if (pInput->MovePress(GAME_MOVE_ALL))
+	if (pInput->StickPress(JOYKEY_CROSS_UP) || 
+		pInput->StickPress(JOYKEY_CROSS_DOWN) || 
+		pInput->StickPress(JOYKEY_CROSS_RIGHT) || 
+		pInput->StickPress(JOYKEY_CROSS_LEFT))
 	{
 		// 回転させる
 		Rotation();
@@ -116,14 +119,14 @@ void CPC::Input()
 		float rotY = rotCamera.y;
 
 		//視点移動
-		if (pInput->MovePress(GAME_MOVE_UP))
+		if (pInput->StickPress(JOYKEY_CROSS_UP))
 		{//上キーが押された
-			if (pInput->MovePress(GAME_MOVE_LEFT))
+			if (pInput->StickPress(JOYKEY_CROSS_LEFT))
 			{
 				move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
 			}
-			else if (pInput->MovePress(GAME_MOVE_RIGHT))
+			else if (pInput->StickPress(JOYKEY_CROSS_RIGHT))
 			{
 				move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
@@ -134,14 +137,14 @@ void CPC::Input()
 				move.z = cosf(rotY) * boostMove.z;
 			}
 		}
-		else if (pInput->MovePress(GAME_MOVE_DOWN))
+		else if (pInput->StickPress(JOYKEY_CROSS_DOWN))
 		{//下キーが押された
-			if (pInput->MovePress(GAME_MOVE_LEFT))
+			if (pInput->StickPress(JOYKEY_CROSS_LEFT))
 			{
 				move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
 			}
-			else if (pInput->MovePress(GAME_MOVE_RIGHT))
+			else if (pInput->StickPress(JOYKEY_CROSS_RIGHT))
 			{
 				move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
@@ -152,12 +155,12 @@ void CPC::Input()
 				move.z = cosf(rotY + D3DX_PI) * boostMove.z;
 			}
 		}
-		else if (pInput->MovePress(GAME_MOVE_LEFT))
+		else if (pInput->StickPress(JOYKEY_CROSS_LEFT))
 		{//左キーが押された
 			move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
 			move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
 		}
-		else if (pInput->MovePress(GAME_MOVE_RIGHT))
+		else if (pInput->StickPress(JOYKEY_CROSS_RIGHT))
 		{//右キーが押された
 			move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
 			move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
@@ -280,7 +283,7 @@ void CPC::Perspective()
 	// カメラの角度
 	D3DXVECTOR3 rotCamera = CApplication::GetCamera()->GetRot();
 
-	if (pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
+	if (pInput->Press(DIK_UP) || pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
 	{	//UPキーを押しているとき
 		rotCamera.x -= 0.015f;		//カメラの上方向の加算
 		if (rotCamera.x <= -0.5f)
@@ -289,7 +292,7 @@ void CPC::Perspective()
 		}
 
 	}
-	if (pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
+	if (pInput->Press(DIK_DOWN) || pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
 	{	//DOWNキーを押しているとき
 		rotCamera.x += 0.015f;		//カメラの上方向の加算
 		if (rotCamera.x >= 0.5f)
@@ -298,12 +301,12 @@ void CPC::Perspective()
 		}
 	}
 
-	if (pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
+	if (pInput->Press(DIK_LEFT) || pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
 	{	//LEFTキーを押しているとき
 		rotCamera.y -= 0.015f;		//カメラの上方向の加算
 	}
 
-	if (pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
+	if (pInput->Press(DIK_RIGHT) || pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
 	{	//LEFTキーを押しているとき
 		rotCamera.y += 0.015f;		//カメラの上方向の加算
 	}
