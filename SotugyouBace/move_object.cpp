@@ -39,4 +39,6 @@ void CMove_Object::Uninit()
 		m_pCollision->Uninit();
 		m_pCollision = nullptr;
 	}
+
+	Release();
 }

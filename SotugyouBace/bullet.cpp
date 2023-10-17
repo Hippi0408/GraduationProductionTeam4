@@ -62,6 +62,13 @@ void CBullet::Uninit()
 {
 	// オブジェクト3Dの終了処理
 	CMove_Object::Uninit();
+
+	// 3Dオブジェクトが使用されている場合
+	if (m_pObj3D != nullptr)
+	{
+		m_pObj3D->Uninit();
+		m_pObj3D = nullptr;
+	}
 }
 
 //=============================================================================
@@ -87,6 +94,9 @@ void CBullet::Update()
 	m_pObj3D->SetPos(pos);
 	m_pObj3D->SetSize(size);
 
+	// 床の当たり判定
+	FieldCollision();
+
 	// 寿命を減らす
 	m_nLife--;
 	if (m_nLife <= 0)
@@ -94,9 +104,6 @@ void CBullet::Update()
 		Uninit();
 		return;
 	}
-
-	// 床の当たり判定
-	FieldCollision();
 }
 
 //=============================================================================

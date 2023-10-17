@@ -118,16 +118,19 @@ void CPC::Input()
 		{//上キーが押された
 			if (pInput->MovePress(GAME_MOVE_LEFT))
 			{
+				rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
 				move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
 			}
 			else if (pInput->MovePress(GAME_MOVE_RIGHT))
 			{
+				rotDest.y = rotCamera.y + D3DX_PI * -0.75f;
 				move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
 			}
 			else
 			{
+				rotDest.y = rotCamera.y + D3DX_PI;
 				move.x = sinf(rotY) * boostMove.x;
 				move.z = cosf(rotY) * boostMove.z;
 			}
@@ -136,27 +139,32 @@ void CPC::Input()
 		{//下キーが押された
 			if (pInput->MovePress(GAME_MOVE_LEFT))
 			{
+				rotDest.y = rotCamera.y + D3DX_PI * 0.25f;
 				move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
 			}
 			else if (pInput->MovePress(GAME_MOVE_RIGHT))
 			{
+				rotDest.y = rotCamera.y + D3DX_PI * -0.25f;
 				move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
 				move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
 			}
 			else
 			{
+				rotDest.y = rotCamera.y;
 				move.x = sinf(rotY + D3DX_PI) * boostMove.x;
 				move.z = cosf(rotY + D3DX_PI) * boostMove.z;
 			}
 		}
 		else if (pInput->MovePress(GAME_MOVE_LEFT))
 		{//左キーが押された
+			rotDest.y = rotCamera.y + D3DX_PI * 0.5f;
 			move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
 			move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
 		}
 		else if (pInput->MovePress(GAME_MOVE_RIGHT))
 		{//右キーが押された
+			rotDest.y = rotCamera.y + D3DX_PI * -0.5f;
 			move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
 			move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
 		}
@@ -211,7 +219,7 @@ void CPC::Input()
 		SetJump_PressCount(0);
 
 	// 攻撃処理
-	if ((pInput->Trigger(DIK_B)) || pInput->Press(JOYPAD_R2))
+	if ((pInput->Trigger(DIK_B)) || pInput->Trigger(JOYPAD_R2))
 	{
 		// プレイヤーの攻撃処理
 		PlayerAttack();
