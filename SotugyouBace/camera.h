@@ -21,7 +21,7 @@ public:
 	void Update(void);
 	void SetCamera(void);
 
-	void Matrix();
+	void Matrix(D3DXVECTOR3 rot, D3DXVECTOR3 pos);
 	void Move();
 	void Perspective();					// 視点処理
 
@@ -32,6 +32,8 @@ public:
 	void AddPosV(const D3DXVECTOR3 posV) { m_posV += posV; }
 	void AddPosR(const D3DXVECTOR3 posR) { m_posR += posR; }
 
+	void SetTarget();
+
 	const D3DXVECTOR3 GetPosV() { return m_posV; }
 	const D3DXVECTOR3 GetPosR() { return m_posR; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
@@ -39,6 +41,7 @@ public:
 
 private:
 	D3DVIEWPORT9	m_viewport;			// ビューポート
+	D3DXVECTOR3     m_pos;				// 位置
 	D3DXVECTOR3		m_posV;				// 視点
 	D3DXVECTOR3		m_InitposV;			// 視点の初期値
 	D3DXVECTOR3     m_posDest;			// 目的の視点
