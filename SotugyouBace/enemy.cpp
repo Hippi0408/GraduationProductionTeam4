@@ -33,6 +33,9 @@ CEnemy::~CEnemy()
 //============================================================================
 HRESULT CEnemy::Init()
 {
+	// タグの設定
+	SetTag(TAG_ENEMY);
+
 	// 当たり判定の生成
 	SetCollision();
 
@@ -69,7 +72,35 @@ void CEnemy::Draw()
 //============================================================================
 // 被弾処理
 //============================================================================
-void CEnemy::Hit()
+void CEnemy::Hit(CMove_Object* pHit)
 {
-	Damage(30);
+	// ヒットした移動オブジェクトが使用中の場合
+	if (pHit != nullptr)
+	{
+		// ヒットした移動オブジェクトのタグを取得
+		TAG tag = pHit->GetTag();
+
+		// タグから種類を選ぶ
+		switch (tag)
+		{
+		case TAG_PLAYER :
+			break;
+		case TAG_ENEMY :
+			break;
+		case TAG_BULLET:
+			// 弾のダメージを返す
+			Damage(pHit->GetPower());
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+//============================================================================
+// 破壊処理
+//============================================================================
+void CEnemy::Destroy()
+{
+	CCharacter::Destroy();
 }

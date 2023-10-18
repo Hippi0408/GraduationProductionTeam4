@@ -93,13 +93,13 @@ void CCollision::Collision()
 			float fOtherRadius = pMove_Object->GetRadius();
 
 			// ‰~“¯Žm‚Ì“–‚½‚è”»’è‚ÌŒvŽZ
-			bool bHit = Sphere_Collision(pos, fRadius, { OtherPos.x, OtherPos.y, OtherPos.z }, fOtherRadius);
+			bool bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
 
 			// ƒqƒbƒg‚µ‚½ê‡
 			if (bHit)
 			{
-				m_pParent->Hit();
-				pMove_Object->Hit();
+				m_pParent->Hit(pMove_Object);
+				pMove_Object->Hit(m_pParent);
 			}
 		}
 	}

@@ -12,6 +12,7 @@
 #include "camera.h"
 #include "fontString.h"
 #include "halfsphere.h"
+#include "title_menu.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -44,6 +45,8 @@ HRESULT CTitle::Init()
 
 	//CFontString::Create({ 490.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "タイトル");
 
+	m_bWindow = false;
+
 	return S_OK;
 }
 
@@ -61,14 +64,31 @@ void CTitle::Update()
 {
 	CInput* pInput = CInput::GetKey();
 
-	for (int nCnt = 0; nCnt < 4; nCnt++)
+	CMenu* pMenu = CApplication::GetMenu();
+
+	// ウィンドウが表示されていない場合
+	if (m_bWindow == false)
 	{
-		if ((pInput->Trigger(DIK_RETURN) || pInput->Press(JOYPAD_B, nCnt) || pInput->Press(JOYPAD_A, nCnt)
-			|| pInput->Trigger(JOYPAD_START, nCnt))
+		if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_B) || pInput->Trigger(JOYPAD_A)
+			|| pInput->Trigger(JOYPAD_START))
 			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 		{
-			CFade::SetFade(CApplication::MODE_GAME, 0.05f);
+			// 決定SE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
+
+			// ウィンドウを開く
+			m_bWindow = true;
+
+			// メニューの表示
+			pMenu->SetDisplay(true);
+			//CFade::SetFade(CApplication::MODE_GAME, 0.05f);
 		}
+	}
+
+	// ウインドウが閉じた場合
+	if (pMenu->GetDisplay() == false)
+	{
+		m_bWindow = false;
 	}
 }
 

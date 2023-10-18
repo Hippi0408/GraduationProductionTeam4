@@ -26,6 +26,7 @@ public:
 
 private:
 	CHalfSphere* m_pHalfSphere;
+	bool m_bWindow;		// ウィンドウ使用状態
 };
 
 #endif // !_TITLE_H_
