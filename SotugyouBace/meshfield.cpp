@@ -330,19 +330,23 @@ float CMeshField::MeshCollision(D3DXVECTOR3 pos)
 			m_bPorigon_Scope = true;
 			m_nCntIndex = nCnt;
 
+			// 接地している場合
 			if (m_fPosY > pos.y)
+			{
 				m_bHit = true;
-			break;
+
+				// 処理を打ち切る
+				break;
+			}
 		}
-
-		//インデックスバッファのアンロック
-		m_pIdxBuff->Unlock();
-
-		//頂点バッファをアンロックする
-		m_pVtxBuff->Unlock();
 	}
-
 	m_nPolyCount = 0;
+
+	//インデックスバッファのアンロック
+	m_pIdxBuff->Unlock();
+
+	//頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
 
 	return m_fPosY;
 }

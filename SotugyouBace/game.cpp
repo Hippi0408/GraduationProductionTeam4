@@ -61,23 +61,20 @@ HRESULT CGame::Init()
 	CFontString::Create({ SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2 - 200.0f, 0.0f }, { 50.0f, 50.0f }, "ジャンプながおし");
 	
 	// プレイヤーの生成(テスト)
-	CApplication::GetPlayerManager()->SetPlayer({ 100.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 0.0f, 300.0f });
-
-	// スコアの生成
-	m_pScore = CScore::Create();
 
 	// タイムの生成
 	m_pTime = CTime::Create();
 
 	// ハーフスフィアの生成
-	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
+	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20000.0f, 20000.0f, 20000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	// メッシュフィールドの生成
-	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
+	pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
 
 	// エネルギーゲージ
 	m_pEnergy_Gauge = CEnergy_Gauge::Create({ SCREEN_WIDTH / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });
@@ -134,17 +131,13 @@ void CGame::Update()
 
 		CInput* pInput = CInput::GetKey();
 
-		//for (int nCnt = 0; nCnt < 4; nCnt++)
-		//{
-		//	if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_START, nCnt))
-		//		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
-		//	{
-		//		CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
-		//	}
-		//}
 		// デバッグ専用コマンド
 #ifdef _DEBUG
-	// 左Shiftキーを押したままの場合
+		if (pInput->Trigger(DIK_F5))
+		{
+			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
+		}
+		// 左Shiftキーを押したままの場合
 		if (pInput->Press(DIK_LSHIFT))
 		{
 			int nKey = -1;
@@ -185,12 +178,6 @@ void CGame::Update()
 		// LShiftキー無しの場合
 		else
 		{
-			// スコアの加算
-			if (pInput->Press(DIK_L))
-			{
-				m_pScore->AddScore(10);
-			}
-
 			// スコアの加算
 			if (pInput->Trigger(DIK_0))
 			{
