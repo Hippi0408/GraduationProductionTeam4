@@ -12,6 +12,8 @@
 #include "meshfield.h"
 #include "energy_gauge.h"
 
+#include"player_manager.h"
+
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -99,11 +101,13 @@ void CPC::Input()
 	// 歩き判定
 	bool bWalk = false;
 
+	// 歩いている場合
 	if (pInput->MovePress(GAME_MOVE_ALL))
 	{
 		// 回転させる
 		Rotation();
 
+		// 歩き判定を真にする
 		bWalk = true;
 	}
 
@@ -120,45 +124,54 @@ void CPC::Input()
 			{//上キーが押された
 				if (pInput->MovePress(GAME_MOVE_LEFT))
 				{
+					rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
 					move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
 					move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
 				}
 				else if (pInput->MovePress(GAME_MOVE_RIGHT))
 				{
+					rotDest.y = rotCamera.y + D3DX_PI * -0.75f;
 					move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
 					move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
 				}
 				else
 				{
+					rotDest.y = rotCamera.y + D3DX_PI;
 					move.x = sinf(rotY) * boostMove.x;
 					move.z = cosf(rotY) * boostMove.z;
 				}
 			}
+
 			else if (pInput->MovePress(GAME_MOVE_DOWN))
 			{//下キーが押された
 				if (pInput->MovePress(GAME_MOVE_LEFT))
 				{
+					rotDest.y = rotCamera.y + D3DX_PI * 0.25f;
 					move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
 					move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
 				}
 				else if (pInput->MovePress(GAME_MOVE_RIGHT))
 				{
+					rotDest.y = rotCamera.y + D3DX_PI * -0.25f;
 					move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
 					move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
 				}
 				else
 				{
+					rotDest.y = rotCamera.y;
 					move.x = sinf(rotY + D3DX_PI) * boostMove.x;
 					move.z = cosf(rotY + D3DX_PI) * boostMove.z;
 				}
 			}
 			else if (pInput->MovePress(GAME_MOVE_LEFT))
 			{//左キーが押された
+				rotDest.y = rotCamera.y + D3DX_PI * 0.5f;
 				move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
 				move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
 			}
 			else if (pInput->MovePress(GAME_MOVE_RIGHT))
 			{//右キーが押された
+				rotDest.y = rotCamera.y + D3DX_PI * -0.5f;
 				move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
 				move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
 			}
@@ -169,8 +182,9 @@ void CPC::Input()
 				// 歩き
 				SetMotion(MOTION_WALK, nCnt);
 			}
+			// 前回モーションが歩きモーションだった場合
+
 		}
-		// 前回モーションが歩きモーションだった場合
 		else if (GetCurrentMotion(nCnt) != MOTION_LANDING && GetGround())
 		{
 			// 歩きを終了させる
@@ -213,7 +227,7 @@ void CPC::Input()
 		SetJump_PressCount(0);
 
 	// 攻撃処理
-	if ((pInput->Trigger(DIK_B)) || pInput->Press(JOYPAD_R2))
+	if ((pInput->Trigger(DIK_B)) || pInput->Trigger(JOYPAD_R2))
 	{
 		// プレイヤーの攻撃処理
 		PlayerAttack();
@@ -273,18 +287,6 @@ void CPC::Input()
 			}
 		}
 	}
-
-	//======================================
-	//  カメラの角度の正規化
-	//======================================
-	if (rotCamera.y > D3DX_PI)
-	{
-		rotCamera.y = rotCamera.y - D3DX_PI * 2;
-	}
-	else if (rotCamera.y < -D3DX_PI)
-	{
-		rotCamera.y = rotCamera.y + D3DX_PI * 2;
-	}
 }
 
 //============================================================================
@@ -297,10 +299,34 @@ void CPC::Perspective()
 	// カメラの角度
 	D3DXVECTOR3 rotCamera = CApplication::GetCamera()->GetRot();
 
-	if ((pInput->VectorMoveJoyStick(0,true).y < -0.5f))
+	if (pInput->Press(DIK_UP) || pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
 	{	//UPキーを押しているとき
-		rotCamera.x += 1.0f;		//カメラの上方向の加算
+		rotCamera.x -= 0.015f;		//カメラの上方向の加算
+		if (rotCamera.x <= -0.5f)
+		{
+			rotCamera.x = -0.5f;
+		}
+
 	}
+	if (pInput->Press(DIK_DOWN) || pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
+	{	//DOWNキーを押しているとき
+		rotCamera.x += 0.015f;		//カメラの上方向の加算
+		if (rotCamera.x >= 0.5f)
+		{
+			rotCamera.x = 0.5f;
+		}
+	}
+
+	if (pInput->Press(DIK_LEFT) || pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
+	{	//LEFTキーを押しているとき
+		rotCamera.y -= 0.015f;		//カメラの上方向の加算
+	}
+
+	if (pInput->Press(DIK_RIGHT) || pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
+	{	//LEFTキーを押しているとき
+		rotCamera.y += 0.015f;		//カメラの上方向の加算
+	}
+
 	//カメラの向きの設定
 	CApplication::GetCamera()->SetRot(rotCamera);
 }

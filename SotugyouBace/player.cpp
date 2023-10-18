@@ -9,12 +9,11 @@
 #include "input.h"
 #include "bullet.h"
 #include "player_manager.h"
-#include"game.h"
+#include "game.h"
 #include "energy_gauge.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
-const float CPlayer::MAX_HOVER_POWER = 10.0f;			// プレイヤーの最大ホバー力
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -42,6 +41,9 @@ HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
 	LoadFile("Data\\text\\Motion\\motion_player.txt");
+
+	// タグの設定
+	SetTag(TAG_PLAYER);
 
 	// 当たり判定の生成
 	SetCollision();
@@ -222,7 +224,24 @@ void CPlayer::Landing(const D3DXVECTOR3 pos)
 //============================================================================
 // 被弾処理
 //============================================================================
-void CPlayer::Hit()
+void CPlayer::Hit(CMove_Object* pHit)
 {
-	Damage(30);
+	if (pHit != nullptr)
+	{
+		TAG tag = pHit->GetTag();
+
+		switch (tag)
+		{
+		case TAG_PLAYER:
+			break;
+		case TAG_ENEMY:
+			break;
+		case TAG_BULLET:
+			// 弾のダメージを返す
+			Damage(pHit->GetPower());
+			break;
+		default:
+			break;
+		}
+	}
 }

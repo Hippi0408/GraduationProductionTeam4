@@ -19,7 +19,7 @@ const float CMenu::CHOICE_MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 //=====================================
 CMenu::CMenu() : m_nSelectChoice(0), m_fBlinkSpeed(CHOICE_BLINK_SPEED), m_bDecition(false)
 {
-
+	m_nMenuInitiative = 0;
 }
 
 //=====================================
@@ -38,7 +38,7 @@ HRESULT CMenu::Init()
 	// 選択肢が使用されている場合
 	if (!m_vpListChoice.empty())
 	{
-		for (auto pChoice : GetChoice())
+		for (auto pChoice : GetChoiceAll())
 		{
 			pChoice->SetAlpha(CHOICE_MINI_ALPHA);
 		}
@@ -62,16 +62,16 @@ void CMenu::Uninit()
 //============================================================================
 void CMenu::Update()
 {
-	Input();
+
 }
 
 //============================================================================
-// 入力処理
+// 選択肢の処理
 //============================================================================
-void CMenu::Input()
+void CMenu::Choice()
 {
-	// フェード中では無い場合
-	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+	// フェード中では無い場合 && 表示中の場合
+	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE && m_bDisplay == true)
 	{
 		// 選択肢が使用されている場合
 		if (!m_vpListChoice.empty())
@@ -102,7 +102,7 @@ void CMenu::Input()
 				}
 			}
 
-			if (pInput->Trigger(DIK_RETURN) || (pInput->Trigger(JOYPAD_B, m_nMenuInitiative) || pInput->Press(JOYPAD_A, m_nMenuInitiative)))
+			if (pInput->Trigger(DIK_RETURN) || (pInput->Trigger(JOYPAD_B, m_nMenuInitiative) || pInput->Trigger(JOYPAD_A, m_nMenuInitiative)))
 			{
 				// 決定SE
 				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
@@ -113,6 +113,7 @@ void CMenu::Input()
 		}
 	}
 }
+
 //============================================================================
 // 選択肢を変更した時の処理
 //============================================================================
@@ -128,4 +129,20 @@ void CMenu::ChangeChoice(const int nextChoice)
 	// 変更後の選択肢の処理
 	m_vpListChoice[m_nSelectChoice]->SetBlink(m_fBlinkSpeed);
 	m_vpListChoice[m_nSelectChoice]->SetAlpha(1.0f);
+}
+
+//============================================================================
+// 選択肢の表示判定を設定する
+//============================================================================
+void CMenu::SetDisplay(const bool display)
+{
+	m_bDisplay = display;
+	for (auto pChoice : GetChoiceAll()) { pChoice->SetFontDraw(display); }
+
+	// 表示を消す場合
+	if (display == false)
+	{
+		// 選択肢の情報を初期化する
+		ChangeChoice(0);
+	}
 }

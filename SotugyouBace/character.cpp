@@ -37,12 +37,6 @@ CCharacter::~CCharacter()
 //============================================================================
 HRESULT CCharacter::Init()
 {
-	//m_nMotion = 0;
-	//m_nCurrentMotion = 0;			// 現在のモーション番号
-
-	//m_nCurrentKey = 0;				// キーを0にする
-	//m_nCountMotion = 0;				// モーションカウントを0にする
-
 	m_move = { 0.0f, 0.0f, 0.0f };
 
 	CMove_Object::Init();

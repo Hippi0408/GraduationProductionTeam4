@@ -2,6 +2,7 @@
 //
 // 3Dポリゴン　　　Object3D.h
 // Author : tutida ryousei
+// Author : tanimoto kosuke
 //
 //==============================================================================================
 #ifndef _OBJECT3D_H_
@@ -10,9 +11,11 @@
 #include <d3dx9.h>
 #include"object.h"
 #include"texture.h"
-#include"move_object.h"
 
-class CObject3D : public CMove_Object
+//==============================================
+// オブジェクト3Dクラス
+//==============================================
+class CObject3D : public CObject
 {
 public:
 	// 3D頂点フォーマット
@@ -36,12 +39,13 @@ public:
 	void Draw()  override;
 
 	void UV();
-	virtual void Hit() override {};
 
 	static CObject3D* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const PRIORITY priority = PRIORITY_CENTER, const D3DXCOLOR col = {1.0f,1.0f, 1.0f, 1.0f}, const bool billboard = false);
 
 	void SetTexPos(const float top, const float row, const float right, const float left);			// テクスチャの分割
 
+	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }					// 位置の設定
+	void AddPos(const D3DXVECTOR3 pos) { m_pos += pos; }				// 位置の加算
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }
@@ -51,6 +55,7 @@ public:
 	void Setbillboard(const bool billboard) { m_bBillboard = billboard; }
 	void SetTexture(CTexture::TEXTURE texture) { m_texture = texture; }
 
+	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR2 GetScale() { return m_size; }
 	const D3DXCOLOR GetCol() { return m_col; }
@@ -61,6 +66,7 @@ private:
 	// 頂点フォーマット
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		// 頂点バッファ
 	D3DXMATRIX m_mtxWorld;					// ワールドマトリックス
+	D3DXVECTOR3 m_pos;						// 位置
 	D3DXVECTOR2 m_size;						// サイズ
 	D3DXVECTOR3 m_move;						// 移動量
 	D3DXVECTOR3 m_rot;						// 角度

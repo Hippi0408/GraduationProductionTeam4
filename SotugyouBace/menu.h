@@ -27,17 +27,20 @@ public:
 	virtual void Uninit();
 	virtual void Update();
 
-	void Input();								// 入力処理
+	virtual void Choice();						// 選択肢の処理
 	void ChangeChoice(const int nextChoice);	// 選択肢を変更した時の処理
 
 	void SetMenuInitiative(const int index) { m_nMenuInitiative = index; }
 	void SetDecition(const bool decition) { m_bDecition = decition; }
 	void SetChoice(CFontString* choice) { m_vpListChoice.push_back(choice); }
+	void SetDisplay(const bool display);		// 選択肢の表示判定を設定する
 
 	const int GetMenuInitiative() { return m_nMenuInitiative; }
 	const int GetSelectChoice() { return m_nSelectChoice; }
 	const bool GetDecition() { return m_bDecition; }
-	std::vector<CFontString*> GetChoice() { return m_vpListChoice; }
+	const bool GetDisplay() { return m_bDisplay; }
+	CFontString* GetChoice(const int index) { return m_vpListChoice[index]; }
+	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
 
 private:
 
@@ -45,6 +48,7 @@ private:
 	int		m_nSelectChoice;					// 選択肢の番号
 	float	m_fBlinkSpeed;						// 点滅速度
 	bool	m_bDecition;						// 決定の判定
+	bool	m_bDisplay;							// 表示中の判定
 
 	std::vector<CFontString*> m_vpListChoice;	// 選択肢ポインタの配列
 };

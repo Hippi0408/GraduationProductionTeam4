@@ -22,12 +22,11 @@ class CPlayer : public CCharacter
 	static const int FIRST_MAX_LIFE = 100;		// 初期最大体力の値
 	static const float PLAYER_COLLISION_RADIUS;	// プレイヤーの当たり判定の大きさ
 	static const float PLAYER_JUMP_POWER;		// プレイヤーのジャンプ力
-	static const float MAX_HOVER_POWER;			// プレイヤーの最大ホバー力
 
 public:
 
 	// モデルの配置情報
-	enum Model
+	enum MODEL
 	{
 		MODEL_BODY = 0,			// [0]胴
 		MODEL_HIP,				// [1]腰
@@ -67,7 +66,7 @@ public:
 	virtual void Draw() override;
 
 	void ChangeMotion(const int index = 0) override;		// モーションの切り替え
-	void Hit() override;
+	void Hit(CMove_Object* pHit) override;
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
 	void JumpStart();					// プレイヤーのジャンプ処理
@@ -80,8 +79,6 @@ public:
 
 private:
 	int m_nCharaIndex;					// 自身の番号
-	float m_fJumpPower;					// 現在のジャンプ力
-	float m_fHoverPower;				// 現在のホバー力
 };
 
 #endif// _PLAYER_H_

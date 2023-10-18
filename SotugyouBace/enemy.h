@@ -27,7 +27,9 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void Hit() override;
+	void Hit(CMove_Object* pHit) override;
+
+	virtual void Destroy() override;			// ”j‰óˆ—
 
 private:
 };

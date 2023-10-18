@@ -47,11 +47,11 @@ public:
 	void SetFontDraw(const bool draw) { for (auto pFont : m_apFont) pFont->SetDrawFlag(draw); }
 	void SetScale(const bool scale);
 	void SetBlink(const float speed) { m_bBlink = true; m_fBlinkSpeed = speed; }
-	void SetString(const std::string letter, const PRIORITY priority = PRIORITY_FRONT);
+	void SetString(const std::string letter, const PRIORITY priority = PRIORITY_SCREEN);
 
 	std::vector <CFont*> GetFontAll() { return m_apFont; }
 
-	static CFontString* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const std::string letter, const PRIORITY priority = PRIORITY_FRONT);
+	static CFontString* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const std::string letter, const PRIORITY priority = PRIORITY_SCREEN);
 private:
 
 	float m_fScale;					// •¶Žš‚Ì‘å‚«‚³

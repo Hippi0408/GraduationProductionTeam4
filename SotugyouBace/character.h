@@ -71,17 +71,17 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void Move();									// 移動処理
-	void Damage(const int value);					// ダメージ処理
-	void Recovery(const int value);					// 回復処理
-	void Destroy();									// 自身を破壊する処理
+	void Move();
+	void Damage(const int value);
+	void Recovery(const int value);
+	virtual void Destroy();						// 自身を破壊する処理
 	virtual void Landing(const D3DXVECTOR3 pos);	// 着地処理
 	void FieldCollision();							// 床の当たり判定
 	void Motion(int nCnt);							// モーションの設定
 	virtual void ChangeMotion(const int index);		// モーションの切り替え
 	void Rotation();								// 回転方向へ振り向かせる処理
 	void NormalizeRot();							// 角度の正規化
-	virtual void Hit() override = 0;
+	virtual void Hit(CMove_Object* pHit) override = 0;
 
 	void SetGround(const bool ground) { m_bGround = ground; }
 	void SetMotion(const int motion, const int index) { m_nMotion[index] = motion; }
@@ -110,7 +110,6 @@ public:
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
 	MODEL_SET GetModelSet(const int index) { return m_ModelSet[index]; }
-	//CObjectX* GetModel(const int index) { return m_ModelSet.empty() ? nullptr : m_ModelSet[index].pModel; }
 	std::vector<CObjectX*> GetModelAll();
 	const bool GetBoost() { return m_bBoost; }
 	const bool GetJump_Boost() { return m_bJump_Boost; }
