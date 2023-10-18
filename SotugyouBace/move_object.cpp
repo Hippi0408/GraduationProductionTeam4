@@ -11,6 +11,7 @@
 //==============================================================================================
 CMove_Object::CMove_Object(const PRIORITY priority) : CObject(priority)
 {
+	m_tag = TAG_NONE;
 	m_CenterPos = { 0.0f, 0.0f, 0.0f };
 }
 

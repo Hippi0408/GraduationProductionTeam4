@@ -10,9 +10,6 @@
     <ClCompile Include="camera.cpp">
       <Filter>00_Main</Filter>
     </ClCompile>
-    <ClCompile Include="cpu.cpp">
-      <Filter>04_Object\MoveObject\Character\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="debugProc.cpp">
       <Filter>00_Main</Filter>
     </ClCompile>
@@ -60,9 +57,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>04_Object\Object2D</Filter>
     </ClCompile>
     <ClCompile Include="meshfield.cpp">
       <Filter>04_Object\Object3D</Filter>
@@ -133,6 +127,15 @@
     <ClCompile Include="collision_manager.cpp">
       <Filter>04_Object\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="cpu.cpp">
+      <Filter>04_Object\MoveObject\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="title_menu.cpp">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -143,9 +146,6 @@
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="cpu.h">
-      <Filter>04_Object\MoveObject\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="debugProc.h">
       <Filter>00_Main</Filter>
@@ -197,9 +197,6 @@
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="menu.h">
-      <Filter>04_Object\Object2D</Filter>
     </ClInclude>
     <ClInclude Include="meshfield.h">
       <Filter>04_Object\Object3D</Filter>
@@ -270,6 +267,15 @@
     <ClInclude Include="collision_manager.h">
       <Filter>04_Object\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="cpu.h">
+      <Filter>04_Object\MoveObject\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="title_menu.h">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01_Input">
@@ -313,6 +319,9 @@
     </Filter>
     <Filter Include="04_Object\Collision">
       <UniqueIdentifier>{abd5f96b-936a-442f-ab9f-3ba30229c988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\Menu">
+      <UniqueIdentifier>{d20cfbf0-26a8-442e-9353-4b4ea450cf8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
