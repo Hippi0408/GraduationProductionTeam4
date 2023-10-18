@@ -151,8 +151,8 @@ void CStage_Select::Select()
 				// ステージを進める
 				m_nStage_Number++;
 
-				/*if (m_nStage_Number > STAGE_RANDOM)
-					m_nStage_Number = STAGE_1;*/
+				if (m_nStage_Number > STAGE_RANDOM)
+					m_nStage_Number = STAGE_1;
 
 				// 背景の変更
 				//m_pFloor->SetTexture((CTexture::TEXTURE)(CTexture::TEXTURE_FLOOR + (CTexture::TEXTURE)m_nStage_Number));
@@ -167,8 +167,8 @@ void CStage_Select::Select()
 				// ステージを戻す
 				m_nStage_Number--;
 
-				/*if (m_nStage_Number < STAGE_1)
-					m_nStage_Number = STAGE_RANDOM;*/
+				if (m_nStage_Number < STAGE_1)
+					m_nStage_Number = STAGE_RANDOM;
 
 				// 背景の変更
 				//m_pFloor->SetTexture((CTexture::TEXTURE)(CTexture::TEXTURE_FLOOR + (CTexture::TEXTURE)m_nStage_Number));
@@ -182,9 +182,9 @@ void CStage_Select::Select()
 				// 決定SE
 				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 
-				//// ランダムを選択した場合
-				//if (m_nStage_Number == STAGE_RANDOM)
-				//	m_nStage_Number = rand() % 3;
+				// ランダムを選択した場合
+				if (m_nStage_Number == STAGE_RANDOM)
+					m_nStage_Number = rand() % 3;
 
 				// ステージを決定したか
 				m_bSelect = true;

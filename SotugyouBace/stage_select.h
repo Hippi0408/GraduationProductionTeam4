@@ -22,7 +22,7 @@ public:
 		STAGE_1 = 0,
 		STAGE_2,
 		STAGE_3,
-		//STAGE_RANDOM,
+		STAGE_RANDOM,
 		STAGE_MAX,
 		STAGE_NONE
 	};
