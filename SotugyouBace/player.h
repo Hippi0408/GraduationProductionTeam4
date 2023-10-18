@@ -29,19 +29,20 @@ public:
 	enum MODEL
 	{
 		MODEL_BODY = 0,			// [0]胴
-		MODEL_HEAD,				// [1]頭
-		MODEL_RIGHT_UPPER_ARM,	// [2]右上腕
-		MODEL_RIGHT_FOREARM,	// [3]右前腕
-		MODEL_RIGHT_ARM,		// [4]右手
-		MODEL_LEFT_UPPER_ARM,	// [5]左上腕
-		MODEL_LEFT_FOREARM,		// [6]左前腕
-		MODEL_LEFT_ARM,			// [7]左手
-		MODEL_RIGHT_THIGH,		// [8]右腿
-		MODEL_RIGHT_SHIN,		// [9]右脛
-		MODEL_RIGHT_LEG,		// [10]右足
-		MODEL_LEFT_THIGH,		// [11]左腿
-		MODEL_LEFT_SHIN,		// [12]左脛
-		MODEL_LEFT_LEG,			// [13]左足
+		MODEL_HIP,				// [1]腰
+		MODEL_HEAD,				// [2]頭
+		MODEL_RIGHT_UPPER_ARM,	// [3]右上腕
+		MODEL_RIGHT_FOREARM,	// [4]右前腕
+		MODEL_RIGHT_ARM,		// [5]右手
+		MODEL_LEFT_UPPER_ARM,	// [6]左上腕
+		MODEL_LEFT_FOREARM,		// [7]左前腕
+		MODEL_LEFT_ARM,			// [8]左手
+		MODEL_RIGHT_THIGH,		// [9]右腿
+		MODEL_RIGHT_SHIN,		// [10]右脛
+		MODEL_RIGHT_LEG,		// [11]右足
+		MODEL_LEFT_THIGH,		// [12]左腿
+		MODEL_LEFT_SHIN,		// [13]左脛
+		MODEL_LEFT_LEG,			// [14]左足
 		MODEL_MAX,				// モデルの最大数
 	};
 
@@ -52,6 +53,7 @@ public:
 		MOTION_WALK,		// 歩き
 		MOTION_JUMP,		// ジャンプ
 		MOTION_LANDING,		// 着地
+		MOTION_BOOST_RUN,	// ブーストダッシュ
 		MOTION_MAX,
 	};
 
@@ -63,8 +65,8 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion() override;		// モーションの切り替え
-	void Hit() override;
+	void ChangeMotion(const int index = 0) override;		// モーションの切り替え
+	void Hit(CMove_Object* pHit) override;
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
 	void JumpStart();					// プレイヤーのジャンプ処理

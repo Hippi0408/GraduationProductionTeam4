@@ -6,6 +6,7 @@
 //=============================================================================
 #include "boss.h"
 #include "application.h"
+#include "game.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 100.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -71,40 +72,54 @@ void CBoss::Draw()
 //============================================================================
 // モーション変更処理
 //============================================================================
-void CBoss::ChangeMotion()
+void CBoss::ChangeMotion(const int index)
 {
-	// 現在のモーション
-	const int nCuttentMotion = GetCurrentMotion();
-	const int nMotion = GetMotion();
-
-	// 現在のモーションから変わった場合
-	if (nCuttentMotion != nMotion)
+	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
 	{
-		// 現在モーションの終了処理
-		switch (nCuttentMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
+		// 現在のモーション
+		const int nCuttentMotion = GetCurrentMotion(nCnt);
+		const int nMotion = GetMotion(nCnt);
 
-		// 現在モーションの開始処理
-		switch (nMotion)
+		// 現在のモーションから変わった場合
+		if (nCuttentMotion != nMotion)
 		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
+			// 現在モーションの終了処理
+			switch (nCuttentMotion)
+			{
+			case MOTION_NEUTRAL:
+				break;
+			case MOTION_WALK:
+				break;
+			default:
+				break;
+			}
 
-		// キャラクターのモーション変更処理
-		CCharacter::ChangeMotion();
+			// 現在モーションの開始処理
+			switch (nMotion)
+			{
+			case MOTION_NEUTRAL:
+				break;
+			case MOTION_WALK:
+				break;
+			default:
+				break;
+			}
+
+			// キャラクターのモーション変更処理
+			CCharacter::ChangeMotion(nCnt);
+		}
 	}
+}
+
+//============================================================================
+// 破壊処理
+//============================================================================
+void CBoss::Destroy()
+{
+	// ゲーム終了を設定する
+	CGame::SetGameEnd();
+
+	CEnemy::Destroy();
 }
 
 //============================================================================

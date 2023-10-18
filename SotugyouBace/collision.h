@@ -35,6 +35,7 @@ public:
 	static CCollision* Create(CMove_Object* pParent);
 
 private:
+
 	CMove_Object* m_pParent;	// 親オブジェクト
 };
 

@@ -23,7 +23,7 @@ public:
 	static CTitle* Create();
 
 private:
-
+	bool m_bWindow;		// ウィンドウ使用状態
 };
 
 #endif // !_TITLE_H_

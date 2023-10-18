@@ -41,8 +41,9 @@ public:
 	void Update() override;					// 更新処理
 	void Draw() override;					// 描画処理
 
-	void FieldCollision();				//床の当たり判定
-	void Hit() override;
+	void FieldCollision();					//床の当たり判定
+	void Hit(CMove_Object* pHit) override;	// 被弾処理
+	void Destroy();							// 破壊処理
 
 	void SetLife(const int life) { m_nLife = life; }		// 弾の寿命の設定
 	void SetSpeed(const float speed) { m_fSpeed = speed; }	// 弾の速度の設定
@@ -51,11 +52,11 @@ public:
 	void AddMove(const D3DXVECTOR3 move) { m_move += move; }// 移動量の加算
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }	// サイズの設定
 
-	const int GetLife() { return m_nLife; }			// 弾の寿命の取得
-	const float GetSpeed() { return m_fSpeed; }		// 弾の速度の取得
-	const int GetPower() { return m_nPower; }		// 威力の取得
-	const D3DXVECTOR3 GetMove() { return m_move; }	// 移動量の取得
-	const D3DXVECTOR2 GetSize() { return m_size; }	// サイズの取得
+	const int GetLife() { return m_nLife; }					// 弾の寿命の取得
+	const float GetSpeed() { return m_fSpeed; }				// 弾の速度の取得
+	const int GetPower() override { return m_nPower; }		// 威力の取得
+	const D3DXVECTOR3 GetMove() { return m_move; }			// 移動量の取得
+	const D3DXVECTOR2 GetSize() { return m_size; }			// サイズの取得
 
 	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move,  const PRIORITY priority = PRIORITY_BACK);	// 生成
 

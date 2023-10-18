@@ -9,7 +9,7 @@
 #include "input.h"
 #include "bullet.h"
 #include "player_manager.h"
-#include"game.h"
+#include "game.h"
 #include "energy_gauge.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
@@ -41,6 +41,9 @@ HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
 	LoadFile("Data\\text\\Motion\\motion_player.txt");
+
+	// タグの設定
+	SetTag(TAG_PLAYER);
 
 	// 当たり判定の生成
 	SetCollision();
@@ -80,56 +83,59 @@ void CPlayer::Draw()
 //============================================================================
 // モーション変更処理
 //============================================================================
-void CPlayer::ChangeMotion()
+void CPlayer::ChangeMotion(const int index)
 {
-	// 現在のモーション
-	const int nCuttentMotion = GetCurrentMotion();
-
-	// 着地モーションが終了した場合
-	if (nCuttentMotion == MOTION_LANDING && GetMotionStop() == true)
+	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
 	{
-		SetMotion(MOTION_NEUTRAL);
-	}
+		// 現在のモーション
+		const int nCuttentMotion = GetCurrentMotion(nCnt);
 
-	int nMotion = GetMotion();
-
-
-	// 現在のモーションから変わった場合
-	if (nCuttentMotion != nMotion)
-	{
-		// 現在モーションの終了処理
-		switch (nCuttentMotion)
+		// 着地モーションが終了した場合
+		if (nCuttentMotion == MOTION_LANDING && GetMotionStop(nCnt) == true)
 		{
-			// ニュートラル
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		case MOTION_JUMP:
-			break;
-		case MOTION_LANDING:
-			break;
-		default:
-			break;
+			SetMotion(MOTION_NEUTRAL, nCnt);
 		}
 
-		// 現在モーションの開始処理
-		switch (nMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		case MOTION_JUMP:
-			break;
-		case MOTION_LANDING:
-			break;
-		default:
-			break;
-		}
+		// 次のモーション
+		int nMotion = GetMotion(nCnt);
 
-		// キャラクターのモーション変更処理
-		CCharacter::ChangeMotion();
+		// 現在のモーションから変わった場合
+		if (nCuttentMotion != nMotion)
+		{
+			// 現在モーションの終了処理
+			switch (nCuttentMotion)
+			{
+				// ニュートラル
+			case MOTION_NEUTRAL:
+				break;
+			case MOTION_WALK:
+				break;
+			case MOTION_JUMP:
+				break;
+			case MOTION_LANDING:
+				break;
+			default:
+				break;
+			}
+
+			// 現在モーションの開始処理
+			switch (nMotion)
+			{
+			case MOTION_NEUTRAL:
+				break;
+			case MOTION_WALK:
+				break;
+			case MOTION_JUMP:
+				break;
+			case MOTION_LANDING:
+				break;
+			default:
+				break;
+			}
+
+			// キャラクターのモーション変更処理
+			CCharacter::ChangeMotion(nCnt);
+		}
 	}
 }
 
@@ -158,8 +164,17 @@ void CPlayer::JumpStart()
 	// 接地している場合のみ
 	if (GetGround())
 	{
-		// ジャンプモーションを設定
-		SetMotion(MOTION_JUMP);
+		for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+		{
+			// ジャンプモーションを設定
+			SetMotion(MOTION_JUMP, nCnt);
+			/*SetMotion(MOTION_WALK, 3);
+			SetMotion(MOTION_WALK, 4);
+			SetMotion(MOTION_WALK, 5);
+			SetMotion(MOTION_WALK, 6);
+			SetMotion(MOTION_WALK, 7);
+			SetMotion(MOTION_WALK, 8);*/
+		}
 
 		// 離着状態にする
 		SetGround(false);
@@ -196,17 +211,37 @@ void CPlayer::JumpBoost()
 //============================================================================
 void CPlayer::Landing(const D3DXVECTOR3 pos)
 {
-	// 着地モーションを設定
-	SetMotion(MOTION_LANDING);
+	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+	{
+		// 着地モーションを設定
+		SetMotion(MOTION_LANDING, nCnt);
 
-	// キャラクターの着地処理
-	CCharacter::Landing(pos);
+		// キャラクターの着地処理
+		CCharacter::Landing(pos);
+	}
 }
 
 //============================================================================
 // 被弾処理
 //============================================================================
-void CPlayer::Hit()
+void CPlayer::Hit(CMove_Object* pHit)
 {
-	Damage(30);
+	if (pHit != nullptr)
+	{
+		TAG tag = pHit->GetTag();
+
+		switch (tag)
+		{
+		case TAG_PLAYER:
+			break;
+		case TAG_ENEMY:
+			break;
+		case TAG_BULLET:
+			// 弾のダメージを返す
+			Damage(pHit->GetPower());
+			break;
+		default:
+			break;
+		}
+	}
 }

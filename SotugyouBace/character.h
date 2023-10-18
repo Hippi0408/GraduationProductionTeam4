@@ -37,7 +37,7 @@ class CCharacter : public CMove_Object
 	struct KEY_SET
 	{
 		int nFrame;
-		std::vector<KEY> aKey;
+		KEY aKey;
 	};
 
 	// モーションセット
@@ -48,7 +48,6 @@ class CCharacter : public CMove_Object
 		bool bStop;				// モーションが止まったか
 		std::vector<KEY_SET> aKeySet;
 	};
-	std::vector<MOTION_SET> m_MotionSet;
 
 	// モデルセット
 	struct MODEL_SET
@@ -57,6 +56,7 @@ class CCharacter : public CMove_Object
 		D3DXVECTOR3 InitRot;	// 初期回転
 		CObjectX* pModel;		// モデル
 		int nParentIndex;		// 親モデルの番号
+		std::vector<MOTION_SET> aMotionSet;
 	};
 	std::vector<MODEL_SET> m_ModelSet;
 
@@ -71,21 +71,21 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void Move();						// 移動処理
-	void Damage(const int value);		// ダメージ処理
-	void Recovery(const int value);		// 回復処理
-	void Destroy();						// 自身を破壊する処理
+	void Move();
+	void Damage(const int value);
+	void Recovery(const int value);
+	virtual void Destroy();						// 自身を破壊する処理
 	virtual void Landing(const D3DXVECTOR3 pos);	// 着地処理
-	void FieldCollision();				//床の当たり判定
-	void Motion();						// モーションの設定
-	virtual void ChangeMotion();		// モーションの切り替え
-	void Rotation();					// 回転方向へ振り向かせる処理
-	void NormalizeRot();				// 角度の正規化
-	virtual void Hit() override = 0;
+	void FieldCollision();							// 床の当たり判定
+	void Motion(int nCnt);							// モーションの設定
+	virtual void ChangeMotion(const int index);		// モーションの切り替え
+	void Rotation();								// 回転方向へ振り向かせる処理
+	void NormalizeRot();							// 角度の正規化
+	virtual void Hit(CMove_Object* pHit) override = 0;
 
 	void SetGround(const bool ground) { m_bGround = ground; }
-	void SetMotion(const int motion) { m_nMotion = motion; }
-	void SetCurrentMotion(const int motion) { m_nCurrentMotion = motion; }
+	void SetMotion(const int motion, const int index) { m_nMotion[index] = motion; }
+	void SetCurrentMotion(const int motion) { m_nCurrentMotion[3] = motion; }
 	void SetLife(const int life) { m_nLife = life; }
 	void SetMaxLife(const int maxlife) { m_nMaxLife = maxlife; }
 	void SetSpeed(const float speed) { m_fSpeed = speed; }
@@ -103,14 +103,13 @@ public:
 	void SetMotionData(const int maxkey, const int key, const int parts, const int motion, const int frame, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const bool loop);	// モーション値の読み込み
 
 	const bool GetGround() { return m_bGround; }
-	const bool GetMotionStop() { return m_MotionSet[GetMotion()].bStop; }	// 現在モーションの終了判定を読み込む
-	const int GetMotion() { return m_nMotion; }
-	const int GetCurrentMotion() { return m_nCurrentMotion; }
+	const bool GetMotionStop(const int index) { return m_ModelSet[index].aMotionSet[GetMotion(index)].bStop; }	// 現在モーションの終了判定を読み込む
+	const int GetMotion(const int index) { return m_nMotion[index]; }
+	const int GetCurrentMotion(const int index) { return m_nCurrentMotion[index]; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
 	MODEL_SET GetModelSet(const int index) { return m_ModelSet[index]; }
-	CObjectX* GetModel(const int index) { return m_ModelSet.empty() ? nullptr : m_ModelSet[index].pModel; }
 	std::vector<CObjectX*> GetModelAll();
 	const bool GetBoost() { return m_bBoost; }
 	const bool GetJump_Boost() { return m_bJump_Boost; }
@@ -130,10 +129,10 @@ private:
 
 	bool m_bGround;						// 接地判定
 
-	int m_nMotion;						// モーション
-	int m_nCurrentMotion;				// 現在のモーション番号
-	int m_nCountMotion;					// モーションカウンター
-	int m_nCurrentKey;					// 現在のキー番号
+	std::vector<int> m_nMotion;			// モーション
+	std::vector<int> m_nCurrentMotion;	// 現在のモーション番号
+	std::vector<int> m_nCountMotion;	// モーションカウンター
+	std::vector<int> m_nCurrentKey;		// 現在のキー番号
 
 	int m_nLife;						// 体力
 	int m_nMaxLife;						// 最大体力
