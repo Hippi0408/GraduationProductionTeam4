@@ -133,6 +133,12 @@
     <ClCompile Include="title_menu.cpp">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="char_select.cpp">
+      <Filter>03_Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="stage_select.cpp">
+      <Filter>03_Mode</Filter>
+    </ClCompile>
     <ClCompile Include="trail.cpp">
       <Filter>04_Object\Object3D\Particle</Filter>
     </ClCompile>
@@ -284,6 +290,12 @@
     </ClInclude>
     <ClInclude Include="title_menu.h">
       <Filter>04_Object\Object2D\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="char_select.h">
+      <Filter>03_Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_select.h">
+      <Filter>03_Mode</Filter>
     </ClInclude>
     <ClInclude Include="trail.h">
       <Filter>04_Object\Object3D\Particle</Filter>
