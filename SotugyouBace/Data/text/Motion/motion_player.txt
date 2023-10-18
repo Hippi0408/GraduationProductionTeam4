@@ -1265,4 +1265,3 @@ MOTIONSET
 END_MOTIONSET
 
 END_SCRIPT		# この行は絶対消さないこと！
-rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
