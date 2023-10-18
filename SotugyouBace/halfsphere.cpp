@@ -158,6 +158,8 @@ void CHalfSphere::Uninit(void)
 	{
 		m_pTexture = nullptr;
 	}
+
+	Release();
 }
 
 //==============================================

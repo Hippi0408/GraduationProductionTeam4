@@ -74,14 +74,14 @@ public:
 	void Move();						// 移動処理
 	void Damage(const int value);		// ダメージ処理
 	void Recovery(const int value);		// 回復処理
-	void Destroy();						// 自身を破壊する処理
+	virtual void Destroy();				// 自身を破壊する処理
 	virtual void Landing(const D3DXVECTOR3 pos);	// 着地処理
 	void FieldCollision();				//床の当たり判定
 	void Motion();						// モーションの設定
 	virtual void ChangeMotion();		// モーションの切り替え
 	void Rotation();					// 回転方向へ振り向かせる処理
 	void NormalizeRot();				// 角度の正規化
-	virtual void Hit() override = 0;
+	virtual void Hit(CMove_Object* pHit) override = 0;
 
 	void SetGround(const bool ground) { m_bGround = ground; }
 	void SetMotion(const int motion) { m_nMotion = motion; }

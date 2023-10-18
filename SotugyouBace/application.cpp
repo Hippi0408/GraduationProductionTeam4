@@ -14,7 +14,6 @@
 #include "camera.h"
 #include "model.h"
 #include "light.h"
-#include "camera.h"
 #include "mode.h"
 #include "title.h"
 #include "game.h"
@@ -22,6 +21,7 @@
 #include "fade.h"
 #include "input.h"
 #include "menu.h"
+#include "title_menu.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
 #include "collision_manager.h"
@@ -283,7 +283,7 @@ void CApplication::Draw()
 //==============================================================================================
 void CApplication::SetMode(MODE mode)
 {
-	// ゲームを停止させる
+	// ゲーム開始判定を停止させる
 	m_bGameStart = false;
 
 	// ゲームモードが使用されている場合の終了処理
@@ -325,6 +325,7 @@ void CApplication::SetMode(MODE mode)
 	{
 	case CApplication::MODE_TITLE:
 		m_pGameMode = CTitle::Create();
+		m_pMenu = CTitleMenu::Create();
 		break;
 	case CApplication::MODE_GAME:
 		m_pGameMode = CGame::Create();

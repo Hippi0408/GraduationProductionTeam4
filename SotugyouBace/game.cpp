@@ -20,10 +20,12 @@
 #include"collision.h"
 #include"energy_gauge.h"
 #include "locus.h"
+#include "object2D.h"
 
 CMeshField *CGame::pMeshField = nullptr;
-CCharacter *CGame::pBoss = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
+bool CGame::m_bGameEnd = false;
+CFontString* CGame::m_pFinishRogo = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -63,7 +65,7 @@ HRESULT CGame::Init()
 	CApplication::GetPlayerManager()->SetPlayer({ 100.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ボスキャラの生成
-	pBoss = CBoss::Create({ 0.0f, 0.0f, 300.0f });
+	CBoss::Create({ 0.0f, 0.0f, 300.0f });
 
 	// スコアの生成
 	m_pScore = CScore::Create();
@@ -81,6 +83,8 @@ HRESULT CGame::Init()
 	// エネルギーゲージ
 	m_pEnergy_Gauge = CEnergy_Gauge::Create({ SCREEN_WIDTH / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });
 
+	m_nEndCounter = 0;
+
 	return S_OK;
 }
 
@@ -96,6 +100,21 @@ void CGame::Uninit()
 		delete m_pTime;
 		m_pTime = nullptr;
 	}
+
+	// エネルギーゲージの終了処理
+	if (m_pTime != nullptr)
+	{
+		m_pEnergy_Gauge = nullptr;
+	}
+
+	// 終了ロゴの終了
+	if (m_pFinishRogo != nullptr)
+	{
+		m_pFinishRogo->Uninit();
+		m_pFinishRogo = nullptr;
+	}
+
+	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
 
 //==============================================================================================
@@ -103,21 +122,20 @@ void CGame::Uninit()
 //==============================================================================================
 void CGame::Update()
 {
-	// タイマーの更新
-	if (m_pTime != nullptr)
-		m_pTime->Update();
-
-	CInput* pInput = CInput::GetKey();
-
-	for (int nCnt = 0; nCnt < 4; nCnt++)
+	// ゲーム終了判定が真の場合
+	if (m_bGameEnd == true)
 	{
-		if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_START, nCnt))
-			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
-		{
-			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
-		}
+		GameEnd();	// ゲーム終了処理
 	}
+	else
+	{
+		// タイマーの更新
+		if (m_pTime != nullptr)
+			m_pTime->Update();
 
+		CInput* pInput = CInput::GetKey();
+
+	
 	if (pInput->Trigger(DIK_0))
 	{
 		CLocus::Create(D3DXVECTOR3(0.0f,0.0f,0.0f), 0.0f, 10, CObject::PRIORITY_SCREEN);
@@ -127,64 +145,105 @@ void CGame::Update()
 	// デバッグ専用コマンド
 #ifdef _DEBUG
 	// 左Shiftキーを押したままの場合
-	if (pInput->Press(DIK_LSHIFT))
-	{
-		int nKey = -1;
-		if (pInput->Trigger(DIK_1))
+		if (pInput->Press(DIK_LSHIFT))
 		{
-			nKey = 0;
-		}
-		if (pInput->Trigger(DIK_2))
-		{
-			nKey = 1;
-		}
-		if (pInput->Trigger(DIK_3))
-		{
-			nKey = 2;
-		}
-		if (pInput->Trigger(DIK_4))
-		{
-			nKey = 3;
-		}
-
-		if (nKey >= 0)
-		{
-			CPlayerManager* pPlayerManager = CApplication::GetPlayerManager();
-			CPlayer* pPlayer = pPlayerManager->GetPlayer(nKey);
-
-			if (pPlayer == nullptr)
+			int nKey = -1;
+			if (pInput->Trigger(DIK_1))
 			{
-				// プレイヤーの生成
-				pPlayerManager->SetPlayer({ -300.0f + (200.0f * nKey), 0.0f, 0.0f }, CPlayerManager::TYPE_PC, nKey);
+				nKey = 0;
 			}
-			else
+			if (pInput->Trigger(DIK_2))
 			{
-				// 50ダメージ
-				pPlayer->Damage(50);
+				nKey = 1;
+			}
+			if (pInput->Trigger(DIK_3))
+			{
+				nKey = 2;
+			}
+			if (pInput->Trigger(DIK_4))
+			{
+				nKey = 3;
+			}
+
+			if (nKey >= 0)
+			{
+				CPlayerManager* pPlayerManager = CApplication::GetPlayerManager();
+				CPlayer* pPlayer = pPlayerManager->GetPlayer(nKey);
+
+				if (pPlayer == nullptr)
+				{
+					// プレイヤーの生成
+					pPlayerManager->SetPlayer({ -300.0f + (200.0f * nKey), 0.0f, 0.0f }, CPlayerManager::TYPE_PC, nKey);
+				}
+				else
+				{
+					// 50ダメージ
+					pPlayer->Damage(50);
+				}
 			}
 		}
+		// LShiftキー無しの場合
+		else
+		{
+			// スコアの加算
+			if (pInput->Press(DIK_L))
+			{
+				m_pScore->AddScore(10);
+			}
+
+			// スコアの加算
+			if (pInput->Trigger(DIK_0))
+			{
+				for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+				{
+					// 50ダメージ
+					pEnemy->Damage(50);
+				}
+			}
+		}
+#endif
 	}
-	// LShiftキー無しの場合
+}
+
+//==============================================================================================
+// ゲーム終了処理
+//==============================================================================================
+void CGame::GameEnd()
+{
+	// ゲームが終了するまでカウント
+	if (m_nEndCounter < MAX_END_TIMER)
+	{
+		m_nEndCounter++;
+	}
+	// ゲームを終了させる
 	else
 	{
-		// スコアの加算
-		if (pInput->Press(DIK_L))
+		// 終了ロゴの終了
+		if (m_pFinishRogo != nullptr)
 		{
-			m_pScore->AddScore(10);
+			m_pFinishRogo->Uninit();
+			m_pFinishRogo = nullptr;
 		}
 
-		// スコアの加算
-		if (pInput->Trigger(DIK_0))
-		{
-			for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
-			{
-				// 50ダメージ
-				pEnemy->Damage(50);
-			}
-		}
+		// リザルトへ飛ぶ
+		CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
 	}
+}
 
-#endif
+//==============================================================================================
+// ゲーム終了処理
+//==============================================================================================
+void CGame::SetGameEnd()
+{
+	// ゲーム終了判定を真にする
+	m_bGameEnd = true;
+
+	// 終了ロゴが未使用の場合
+	if (m_pFinishRogo == nullptr)
+	{
+		m_pFinishRogo = CFontString::Create({ SCREEN_WIDTH / 2 -360, SCREEN_HEIGHT / 2, 0.0f }, { 100.0f, 100.0f }, "げきはァ!");
+		m_pFinishRogo->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	}
 }
 
 //==============================================================================================
