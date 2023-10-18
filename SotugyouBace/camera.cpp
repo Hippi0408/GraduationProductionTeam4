@@ -44,6 +44,9 @@ void CCamera::Init(void)
 	m_CPos = { 0.0f,0.0f,0.0f };					// キャラクターの位置
 	m_posVDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 目的の視点
 	m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);	// 目的の注視点
+	m_bPerspective = false;
+	m_bValue = false;
+	m_nKeyCount = 0;
 }
 
 //==============================================
@@ -60,15 +63,14 @@ void CCamera::Uninit(void)
 void CCamera::Update(void)
 {
 	if (CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
-	{// プレイヤーが使用されていたら
-
+	{
 		// 視点移動
 		Perspective();
 	}
 
 #ifdef _DEBUG
 	// カメラの移動
-	Move();
+	//Move();
 #endif
 }
 
@@ -109,7 +111,7 @@ void CCamera::SetCamera(void)
 //==============================================
 // 行列を使ったカメラ制御
 //==============================================
-void CCamera::Matrix(D3DXVECTOR3 rot,D3DXVECTOR3 pos)
+void CCamera::Matrix(D3DXVECTOR3 rot, D3DXVECTOR3 pos)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
@@ -204,13 +206,20 @@ void CCamera::Move()
 //==============================================
 void CCamera::Perspective()
 {
-	if (CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
+	if (m_bPerspective == false)
 	{	// プレイヤーが使われていたら実行
 
 		//取得処理
-		D3DXVECTOR3 PlayerPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
-
-		// 行列を使ったカメラ制御
-		Matrix(m_rot, PlayerPos);
+		m_PPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
+		m_bValue = false;
 	}
+	else if (m_bPerspective == true && m_bValue == false)
+	{	// プレイヤーが使われていたら実行
+
+		//取得処理
+		m_PPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
+		m_bValue = true;
+	}
+	// 行列を使ったカメラ制御
+	Matrix(m_rot, m_PPos);
 }

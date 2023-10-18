@@ -11,6 +11,7 @@
 #include "fade.h"
 #include "camera.h"
 #include "fontString.h"
+#include "halfsphere.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -37,7 +38,11 @@ HRESULT CTitle::Init()
 	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
 	pCamera->SetPosR({ 0.0f, 0.0f, 1000.0f });
 
-	CFontString::Create({ 490.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "タイトル");
+	// ハーフスフィアの生成
+	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
+	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
+
+	//CFontString::Create({ 490.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "タイトル");
 
 	return S_OK;
 }

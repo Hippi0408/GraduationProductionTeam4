@@ -10,6 +10,8 @@
 
 #include"mode.h"
 
+class CHalfSphere;
+
 class CTitle : public CMode
 {
 public:
@@ -23,7 +25,7 @@ public:
 	static CTitle* Create();
 
 private:
-
+	CHalfSphere* m_pHalfSphere;
 };
 
 #endif // !_TITLE_H_

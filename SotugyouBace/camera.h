@@ -25,13 +25,18 @@ public:
 	void Move();
 	void Perspective();					// 視点処理
 
+	bool GetPerspective() { return m_bPerspective; }
+	void SetPerspective(bool flag) { m_bPerspective = flag; }
+	D3DXVECTOR3 GetPlayerPos() { return m_PPos; }
+	void SetPlayerPos(D3DXVECTOR3 pos) { m_PPos = pos; }
+	int GetCount() { return m_nKeyCount; }
+	void SetCount(int count) { m_nKeyCount = count; }
+
 	void SetPosV(const D3DXVECTOR3 posV) { m_posV = posV; }
 	void SetPosR(const D3DXVECTOR3 posR) { m_posR = posR; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void AddPosV(const D3DXVECTOR3 posV) { m_posV += posV; }
 	void AddPosR(const D3DXVECTOR3 posR) { m_posR += posR; }
-
-	void SetTarget();
 
 	const D3DXVECTOR3 GetPosV() { return m_posV; }
 	const D3DXVECTOR3 GetPosR() { return m_posR; }
@@ -57,11 +62,15 @@ private:
 	D3DXVECTOR3		m_rot;				// 向き
 	D3DXVECTOR3		m_rotDest;			// 目的の向き
 	D3DXVECTOR3		m_Saverot;			// 角度の保存
+
 	int				m_nShiftGoalCount;	// ゴールを映す時間
 	int				m_nGoalCount;		// ゴールを映すまでの時間
+	int				m_nKeyCount;		// キーを何回押したかのカウント
 	float			m_fDistance;		// 視点から注視点までの距離
 	float			m_fRotSpeed;		// 回転速度
 	bool			m_bCollision;		// オブジェクトに当たっているか
+	bool			m_bPerspective;		// 視点のフラグ
+	bool			m_bValue;			// 値を通すフラグ
 
 	D3DXMATRIX		m_mtxWorld;			// ワールドマトリックス
 	D3DXVECTOR3		m_worldCameraPosV;	// 視点のワールド座標
