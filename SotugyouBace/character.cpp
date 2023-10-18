@@ -37,11 +37,11 @@ CCharacter::~CCharacter()
 //============================================================================
 HRESULT CCharacter::Init()
 {
-	m_nMotion = 0;
-	m_nCurrentMotion = 0;			// 現在のモーション番号
+	//m_nMotion = 0;
+	//m_nCurrentMotion = 0;			// 現在のモーション番号
 
-	m_nCurrentKey = 0;				// キーを0にする
-	m_nCountMotion = 0;				// モーションカウントを0にする
+	//m_nCurrentKey = 0;				// キーを0にする
+	//m_nCountMotion = 0;				// モーションカウントを0にする
 
 	m_move = { 0.0f, 0.0f, 0.0f };
 
@@ -72,8 +72,11 @@ void CCharacter::Uninit()
 //============================================================================
 void CCharacter::Update()
 {
-	// モーション
-	Motion();
+	for (int nCnt = 0; nCnt < m_ModelSet.size(); nCnt++)
+	{
+		// モーション
+		Motion(nCnt);
+	}
 
 	// 移動量の処理
 	Move();
@@ -164,9 +167,9 @@ void CCharacter::Recovery(const int value)
 	AddPos(m_move * m_fSpeed);
 }
 
-//==============================================================================================
+//============================================================================
 // 自身を破壊する処理
-//==============================================================================================
+//============================================================================
 void CCharacter::Destroy()
 {
 	// 自身の終了処理
@@ -224,89 +227,82 @@ void CCharacter::FieldCollision()
 //==============================================================================================
 // モーションの再生
 //==============================================================================================
-void CCharacter::Motion()
+void CCharacter::Motion(int nCnt)
 {
 	// モーションがストップしている場合
-	if (!m_MotionSet[m_nCurrentMotion].bStop)
+	if (!m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].bStop)
 	{
 		// モデルセットが使用されている場合
 		if (!m_ModelSet.empty())
 		{
-			for (int nCnt = 0; nCnt < (int)m_ModelSet.size(); nCnt++)
+			if (m_ModelSet[nCnt].pModel != nullptr)
 			{
-				if (m_ModelSet[nCnt].pModel != nullptr)
+				// 相対値
+				float fRelative = (float)m_nCountMotion[nCnt] / (float)m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt]].nFrame;
+
+				// 差分
+				D3DXVECTOR3 fPosDifference;		// 位置用
+				D3DXVECTOR3 fRotDifference;		// 回転用
+
+												// 最後のキーじゃない場合
+				if (m_nCurrentKey[nCnt] != m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].nMaxKey - 1)
 				{
-					// 相対値
-					float fRelative = (float)m_nCountMotion / (float)m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey].nFrame;
+					// 位置
+					fPosDifference = m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt] + 1].aKey.KeyPos
+						- m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt]].aKey.KeyPos;					// 終了値 - 開始値
 
-					// 差分
-					D3DXVECTOR3 fPosDifference;		// 位置用
-					D3DXVECTOR3 fRotDifference;		// 回転用
+																													// 角度
+					fRotDifference = m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt] + 1].aKey.KeyRot
+						- m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt]].aKey.KeyRot;					// 終了値 - 開始値
+				}
+				// 最後のキーの場合
+				else if (m_nCurrentKey[nCnt] == m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].nMaxKey - 1)
+				{
+					// 位置
+					fPosDifference = m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[0].aKey.KeyPos
+						- m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt]].aKey.KeyPos;	// 終了値 - 開始値
 
-													// 最後のキーじゃない場合
-					if (m_nCurrentKey != m_MotionSet[m_nCurrentMotion].nMaxKey - 1)
-					{
-						// 位置
-						fPosDifference = m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey + 1].aKey[nCnt].KeyPos
-							- m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey].aKey[nCnt].KeyPos;					// 終了値 - 開始値
+																									// 角度
+					fRotDifference = m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[0].aKey.KeyRot
+						- m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt]].aKey.KeyRot;	// 終了値 - 開始値
+				}
 
-																														// 角度
-						fRotDifference = m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey + 1].aKey[nCnt].KeyRot
-							- m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey].aKey[nCnt].KeyRot;					// 終了値 - 開始値
-					}
-					// 最後のキーの場合
-					else if (m_nCurrentKey == m_MotionSet[m_nCurrentMotion].nMaxKey - 1)
-					{
-						// 位置
-						fPosDifference = m_MotionSet[m_nCurrentMotion].aKeySet[0].aKey[nCnt].KeyPos
-							- m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey].aKey[nCnt].KeyPos;	// 終了値 - 開始値
+				// 現在値
+				D3DXVECTOR3 Pos = m_ModelSet[nCnt].InitPos + m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt]].aKey.KeyPos + (fPosDifference * fRelative);	// 位置
+				D3DXVECTOR3 Rot = m_ModelSet[nCnt].InitRot + m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt]].aKey.KeyRot + (fRotDifference * fRelative);	// 回転
 
-																										// 角度
-						fRotDifference = m_MotionSet[m_nCurrentMotion].aKeySet[0].aKey[nCnt].KeyRot
-							- m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey].aKey[nCnt].KeyRot;	// 終了値 - 開始値
-					}
+				m_ModelSet[nCnt].pModel->SetPos(Pos);	// 位置の設定
+				m_ModelSet[nCnt].pModel->SetRot(Rot);	// 回転の設定
 
-					// 現在値
-					D3DXVECTOR3 Pos = m_ModelSet[nCnt].InitPos + m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey].aKey[nCnt].KeyPos + (fPosDifference * fRelative);	// 位置
-					D3DXVECTOR3 Rot = m_ModelSet[nCnt].InitRot + m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey].aKey[nCnt].KeyRot + (fRotDifference * fRelative);	// 回転
-
-					m_ModelSet[nCnt].pModel->SetPos(Pos);	// 位置の設定
-					m_ModelSet[nCnt].pModel->SetRot(Rot);	// 回転の設定
-
-					// 親モデルの位置を中心位置に設定
-					if (m_ModelSet[nCnt].nParentIndex < 0)
-					{
-						// 中心位置の設定
-						SetCenterPos(Pos);
-					}
+				// 親モデルの位置を中心位置に設定
+				if (m_ModelSet[nCnt].nParentIndex < 0)
+				{
+					// 中心位置の設定
+					SetCenterPos(Pos);
 				}
 			}
 
 			// モーションカウンター
-			m_nCountMotion++;
+				m_nCountMotion[nCnt]++;
 
 			// 最後のフレームまで進んだ
-			if (m_nCountMotion >= m_MotionSet[m_nCurrentMotion].aKeySet[m_nCurrentKey].nFrame)
+			if (m_nCountMotion[nCnt] >= m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].aKeySet[m_nCurrentKey[nCnt]].nFrame)
 			{
 				// フレームを0に戻す
-				m_nCountMotion = 0;
+				m_nCountMotion[nCnt] = 0;
 
 				// キーを進める
-				m_nCurrentKey++;
+				m_nCurrentKey[nCnt]++;
 
-				if (m_nCurrentKey >= m_MotionSet[m_nCurrentMotion].nMaxKey)
+				if (m_nCurrentKey[nCnt] >= m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].nMaxKey)
 				{
 					// ループする
-					if (m_MotionSet[m_nCurrentMotion].bLoop)
-					{
+					if (m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].bLoop)
 						// キーを戻してループする
-						m_nCurrentKey = 0;
-					}
+						m_nCurrentKey[nCnt] = 0;
 					// ループしない
 					else
-					{
-						m_MotionSet[m_nCurrentMotion].bStop = true;
-					}
+						m_ModelSet[nCnt].aMotionSet[m_nCurrentMotion[nCnt]].bStop = true;
 				}
 			}
 		}
@@ -316,14 +312,14 @@ void CCharacter::Motion()
 //==============================================================================================
 // モーション変更
 //==============================================================================================
-void CCharacter::ChangeMotion()
+void CCharacter::ChangeMotion(const int index)
 {
 	// 前回の止まったモーションをfalseにする
-	m_MotionSet[m_nCurrentMotion].bStop = false;
+	m_ModelSet[index].aMotionSet[m_nCurrentMotion[index]].bStop = false;
 
-	m_nCurrentMotion = m_nMotion;	// モーションを切り替える
-	m_nCurrentKey = 0;				// キーを0にする
-	m_nCountMotion = 0;				// モーションカウントを0にする
+	m_nCurrentMotion[index] = m_nMotion[index];	// モーションを切り替える
+	m_nCurrentKey[index] = 0;				// キーを0にする
+	m_nCountMotion[index] = 0;				// モーションカウントを0にする
 }
 
 //==============================================================================================
@@ -371,6 +367,10 @@ CObjectX* CCharacter::SetModel(const int index, const int parent, const D3DXVECT
 	{
 		// モデルセットのメモリ領域を確保する
 		m_ModelSet.emplace_back();
+		m_nCurrentMotion.emplace_back();
+		m_nCountMotion.emplace_back();
+		m_nMotion.emplace_back();
+		m_nCurrentKey.emplace_back();
 	}
 
 	if (m_ModelSet[index].pModel == nullptr)
@@ -401,17 +401,17 @@ CObjectX* CCharacter::SetModel(const int index, const int parent, const D3DXVECT
 void CCharacter::SetMotionData(const int maxkey, const int key, const int parts, const int motion, const int frame, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const bool loop)
 {
 	// キーフレームの設定
-	m_MotionSet[motion].aKeySet[key].nFrame = frame;
+	m_ModelSet[parts].aMotionSet[motion].aKeySet[key].nFrame = frame;
 
 	// 位置と角度の設定
-	m_MotionSet[motion].aKeySet[key].aKey[parts].KeyPos = pos;
-	m_MotionSet[motion].aKeySet[key].aKey[parts].KeyRot = rot;
+	m_ModelSet[parts].aMotionSet[motion].aKeySet[key].aKey.KeyPos = pos;
+	m_ModelSet[parts].aMotionSet[motion].aKeySet[key].aKey.KeyRot = rot;
 
 	// キーの最大数
-	m_MotionSet[motion].nMaxKey = maxkey;
+	m_ModelSet[parts].aMotionSet[motion].nMaxKey = maxkey;
 
 	// ループするか
-	m_MotionSet[motion].bLoop = loop;
+	m_ModelSet[parts].aMotionSet[motion].bLoop = loop;
 }
 
 //============================================================================
@@ -458,6 +458,8 @@ void CCharacter::LoadFile(const char* Xfilename)
 	int nKey = 0;			// 現在のキーの数
 	int nParts = 0;			// 現在のパーツ
 	int nNumMotion = 0;		// 現在のモーション
+
+	bool bAllParts = false;
 
 	char m_aString[0xff];
 	memset(m_aString, 0, sizeof(m_aString));
@@ -532,7 +534,6 @@ void CCharacter::LoadFile(const char* Xfilename)
 
 					if (strcmp(&m_aString[0], "MOTIONSET") == 0)
 					{
-						m_MotionSet.emplace_back();
 						while (strcmp(&m_aString[0], "END_MOTIONSET") != 0)
 						{
 							fscanf(pFile, "%s", &m_aString[0]);
@@ -557,7 +558,6 @@ void CCharacter::LoadFile(const char* Xfilename)
 
 							if (strcmp(&m_aString[0], "KEYSET") == 0)
 							{
-								m_MotionSet[nNumMotion].aKeySet.emplace_back();
 								while (strcmp(&m_aString[0], "END_KEYSET") != 0)
 								{
 									fscanf(pFile, "%s", &m_aString[0]);
@@ -571,7 +571,6 @@ void CCharacter::LoadFile(const char* Xfilename)
 
 									if (strcmp(&m_aString[0], "KEY") == 0)
 									{
-										m_MotionSet[nNumMotion].aKeySet[nKey].aKey.emplace_back();
 										while (strcmp(&m_aString[0], "END_KEY") != 0)
 										{
 											fscanf(pFile, "%s", &m_aString[0]);
@@ -592,14 +591,19 @@ void CCharacter::LoadFile(const char* Xfilename)
 												fscanf(pFile, "%f", &PartsRot.x);
 												fscanf(pFile, "%f", &PartsRot.y);
 												fscanf(pFile, "%f", &PartsRot.z);
-
 											}
 
 											if (strcmp(&m_aString[0], "END_KEY") == 0)
 											{
+												if (!bAllParts)
+													m_ModelSet[nParts].aMotionSet.emplace_back();
+
+												m_ModelSet[nParts].aMotionSet[nNumMotion].aKeySet.emplace_back();
+
 												// モーション値の設定
 												SetMotionData(nMaxKey, nKey, nParts, nNumMotion, nFrame, PartsPos, PartsRot, bLoop);
 
+												// 次のパーツ
 												nParts++;
 
 												if (nParts == nMaxParts)
@@ -611,11 +615,13 @@ void CCharacter::LoadFile(const char* Xfilename)
 									}
 								}
 								nKey++;
+								bAllParts = true;
 							}
 						}
 						nKey = 0;	// キーの初期化
 
 						nNumMotion++;
+						bAllParts = false;
 					}
 				}
 			}

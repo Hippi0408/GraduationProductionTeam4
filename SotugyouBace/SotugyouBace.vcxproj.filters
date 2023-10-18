@@ -378,8 +378,5 @@
     <Filter Include="03_mode\02_Resource">
       <UniqueIdentifier>{764bb922-febb-4590-b733-f3fdeebae8a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_effect">
-      <UniqueIdentifier>{4aede0f4-6980-40a7-a328-9684a9db230f}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

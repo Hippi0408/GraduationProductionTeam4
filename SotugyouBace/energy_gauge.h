@@ -30,6 +30,7 @@ public:
 	void SetConsumption_Speed(const float consumption) { m_fConsumption_Speed = consumption; }	// 消費速度の設定
 	void SetAvoidance_amount(const float avoidance) { m_fAvoidance = avoidance; }				// 回避時の消費量
 	void SetReuse_Percent(const float reuse) { m_fReuse_Percent = reuse; }						// 全消費からの回復時に再利用できるタイミングの設定
+	void SetRecovery_Interval(const float interval) { m_fRecovery_Interval = interval; }
 	
 	const bool GetConsumption() { return m_bAllConsumption; }		// エネルギーを全て消費しているか
 
