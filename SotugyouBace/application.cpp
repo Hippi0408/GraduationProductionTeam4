@@ -25,6 +25,8 @@
 #include "player_manager.h"
 #include "enemy_manager.h"
 #include "collision_manager.h"
+#include "char_select.h"
+#include "stage_select.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -326,6 +328,12 @@ void CApplication::SetMode(MODE mode)
 	case CApplication::MODE_TITLE:
 		m_pGameMode = CTitle::Create();
 		m_pMenu = CTitleMenu::Create();
+		break;
+	case CApplication::MODE_CHAR_SELECT:
+		m_pGameMode = CChar_Select::Create();
+		break;
+	case CApplication::MODE_STAGE_SELECT:
+		m_pGameMode = CStage_Select::Create();
 		break;
 	case CApplication::MODE_GAME:
 		m_pGameMode = CGame::Create();

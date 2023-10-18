@@ -39,9 +39,11 @@ public:
 	enum MODE
 	{
 		MODE_NONE = 0,
-		MODE_TITLE,
-		MODE_GAME,
-		MODE_RESULT,
+		MODE_TITLE,			// タイトル
+		MODE_CHAR_SELECT,	// キャラクターセレクト
+		MODE_STAGE_SELECT,	// ステージセレクト
+		MODE_GAME,			// ゲーム
+		MODE_RESULT,		// リザルト
 		MODE_MAX,
 	};
 
