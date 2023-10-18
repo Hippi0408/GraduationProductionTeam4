@@ -50,7 +50,7 @@ HRESULT CMeshField::Init()
 	m_nVertexNum = ((m_nXBlock + 1) * (m_nZBlock + 1));										// 頂点数	
 	m_nIndexNum = (m_nXBlock * 2 + 2) * m_nZBlock + 2 * (m_nZBlock - 1);					// インデックスバッファ
 	m_nPrimitiveNum = (m_nXBlock * m_nZBlock * 2 + 4 * (m_nZBlock - 1));					// プリミティブ数
-	m_nHeight = 50;		// 頂点の高さ(ランダムの最大値)
+	m_nHeight = 100;		// 頂点の高さ(ランダムの最大値)
 
 	// テクスチャの設定
 	m_Texture = CTexture::TEXTURE_FLOOR;
@@ -162,9 +162,6 @@ void CMeshField::Uninit(void)
 //==============================================================================================
 void CMeshField::Update(void)
 {
-	// メッシュの当たり判定
-	//MeshCollision();
-
 	// 法線の設定
 	Normal();
 }
