@@ -4,9 +4,6 @@
     <ClCompile Include="application.cpp">
       <Filter>00_Main</Filter>
     </ClCompile>
-    <ClCompile Include="boss.cpp">
-      <Filter>04_Object\MoveObject\Character\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>00_Main</Filter>
     </ClCompile>
@@ -136,13 +133,25 @@
     <ClCompile Include="title_menu.cpp">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="trail.cpp">
+      <Filter>04_Object\Object3D\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>04_Object\Object3D\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_emitter.cpp">
+      <Filter>04_Object\Object3D\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_manager.cpp">
+      <Filter>04_Object\Object3D\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="boss.cpp">
+      <Filter>04_Object\MoveObject\Character\Enemy\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
       <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="boss.h">
-      <Filter>04_Object\MoveObject\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>00_Main</Filter>
@@ -276,6 +285,22 @@
     <ClInclude Include="title_menu.h">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="trail.h">
+      <Filter>04_Object\Object3D\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>04_Object\Object3D\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_emitter.h">
+      <Filter>04_Object\Object3D\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_manager.h">
+      <Filter>04_Object\Object3D\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h" />
+    <ClInclude Include="boss.h">
+      <Filter>04_Object\MoveObject\Character\Enemy\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01_Input">
@@ -322,6 +347,15 @@
     </Filter>
     <Filter Include="04_Object\Object2D\Menu">
       <UniqueIdentifier>{d20cfbf0-26a8-442e-9353-4b4ea450cf8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object3D\Particle">
+      <UniqueIdentifier>{50b2337b-9218-4215-b0c4-efe997481213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\MoveObject\Character\Enemy\Boss">
+      <UniqueIdentifier>{3d6767f3-5dc6-452c-9c02-03dc4cc6d426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\MoveObject\Character\Enemy\Mob">
+      <UniqueIdentifier>{1cf68fff-de6c-46b4-8de9-95ba4cc89c1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

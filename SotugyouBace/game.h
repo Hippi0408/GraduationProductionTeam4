@@ -21,7 +21,8 @@ class CFontString;
 
 class CGame : public CMode
 {
-	static const int MAX_END_TIMER = 120;	// ゲーム終了までの時間
+	static const int MAX_FINISH_ROGO = 60;	// 終了ロゴまでの時間
+	static const int MAX_END_TIMER = 240;	// ゲーム終了までの時間
 
 public:
 	CGame();
