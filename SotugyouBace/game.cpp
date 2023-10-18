@@ -19,6 +19,7 @@
 #include"meshfield.h"
 #include"collision.h"
 #include"energy_gauge.h"
+#include "locus.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CCharacter *CGame::pBoss = nullptr;
@@ -116,6 +117,13 @@ void CGame::Update()
 			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
 		}
 	}
+
+	if (pInput->Trigger(DIK_0))
+	{
+		CLocus::Create(D3DXVECTOR3(0.0f,0.0f,0.0f), 0.0f, 10, CObject::PRIORITY_SCREEN);
+	}
+
+
 	// デバッグ専用コマンド
 #ifdef _DEBUG
 	// 左Shiftキーを押したままの場合

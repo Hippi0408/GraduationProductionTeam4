@@ -169,6 +169,9 @@
     <ClCompile Include="energy_gauge.cpp">
       <Filter>04_object\object2D</Filter>
     </ClCompile>
+    <ClCompile Include="locus.cpp">
+      <Filter>05_effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -342,6 +345,9 @@
     </ClInclude>
     <ClInclude Include="energy_gauge.h">
       <Filter>04_object\object2D</Filter>
+    </ClInclude>
+    <ClInclude Include="locus.h">
+      <Filter>05_effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
