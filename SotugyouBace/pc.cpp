@@ -299,33 +299,96 @@ void CPC::Perspective()
 	// カメラの角度
 	D3DXVECTOR3 rotCamera = CApplication::GetCamera()->GetRot();
 
-	if (pInput->Press(DIK_UP) || pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
-	{	//UPキーを押しているとき
-		rotCamera.x -= 0.015f;		//カメラの上方向の加算
-		if (rotCamera.x <= -0.5f)
-		{
-			rotCamera.x = -0.5f;
-		}
+	//if (pInput->Press(DIK_UP) || pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
+	//{	//UPキーを押しているとき
+	//	rotCamera.x -= 0.015f;		//カメラの上方向の加算
+	//	if (rotCamera.x <= -0.5f)
+	//	{
+	//		rotCamera.x = -0.5f;
+	//	}
 
-	}
-	if (pInput->Press(DIK_DOWN) || pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
-	{	//DOWNキーを押しているとき
-		rotCamera.x += 0.015f;		//カメラの上方向の加算
-		if (rotCamera.x >= 0.5f)
-		{
-			rotCamera.x = 0.5f;
-		}
+	//}
+	//if (pInput->Press(DIK_DOWN) || pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
+	//{	//DOWNキーを押しているとき
+	//	rotCamera.x += 0.015f;		//カメラの上方向の加算
+	//	if (rotCamera.x >= 0.5f)
+	//	{
+	//		rotCamera.x = 0.5f;
+	//	}
+	//}
+
+	//if (pInput->Press(DIK_LEFT) || pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
+	//{	//LEFTキーを押しているとき
+	//	rotCamera.y -= 0.015f;		//カメラの上方向の加算
+	//}
+
+	//if (pInput->Press(DIK_RIGHT) || pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
+	//{	//LEFTキーを押しているとき
+	//	rotCamera.y += 0.015f;		//カメラの上方向の加算
+	//}
+
+
+
+	D3DXVECTOR3 MouseMove;
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	MouseMove = pInput->GetMouseMove();
+
+	MouseMove = D3DXVECTOR3(MouseMove.x, MouseMove.y, 0.0f);
+
+	if (D3DXVec3Length(&MouseMove) > 1.0f)
+	{
+		D3DXVec3Normalize(&MouseMove, &MouseMove);
+
+		rot = MouseMove * (D3DX_PI / 180.0f);
+
+		rot.x *= 2.0f;
+		rot.y *= 3.0f;
+		rot.z *= 3.0f;
 	}
 
-	if (pInput->Press(DIK_LEFT) || pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
-	{	//LEFTキーを押しているとき
-		rotCamera.y -= 0.015f;		//カメラの上方向の加算
+	rotCamera += rot;
+
+	if (rotCamera.y  > D3DXToRadian(80))
+	{
+		rotCamera.y = D3DXToRadian(80);
+	}
+	else if (rotCamera.y  < D3DXToRadian(-50))
+	{
+		rotCamera.y = D3DXToRadian(-50);
 	}
 
-	if (pInput->Press(DIK_RIGHT) || pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
-	{	//LEFTキーを押しているとき
-		rotCamera.y += 0.015f;		//カメラの上方向の加算
+	if (rot.x > D3DX_PI)
+	{
+		rot.x -= D3DX_PI * 2.0f;
 	}
+	else if (rot.x < -D3DX_PI)
+	{
+		rot.x += D3DX_PI * 2.0f;
+	}
+
+	if (rot.y > D3DX_PI)
+	{
+		rot.y -= D3DX_PI * 2.0f;
+	}
+	else if (rot.y < -D3DX_PI)
+	{
+		rot.y += D3DX_PI * 2.0f;
+	}
+
+	if (rot.z > D3DX_PI)
+	{
+		rot.z -= D3DX_PI * 2.0f;
+	}
+	else if (rot.z < -D3DX_PI)
+	{
+		rot.z += D3DX_PI * 2.0f;
+	}
+
+	rotCamera.y = rot.y;
+	rotCamera.x = rot.x;
+
+
 
 	// 視点切り替え
 	if (pInput->Trigger(DIK_P) && m_bFlag == false)
