@@ -83,7 +83,7 @@ void CPlayer::Draw()
 //============================================================================
 // ƒ‚[ƒVƒ‡ƒ“•ÏXˆ—
 //============================================================================
-void CPlayer::ChangeMotion(const int index)
+void CPlayer::ChangeMotion()
 {
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
 	{

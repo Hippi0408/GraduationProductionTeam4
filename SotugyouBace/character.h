@@ -78,7 +78,7 @@ public:
 	virtual void Landing(const D3DXVECTOR3 pos);	// 着地処理
 	void FieldCollision();							// 床の当たり判定
 	void Motion(int nCnt);							// モーションの設定
-	virtual void ChangeMotion(const int index);		// モーションの切り替え
+	void ChangeMotion(const int index);				// モーションの切り替え
 	void Rotation();								// 回転方向へ振り向かせる処理
 	void NormalizeRot();							// 角度の正規化
 	virtual void Hit(CMove_Object* pHit) override = 0;

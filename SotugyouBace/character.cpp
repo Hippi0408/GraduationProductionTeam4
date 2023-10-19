@@ -66,7 +66,7 @@ void CCharacter::Uninit()
 //============================================================================
 void CCharacter::Update()
 {
-	for (int nCnt = 0; nCnt < m_ModelSet.size(); nCnt++)
+	for (int nCnt = 0; nCnt < (int)m_ModelSet.size(); nCnt++)
 	{
 		// ƒ‚[ƒVƒ‡ƒ“
 		Motion(nCnt);

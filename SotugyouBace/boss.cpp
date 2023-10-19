@@ -76,7 +76,7 @@ void CBoss::Draw()
 //============================================================================
 // ƒ‚[ƒVƒ‡ƒ“•ÏXˆ—
 //============================================================================
-void CBoss::ChangeMotion(const int index)
+void CBoss::ChangeMotion()
 {
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
 	{

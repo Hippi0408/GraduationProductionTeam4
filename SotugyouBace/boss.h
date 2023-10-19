@@ -49,7 +49,7 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion(const int index = 0) override;		// モーションの切り替え
+	void ChangeMotion();		// モーションの切り替え
 	void Destroy() override;			// 破壊処理
 
 	static CBoss* Create(const D3DXVECTOR3 pos);
