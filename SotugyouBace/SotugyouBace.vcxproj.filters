@@ -157,6 +157,9 @@
     <ClCompile Include="boss.cpp">
       <Filter>04_Object\MoveObject\Character\Enemy\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="menu_window.cpp">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -318,6 +321,9 @@
     <ClInclude Include="utility.h" />
     <ClInclude Include="boss.h">
       <Filter>04_Object\MoveObject\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_window.h">
+      <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

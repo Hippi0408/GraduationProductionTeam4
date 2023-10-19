@@ -12,6 +12,7 @@
 #include "Application.h"
 #include "input.h"
 #include "fade.h"
+#include "title.h"
 
 //=====================================
 // コンストラクタ
@@ -34,9 +35,9 @@ CTitleMenu::~CTitleMenu()
 HRESULT CTitleMenu::Init()
 {
 	// 選択肢の設定処理
-	SetChoice(CFontString::Create({ SCREEN_WIDTH / 2, 400.0f, 0.0f }, { 40.0f, 40.0f }, "ゲームをはじめる"));
-	SetChoice(CFontString::Create({ SCREEN_WIDTH / 2, 480.0f, 0.0f }, { 40.0f, 40.0f }, "チュートリアル"));
-	SetChoice(CFontString::Create({ SCREEN_WIDTH / 2, 560.0f, 0.0f }, { 40.0f, 40.0f }, "とじる"));
+	SetChoice(CFontString::Create({ 400.0f, 300.0f, 0.0f}, { 40.0f, 40.0f }, "ゲームをはじめる"));
+	SetChoice(CFontString::Create({ 800.0f / 2, 400.0f ,0.0f }, { 40.0f, 40.0f }, "チュートリアル"));
+	SetChoice(CFontString::Create({ 800.0f / 2, 500.0f ,0.0f }, { 40.0f, 40.0f }, "とじる"));
 
 	//GetChoice(Choice_GameStart)->SetPos({ SCREEN_WIDTH / 2 - 200, 400.0f, 0.0f });
 
@@ -93,6 +94,7 @@ void CTitleMenu::Choice()
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 			// ゲームに飛ぶ
 			CFade::SetFade(CApplication::MODE_GAME, 0.05f);
+			CTitle::SetUninitWindow(false);
 			break;
 
 			// チュートリアル

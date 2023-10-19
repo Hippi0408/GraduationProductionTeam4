@@ -36,6 +36,7 @@ CPC::~CPC()
 HRESULT CPC::Init()
 {
 	CPlayer::Init();
+	m_bFlag = false;
 
 	return S_OK;
 }
@@ -206,7 +207,6 @@ void CPC::Input()
 		if (pMeshField != nullptr)
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
 	}
-
 	// ジャンプ処理
 	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A))
 	{
@@ -321,6 +321,18 @@ void CPC::Perspective()
 	if (pInput->Press(DIK_RIGHT) || pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
 	{	//LEFTキーを押しているとき
 		rotCamera.y += 0.015f;		//カメラの上方向の加算
+	}
+
+	// 視点切り替え
+	if (pInput->Trigger(DIK_P) && m_bFlag == false)
+	{
+		CApplication::GetCamera()->SetPerspective(true);
+		m_bFlag = true;
+	}
+	else if(pInput->Trigger(DIK_P) && m_bFlag == true)
+	{
+		CApplication::GetCamera()->SetPerspective(false);
+		m_bFlag = false;
 	}
 
 	//カメラの向きの設定

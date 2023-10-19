@@ -10,6 +10,10 @@
 
 #include"mode.h"
 
+class CHalfSphere;
+class CFontString;
+class CMenuWindow;
+
 class CTitle : public CMode
 {
 public:
@@ -20,10 +24,19 @@ public:
 	void Uninit() override;
 	void Update() override;
 
+	static void SetWindow(bool flag) { m_bWindow = flag; }
+	static void SetUninitWindow(bool flag) { m_bWindowUninit = flag; }
+	static bool GetUninitWindow() { return m_bWindowUninit; }
+
 	static CTitle* Create();
 
 private:
-	bool m_bWindow;		// ウィンドウ使用状態
+	CMenuWindow* m_pMenuWindow;
+	CHalfSphere* m_pHalf;
+	CFontString* m_pFomntString[2];
+	
+	static bool m_bWindow;		// ウィンドウ使用状態
+	static bool m_bWindowUninit;
 };
 
 #endif // !_TITLE_H_

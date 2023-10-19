@@ -68,7 +68,6 @@ void CCharacter::Update()
 {
 	// ƒ‚[ƒVƒ‡ƒ“
 	Motion();
-
 	// ˆÚ“®—Ê‚Ìˆ—
 	Move();
 

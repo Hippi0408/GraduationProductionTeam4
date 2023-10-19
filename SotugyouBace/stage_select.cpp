@@ -81,18 +81,6 @@ void CStage_Select::Uninit()
 //==============================================================================================
 void CStage_Select::Update()
 {
-	CInput* pInput = CInput::GetKey();
-
-	/*for (int nCnt = 0; nCnt < 4; nCnt++)
-	{
-		if ((pInput->Trigger(DIK_RETURN) || pInput->Press(JOYPAD_B, nCnt) || pInput->Press(JOYPAD_A, nCnt)
-			|| pInput->Trigger(JOYPAD_START, nCnt))
-			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
-		{
-			CFade::SetFade(CApplication::MODE_GAME, 0.05f);
-		}
-	}*/
-
 	// ステージが決まっていない場合
 	if (m_bSelect == false)
 	{
