@@ -11,7 +11,6 @@
 #include "game.h"
 #include "meshfield.h"
 #include "energy_gauge.h"
-
 #include"player_manager.h"
 
 //=====================================
@@ -278,6 +277,7 @@ void CPC::Input()
 			// 回避
 			if (pInput->Trigger(DIK_C))
 			{
+				
 				pGauge->Avoidance();			// エネルギー消費
 				pGauge->Recovery_Pause(30);		// クールタイム
 			}
