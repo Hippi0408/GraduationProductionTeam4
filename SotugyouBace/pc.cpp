@@ -11,6 +11,8 @@
 #include "game.h"
 #include "meshfield.h"
 #include "energy_gauge.h"
+#include "tutorial.h"
+
 #include"player_manager.h"
 
 //=====================================
@@ -111,84 +113,86 @@ void CPC::Input()
 		bWalk = true;
 	}
 
-	// 歩いている場合
-	if (bWalk == true)
+	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
 	{
-		//カメラの向き（Y軸のみ）
-		float rotY = rotCamera.y;
-
-		//視点移動
-		if (pInput->MovePress(GAME_MOVE_UP))
-		{//上キーが押された
-			if (pInput->MovePress(GAME_MOVE_LEFT))
-			{
-				rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
-				move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
-				move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
-			}
-			else if (pInput->MovePress(GAME_MOVE_RIGHT))
-			{
-				rotDest.y = rotCamera.y + D3DX_PI * -0.75f;
-				move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
-				move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
-			}
-			else
-			{
-				rotDest.y = rotCamera.y + D3DX_PI;
-				move.x = sinf(rotY) * boostMove.x;
-				move.z = cosf(rotY) * boostMove.z;
-			}
-		}
-
-		else if (pInput->MovePress(GAME_MOVE_DOWN))
-		{//下キーが押された
-			if (pInput->MovePress(GAME_MOVE_LEFT))
-			{
-				rotDest.y = rotCamera.y + D3DX_PI * 0.25f;
-				move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
-				move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
-			}
-			else if (pInput->MovePress(GAME_MOVE_RIGHT))
-			{
-				rotDest.y = rotCamera.y + D3DX_PI * -0.25f;
-				move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
-				move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
-			}
-			else
-			{
-				rotDest.y = rotCamera.y;
-				move.x = sinf(rotY + D3DX_PI) * boostMove.x;
-				move.z = cosf(rotY + D3DX_PI) * boostMove.z;
-			}
-		}
-		else if (pInput->MovePress(GAME_MOVE_LEFT))
-		{//左キーが押された
-			rotDest.y = rotCamera.y + D3DX_PI * 0.5f;
-			move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
-			move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
-		}
-		else if (pInput->MovePress(GAME_MOVE_RIGHT))
-		{//右キーが押された
-			rotDest.y = rotCamera.y + D3DX_PI * -0.5f;
-			move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
-			move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
-		}
-
-		// 接地している場合に歩きモーション
-		if (GetGround())
+		// 歩いている場合
+		if (bWalk == true)
 		{
-			// 歩き
-			SetMotion(MOTION_WALK);
+			//カメラの向き（Y軸のみ）
+			float rotY = rotCamera.y;
+
+			//視点移動
+			if (pInput->MovePress(GAME_MOVE_UP))
+			{//上キーが押された
+				if (pInput->MovePress(GAME_MOVE_LEFT))
+				{
+					rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
+					move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
+					move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
+				}
+				else if (pInput->MovePress(GAME_MOVE_RIGHT))
+				{
+					rotDest.y = rotCamera.y + D3DX_PI * -0.75f;
+					move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
+					move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
+				}
+				else
+				{
+					rotDest.y = rotCamera.y + D3DX_PI;
+					move.x = sinf(rotY) * boostMove.x;
+					move.z = cosf(rotY) * boostMove.z;
+				}
+			}
+
+			else if (pInput->MovePress(GAME_MOVE_DOWN))
+			{//下キーが押された
+				if (pInput->MovePress(GAME_MOVE_LEFT))
+				{
+					rotDest.y = rotCamera.y + D3DX_PI * 0.25f;
+					move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
+					move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
+				}
+				else if (pInput->MovePress(GAME_MOVE_RIGHT))
+				{
+					rotDest.y = rotCamera.y + D3DX_PI * -0.25f;
+					move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
+					move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
+				}
+				else
+				{
+					rotDest.y = rotCamera.y;
+					move.x = sinf(rotY + D3DX_PI) * boostMove.x;
+					move.z = cosf(rotY + D3DX_PI) * boostMove.z;
+				}
+			}
+			else if (pInput->MovePress(GAME_MOVE_LEFT))
+			{//左キーが押された
+				rotDest.y = rotCamera.y + D3DX_PI * 0.5f;
+				move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
+				move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
+			}
+			else if (pInput->MovePress(GAME_MOVE_RIGHT))
+			{//右キーが押された
+				rotDest.y = rotCamera.y + D3DX_PI * -0.5f;
+				move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
+				move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
+			}
+
+			// 接地している場合に歩きモーション
+			if (GetGround())
+			{
+				// 歩き
+				SetMotion(MOTION_WALK);
+			}
+			// 前回モーションが歩きモーションだった場合
+
 		}
-		// 前回モーションが歩きモーションだった場合
-
+		else if (GetCurrentMotion() != MOTION_LANDING && GetGround())
+		{
+			// 歩きを終了させる
+			SetMotion(MOTION_NEUTRAL);
+		}
 	}
-	else if (GetCurrentMotion() != MOTION_LANDING && GetGround())
-	{
-		// 歩きを終了させる
-		SetMotion(MOTION_NEUTRAL);
-	}
-
 
 	// 移動量を更新
 	CCharacter::SetMove(move);
@@ -199,7 +203,11 @@ void CPC::Input()
 	if (pInput->Trigger(DIK_F))
 	{
 		CMeshField *pMeshField = nullptr;
-		pMeshField = CGame::GetMeshField();
+
+		if (CApplication::GetModeType() == CApplication::MODE_GAME)
+			pMeshField = CGame::GetMeshField();
+		else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+			pMeshField = CTutorial::GetMeshField();
 
 		if (pMeshField != nullptr)
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
@@ -234,7 +242,12 @@ void CPC::Input()
 	Perspective();
 
 	// エネルギーゲージの取得
-	CEnergy_Gauge* pGauge = CGame::GetEnergy_Gauge();
+	CEnergy_Gauge* pGauge = nullptr;
+
+	if (CApplication::GetModeType() == CApplication::MODE_GAME)
+		pGauge = CGame::GetEnergy_Gauge();
+	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+		pGauge = CTutorial::GetEnergy_Gauge();
 
 	if (pGauge != nullptr)
 	{
@@ -275,7 +288,6 @@ void CPC::Input()
 			// 回避
 			if (pInput->Trigger(DIK_C))
 			{
-				
 				pGauge->Avoidance();			// エネルギー消費
 				pGauge->Recovery_Pause(30);		// クールタイム
 			}
@@ -320,70 +332,6 @@ void CPC::Perspective()
 	{	//LEFTキーを押しているとき
 		rotCamera.y += 0.015f;		//カメラの上方向の加算
 	}
-
-
-
-	D3DXVECTOR3 MouseMove;
-	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-	MouseMove = pInput->GetMouseMove();
-
-	MouseMove = D3DXVECTOR3(MouseMove.y, MouseMove.x, 0.0f);
-
-	if (D3DXVec3Length(&MouseMove) > 0.25f)
-	{
-		D3DXVec3Normalize(&MouseMove, &MouseMove);
-
-		rot = MouseMove * (D3DX_PI / 180.0f);
-
-		rot.x *= 3.0f;
-		rot.y *= 2.0f;
-	}
-
-	rotCamera += rot;
-
-	if (rotCamera.x  > D3DXToRadian(80))
-	{
-		rotCamera.x = D3DXToRadian(80);
-	}
-	else if (rotCamera.x  < D3DXToRadian(-50))
-	{
-		rotCamera.x = D3DXToRadian(-50);
-	}
-
-	rot = rotCamera;
-
-	if (rot.x > D3DX_PI)
-	{
-		rot.x -= D3DX_PI * 2.0f;
-	}
-	else if (rot.x < -D3DX_PI)
-	{
-		rot.x += D3DX_PI * 2.0f;
-	}
-
-	if (rot.y > D3DX_PI)
-	{
-		rot.y -= D3DX_PI * 2.0f;
-	}
-	else if (rot.y < -D3DX_PI)
-	{
-		rot.y += D3DX_PI * 2.0f;
-	}
-
-	if (rot.z > D3DX_PI)
-	{
-		rot.z -= D3DX_PI * 2.0f;
-	}
-	else if (rot.z < -D3DX_PI)
-	{
-		rot.z += D3DX_PI * 2.0f;
-	}
-
-	rotCamera.y = rot.y;
-	rotCamera.x = rot.x;
-
-
 
 	// 視点切り替え
 	if (pInput->Trigger(DIK_P) && m_bFlag == false)

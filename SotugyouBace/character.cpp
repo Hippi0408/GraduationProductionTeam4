@@ -8,6 +8,7 @@
 #include "application.h"
 #include "game.h"
 #include "meshfield.h"
+#include "tutorial.h"
 
 const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
 const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
@@ -186,13 +187,20 @@ void CCharacter::FieldCollision()
 	// Œ»İ‚ÌˆÊ’u‚ğ’è”‚Æ‚µ‚Äæ“¾
 	const D3DXVECTOR3 pos = CCharacter::GetPos();
 
-	CMeshField* pMesh = CGame::GetMeshField();
+	CMeshField* pMeshField = nullptr;
 	float a = 0.0f;
 
-	// °‚Ì“–‚½‚è”»’è‚©‚ç‚‚³‚ğ’è”‚Æ‚µ‚Äæ“¾
-	if (pMesh != nullptr)
-		a = pMesh->MeshCollision(pos);
+	if (CApplication::GetModeType() == CApplication::MODE_GAME)
+		pMeshField = CGame::GetMeshField();
+	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+		pMeshField = CTutorial::GetMeshField();
 
+	if (pMeshField != nullptr)
+	{
+		// °‚Ì“–‚½‚è”»’è‚©‚ç‚‚³‚ğ’è”‚Æ‚µ‚Äæ“¾
+		if (pMeshField != nullptr)
+			a = pMeshField->MeshCollision(pos);
+	}
 	// Ú’n‚µ‚Ä‚¢‚éê‡
 	if (GetGround() == true)
 	{

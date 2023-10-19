@@ -43,6 +43,7 @@ public:
 		MODE_TITLE,			// タイトル
 		MODE_CHAR_SELECT,	// キャラクターセレクト
 		MODE_STAGE_SELECT,	// ステージセレクト
+		MODE_TUTORIAL,		// チュートリアル
 		MODE_GAME,			// ゲーム
 		MODE_RESULT,		// リザルト
 		MODE_MAX,
@@ -60,6 +61,7 @@ public:
 	static void SetGameStart(const bool game_start) { m_bGameStart = game_start; }
 	static void SetPauce(const bool pauce) { m_bPauce = pauce; }
 
+	static HWND GetWindow() { return Window; }			// ウィンドウ
 	static CRenderer* GetRenderer() { return m_pRenderer; }
 	static CTexture* GetTexture() { return m_pTexture; }
 	static CModel* GetModel() { return m_pModel; }
@@ -80,6 +82,7 @@ public:
 	static const bool GetPauce() { return m_bPauce; }
 
 private:
+	static HWND Window;				// ウィンドウ
 
 	static CRenderer* m_pRenderer;
 	static CTexture* m_pTexture;
