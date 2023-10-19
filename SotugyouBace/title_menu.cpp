@@ -93,7 +93,7 @@ void CTitleMenu::Choice()
 			// åàíËSE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 			// ÉQÅ[ÉÄÇ…îÚÇ‘
-			CFade::SetFade(CApplication::MODE_GAME, 0.05f);
+			CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
 			CTitle::SetUninitWindow(false);
 			break;
 
