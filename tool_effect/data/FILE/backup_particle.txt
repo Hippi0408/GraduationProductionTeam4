@@ -687,6 +687,40 @@ PopTime : 14
 Quantity : 7
 TextureTag : FLARE
 Trail : false
+Index : 2
+UseRandom : false
+RandomVelocityMin : 0 , 0 , 0
+RandomVelocityMax : 0 , 0 , 0
+RandomRotateMin : 0
+RandomRotateMax : 0
+RandomWeightMin : 0
+RandomWeightMax : 0
+DistortionMin : 1
+DistortionMax : 1
+RandomCreate : 0
+LockPosition : 0
+DelayStartTime : 0
+CreateRange : 0
+PosOffset : 0 , 0 , 0
+Velocity : 0 , 0 , 0
+VelocityAttenuation : 9.728
+Behavior : 1
+Scale : 40 , 40 , 0
+Color : 1 , 0.173913 , 0.173913 , 1
+DestColor : 0.993789 , 0.642487 , 0.259249 , 0
+ColorAttenuation : 0.23
+BlendType : 0
+Scaling : 0.1 , 0.1 , 0
+Weight : 0
+Radius : 360
+RotateAngle : 0
+RotateRadius : 0
+RandomRotateMinBH : 0
+RandomRotateMaxBH : 0
+PopTime : 50
+Quantity : 16
+TextureTag : SMOKE
+Trail : false
 Tag : PopGhost
 Index : 0
 UseRandom : false
