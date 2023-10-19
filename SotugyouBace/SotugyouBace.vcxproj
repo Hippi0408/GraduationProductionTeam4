@@ -44,6 +44,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="menu_window.cpp" />
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="menu_window.h" />
     <ClInclude Include="meshfield.h" />
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />

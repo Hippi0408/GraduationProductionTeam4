@@ -136,6 +136,9 @@
     <ClCompile Include="title_menu.cpp">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="menu_window.cpp">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -274,6 +277,9 @@
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
     <ClInclude Include="title_menu.h">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_window.h">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
   </ItemGroup>

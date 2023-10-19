@@ -62,15 +62,19 @@ void CCamera::Uninit(void)
 //==============================================
 void CCamera::Update(void)
 {
-	if (CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
+	if (CApplication::GetModeType() == CApplication::MODE_GAME && CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
 	{
 		// ‹“_ˆÚ“®
 		Perspective();
 	}
+	else if (CApplication::GetModeType() == CApplication::MODE_TITLE)
+	{
+		Matrix(D3DXVECTOR3(-0.5f,0.0f,0.0f), D3DXVECTOR3(0.0f, 600.0f, 0.0f));
+	}
 
 #ifdef _DEBUG
 	// ƒJƒƒ‰‚ÌˆÚ“®
-	//Move();
+	Move();
 #endif
 }
 

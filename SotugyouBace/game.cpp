@@ -20,6 +20,7 @@
 #include"collision.h"
 #include"energy_gauge.h"
 #include "object2D.h"
+#include "menu_window.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;

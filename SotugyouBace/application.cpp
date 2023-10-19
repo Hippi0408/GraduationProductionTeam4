@@ -326,6 +326,7 @@ void CApplication::SetMode(MODE mode)
 	case CApplication::MODE_TITLE:
 		m_pGameMode = CTitle::Create();
 		m_pMenu = CTitleMenu::Create();
+		m_pMenu->SetDisplay(false);
 		break;
 	case CApplication::MODE_GAME:
 		m_pGameMode = CGame::Create();
