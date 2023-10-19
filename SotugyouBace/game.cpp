@@ -19,7 +19,9 @@
 #include"meshfield.h"
 #include"collision.h"
 #include"energy_gauge.h"
+#include "locus.h"
 #include "object2D.h"
+#include "menu_window.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
@@ -55,16 +57,13 @@ HRESULT CGame::Init()
 
 	// 視点、注視点の設定
 	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
-	pCamera->SetPosR({ 0.0f, 0.0f, 1000.0f });
+	pCamera->SetPosR({ 0.0f, 250.0f, 1000.0f });
 
-	//CFontString::Create({ 515.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "ゲーム");
-	CFontString::Create({ SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2 - 200.0f, 0.0f }, { 50.0f, 50.0f }, "ジャンプながおし");
-	
 	// プレイヤーの生成(テスト)
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 300.0f });
+	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
 
 	// タイムの生成
 	m_pTime = CTime::Create();
@@ -200,6 +199,12 @@ void CGame::GameEnd()
 	// ゲームが終了するまでカウント
 	if (m_nEndCounter < MAX_END_TIMER)
 	{
+		// 終了ロゴを生成する
+		if ((m_nEndCounter == MAX_FINISH_ROGO) && (m_pFinishRogo == nullptr))
+		{
+			m_pFinishRogo = CFontString::Create({ SCREEN_WIDTH / 2 - 360, SCREEN_HEIGHT / 2, 0.0f }, { 100.0f, 100.0f }, "げきはァ!");
+			m_pFinishRogo->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+		}
 		m_nEndCounter++;
 	}
 	// ゲームを終了させる
@@ -224,13 +229,6 @@ void CGame::SetGameEnd()
 {
 	// ゲーム終了判定を真にする
 	m_bGameEnd = true;
-
-	// 終了ロゴが未使用の場合
-	if (m_pFinishRogo == nullptr)
-	{
-		m_pFinishRogo = CFontString::Create({ SCREEN_WIDTH / 2 -360, SCREEN_HEIGHT / 2, 0.0f }, { 100.0f, 100.0f }, "げきはァ!");
-		m_pFinishRogo->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
-	}
 }
 
 //==============================================================================================

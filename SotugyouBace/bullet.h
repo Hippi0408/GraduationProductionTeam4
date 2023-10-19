@@ -24,8 +24,8 @@ class CObject3D;
 //==============================================
 class CBullet : public CMove_Object
 {
-	static const int BULLET_LIFE = 50;			// ’e‚ÌŽõ–½
-	static const int BULLET_POWER = 30;			// ’e‚ÌˆÐ—Í
+	static const int BULLET_LIFE = 60;			// ’e‚ÌŽõ–½
+	static const int BULLET_POWER = 50;			// ’e‚ÌˆÐ—Í
 	static const float BULLET_SPEED;			// ’e‚Ì‘¬“x
 	static const float BULLET_COLLISION_RADIUS;	// ’e‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³
 public:

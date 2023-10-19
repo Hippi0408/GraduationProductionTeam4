@@ -37,8 +37,8 @@ public:
 	void Update() override;					// 更新処理
 	void Draw() override;					// 描画処理
 
-	void SetScore(int nScore);				//スコアの設定処理
-	void AddScore(int nValue);				//スコアの加算処理
+	void SetScore(__int64 nScore);				//スコアの設定処理
+	void AddScore(__int64 nValue);				//スコアの加算処理
 
 	static CScore* Create();				// 生成
 
@@ -47,8 +47,8 @@ private:
 	// privateな変数
 	//****************
 	CNumber* m_apNumber[MAX_DIGIT];			//スコアの数字(桁数)
-	int m_aPosTexU[MAX_DIGIT];				//各桁のスコアを格納
-	int m_nScore;							//スコア
+	__int64 m_aPosTexU[MAX_DIGIT];				//各桁のスコアを格納
+	__int64 m_nScore;							//スコア
 	
 };
 #endif

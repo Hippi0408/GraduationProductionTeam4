@@ -95,7 +95,7 @@ void CScore::Draw()
 //============================================
 // スコアの設定処理
 //============================================
-void CScore::SetScore(int nScore)
+void CScore::SetScore(__int64 nScore)
 {
 	m_nScore = nScore;
 
@@ -120,7 +120,7 @@ void CScore::SetScore(int nScore)
 //============================================
 // スコアの加算処理
 //============================================
-void CScore::AddScore(int nValue)
+void CScore::AddScore(__int64 nValue)
 {
 	//メンバ変数にスコアを加算
 	SetScore(m_nScore + nValue);
