@@ -227,7 +227,7 @@ void CPC::Input()
 		SetJump_PressCount(0);
 
 	// UŒ‚ˆ—
-	if ((pInput->Trigger(DIK_B)) || pInput->Trigger(JOYPAD_R2))
+	if ((pInput->Trigger(DIK_B)) || pInput->Trigger(JOYPAD_R2) || pInput->Trigger(MOUSE_INPUT_LEFT))
 	{
 		// ƒvƒŒƒCƒ„[‚ÌUŒ‚ˆ—
 		PlayerAttack();

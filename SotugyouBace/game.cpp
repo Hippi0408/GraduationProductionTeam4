@@ -19,6 +19,7 @@
 #include"meshfield.h"
 #include"collision.h"
 #include"energy_gauge.h"
+#include "locus.h"
 #include "object2D.h"
 
 CMeshField *CGame::pMeshField = nullptr;
