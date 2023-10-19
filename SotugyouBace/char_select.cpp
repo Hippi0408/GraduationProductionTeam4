@@ -8,6 +8,7 @@
 #include"input.h"
 #include"application.h"
 #include"fade.h"
+#include"fontString.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -28,6 +29,8 @@ CChar_Select::~CChar_Select()
 //==============================================================================================
 HRESULT CChar_Select::Init()
 {
+	CFontString::Create({ 280.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "キャラクターセレクト");
+
 	return S_OK;
 }
 
@@ -53,6 +56,14 @@ void CChar_Select::Update()
 			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 		{
 			CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
+		}
+
+		// キャラセレクト画面に戻る
+		if (pInput->Trigger(DIK_BACK, nCnt)
+			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+		{
+			// 画面遷移
+			CFade::SetFade(CApplication::MODE_TITLE, 0.05f);
 		}
 	}
 }

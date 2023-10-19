@@ -101,6 +101,14 @@ void CStage_Select::Update()
 
 	// 矢印の点滅
 	Arrow_Flash();
+
+	// 入力処理の取得
+	CInput* pInput = CInput::GetKey();
+
+	if(pInput->Trigger(DIK_BACK))
+		// 画面遷移
+		CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
+
 }
 
 //==============================================================================================
@@ -189,6 +197,12 @@ void CStage_Select::Select()
 					}
 				}
 			}
+
+			// キャラセレクト画面に戻る
+			if (pInput->Trigger(DIK_BACK, nCnt)
+				&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+				// 画面遷移
+				CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
 		}
 	}
 }
@@ -241,14 +255,12 @@ void CStage_Select::Select_Arrow()
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
 		m_Select_Arrow[nCnt] = { 150.0f + nCnt * 980,m_nScreen_Height / 2 - 100.0f,0.0f };
-		m_Select_Arrow[nCnt] = { 0.0f,m_nScreen_Height / 2 - 100.0f,0.0f };
 		m_pSelect_Arrow[nCnt] = CObject2D::Create({ m_Select_Arrow[nCnt] }, { 150.0f,150.0f }, CObject::PRIORITY_SCREEN);
 		//m_pSelect_Arrow[nCnt]->SetTexture(CTexture::TEXTURE_SHOP_DIRECTION);
-		m_pSelect_Arrow[nCnt]->SetTexture(CTexture::TEXTURE_BULLET);
 	}
 
-	m_pSelect_Arrow[0]->SetRot({ 0.0f,D3DX_PI / 2 });
-	m_pSelect_Arrow[1]->SetRot({ 0.0f,-D3DX_PI / 2 });
+	m_pSelect_Arrow[0]->SetRot({ D3DX_PI / 2,D3DX_PI / 2 });
+	m_pSelect_Arrow[1]->SetRot({ -D3DX_PI / 2,-D3DX_PI / 2 });
 }
 
 //==============================================================================================
