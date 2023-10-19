@@ -37,7 +37,7 @@ public:
 	void Update();							// 更新処理
 
 	void MenuScale();						// メニューのサイズ処理
-	void MenuScaleReduce();					// メニューのサイズ縮小処理
+	bool MenuScaleReduce();					// メニューのサイズ縮小処理
 
 	static CMenuWindow* Create();			// 生成
 

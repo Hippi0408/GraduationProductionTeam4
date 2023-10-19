@@ -27,12 +27,11 @@ public:
 	static void SetWindow(bool flag) { m_bWindow = flag; }
 	static void SetUninitWindow(bool flag) { m_bWindowUninit = flag; }
 	static bool GetUninitWindow() { return m_bWindowUninit; }
-	static CMenuWindow* MenuWindow() { return m_pMenuWindow = nullptr; }
 
 	static CTitle* Create();
 
 private:
-	static CMenuWindow* m_pMenuWindow;
+	CMenuWindow* m_pMenuWindow;
 	CHalfSphere* m_pHalf;
 	CFontString* m_pFomntString[2];
 	

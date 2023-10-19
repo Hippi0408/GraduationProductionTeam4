@@ -71,11 +71,6 @@ void CCamera::Update(void)
 	{
 		Matrix(D3DXVECTOR3(-0.5f,0.0f,0.0f), D3DXVECTOR3(0.0f, 600.0f, 0.0f));
 	}
-
-#ifdef _DEBUG
-	// ƒJƒƒ‰‚ÌˆÚ“®
-	Move();
-#endif
 }
 
 //==============================================

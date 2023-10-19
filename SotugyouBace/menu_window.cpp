@@ -110,7 +110,7 @@ void CMenuWindow::MenuScale()
 //=============================================================================
 // メニューのサイズ縮小処理処理
 //=============================================================================
-void CMenuWindow::MenuScaleReduce()
+bool CMenuWindow::MenuScaleReduce()
 {
 	if (m_pObject2D != nullptr)
 	{// nullチェック
@@ -131,15 +131,15 @@ void CMenuWindow::MenuScaleReduce()
 		if (SizeX <= 0.0f && SizeY <= 0.0f)
 		{
 			CTitle::SetUninitWindow(false);	// ウィンドウを消す
-			CTitle::MenuWindow();			// メニューウィンドウをnullにする
 		
 			Uninit();						// メニューウィンドウの削除
-			return;
+			return true;
 		}
 
 		// サイズの設定
 		m_pObject2D->SetSize(D3DXVECTOR2(SizeX, SizeY));
 	}
+	return false;
 }
 
 //=============================================================================

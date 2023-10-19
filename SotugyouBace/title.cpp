@@ -18,7 +18,6 @@
 
 bool CTitle::m_bWindow = false;
 bool CTitle::m_bWindowUninit = false;
-CMenuWindow* CTitle::m_pMenuWindow = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -52,7 +51,9 @@ HRESULT CTitle::Init()
 	m_pFomntString[0] = CFontString::Create({ 490.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "タイトル");
 	m_pFomntString[1] = CFontString::Create({ 500.0f, 600.0f, 0.0f }, { 30.0f, 30.0f }, "ENTER");
 
-	m_bWindowUninit = GetUninitWindow();
+	// 静的変数初期化
+	m_bWindowUninit = false;
+	m_bWindow = false;
 
 	return S_OK;
 }
@@ -112,7 +113,11 @@ void CTitle::Update()
 
 	if (m_pMenuWindow != nullptr && m_bWindowUninit == true)
 	{
-		m_pMenuWindow->MenuScaleReduce();
+		if (m_pMenuWindow->MenuScaleReduce() == true)
+		{
+			delete m_pMenuWindow;
+			m_pMenuWindow = nullptr;
+		}
 	}
 }
 
