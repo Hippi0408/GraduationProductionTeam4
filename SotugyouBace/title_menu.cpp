@@ -92,7 +92,7 @@ void CTitleMenu::Choice()
 			// 決定SE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 			// ゲームに飛ぶ
-			CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
+			CFade::SetFade(CApplication::MODE_GAME, 0.05f);
 			break;
 
 			// チュートリアル
