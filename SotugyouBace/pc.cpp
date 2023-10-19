@@ -112,86 +112,84 @@ void CPC::Input()
 		bWalk = true;
 	}
 
-	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+	// 歩いている場合
+	if (bWalk == true)
 	{
-		// 歩いている場合
-		if (bWalk == true)
-		{
-			//カメラの向き（Y軸のみ）
-			float rotY = rotCamera.y;
+		//カメラの向き（Y軸のみ）
+		float rotY = rotCamera.y;
 
-			//視点移動
-			if (pInput->MovePress(GAME_MOVE_UP))
-			{//上キーが押された
-				if (pInput->MovePress(GAME_MOVE_LEFT))
-				{
-					rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
-					move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
-					move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
-				}
-				else if (pInput->MovePress(GAME_MOVE_RIGHT))
-				{
-					rotDest.y = rotCamera.y + D3DX_PI * -0.75f;
-					move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
-					move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
-				}
-				else
-				{
-					rotDest.y = rotCamera.y + D3DX_PI;
-					move.x = sinf(rotY) * boostMove.x;
-					move.z = cosf(rotY) * boostMove.z;
-				}
-			}
-
-			else if (pInput->MovePress(GAME_MOVE_DOWN))
-			{//下キーが押された
-				if (pInput->MovePress(GAME_MOVE_LEFT))
-				{
-					rotDest.y = rotCamera.y + D3DX_PI * 0.25f;
-					move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
-					move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
-				}
-				else if (pInput->MovePress(GAME_MOVE_RIGHT))
-				{
-					rotDest.y = rotCamera.y + D3DX_PI * -0.25f;
-					move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
-					move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
-				}
-				else
-				{
-					rotDest.y = rotCamera.y;
-					move.x = sinf(rotY + D3DX_PI) * boostMove.x;
-					move.z = cosf(rotY + D3DX_PI) * boostMove.z;
-				}
-			}
-			else if (pInput->MovePress(GAME_MOVE_LEFT))
-			{//左キーが押された
-				rotDest.y = rotCamera.y + D3DX_PI * 0.5f;
-				move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
-				move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
+		//視点移動
+		if (pInput->MovePress(GAME_MOVE_UP))
+		{//上キーが押された
+			if (pInput->MovePress(GAME_MOVE_LEFT))
+			{
+				rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
+				move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
+				move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
 			}
 			else if (pInput->MovePress(GAME_MOVE_RIGHT))
-			{//右キーが押された
-				rotDest.y = rotCamera.y + D3DX_PI * -0.5f;
-				move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
-				move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
-			}
-
-			// 接地している場合に歩きモーション
-			if (GetGround())
 			{
-				// 歩き
-				SetMotion(MOTION_WALK);
+				rotDest.y = rotCamera.y + D3DX_PI * -0.75f;
+				move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
+				move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
 			}
-			// 前回モーションが歩きモーションだった場合
+			else
+			{
+				rotDest.y = rotCamera.y + D3DX_PI;
+				move.x = sinf(rotY) * boostMove.x;
+				move.z = cosf(rotY) * boostMove.z;
+			}
+		}
 
+		else if (pInput->MovePress(GAME_MOVE_DOWN))
+		{//下キーが押された
+			if (pInput->MovePress(GAME_MOVE_LEFT))
+			{
+				rotDest.y = rotCamera.y + D3DX_PI * 0.25f;
+				move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
+				move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
+			}
+			else if (pInput->MovePress(GAME_MOVE_RIGHT))
+			{
+				rotDest.y = rotCamera.y + D3DX_PI * -0.25f;
+				move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
+				move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
+			}
+			else
+			{
+				rotDest.y = rotCamera.y;
+				move.x = sinf(rotY + D3DX_PI) * boostMove.x;
+				move.z = cosf(rotY + D3DX_PI) * boostMove.z;
+			}
 		}
-		else if (GetCurrentMotion() != MOTION_LANDING && GetGround())
+		else if (pInput->MovePress(GAME_MOVE_LEFT))
+		{//左キーが押された
+			rotDest.y = rotCamera.y + D3DX_PI * 0.5f;
+			move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
+			move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
+		}
+		else if (pInput->MovePress(GAME_MOVE_RIGHT))
+		{//右キーが押された
+			rotDest.y = rotCamera.y + D3DX_PI * -0.5f;
+			move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
+			move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
+		}
+
+		// 接地している場合に歩きモーション
+		if (GetGround())
 		{
-			// 歩きを終了させる
-			SetMotion(MOTION_NEUTRAL);
+			// 歩き
+			SetMotion(MOTION_WALK);
 		}
+		// 前回モーションが歩きモーションだった場合
+
 	}
+	else if (GetCurrentMotion() != MOTION_LANDING && GetGround())
+	{
+		// 歩きを終了させる
+		SetMotion(MOTION_NEUTRAL);
+	}
+
 
 	// 移動量を更新
 	CCharacter::SetMove(move);
@@ -295,33 +293,33 @@ void CPC::Perspective()
 	// カメラの角度
 	D3DXVECTOR3 rotCamera = CApplication::GetCamera()->GetRot();
 
-	//if (pInput->Press(DIK_UP) || pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
-	//{	//UPキーを押しているとき
-	//	rotCamera.x -= 0.015f;		//カメラの上方向の加算
-	//	if (rotCamera.x <= -0.5f)
-	//	{
-	//		rotCamera.x = -0.5f;
-	//	}
+	if (pInput->Press(DIK_UP) || pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
+	{	//UPキーを押しているとき
+		rotCamera.x -= 0.015f;		//カメラの上方向の加算
+		if (rotCamera.x <= -0.5f)
+		{
+			rotCamera.x = -0.5f;
+		}
 
-	//}
-	//if (pInput->Press(DIK_DOWN) || pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
-	//{	//DOWNキーを押しているとき
-	//	rotCamera.x += 0.015f;		//カメラの上方向の加算
-	//	if (rotCamera.x >= 0.5f)
-	//	{
-	//		rotCamera.x = 0.5f;
-	//	}
-	//}
+	}
+	if (pInput->Press(DIK_DOWN) || pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
+	{	//DOWNキーを押しているとき
+		rotCamera.x += 0.015f;		//カメラの上方向の加算
+		if (rotCamera.x >= 0.5f)
+		{
+			rotCamera.x = 0.5f;
+		}
+	}
 
-	//if (pInput->Press(DIK_LEFT) || pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
-	//{	//LEFTキーを押しているとき
-	//	rotCamera.y -= 0.015f;		//カメラの上方向の加算
-	//}
+	if (pInput->Press(DIK_LEFT) || pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
+	{	//LEFTキーを押しているとき
+		rotCamera.y -= 0.015f;		//カメラの上方向の加算
+	}
 
-	//if (pInput->Press(DIK_RIGHT) || pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
-	//{	//LEFTキーを押しているとき
-	//	rotCamera.y += 0.015f;		//カメラの上方向の加算
-	//}
+	if (pInput->Press(DIK_RIGHT) || pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
+	{	//LEFTキーを押しているとき
+		rotCamera.y += 0.015f;		//カメラの上方向の加算
+	}
 
 
 
@@ -330,29 +328,30 @@ void CPC::Perspective()
 
 	MouseMove = pInput->GetMouseMove();
 
-	MouseMove = D3DXVECTOR3(MouseMove.x, MouseMove.y, 0.0f);
+	MouseMove = D3DXVECTOR3(MouseMove.y, MouseMove.x, 0.0f);
 
-	if (D3DXVec3Length(&MouseMove) > 1.0f)
+	if (D3DXVec3Length(&MouseMove) > 0.25f)
 	{
 		D3DXVec3Normalize(&MouseMove, &MouseMove);
 
 		rot = MouseMove * (D3DX_PI / 180.0f);
 
-		rot.x *= 2.0f;
-		rot.y *= 3.0f;
-		rot.z *= 3.0f;
+		rot.x *= 3.0f;
+		rot.y *= 2.0f;
 	}
 
 	rotCamera += rot;
 
-	if (rotCamera.y  > D3DXToRadian(80))
+	if (rotCamera.x  > D3DXToRadian(80))
 	{
-		rotCamera.y = D3DXToRadian(80);
+		rotCamera.x = D3DXToRadian(80);
 	}
-	else if (rotCamera.y  < D3DXToRadian(-50))
+	else if (rotCamera.x  < D3DXToRadian(-50))
 	{
-		rotCamera.y = D3DXToRadian(-50);
+		rotCamera.x = D3DXToRadian(-50);
 	}
+
+	rot = rotCamera;
 
 	if (rot.x > D3DX_PI)
 	{
