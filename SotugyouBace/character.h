@@ -62,7 +62,6 @@ class CCharacter : public CMove_Object
 
 public:
 
-
 	CCharacter(const CObject::PRIORITY priority = CObject::PRIORITY_MODEL);
 	virtual ~CCharacter() override;
 

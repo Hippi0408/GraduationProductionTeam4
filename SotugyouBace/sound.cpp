@@ -255,32 +255,32 @@ void CSound::Destroy()
 //=============================================================================
 HRESULT CSound::Play(SOUND_LABEL label)
 {
-	// 空のソースボイスの構造体
-	SSourceVoice sourceVoice = {};
+	//// 空のソースボイスの構造体
+	//SSourceVoice sourceVoice = {};
 
-	// ソースボイスの生成
-	m_pXAudio2->CreateSourceVoice(&sourceVoice.pSourceVoice, &(m_aWfx[label].Format));
+	//// ソースボイスの生成
+	//m_pXAudio2->CreateSourceVoice(&sourceVoice.pSourceVoice, &(m_aWfx[label].Format));
 
-	XAUDIO2_BUFFER buffer;
+	//XAUDIO2_BUFFER buffer;
 
-	// バッファの値設定
-	memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
-	buffer.AudioBytes = m_aSizeAudio[label];
-	buffer.pAudioData = m_apDataAudio[label];
-	buffer.Flags = XAUDIO2_END_OF_STREAM;
-	buffer.LoopCount = m_aParam[label].nCntLoop;
+	//// バッファの値設定
+	//memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
+	//buffer.AudioBytes = m_aSizeAudio[label];
+	//buffer.pAudioData = m_apDataAudio[label];
+	//buffer.Flags = XAUDIO2_END_OF_STREAM;
+	//buffer.LoopCount = m_aParam[label].nCntLoop;
 
-	// オーディオバッファの登録
-	sourceVoice.pSourceVoice->SubmitSourceBuffer(&buffer);
+	//// オーディオバッファの登録
+	//sourceVoice.pSourceVoice->SubmitSourceBuffer(&buffer);
 
-	// 再生
-	sourceVoice.pSourceVoice->Start(0);
+	//// 再生
+	//sourceVoice.pSourceVoice->Start(0);
 
-	// ラベルの種類を設定する
-	sourceVoice.label = label;
+	//// ラベルの種類を設定する
+	//sourceVoice.label = label;
 
-	// リストの一番後ろに入れる
-	m_listSourceVoice.push_back(sourceVoice);
+	//// リストの一番後ろに入れる
+	//m_listSourceVoice.push_back(sourceVoice);
 
 	return S_OK;
 }
