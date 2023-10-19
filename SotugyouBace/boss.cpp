@@ -76,42 +76,39 @@ void CBoss::Draw()
 //============================================================================
 // モーション変更処理
 //============================================================================
-void CBoss::ChangeMotion(const int index)
+void CBoss::ChangeMotion()
 {
-	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+	// 現在のモーション
+	const int nCuttentMotion = GetCurrentMotion();
+	const int nMotion = GetMotion();
+
+	// 現在のモーションから変わった場合
+	if (nCuttentMotion != nMotion)
 	{
-		// 現在のモーション
-		const int nCuttentMotion = GetCurrentMotion(nCnt);
-		const int nMotion = GetMotion(nCnt);
-
-		// 現在のモーションから変わった場合
-		if (nCuttentMotion != nMotion)
+		// 現在モーションの終了処理
+		switch (nCuttentMotion)
 		{
-			// 現在モーションの終了処理
-			switch (nCuttentMotion)
-			{
-			case MOTION_NEUTRAL:
-				break;
-			case MOTION_WALK:
-				break;
-			default:
-				break;
-			}
-
-			// 現在モーションの開始処理
-			switch (nMotion)
-			{
-			case MOTION_NEUTRAL:
-				break;
-			case MOTION_WALK:
-				break;
-			default:
-				break;
-			}
-
-			// キャラクターのモーション変更処理
-			CCharacter::ChangeMotion(nCnt);
+		case MOTION_NEUTRAL:
+			break;
+		case MOTION_WALK:
+			break;
+		default:
+			break;
 		}
+
+		// 現在モーションの開始処理
+		switch (nMotion)
+		{
+		case MOTION_NEUTRAL:
+			break;
+		case MOTION_WALK:
+			break;
+		default:
+			break;
+		}
+
+		// キャラクターのモーション変更処理
+		CCharacter::ChangeMotion();
 	}
 }
 

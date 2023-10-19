@@ -180,15 +180,15 @@ void CPC::Input()
 			if (GetGround())
 			{
 				// 歩き
-				SetMotion(MOTION_WALK, nCnt);
+				SetMotion(MOTION_WALK);
 			}
 			// 前回モーションが歩きモーションだった場合
 
 		}
-		else if (GetCurrentMotion(nCnt) != MOTION_LANDING && GetGround())
+		else if (GetCurrentMotion() != MOTION_LANDING && GetGround())
 		{
 			// 歩きを終了させる
-			SetMotion(MOTION_NEUTRAL, nCnt);
+			SetMotion(MOTION_NEUTRAL);
 		}
 	}
 
@@ -272,11 +272,7 @@ void CPC::Input()
 
 				// エネルギーを消費する
 				pGauge->Consumption_Gauge();
-
-				for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
-				{
-					SetMotion(MOTION_BOOST_RUN, nCnt);
-				}
+				SetMotion(MOTION_BOOST_RUN);
 			}
 
 			// 回避
