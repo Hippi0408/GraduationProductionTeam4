@@ -11,7 +11,6 @@
 #include"mode.h"
 
 // 前方宣言
-class CScore;
 class CTime;
 class CHalfSphere;
 class CMeshField;
@@ -22,7 +21,8 @@ class CFontString;
 
 class CGame : public CMode
 {
-	static const int MAX_END_TIMER = 120;	// ゲーム終了までの時間
+	static const int MAX_FINISH_ROGO = 60;	// 終了ロゴまでの時間
+	static const int MAX_END_TIMER = 240;	// ゲーム終了までの時間
 
 public:
 	CGame();
@@ -46,7 +46,6 @@ private:
 
 	static bool m_bGameEnd;					// ゲーム終了判定
 	int m_nEndCounter;						// ゲーム終了までの時間
-	CScore* m_pScore;
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
 	static CMeshField *pMeshField;			// メッシュフィールド

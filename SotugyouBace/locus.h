@@ -36,7 +36,7 @@ public:
 	void Draw()  override;
 
 	void UV();
-	virtual void Hit() override {};
+	virtual void Hit(CMove_Object* pHit) override {};
 
 	static CLocus* Create(const D3DXVECTOR3 pos, const float fsize, int nAnchorPoints, const PRIORITY priority = PRIORITY_CENTER, const D3DXCOLOR col = { 1.0f,1.0f, 1.0f, 1.0f }, const bool billboard = false);
 

@@ -56,29 +56,23 @@ HRESULT CGame::Init()
 
 	// 視点、注視点の設定
 	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
-	pCamera->SetPosR({ 0.0f, 0.0f, 1000.0f });
+	pCamera->SetPosR({ 0.0f, 250.0f, 1000.0f });
 
-	//CFontString::Create({ 515.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "ゲーム");
-	CFontString::Create({ SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2 - 200.0f, 0.0f }, { 50.0f, 50.0f }, "ジャンプながおし");
-	
 	// プレイヤーの生成(テスト)
-	CApplication::GetPlayerManager()->SetPlayer({ 100.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 300.0f });
-
-	// スコアの生成
-	m_pScore = CScore::Create();
+	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
 
 	// タイムの生成
 	m_pTime = CTime::Create();
 
 	// ハーフスフィアの生成
-	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
+	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20000.0f, 20000.0f, 20000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	// メッシュフィールドの生成
-	pMeshField = CMeshField::Create({ 0.0f, 0.0f,0.0f }, 20, 20, 300.0f);
+	pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
 
 	// エネルギーゲージ
 	m_pEnergy_Gauge = CEnergy_Gauge::Create({ SCREEN_WIDTH / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });
@@ -135,16 +129,13 @@ void CGame::Update()
 
 		CInput* pInput = CInput::GetKey();
 
-	
-	/*if (pInput->Trigger(DIK_0))
-	{
-		CLocus::Create(D3DXVECTOR3(0.0f,0.0f,0.0f), 0.0f, 10, CObject::PRIORITY_SCREEN);
-	}*/
-
-
-	// デバッグ専用コマンド
+		// デバッグ専用コマンド
 #ifdef _DEBUG
-	// 左Shiftキーを押したままの場合
+		if (pInput->Trigger(DIK_F5))
+		{
+			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
+		}
+		// 左Shiftキーを押したままの場合
 		if (pInput->Press(DIK_LSHIFT))
 		{
 			int nKey = -1;
@@ -186,12 +177,6 @@ void CGame::Update()
 		else
 		{
 			// スコアの加算
-			if (pInput->Press(DIK_L))
-			{
-				m_pScore->AddScore(10);
-			}
-
-			// スコアの加算
 			if (pInput->Trigger(DIK_0))
 			{
 				for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
@@ -213,6 +198,12 @@ void CGame::GameEnd()
 	// ゲームが終了するまでカウント
 	if (m_nEndCounter < MAX_END_TIMER)
 	{
+		// 終了ロゴを生成する
+		if ((m_nEndCounter == MAX_FINISH_ROGO) && (m_pFinishRogo == nullptr))
+		{
+			m_pFinishRogo = CFontString::Create({ SCREEN_WIDTH / 2 - 360, SCREEN_HEIGHT / 2, 0.0f }, { 100.0f, 100.0f }, "げきはァ!");
+			m_pFinishRogo->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+		}
 		m_nEndCounter++;
 	}
 	// ゲームを終了させる
@@ -237,13 +228,6 @@ void CGame::SetGameEnd()
 {
 	// ゲーム終了判定を真にする
 	m_bGameEnd = true;
-
-	// 終了ロゴが未使用の場合
-	if (m_pFinishRogo == nullptr)
-	{
-		m_pFinishRogo = CFontString::Create({ SCREEN_WIDTH / 2 -360, SCREEN_HEIGHT / 2, 0.0f }, { 100.0f, 100.0f }, "げきはァ!");
-		m_pFinishRogo->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
-	}
 }
 
 //==============================================================================================

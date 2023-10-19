@@ -50,7 +50,7 @@ HRESULT CMeshField::Init()
 	m_nVertexNum = ((m_nXBlock + 1) * (m_nZBlock + 1));										// 頂点数	
 	m_nIndexNum = (m_nXBlock * 2 + 2) * m_nZBlock + 2 * (m_nZBlock - 1);					// インデックスバッファ
 	m_nPrimitiveNum = (m_nXBlock * m_nZBlock * 2 + 4 * (m_nZBlock - 1));					// プリミティブ数
-	m_nHeight = 50;		// 頂点の高さ(ランダムの最大値)
+	m_nHeight = 100;		// 頂点の高さ(ランダムの最大値)
 
 	// テクスチャの設定
 	m_Texture = CTexture::TEXTURE_FLOOR;
@@ -162,9 +162,6 @@ void CMeshField::Uninit(void)
 //==============================================================================================
 void CMeshField::Update(void)
 {
-	// メッシュの当たり判定
-	//MeshCollision();
-
 	// 法線の設定
 	Normal();
 }
@@ -330,19 +327,23 @@ float CMeshField::MeshCollision(D3DXVECTOR3 pos)
 			m_bPorigon_Scope = true;
 			m_nCntIndex = nCnt;
 
+			// 接地している場合
 			if (m_fPosY > pos.y)
+			{
 				m_bHit = true;
-			break;
+
+				// 処理を打ち切る
+				break;
+			}
 		}
-
-		//インデックスバッファのアンロック
-		m_pIdxBuff->Unlock();
-
-		//頂点バッファをアンロックする
-		m_pVtxBuff->Unlock();
 	}
-
 	m_nPolyCount = 0;
+
+	//インデックスバッファのアンロック
+	m_pIdxBuff->Unlock();
+
+	//頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
 
 	return m_fPosY;
 }

@@ -26,6 +26,7 @@ class CMode;
 class CPlayerManager;
 class CEnemyManager;
 class CCollision_Manager;
+class CParticleManager;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -39,9 +40,11 @@ public:
 	enum MODE
 	{
 		MODE_NONE = 0,
-		MODE_TITLE,
-		MODE_GAME,
-		MODE_RESULT,
+		MODE_TITLE,			// タイトル
+		MODE_CHAR_SELECT,	// キャラクターセレクト
+		MODE_STAGE_SELECT,	// ステージセレクト
+		MODE_GAME,			// ゲーム
+		MODE_RESULT,		// リザルト
 		MODE_MAX,
 	};
 
@@ -66,6 +69,7 @@ public:
 	static CMode* GetGameMode() { return m_pGameMode; }
 	static CFade* GetFade() { return m_pFade; }
 	static CMenu* GetMenu() { return m_pMenu; }
+	static CParticleManager* GetParticleManager() { return m_pParticleManager; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
 	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
 	static CCollision_Manager* GetCollision_Manager() { return m_pCollision_Manager; }
@@ -86,6 +90,7 @@ private:
 	static CCamera* m_pCamera;
 	static CFade* m_pFade;
 	static CMenu* m_pMenu;
+	static CParticleManager* m_pParticleManager;
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;
 	static CCollision_Manager* m_pCollision_Manager;

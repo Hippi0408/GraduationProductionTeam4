@@ -25,7 +25,7 @@ class CTime
 {
 public:
 	static const int TIME_DIGIT = 3;	// ŠÔ‚ÌŒ…”
-	static const int MAX_TIME = 100;		// Å‘åŠÔ
+	static const int MAX_TIME = 180;	// Å‘åŠÔ
 
 	//****************
 	// public‚ÈŠÖ”
