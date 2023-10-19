@@ -136,10 +136,10 @@ void CGame::Update()
 		CInput* pInput = CInput::GetKey();
 
 	
-	if (pInput->Trigger(DIK_0))
+	/*if (pInput->Trigger(DIK_0))
 	{
 		CLocus::Create(D3DXVECTOR3(0.0f,0.0f,0.0f), 0.0f, 10, CObject::PRIORITY_SCREEN);
-	}
+	}*/
 
 
 	// デバッグ専用コマンド
