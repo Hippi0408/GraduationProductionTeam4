@@ -65,7 +65,7 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion();		// モーションの切り替え
+	void ChangeMotion() override;		// モーションの切り替え
 	void Hit(CMove_Object* pHit) override;
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
