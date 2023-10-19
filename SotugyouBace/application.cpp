@@ -22,9 +22,12 @@
 #include "input.h"
 #include "menu.h"
 #include "title_menu.h"
+#include "particle_manager.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
 #include "collision_manager.h"
+#include "char_select.h"
+#include "stage_select.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -44,6 +47,7 @@ CLight* CApplication::m_pLight = nullptr;
 CCamera* CApplication::m_pCamera = nullptr;
 CFade* CApplication::m_pFade = nullptr;
 CMenu* CApplication::m_pMenu = nullptr;
+CParticleManager* CApplication::m_pParticleManager = nullptr;
 CPlayerManager* CApplication::m_pPlayerManager = nullptr;
 CEnemyManager* CApplication::m_pEnemyManager = nullptr;
 CCollision_Manager* CApplication::m_pCollision_Manager = nullptr;
@@ -106,6 +110,10 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	m_pSound = CSound::Create(hWnd);			// サウンドの生成
 
 	m_pFade = CFade::Create();					// フェード
+
+	// パーティクルマネージャの生成
+	m_pParticleManager = new CParticleManager;
+	m_pParticleManager->LoadText("particle.txt");
 
 	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
@@ -222,6 +230,14 @@ void CApplication::Uninit()
 
 	CObject::ReleaseAll();
 
+	// パーティクルマネージャの破棄
+	if (m_pParticleManager != nullptr)
+	{
+		m_pParticleManager->ReleaseAll();
+		delete m_pParticleManager;
+		m_pParticleManager = nullptr;
+	}
+
 	// プレイヤーマネージャーの破棄
 	if (m_pPlayerManager != nullptr)
 	{
@@ -327,6 +343,12 @@ void CApplication::SetMode(MODE mode)
 		m_pGameMode = CTitle::Create();
 		m_pMenu = CTitleMenu::Create();
 		m_pMenu->SetDisplay(false);
+		break;
+	case CApplication::MODE_CHAR_SELECT:
+		m_pGameMode = CChar_Select::Create();
+		break;
+	case CApplication::MODE_STAGE_SELECT:
+		m_pGameMode = CStage_Select::Create();
 		break;
 	case CApplication::MODE_GAME:
 		m_pGameMode = CGame::Create();

@@ -24,6 +24,7 @@
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="character.cpp" />
+    <ClCompile Include="char_select.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="collision_manager.cpp" />
     <ClCompile Include="cpu.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="inputkeyboard.cpp" />
     <ClCompile Include="inputmouse.cpp" />
     <ClCompile Include="light.cpp" />
+    <ClCompile Include="locus.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="menu_window.cpp" />
@@ -54,6 +56,9 @@
     <ClCompile Include="object2D.cpp" />
     <ClCompile Include="object3D.cpp" />
     <ClCompile Include="objectX.cpp" />
+    <ClCompile Include="particle.cpp" />
+    <ClCompile Include="particle_emitter.cpp" />
+    <ClCompile Include="particle_manager.cpp" />
     <ClCompile Include="pc.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player_manager.cpp" />
@@ -61,10 +66,12 @@
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="sound.cpp" />
+    <ClCompile Include="stage_select.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="title_menu.cpp" />
+    <ClCompile Include="trail.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -72,6 +79,7 @@
     <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="char_select.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="collision_manager.h" />
     <ClInclude Include="cpu.h" />
@@ -91,6 +99,7 @@
     <ClInclude Include="inputkeydata.h" />
     <ClInclude Include="inputmouse.h" />
     <ClInclude Include="light.h" />
+    <ClInclude Include="locus.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="menu_window.h" />
@@ -103,6 +112,9 @@
     <ClInclude Include="object2D.h" />
     <ClInclude Include="object3D.h" />
     <ClInclude Include="objectX.h" />
+    <ClInclude Include="particle.h" />
+    <ClInclude Include="particle_emitter.h" />
+    <ClInclude Include="particle_manager.h" />
     <ClInclude Include="pc.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="player_manager.h" />
@@ -110,10 +122,13 @@
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="sound.h" />
+    <ClInclude Include="stage_select.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="title_menu.h" />
+    <ClInclude Include="trail.h" />
+    <ClInclude Include="utility.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33988321-C2B8-45BE-9836-B21C2E84733F}</ProjectGuid>

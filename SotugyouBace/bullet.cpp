@@ -14,11 +14,12 @@
 #include "game.h"
 #include "meshfield.h"
 #include "object3D.h"
+#include "particle_emitter.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-const float CBullet::BULLET_SPEED = 15.0f;				// 弾の速度
+const float CBullet::BULLET_SPEED = 50.0f;				// 弾の速度
 const float CBullet::BULLET_COLLISION_RADIUS = 30.0f;	// 弾の当たり判定の大きさ
 //=============================================================================
 // コンストラクタ
@@ -143,9 +144,13 @@ void CBullet::FieldCollision()
 //=============================================================================
 // 被弾処理
 //=============================================================================
-void CBullet::Hit(CMove_Object* /* pHit */)
+void CBullet::Hit(CMove_Object* pHit)
 {
-	Destroy();
+	// 弾では無い場合
+	if (pHit->GetTag() != TAG_BULLET)
+	{
+		Destroy();
+	}
 }
 
 //=============================================================================
@@ -153,6 +158,9 @@ void CBullet::Hit(CMove_Object* /* pHit */)
 //=============================================================================
 void CBullet::Destroy()
 {
+	// 攻撃パーティクル
+	std::move(CParticleEmitter::Create("Attack", GetPos()));
+
 	Uninit();
 }
 

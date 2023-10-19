@@ -17,7 +17,7 @@
 //---------------------------
 class CBoss : public CEnemy
 {
-	static const int FIRST_MAX_LIFE = 100;		// 初期最大体力の値
+	static const int FIRST_MAX_LIFE = 500;		// 初期最大体力の値
 	static const float BOSS_COLLISION_RADIUS;	// ボスの当たり判定の大きさ
 public:
 
@@ -49,7 +49,7 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion() override;		// モーションの切り替え
+	void ChangeMotion();		// モーションの切り替え
 	void Destroy() override;			// 破壊処理
 
 	static CBoss* Create(const D3DXVECTOR3 pos);
