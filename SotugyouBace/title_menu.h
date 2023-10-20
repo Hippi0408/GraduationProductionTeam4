@@ -20,7 +20,6 @@ public:
 	enum Choice_Type
 	{
 		Choice_GameStart,		// ゲームスタート
-		Choice_Tutorial,		// チュートリアル
 		Choice_Window_Exit,		// ウィンドウを閉じる
 		Choice_Max,
 		Choice_Invalid = -1,		// 何も呼ばれていない
