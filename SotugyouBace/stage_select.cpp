@@ -8,6 +8,7 @@
 #include"input.h"
 #include"application.h"
 #include"fade.h"
+#include"fontString.h"
 
 int CStage_Select::m_nStage_Number = 0;
 
@@ -29,7 +30,10 @@ CStage_Select::~CStage_Select()
 // 初期化処理
 //==============================================================================================
 HRESULT CStage_Select::Init()
-{// ステージの番号の初期化
+{
+	CFontString::Create({ 150.0f, SCREEN_HEIGHT / 2 - 200, 0.0f }, { 50.0f, 50.0f }, "いちばんみぎがチュートリアル");
+
+	// ステージの番号の初期化
 	m_nStage_Number = 0;
 
 	// ステージの位置
@@ -178,9 +182,9 @@ void CStage_Select::Select()
 				// 決定SE
 				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 
-				// ランダムを選択した場合
-				if (m_nStage_Number == STAGE_RANDOM)
-					m_nStage_Number = rand() % 3;
+				//// ランダムを選択した場合
+				//if (m_nStage_Number == STAGE_RANDOM)
+				//	m_nStage_Number = rand() % 3;
 
 				// ステージを決定したか
 				m_bSelect = true;
@@ -215,10 +219,18 @@ void CStage_Select::Stage_Start()
 	// 始まるまでのカウント
 	m_nStartCount--;
 
-	if (m_nStartCount <= 0)
+	if (m_nStage_Number != STAGE_RANDOM
+		&& m_nStartCount <= 0)
 	{
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.05f);
+	}
+
+	else if (m_nStage_Number == STAGE_RANDOM
+		&& m_nStartCount <= 0)
+	{
+		// 画面遷移
+		CFade::SetFade(CApplication::MODE_TUTORIAL, 0.05f);
 	}
 }
 

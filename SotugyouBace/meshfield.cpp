@@ -50,7 +50,7 @@ HRESULT CMeshField::Init()
 	m_nVertexNum = ((m_nXBlock + 1) * (m_nZBlock + 1));										// 頂点数	
 	m_nIndexNum = (m_nXBlock * 2 + 2) * m_nZBlock + 2 * (m_nZBlock - 1);					// インデックスバッファ
 	m_nPrimitiveNum = (m_nXBlock * m_nZBlock * 2 + 4 * (m_nZBlock - 1));					// プリミティブ数
-	m_nHeight = 100;		// 頂点の高さ(ランダムの最大値)
+	m_nHeight = 1000;		// 頂点の高さ(ランダムの最大値)
 
 	// テクスチャの設定
 	m_Texture = CTexture::TEXTURE_FLOOR;
@@ -408,6 +408,7 @@ float CMeshField::Ground_Broken(D3DXVECTOR3 pos, float damage, int scope)
 					// 地面を抉る
 					if (!pVtx[pIdx[nIndex + nCnt2]].broken)
 					{
+						// 同じ高さまでへこませる範囲
 						float fDamage = 0.0f;
 						if (nCnt <= 0)
 							fDamage = m_fPosY - damage;

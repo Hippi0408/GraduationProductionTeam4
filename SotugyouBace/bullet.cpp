@@ -15,6 +15,7 @@
 #include "meshfield.h"
 #include "object3D.h"
 #include "particle_emitter.h"
+#include "tutorial.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -126,18 +127,26 @@ void CBullet::FieldCollision()
 	// 現在の位置を定数として取得
 	const D3DXVECTOR3 pos = GetPos();
 
-	CMeshField* pMesfField = CGame::GetMeshField();
+	CMeshField* pMeshField = nullptr;
 
-	// 床の当たり判定から高さを定数として取得
-	const float a = pMesfField->MeshCollision(pos);
+	if(CApplication::GetModeType() == CApplication::MODE_GAME)
+		pMeshField = CGame::GetMeshField();
+	else if(CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+		pMeshField = CTutorial::GetMeshField();
 
-	// メッシュフィールドより下の位置にいる場合
-	if (a >= pos.y)
+	if (pMeshField != nullptr)
 	{
-		// 弾を破壊する
-		Destroy();
+		// 床の当たり判定から高さを定数として取得
+		const float a = pMeshField->MeshCollision(pos);
 
-		pMesfField->Ground_Broken(pos, 50.0f, 5);
+		// メッシュフィールドより下の位置にいる場合
+		if (a >= pos.y)
+		{
+			// 弾を破壊する
+			Destroy();
+
+			pMeshField->Ground_Broken(pos, 50.0f, 5);
+		}
 	}
 }
 

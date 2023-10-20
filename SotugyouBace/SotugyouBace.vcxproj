@@ -73,6 +73,7 @@
     <ClCompile Include="title.cpp" />
     <ClCompile Include="title_menu.cpp" />
     <ClCompile Include="trail.cpp" />
+    <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="title.h" />
     <ClInclude Include="title_menu.h" />
     <ClInclude Include="trail.h" />
+    <ClInclude Include="tutorial.h" />
     <ClInclude Include="utility.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

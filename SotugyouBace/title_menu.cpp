@@ -101,8 +101,8 @@ void CTitleMenu::Choice()
 		case Choice_Tutorial:
 			// 決定SE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
-			//// チュートリアル画面に飛ぶ
-			//CFade::SetFade(CApplication::MODE_ENTRY, 0.05f);
+			// 画面遷移
+			CFade::SetFade(CApplication::MODE_TUTORIAL, 0.05f);
 			break;
 
 			// ウィンドウを閉じる
@@ -112,6 +112,9 @@ void CTitleMenu::Choice()
 
 			// 表示判定を偽にする
 			SetDisplay(false);
+
+			// ウィンドウの破棄
+			DestroyWindow(CApplication::GetWindow());
 			break;
 		default:
 			break;

@@ -200,8 +200,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case VK_ESCAPE: // [ESC]キーが押された
+#ifdef _DEBUG
 			// ウィンドウを破棄
 			DestroyWindow(hWnd);
+#endif
 			break;
 		}
 		break;

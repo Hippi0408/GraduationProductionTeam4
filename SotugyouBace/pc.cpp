@@ -11,6 +11,7 @@
 #include "game.h"
 #include "meshfield.h"
 #include "energy_gauge.h"
+#include "tutorial.h"
 
 #include"player_manager.h"
 
@@ -202,7 +203,11 @@ void CPC::Input()
 	if (pInput->Trigger(DIK_F))
 	{
 		CMeshField *pMeshField = nullptr;
-		pMeshField = CGame::GetMeshField();
+
+		if (CApplication::GetModeType() == CApplication::MODE_GAME)
+			pMeshField = CGame::GetMeshField();
+		else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+			pMeshField = CTutorial::GetMeshField();
 
 		if (pMeshField != nullptr)
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
@@ -237,7 +242,12 @@ void CPC::Input()
 	Perspective();
 
 	// エネルギーゲージの取得
-	CEnergy_Gauge* pGauge = CGame::GetEnergy_Gauge();
+	CEnergy_Gauge* pGauge = nullptr;
+
+	if (CApplication::GetModeType() == CApplication::MODE_GAME)
+		pGauge = CGame::GetEnergy_Gauge();
+	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+		pGauge = CTutorial::GetEnergy_Gauge();
 
 	if (pGauge != nullptr)
 	{
