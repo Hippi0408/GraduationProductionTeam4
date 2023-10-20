@@ -11,6 +11,7 @@
 #include "player_manager.h"
 #include "game.h"
 #include "energy_gauge.h"
+#include "tutorial.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
@@ -178,7 +179,12 @@ void CPlayer::JumpStart()
 void CPlayer::JumpBoost()
 {
 	// エネルギーゲージの取得
-	CEnergy_Gauge* pGauge = CGame::GetEnergy_Gauge();
+	CEnergy_Gauge* pGauge = nullptr;
+
+	if (CApplication::GetModeType() == CApplication::MODE_GAME)
+		pGauge = CGame::GetEnergy_Gauge();
+	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+		pGauge = CTutorial::GetEnergy_Gauge();
 
 	if (pGauge != nullptr)
 	{

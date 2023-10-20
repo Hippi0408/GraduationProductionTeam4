@@ -35,8 +35,7 @@ CTitleMenu::~CTitleMenu()
 HRESULT CTitleMenu::Init()
 {
 	// 選択肢の設定処理
-	SetChoice(CFontString::Create({ 400.0f, 300.0f, 0.0f}, { 40.0f, 40.0f }, "ゲームをはじめる"));
-	SetChoice(CFontString::Create({ 800.0f / 2, 400.0f ,0.0f }, { 40.0f, 40.0f }, "チュートリアル"));
+	SetChoice(CFontString::Create({ 400.0f, 400.0f, 0.0f}, { 40.0f, 40.0f }, "ゲームをはじめる"));
 	SetChoice(CFontString::Create({ 800.0f / 2, 500.0f ,0.0f }, { 40.0f, 40.0f }, "とじる"));
 
 	//GetChoice(Choice_GameStart)->SetPos({ SCREEN_WIDTH / 2 - 200, 400.0f, 0.0f });
@@ -97,14 +96,6 @@ void CTitleMenu::Choice()
 			CTitle::SetUninitWindow(false);
 			break;
 
-			// チュートリアル
-		case Choice_Tutorial:
-			// 決定SE
-			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
-			//// チュートリアル画面に飛ぶ
-			//CFade::SetFade(CApplication::MODE_ENTRY, 0.05f);
-			break;
-
 			// ウィンドウを閉じる
 		case Choice_Window_Exit:
 			// 決定SE
@@ -112,6 +103,9 @@ void CTitleMenu::Choice()
 
 			// 表示判定を偽にする
 			SetDisplay(false);
+
+			// ウィンドウの破棄
+			DestroyWindow(CApplication::GetWindow());
 			break;
 		default:
 			break;

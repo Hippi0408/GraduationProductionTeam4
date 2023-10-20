@@ -105,6 +105,7 @@ public:
 	const bool GetMotionStop() { return m_MotionSet[GetMotion()].bStop; }	// Œ»İƒ‚[ƒVƒ‡ƒ“‚ÌI—¹”»’è‚ğ“Ç‚İ‚Ş
 	const int GetMotion() { return m_nMotion; }
 	const int GetCurrentMotion() { return m_nCurrentMotion; }
+	const int GetLife() { return m_nLife; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
