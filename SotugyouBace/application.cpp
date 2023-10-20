@@ -28,6 +28,7 @@
 #include "collision_manager.h"
 #include "char_select.h"
 #include "stage_select.h"
+#include "tutorial.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -37,6 +38,7 @@
 //**********************************************************************************************
 // 静的メンバ変数の宣言
 //**********************************************************************************************
+HWND CApplication::Window = nullptr;
 CRenderer* CApplication::m_pRenderer = nullptr;
 CApplication::MODE CApplication::m_modeType = MODE_NONE;
 CMode* CApplication::m_pGameMode = nullptr;
@@ -78,6 +80,8 @@ CApplication::~CApplication()
 //==============================================================================================
 HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 {
+	Window = hWnd;
+
 	// クラスの生成
 	m_pRenderer = new CRenderer;				// レンダリング
 	m_pTexture = new CTexture;					// テクスチャ
@@ -89,7 +93,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	//入力処理
 	m_pInput = CInput::Create();
 	//入力処理の初期化処理
-	if (FAILED(m_pInput->Init(hInstance, hWnd)))
+	if (FAILED(m_pInput->Init(hInstance, Window)))
 	{
 		return E_FAIL;
 	}
@@ -101,13 +105,13 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	bWindow = TRUE;
 #endif
 
-	m_pRenderer->Init(hWnd, bWindow);				// レンダリング
+	m_pRenderer->Init(Window, bWindow);				// レンダリング
 	m_pLight->Init();							// ライト
 	m_pCamera->Init();							// カメラ
 
 	m_pTexture->LoadAll();						// 全てのテクスチャの読み込み
 
-	m_pSound = CSound::Create(hWnd);			// サウンドの生成
+	m_pSound = CSound::Create(Window);			// サウンドの生成
 
 	m_pFade = CFade::Create();					// フェード
 
@@ -349,6 +353,9 @@ void CApplication::SetMode(MODE mode)
 		break;
 	case CApplication::MODE_STAGE_SELECT:
 		m_pGameMode = CStage_Select::Create();
+		break;
+	case CApplication::MODE_TUTORIAL:
+		m_pGameMode = CTutorial::Create();
 		break;
 	case CApplication::MODE_GAME:
 		m_pGameMode = CGame::Create();

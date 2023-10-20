@@ -10,7 +10,6 @@
 #include "input.h"
 #include "application.h"
 #include "player_manager.h"
-#include "application.h"
 #include "mode.h"
 #include "fade.h"
 
@@ -62,7 +61,11 @@ void CCamera::Uninit(void)
 //==============================================
 void CCamera::Update(void)
 {
-	if (CApplication::GetModeType() == CApplication::MODE_GAME && CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
+	// Œ»Ý‚Ìƒ‚[ƒh
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	if ((Mode == CApplication::MODE_GAME || Mode == CApplication::MODE_TUTORIAL)
+		&& CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
 	{
 		// Ž‹“_ˆÚ“®
 		Perspective();
