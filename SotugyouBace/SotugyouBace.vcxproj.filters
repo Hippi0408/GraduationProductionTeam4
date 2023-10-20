@@ -161,6 +161,10 @@
     <ClCompile Include="tutorial.cpp">
       <Filter>03_Mode</Filter>
     </ClCompile>
+    <ClCompile Include="locus.cpp" />
+    <ClCompile Include="mob.cpp">
+      <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -326,6 +330,10 @@
     <ClInclude Include="locus.h" />
     <ClInclude Include="tutorial.h">
       <Filter>03_Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="locus.h" />
+    <ClInclude Include="mob.h">
+      <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
