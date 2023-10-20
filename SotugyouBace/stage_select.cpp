@@ -151,7 +151,7 @@ void CStage_Select::Select()
 				// ステージを進める
 				m_nStage_Number++;
 
-				if (m_nStage_Number > STAGE_RANDOM)
+				if (m_nStage_Number > STAGE_TUTORIAL)
 					m_nStage_Number = STAGE_1;
 
 				// 背景の変更
@@ -168,7 +168,7 @@ void CStage_Select::Select()
 				m_nStage_Number--;
 
 				if (m_nStage_Number < STAGE_1)
-					m_nStage_Number = STAGE_RANDOM;
+					m_nStage_Number = STAGE_TUTORIAL;
 
 				// 背景の変更
 				//m_pFloor->SetTexture((CTexture::TEXTURE)(CTexture::TEXTURE_FLOOR + (CTexture::TEXTURE)m_nStage_Number));
@@ -219,14 +219,14 @@ void CStage_Select::Stage_Start()
 	// 始まるまでのカウント
 	m_nStartCount--;
 
-	if (m_nStage_Number != STAGE_RANDOM
+	if (m_nStage_Number != STAGE_TUTORIAL
 		&& m_nStartCount <= 0)
 	{
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.05f);
 	}
 
-	else if (m_nStage_Number == STAGE_RANDOM
+	else if (m_nStage_Number == STAGE_TUTORIAL
 		&& m_nStartCount <= 0)
 	{
 		// 画面遷移
