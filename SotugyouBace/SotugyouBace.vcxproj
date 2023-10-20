@@ -48,6 +48,7 @@
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="menu_window.cpp" />
     <ClCompile Include="meshfield.cpp" />
+    <ClCompile Include="mob.cpp" />
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="move_object.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="menu.h" />
     <ClInclude Include="menu_window.h" />
     <ClInclude Include="meshfield.h" />
+    <ClInclude Include="mob.h" />
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="move_object.h" />

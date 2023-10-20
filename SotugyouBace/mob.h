@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// ボスキャラ　　　boss.h
+// モブキャラ　　　mob.h
 // Author : Tanimoto Kosuke
 //
 //=============================================================================
-#ifndef _BOSS_H_
-#define _BOSS_H_
+#ifndef _MOB_H_
+#define _MOB_H_
 
 //=============================================================================
 // インクルードファイル
@@ -15,10 +15,10 @@
 //---------------------------
 // クラス宣言
 //---------------------------
-class CBoss : public CEnemy
+class CMob : public CEnemy
 {
-	static const int FIRST_MAX_LIFE = 500;		// 初期最大体力の値
-	static const float BOSS_COLLISION_RADIUS;	// ボスの当たり判定の大きさ
+	static const int FIRST_MAX_LIFE = 100;		// 初期最大体力の値
+	static const float MOB_COLLISION_RADIUS;	// ボスの当たり判定の大きさ
 public:
 
 	// モデルの配置情報
@@ -41,8 +41,8 @@ public:
 		MOTION_MAX,
 	};
 
-	CBoss();
-	virtual ~CBoss() override;
+	CMob();
+	virtual ~CMob() override;
 
 	virtual HRESULT Init() override;
 	virtual void Uninit() override;
@@ -52,10 +52,10 @@ public:
 	void ChangeMotion() override;		// モーションの切り替え
 	void Destroy() override;			// 破壊処理
 
-	static CBoss* Create(const D3DXVECTOR3 pos);
+	static CMob* Create(const D3DXVECTOR3 pos);
 
 private:
 
 };
 
-#endif// _BOSS_H_
+#endif// _MOB_H_
