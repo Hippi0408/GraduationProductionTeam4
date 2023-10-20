@@ -12,6 +12,7 @@
 #include "meshfield.h"
 #include "energy_gauge.h"
 #include "tutorial.h"
+#include "player_life_gauge.h"
 
 #include"player_manager.h"
 
@@ -38,6 +39,9 @@ HRESULT CPC::Init()
 {
 	CPlayer::Init();
 	m_bFlag = false;
+
+	CPlayer_Life_Gauge::Create({ 70.0f,720.0f / 2,0.0f }, { 50.0f,500.0f });
+
 
 	return S_OK;
 }

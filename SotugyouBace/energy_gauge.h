@@ -7,12 +7,12 @@
 #ifndef _ENERGY_GAUGE_H_
 #define _ENERGY_GAUGE_H_
 
-#include"object2D.h"
+#include"gauge_manager.h"
 
-class CEnergy_Gauge : public CObject2D
+class CEnergy_Gauge : public CGauge_Manager
 {
 public:
-	CEnergy_Gauge(const PRIORITY priority);
+	CEnergy_Gauge();
 	~CEnergy_Gauge() override;
 
 	HRESULT Init() override;
@@ -41,7 +41,6 @@ private:
 	float m_fRecovery_Speed;		// 回復速度
 	float m_fConsumption_Speed;		// 消費速度
 	float m_fAvoidance;				// 回避時の消費量
-	float m_fFluctuation;			// 増減するゲージの量
 	float m_fBaseSize;				// 元のゲージサイズ
 	float m_fRecovery_Interval;		// 回復し始めるまでのインターバル
 	float m_fReuse_Percent;			// 全消費からの回復時に再利用できるタイミング

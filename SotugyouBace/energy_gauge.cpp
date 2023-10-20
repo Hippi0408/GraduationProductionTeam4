@@ -10,7 +10,7 @@
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CEnergy_Gauge::CEnergy_Gauge(const PRIORITY priority) : CObject2D(priority)
+CEnergy_Gauge::CEnergy_Gauge()
 {
 }
 
@@ -26,13 +26,12 @@ CEnergy_Gauge::~CEnergy_Gauge()
 //==============================================================================================
 HRESULT CEnergy_Gauge::Init()
 {
-	CObject2D::Init();
+	CGauge_Manager::Init();
 
 	m_fRecovery_Speed = 10.0f;		// 回復速度
 	m_fConsumption_Speed = 3.0f;	// 消費速度
 	m_fAvoidance = 300.0f;			// 回避時の消費量
-	m_fFluctuation = 0.0f;			// 増減するゲージの量
-	m_fBaseSize = GetSize().x;		// 元のゲージサイズ
+	m_fBaseSize = GetGaugeSize().x;		// 元のゲージサイズ
 	m_fRecovery_Interval = 300.0f;	// 回復し始めるまでのインターバル
 	m_fReuse_Percent = 30.0f;		// 全消費からの回復時に再利用できるタイミング
 	m_bConsumption = false;			// 消費中か
@@ -41,7 +40,7 @@ HRESULT CEnergy_Gauge::Init()
 	m_bRecovery_Pause = false;		// 回復が一時停止中
 
 	// 後ろのゲージの設定
-	m_pBackGauge = CObject2D::Create(GetPos(), GetSize(), PRIORITY_FRONT);
+	m_pBackGauge = CObject2D::Create(GetGaugePos(), GetGaugeSize(), PRIORITY_FRONT);
 	m_pBackGauge->SetCol({ 0.0f,0.0f,0.0f,1.0f });
 
 	return S_OK;
@@ -52,7 +51,7 @@ HRESULT CEnergy_Gauge::Init()
 //==============================================================================================
 void CEnergy_Gauge::Uninit()
 {
-	CObject2D::Uninit();
+	CGauge_Manager::Uninit();
 }
 
 //==============================================================================================
@@ -83,12 +82,12 @@ void CEnergy_Gauge::Update()
 	}
 	else if (m_bAllConsumption && !m_bAllRecovery && !m_bRecovery_Pause)
 		// 最後まで減らす
-		m_fFluctuation = m_fBaseSize;
+		SetFluctuation(m_fBaseSize);
 
 	// ゲージの増減
-	SetHalfSize({ m_fFluctuation,0.0f });
+	SetHalfSize({ GetFluctuation(),0.0f });
 
-	CObject2D::Update();
+	CGauge_Manager::Update();
 }
 
 //==============================================================================================
@@ -96,7 +95,7 @@ void CEnergy_Gauge::Update()
 //==============================================================================================
 void CEnergy_Gauge::Draw()
 {
-	CObject2D::Draw();
+	CGauge_Manager::Draw();
 }
 
 //==============================================================================================
@@ -104,12 +103,12 @@ void CEnergy_Gauge::Draw()
 //==============================================================================================
 CEnergy_Gauge* CEnergy_Gauge::Create(const D3DXVECTOR3 &pos, D3DXVECTOR2 size)
 {
-	CEnergy_Gauge *pEnergy_Gauge = new CEnergy_Gauge(PRIORITY_SCREEN);
+	CEnergy_Gauge *pEnergy_Gauge = new CEnergy_Gauge;
 
 	if (pEnergy_Gauge != nullptr)
 	{
-		pEnergy_Gauge->SetPos(pos);
-		pEnergy_Gauge->SetSize(size);
+		pEnergy_Gauge->SetGaugePos(pos);
+		pEnergy_Gauge->SetGaugeSize(size);
 		pEnergy_Gauge->Init();
 	}
 
@@ -123,20 +122,20 @@ void CEnergy_Gauge::Recovery_Gauge()
 {
 	if (m_bAllRecovery)
 	{
-		if (!m_bConsumption && m_fFluctuation > 0.0f)
+		if (!m_bConsumption && GetFluctuation() > 0.0f)
 			// 回復するエネルギー量
-			m_fFluctuation -= m_fRecovery_Speed;
+			AddFluctuation(-m_fRecovery_Speed);
 
 		// 現在のゲージ残量の割合
-		float Gauge_Percent = (m_fBaseSize - m_fFluctuation) / m_fBaseSize * 100;
+		float Gauge_Percent = (m_fBaseSize - GetFluctuation()) / m_fBaseSize * 100;
 
 		// 回復途中エネルギーを使えるようにするタイミング
 		if (Gauge_Percent >= m_fReuse_Percent)
 			m_bAllConsumption = false;
 
 		// 全回復した
-		if (m_fFluctuation <= 0)
-			m_fFluctuation = 0;
+		if (GetFluctuation() <= 0)
+			SetFluctuation(0.0f);
 	}
 	else if (!m_bAllRecovery && !m_bRecovery_Pause)
 	{
@@ -160,10 +159,10 @@ void CEnergy_Gauge::Consumption_Gauge()
 	if (!m_bAllConsumption)
 	{
 		// 消費するエネルギー量
-		if (m_fFluctuation <= m_fBaseSize)
+		if (GetFluctuation() <= m_fBaseSize)
 		{
 			// 消費量の加算
-			m_fFluctuation += m_fConsumption_Speed;
+			AddFluctuation(m_fConsumption_Speed);
 
 			// エネルギー消費中
 			m_bConsumption = true;
@@ -184,9 +183,9 @@ void CEnergy_Gauge::Avoidance()
 	if (!m_bAllConsumption)
 	{
 		// 消費するエネルギー量
-		m_fFluctuation += m_fAvoidance;
+		AddFluctuation(m_fAvoidance);
 
-		if (m_fFluctuation < m_fBaseSize)
+		if (GetFluctuation() < m_fBaseSize)
 			// エネルギー消費中
 			m_bConsumption = true;
 		else
@@ -203,7 +202,7 @@ void CEnergy_Gauge::Avoidance()
 void CEnergy_Gauge::GaugeColor()
 {
 	// 現在のゲージ残量の割合
-	float Gauge_Percent = (m_fBaseSize - m_fFluctuation) / m_fBaseSize * 100;
+	float Gauge_Percent = (m_fBaseSize - GetFluctuation()) / m_fBaseSize * 100;
 
 	// 色の設定
 	if (Gauge_Percent <= 25.0f || m_bAllConsumption && !m_bRecovery_Pause)

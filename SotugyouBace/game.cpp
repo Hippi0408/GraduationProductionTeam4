@@ -29,6 +29,7 @@ CMeshField *CGame::pMeshField = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
 bool CGame::m_bGameEnd = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
+CPlayerManager* CGame::m_pPlayer_Manager = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -62,7 +63,8 @@ HRESULT CGame::Init()
 	pCamera->SetPosR({ 0.0f, 250.0f, 1000.0f });
 
 	// プレイヤーの生成(テスト)
-	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	m_pPlayer_Manager = CApplication::GetPlayerManager();
+	m_pPlayer_Manager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{

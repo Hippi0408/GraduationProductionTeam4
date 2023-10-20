@@ -18,6 +18,7 @@ class CCharacter;
 class CCollision;
 class CEnergy_Gauge;
 class CFontString;
+class CPlayerManager;
 
 class CGame : public CMode
 {
@@ -41,16 +42,18 @@ public:
 	static const bool GetGameEnd() { return m_bGameEnd; }
 	static CMeshField *GetMeshField() { return pMeshField; }
 	static CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
+	static CPlayerManager* GetPlayerManager() { return m_pPlayer_Manager; }
 
 private:
 
-	static bool m_bGameEnd;					// ゲーム終了判定
-	int m_nEndCounter;						// ゲーム終了までの時間
+	static bool m_bGameEnd;						// ゲーム終了判定
+	int m_nEndCounter;							// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
-	static CMeshField *pMeshField;			// メッシュフィールド
-	static CEnergy_Gauge* m_pEnergy_Gauge;	// エネルギーゲージ
-	static CFontString* m_pFinishRogo;		// 終了ロゴ
+	static CMeshField *pMeshField;				// メッシュフィールド
+	static CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
+	static CFontString* m_pFinishRogo;			// 終了ロゴ
+	static CPlayerManager *m_pPlayer_Manager;	// プレイヤーマネージャー
 };
 
 #endif // !_GAME_H_
