@@ -158,6 +158,10 @@
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
     <ClCompile Include="locus.cpp" />
+    <ClCompile Include="tutorial.cpp">
+      <Filter>03_Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="locus.cpp" />
     <ClCompile Include="confirmation_window.cpp">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
@@ -322,6 +326,10 @@
     </ClInclude>
     <ClInclude Include="menu_window.h">
       <Filter>04_Object\Object2D\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="locus.h" />
+    <ClInclude Include="tutorial.h">
+      <Filter>03_Mode</Filter>
     </ClInclude>
     <ClInclude Include="locus.h" />
     <ClInclude Include="confirmation_window.h">

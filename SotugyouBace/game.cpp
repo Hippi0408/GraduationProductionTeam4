@@ -97,12 +97,6 @@ void CGame::Uninit()
 		m_pTime = nullptr;
 	}
 
-	// エネルギーゲージの終了処理
-	if (m_pTime != nullptr)
-	{
-		m_pEnergy_Gauge = nullptr;
-	}
-
 	// 終了ロゴの終了
 	if (m_pFinishRogo != nullptr)
 	{

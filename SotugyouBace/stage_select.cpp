@@ -8,6 +8,7 @@
 #include"input.h"
 #include"application.h"
 #include"fade.h"
+#include"fontString.h"
 
 int CStage_Select::m_nStage_Number = 0;
 
@@ -29,7 +30,10 @@ CStage_Select::~CStage_Select()
 // 初期化処理
 //==============================================================================================
 HRESULT CStage_Select::Init()
-{// ステージの番号の初期化
+{
+	CFontString::Create({ 150.0f, SCREEN_HEIGHT / 2 - 200, 0.0f }, { 50.0f, 50.0f }, "いちばんみぎがチュートリアル");
+
+	// ステージの番号の初期化
 	m_nStage_Number = 0;
 
 	// ステージの位置
@@ -101,6 +105,14 @@ void CStage_Select::Update()
 
 	// 矢印の点滅
 	Arrow_Flash();
+
+	// 入力処理の取得
+	CInput* pInput = CInput::GetKey();
+
+	if(pInput->Trigger(DIK_BACK))
+		// 画面遷移
+		CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
+
 }
 
 //==============================================================================================
@@ -170,9 +182,9 @@ void CStage_Select::Select()
 				// 決定SE
 				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 
-				// ランダムを選択した場合
-				if (m_nStage_Number == STAGE_RANDOM)
-					m_nStage_Number = rand() % 3;
+				//// ランダムを選択した場合
+				//if (m_nStage_Number == STAGE_RANDOM)
+				//	m_nStage_Number = rand() % 3;
 
 				// ステージを決定したか
 				m_bSelect = true;
@@ -189,6 +201,12 @@ void CStage_Select::Select()
 					}
 				}
 			}
+
+			// キャラセレクト画面に戻る
+			if (pInput->Trigger(DIK_BACK, nCnt)
+				&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+				// 画面遷移
+				CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
 		}
 	}
 }
@@ -201,10 +219,18 @@ void CStage_Select::Stage_Start()
 	// 始まるまでのカウント
 	m_nStartCount--;
 
-	if (m_nStartCount <= 0)
+	if (m_nStage_Number != STAGE_RANDOM
+		&& m_nStartCount <= 0)
 	{
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.05f);
+	}
+
+	else if (m_nStage_Number == STAGE_RANDOM
+		&& m_nStartCount <= 0)
+	{
+		// 画面遷移
+		CFade::SetFade(CApplication::MODE_TUTORIAL, 0.05f);
 	}
 }
 
@@ -241,14 +267,12 @@ void CStage_Select::Select_Arrow()
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
 		m_Select_Arrow[nCnt] = { 150.0f + nCnt * 980,m_nScreen_Height / 2 - 100.0f,0.0f };
-		m_Select_Arrow[nCnt] = { 0.0f,m_nScreen_Height / 2 - 100.0f,0.0f };
 		m_pSelect_Arrow[nCnt] = CObject2D::Create({ m_Select_Arrow[nCnt] }, { 150.0f,150.0f }, CObject::PRIORITY_SCREEN);
 		//m_pSelect_Arrow[nCnt]->SetTexture(CTexture::TEXTURE_SHOP_DIRECTION);
-		m_pSelect_Arrow[nCnt]->SetTexture(CTexture::TEXTURE_BULLET);
 	}
 
-	m_pSelect_Arrow[0]->SetRot({ 0.0f,D3DX_PI / 2 });
-	m_pSelect_Arrow[1]->SetRot({ 0.0f,-D3DX_PI / 2 });
+	m_pSelect_Arrow[0]->SetRot({ D3DX_PI / 2,D3DX_PI / 2 });
+	m_pSelect_Arrow[1]->SetRot({ -D3DX_PI / 2,-D3DX_PI / 2 });
 }
 
 //==============================================================================================
