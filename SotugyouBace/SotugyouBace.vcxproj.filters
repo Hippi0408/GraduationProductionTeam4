@@ -133,9 +133,6 @@
     <ClCompile Include="title_menu.cpp">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="locus.cpp">
-      <Filter>05_effect</Filter>
-    </ClCompile>
     <ClCompile Include="char_select.cpp">
       <Filter>03_Mode</Filter>
     </ClCompile>
@@ -158,6 +155,10 @@
       <Filter>04_Object\MoveObject\Character\Enemy\Boss</Filter>
     </ClCompile>
     <ClCompile Include="menu_window.cpp">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="locus.cpp" />
+    <ClCompile Include="confirmation_window.cpp">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
   </ItemGroup>
@@ -297,9 +298,6 @@
     <ClInclude Include="title_menu.h">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="locus.h">
-      <Filter>05_effect</Filter>
-    </ClInclude>
     <ClInclude Include="char_select.h">
       <Filter>03_Mode</Filter>
     </ClInclude>
@@ -323,6 +321,10 @@
       <Filter>04_Object\MoveObject\Character\Enemy\Boss</Filter>
     </ClInclude>
     <ClInclude Include="menu_window.h">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="locus.h" />
+    <ClInclude Include="confirmation_window.h">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
   </ItemGroup>

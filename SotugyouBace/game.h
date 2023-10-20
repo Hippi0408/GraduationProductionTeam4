@@ -18,6 +18,8 @@ class CCharacter;
 class CCollision;
 class CEnergy_Gauge;
 class CFontString;
+class CMenuWindow;
+class CConfirmation_Window;
 
 class CGame : public CMode
 {
@@ -33,6 +35,7 @@ public:
 	void Update() override;
 
 	void GameEnd();
+	void MenuWindow();
 
 	static void SetGameEnd();
 
@@ -44,13 +47,14 @@ public:
 
 private:
 
-	static bool m_bGameEnd;					// ゲーム終了判定
-	int m_nEndCounter;						// ゲーム終了までの時間
+	static bool m_bGameEnd;							// ゲーム終了判定
+	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
-	static CMeshField *pMeshField;			// メッシュフィールド
-	static CEnergy_Gauge* m_pEnergy_Gauge;	// エネルギーゲージ
-	static CFontString* m_pFinishRogo;		// 終了ロゴ
+	CConfirmation_Window* m_ponfirmationWindow;		// メニューウィンドウ
+	static CMeshField *pMeshField;					// メッシュフィールド
+	static CEnergy_Gauge* m_pEnergy_Gauge;			// エネルギーゲージ
+	static CFontString* m_pFinishRogo;				// 終了ロゴ
 };
 
 #endif // !_GAME_H_

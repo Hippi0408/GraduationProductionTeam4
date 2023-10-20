@@ -21,7 +21,8 @@
 #include"energy_gauge.h"
 #include "locus.h"
 #include "object2D.h"
-#include "menu_window.h"
+#include "confirmation_window.h"
+#include "menu.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
@@ -109,6 +110,14 @@ void CGame::Uninit()
 		m_pFinishRogo = nullptr;
 	}
 
+	// メニューウィンドウの終了処理
+	if (m_ponfirmationWindow != nullptr)
+	{
+		m_ponfirmationWindow->Uninit();
+		delete m_ponfirmationWindow;
+		m_ponfirmationWindow = nullptr;
+	}
+
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
 
@@ -117,6 +126,8 @@ void CGame::Uninit()
 //==============================================================================================
 void CGame::Update()
 {
+	MenuWindow();
+
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
 	{
@@ -219,6 +230,27 @@ void CGame::GameEnd()
 
 		// リザルトへ飛ぶ
 		CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
+	}
+}
+
+//==============================================================================================
+// メニューウィンドウ処理
+//==============================================================================================
+void CGame::MenuWindow()
+{
+	CInput* pInput = CInput::GetKey();
+	if (m_ponfirmationWindow == nullptr)
+	{
+		if (pInput->Trigger(DIK_M))
+		{
+			m_ponfirmationWindow = CConfirmation_Window::Create();
+			return;
+		}
+	}
+	if (m_ponfirmationWindow != nullptr)
+	{
+		m_ponfirmationWindow->Update();
+		m_ponfirmationWindow->ConfirmatiomnMenuScale();
 	}
 }
 
