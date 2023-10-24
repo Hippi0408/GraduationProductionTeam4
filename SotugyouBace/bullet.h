@@ -58,7 +58,7 @@ public:
 	const D3DXVECTOR3 GetMove() { return m_move; }			// à⁄ìÆó ÇÃéÊìæ
 	const D3DXVECTOR2 GetSize() { return m_size; }			// ÉTÉCÉYÇÃéÊìæ
 
-	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move,  const PRIORITY priority = PRIORITY_BACK);	// ê∂ê¨
+	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move, const bool side, const PRIORITY priority = PRIORITY_BACK);	// ê∂ê¨
 
 private:
 	//****************

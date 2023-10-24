@@ -165,6 +165,9 @@
     <ClCompile Include="mob.cpp">
       <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
     </ClCompile>
+    <ClCompile Include="motion.cpp">
+      <Filter>02_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -334,6 +337,9 @@
     <ClInclude Include="locus.h" />
     <ClInclude Include="mob.h">
       <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>02_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
