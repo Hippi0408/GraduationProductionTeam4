@@ -34,7 +34,10 @@ CEnemy::~CEnemy()
 HRESULT CEnemy::Init()
 {
 	// タグの設定
-	SetTag(TAG_ENEMY);
+	SetTag(TAG_CHARACTER);
+
+	// 敵側に設定
+	SetPlayerSide(false);
 
 	// 当たり判定の生成
 	SetCollision();
@@ -75,7 +78,7 @@ void CEnemy::Draw()
 void CEnemy::Hit(CMove_Object* pHit)
 {
 	// ヒットした移動オブジェクトが使用中の場合
-	if (pHit != nullptr)
+	if (pHit != nullptr && GetPlayerSide() != pHit->GetPlayerSide())
 	{
 		// ヒットした移動オブジェクトのタグを取得
 		TAG tag = pHit->GetTag();
@@ -83,9 +86,7 @@ void CEnemy::Hit(CMove_Object* pHit)
 		// タグから種類を選ぶ
 		switch (tag)
 		{
-		case TAG_PLAYER :
-			break;
-		case TAG_ENEMY :
+		case TAG_CHARACTER :
 			break;
 		case TAG_BULLET:
 			// 弾のダメージを返す

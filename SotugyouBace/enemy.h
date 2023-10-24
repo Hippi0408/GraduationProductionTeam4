@@ -17,6 +17,7 @@
 //---------------------------
 class CEnemy : public CCharacter
 {
+
 public:
 
 	CEnemy();

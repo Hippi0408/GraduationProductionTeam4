@@ -27,7 +27,7 @@ public:
 	const float SizeXScaleSpeed = 11.8f;
 	const float SizeYScaleSpeed = 7.5f;
 	const float SizeXScaleMax = 500.0f;
-	const float SizeYScaleMax = 320.0f;
+	const float SizeYScaleMax = 220.0f;
 
 	CMenuWindow();							// メニューウィンドウのコンストラクタ
 	~CMenuWindow();							// メニューウィンドウのデストラクタ

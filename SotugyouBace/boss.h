@@ -55,7 +55,6 @@ public:
 	static CBoss* Create(const D3DXVECTOR3 pos);
 
 private:
-	int m_nCharaIndex;					// ©g‚Ì”Ô†
 
 };
 

@@ -12,6 +12,7 @@
 #include "fontString.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
+#include "mob.h"
 #include "boss.h"
 #include "score.h"
 #include "time.h"
@@ -23,6 +24,7 @@
 #include "object2D.h"
 #include "confirmation_window.h"
 #include "menu.h"
+#include "utility.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
@@ -63,6 +65,12 @@ HRESULT CGame::Init()
 
 	// プレイヤーの生成(テスト)
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+
+	for (int nCnt = 0; nCnt < 20; nCnt++)
+	{
+		// モブキャラの生成
+		CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) });
+	}
 
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 0.0f, 10000.0f });

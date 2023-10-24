@@ -10,10 +10,11 @@
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "object.h"
-#include "objectX.h"
 #include"move_object.h"
+#include "objectX.h"
+#include "motion.h"
 #include <vector>
+#include <map>
 
 //---------------------------
 // クラス宣言
@@ -26,30 +27,6 @@ class CCharacter : public CMove_Object
 	static const float CHARACTER_MOVE_INERTIE;		// キャラクターの移動慣性
 	static const float CHARACTER_GRAVITY;			// キャラクターの重力
 
-	// キー
-	struct KEY
-	{
-		D3DXVECTOR3 KeyPos;
-		D3DXVECTOR3 KeyRot;
-	};
-
-	// キーセット
-	struct KEY_SET
-	{
-		int nFrame;
-		std::vector<KEY> aKey;
-	};
-
-	// モーションセット
-	struct MOTION_SET
-	{
-		int nMaxKey;			// キーの総数
-		bool bLoop;				// ループするか
-		bool bStop;				// モーションが止まったか
-		std::vector<KEY_SET> aKeySet;
-	};
-	std::vector<MOTION_SET> m_MotionSet;
-
 	// モデルセット
 	struct MODEL_SET
 	{
@@ -58,7 +35,6 @@ class CCharacter : public CMove_Object
 		CObjectX* pModel;		// モデル
 		int nParentIndex;		// 親モデルの番号
 	};
-	std::vector<MODEL_SET> m_ModelSet;
 
 public:
 
@@ -97,14 +73,14 @@ public:
 	void SetJump_Boost(const bool jumpboost) { m_bJump_Boost = jumpboost; }
 	void SetJump_PressCount(const int jumpcount) { Jump_PressCount = jumpcount; }
 	void AddJump_PressCount(const int jumpcount) { Jump_PressCount += jumpcount; }
-	
+
 	CObjectX* SetModel(const int index, const int parent, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const char* Xfilename);								// モデルパーツの設定
-	void SetMotionData(const int maxkey, const int key, const int parts, const int motion, const int frame, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const bool loop);	// モーション値の読み込み
 
 	const bool GetGround() { return m_bGround; }
-	const bool GetMotionStop() { return m_MotionSet[GetMotion()].bStop; }	// 現在モーションの終了判定を読み込む
+	const bool GetMotionStop() { return m_bMotionStop; }	// 現在モーションの終了判定を読み込む
 	const int GetMotion() { return m_nMotion; }
 	const int GetCurrentMotion() { return m_nCurrentMotion; }
+	const int GetLife() { return m_nLife; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
@@ -128,6 +104,7 @@ private:
 
 	bool m_bGround;						// 接地判定
 
+	bool m_bMotionStop;					// 現在のモーションが止まったか
 	int m_nMotion;						// モーション
 	int m_nCurrentMotion;				// 現在のモーション番号
 	int m_nCountMotion;					// モーションカウンター
@@ -142,6 +119,9 @@ private:
 	bool m_bBoost;						// ブーストしているか
 	bool m_bJump_Boost;					// ジャンプブーストしているか
 	int Jump_PressCount;				// ジャンプの長押ししてる時間
+
+	std::string m_name;					// 自身の名前
+	std::vector<MODEL_SET> m_ModelSet;	// キャラクターのモデル情報
 };
 
 #endif// _CHARACTER_H_

@@ -165,6 +165,13 @@
     <ClCompile Include="confirmation_window.cpp">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="locus.cpp" />
+    <ClCompile Include="mob.cpp">
+      <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.cpp">
+      <Filter>02_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -334,6 +341,13 @@
     <ClInclude Include="locus.h" />
     <ClInclude Include="confirmation_window.h">
       <Filter>04_Object\Object2D\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="locus.h" />
+    <ClInclude Include="mob.h">
+      <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
+      <Filter>02_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
