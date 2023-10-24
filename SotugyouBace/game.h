@@ -42,12 +42,15 @@ public:
 	static CGame* Create();
 
 	static const bool GetGameEnd() { return m_bGameEnd; }
+	static void SetGameWindow(bool flag) { m_bGameWindow = flag; }
+	static const bool GetGameWindow() { return m_bGameWindow; }
 	static CMeshField *GetMeshField() { return pMeshField; }
 	static CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 
 private:
 
 	static bool m_bGameEnd;							// ゲーム終了判定
+	static bool m_bGameWindow;
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;

@@ -13,6 +13,8 @@
 #include "input.h"
 #include "fade.h"
 #include "title.h"
+#include "confirmation_window.h"
+#include "menu_window.h"
 
 //=====================================
 // コンストラクタ
@@ -112,6 +114,8 @@ void CTitleMenu::Choice()
 
 			// 表示判定を偽にする
 			SetDisplay(false);
+
+		//CApplication::GetMenuWindow()->ConfirmatiomnMenuScaleReduce();
 
 			// ウィンドウの破棄
 			DestroyWindow(CApplication::GetWindow());

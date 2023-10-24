@@ -27,6 +27,7 @@
 CMeshField *CGame::pMeshField = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
 bool CGame::m_bGameEnd = false;
+bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 
 //==============================================================================================
@@ -120,6 +121,7 @@ void CGame::Uninit()
 //==============================================================================================
 void CGame::Update()
 {
+	// メニューウィンドウ処理
 	MenuWindow();
 
 	// ゲーム終了判定が真の場合
@@ -241,10 +243,16 @@ void CGame::MenuWindow()
 			return;
 		}
 	}
-	if (m_ponfirmationWindow != nullptr)
+	else
 	{
-		m_ponfirmationWindow->Update();
-		m_ponfirmationWindow->ConfirmatiomnMenuScale();
+		m_ponfirmationWindow->Update(); 
+	}
+	// ウィンドウが閉じた場合
+	if (m_ponfirmationWindow != nullptr && m_bGameWindow == true)
+	{
+		m_bGameWindow = false;
+		delete m_ponfirmationWindow;
+		m_ponfirmationWindow = nullptr;
 	}
 }
 
