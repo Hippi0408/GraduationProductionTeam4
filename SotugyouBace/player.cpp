@@ -44,7 +44,10 @@ HRESULT CPlayer::Init()
 	LoadFile("Data\\text\\Motion\\motion_player.txt");
 
 	// タグの設定
-	SetTag(TAG_PLAYER);
+	SetTag(TAG_CHARACTER);
+
+	// プレイヤー側に設定
+	SetPlayerSide(true);
 
 	// 当たり判定の生成
 	SetCollision();
@@ -151,7 +154,7 @@ void CPlayer::PlayerAttack()
 	pos_vec += pos;
 
 	// 弾の生成
-	CBullet::Create({pos_vec.x, pos_vec.y, pos_vec.z}, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)));
+	CBullet::Create({pos_vec.x, pos_vec.y, pos_vec.z}, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)), true);
 }
 
 //============================================================================
@@ -222,15 +225,14 @@ void CPlayer::Landing(const D3DXVECTOR3 pos)
 //============================================================================
 void CPlayer::Hit(CMove_Object* pHit)
 {
-	if (pHit != nullptr)
+	// 自身ではない 且つ プレイヤー側ではない場合
+	if (pHit != nullptr && GetPlayerSide() != pHit->GetPlayerSide())
 	{
 		TAG tag = pHit->GetTag();
 
 		switch (tag)
 		{
-		case TAG_PLAYER:
-			break;
-		case TAG_ENEMY:
+		case TAG_CHARACTER:
 			break;
 		case TAG_BULLET:
 			// 弾のダメージを返す

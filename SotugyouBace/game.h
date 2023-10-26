@@ -18,7 +18,10 @@ class CMeshField;
 class CCharacter;
 class CCollision;
 class CFontString;
+class CMenuWindow;
+class CConfirmation_Window;
 class CPlayerManager;
+class CEnergy_Gauge;
 
 class CGame : public CMode
 {
@@ -34,12 +37,15 @@ public:
 	void Update() override;
 
 	void GameEnd();
+	void MenuWindow();
 
 	static void SetGameEnd();
 
 	static CGame* Create();
 
 	static const bool GetGameEnd() { return m_bGameEnd; }
+	static void SetGameWindow(bool flag) { m_bGameWindow = flag; }
+	static const bool GetGameWindow() { return m_bGameWindow; }
 	static CMeshField *GetMeshField() { return pMeshField; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayer_Manager; }
 	static std::vector<CCharacter*> GetMob() { return m_pMob; }
@@ -47,12 +53,19 @@ public:
 
 private:
 
-	static bool m_bGameEnd;						// ゲーム終了判定
-	int m_nEndCounter;							// ゲーム終了までの時間
+
+	static bool m_bGameEnd;							// ゲーム終了判定
+	static bool m_bGameWindow;
+	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
-	static CMeshField *pMeshField;				// メッシュフィールド
-	static CFontString* m_pFinishRogo;			// 終了ロゴ
+	
+	CConfirmation_Window* m_ponfirmationWindow;		// メニューウィンドウ
+	static CMeshField *pMeshField;					// メッシュフィールド
+	static CEnergy_Gauge* m_pEnergy_Gauge;			// エネルギーゲージ
+	static CFontString* m_pFinishRogo;				// 終了ロゴ
+
+
 	static CPlayerManager *m_pPlayer_Manager;	// プレイヤーマネージャー
 	static std::vector<CCharacter*> m_pMob;		// モブ
 	static CCharacter *m_pBoss;					// ボス

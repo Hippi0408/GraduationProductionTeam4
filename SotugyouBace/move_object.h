@@ -17,9 +17,8 @@ public:
 	enum TAG
 	{
 		TAG_NONE = 0,
-		TAG_PLAYER,
-		TAG_ENEMY,
-		TAG_BULLET,
+		TAG_CHARACTER,	// キャラクタータグ
+		TAG_BULLET,		// 弾タグ
 		TAG_MAX,
 	};
 
@@ -38,6 +37,7 @@ public:
 	void SetCenterPos(const D3DXVECTOR3 pos) { m_CenterPos = pos; }		// 初期位置の設定
 	void SetRadius(const float radius) { m_fRadius = radius; }			// 半径の設定
 	void SetTag(TAG tag) { m_tag = tag; }								// タグの設定
+	void SetPlayerSide(const bool side) { m_bPlayerSide = side; }		// プレイヤー側かどうかの設定
 	void SetCollision() { m_pCollision = CCollision::Create(this); }	// 当たり判定の生成
 
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
@@ -45,6 +45,7 @@ public:
 	virtual const int GetPower() { return NULL; }						// 威力の取得
 	const float GetRadius() { return m_fRadius; }						// 半径の取得
 	TAG GetTag() { return m_tag; }										// タグの取得
+	const bool GetPlayerSide() { return m_bPlayerSide; }				// プレイヤー側かどうかの取得
 
 private:
 	D3DXVECTOR3 m_pos;			// 位置
@@ -52,6 +53,7 @@ private:
 	float m_fRadius;			// 半径
 	TAG m_tag;					// タグ
 	CCollision* m_pCollision;	// 当たり判定の情報
+	bool m_bPlayerSide;			// プレイヤー側かどうか
 };
 
 #endif // !_MOVE_OBJECT_H_

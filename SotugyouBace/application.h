@@ -16,6 +16,7 @@
 class CObject;
 class CTexture;
 class CModel;
+class CMotion;
 class CSound;
 class CLight;
 class CCamera;
@@ -27,6 +28,8 @@ class CPlayerManager;
 class CEnemyManager;
 class CCollision_Manager;
 class CParticleManager;
+class CConfirmation_Window;
+class CMenu_Window;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -65,6 +68,7 @@ public:
 	static CRenderer* GetRenderer() { return m_pRenderer; }
 	static CTexture* GetTexture() { return m_pTexture; }
 	static CModel* GetModel() { return m_pModel; }
+	static CMotion* GetMotion() { return m_pMotion; }
 	static CSound* GetSound() { return m_pSound; }
 	static CLight* GetLight() { return m_pLight; }
 	static CCamera* GetCamera() { return m_pCamera; }
@@ -75,6 +79,7 @@ public:
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
 	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
 	static CCollision_Manager* GetCollision_Manager() { return m_pCollision_Manager; }
+	static CConfirmation_Window* GetMenuWindow() { return m_pMenuWindow; }
 
 	static MODE GetModeType() { return m_modeType; }
 
@@ -87,12 +92,14 @@ private:
 	static CRenderer* m_pRenderer;
 	static CTexture* m_pTexture;
 	static CModel* m_pModel;
+	static CMotion* m_pMotion;
 	static CSound* m_pSound;
 	static CMode* m_pGameMode;
 	static CLight* m_pLight;
 	static CCamera* m_pCamera;
 	static CFade* m_pFade;
 	static CMenu* m_pMenu;
+	static CConfirmation_Window* m_pMenuWindow;
 	static CParticleManager* m_pParticleManager;
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;

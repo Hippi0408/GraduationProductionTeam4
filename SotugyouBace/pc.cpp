@@ -212,7 +212,7 @@ void CPC::Input()
 		SetMotion(MOTION_NEUTRAL);
 	}
 
-	// ダッシュブースト
+	// ダッシュブーストの初期化
 	SetBoost(false);
 
 	// 移動量を更新

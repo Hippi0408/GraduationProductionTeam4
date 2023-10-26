@@ -156,7 +156,7 @@ void CBullet::FieldCollision()
 void CBullet::Hit(CMove_Object* pHit)
 {
 	// 弾では無い場合
-	if (pHit->GetTag() != TAG_BULLET)
+	if (pHit->GetTag() != TAG_BULLET && GetPlayerSide() != pHit->GetPlayerSide())
 	{
 		Destroy();
 	}
@@ -176,7 +176,7 @@ void CBullet::Destroy()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, const PRIORITY priority)
+CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, const bool side, const PRIORITY priority)
 {
 	//クラスの生成
 	CBullet* pBullet = new CBullet(priority);
@@ -190,6 +190,7 @@ CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECT
 		pBullet->SetPos(pos);
 		pBullet->SetMove(move);
 		pBullet->SetSize(size);
+		pBullet->SetPlayerSide(side);
 
 		// 弾オブジェクトの生成
 		pBullet->m_pObj3D = CObject3D::Create(pos, size, priority);

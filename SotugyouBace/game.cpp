@@ -21,11 +21,13 @@
 #include"collision.h"
 #include "locus.h"
 #include "object2D.h"
-#include "menu_window.h"
+#include "confirmation_window.h"
+#include "menu.h"
 #include "utility.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
+bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPlayerManager* CGame::m_pPlayer_Manager = nullptr;
 std::vector<CCharacter*> CGame::m_pMob;
@@ -111,6 +113,14 @@ void CGame::Uninit()
 		m_pFinishRogo = nullptr;
 	}
 
+	// メニューウィンドウの終了処理
+	if (m_ponfirmationWindow != nullptr)
+	{
+		m_ponfirmationWindow->Uninit();
+		delete m_ponfirmationWindow;
+		m_ponfirmationWindow = nullptr;
+	}
+
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
 
@@ -119,6 +129,9 @@ void CGame::Uninit()
 //==============================================================================================
 void CGame::Update()
 {
+	// メニューウィンドウ処理
+	MenuWindow();
+
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
 	{
@@ -221,6 +234,33 @@ void CGame::GameEnd()
 
 		// リザルトへ飛ぶ
 		CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
+	}
+}
+
+//==============================================================================================
+// メニューウィンドウ処理
+//==============================================================================================
+void CGame::MenuWindow()
+{
+	CInput* pInput = CInput::GetKey();
+	if (m_ponfirmationWindow == nullptr)
+	{
+		if (pInput->Trigger(DIK_M))
+		{
+			m_ponfirmationWindow = CConfirmation_Window::Create();
+			return;
+		}
+	}
+	else
+	{
+		m_ponfirmationWindow->Update(); 
+	}
+	// ウィンドウが閉じた場合
+	if (m_ponfirmationWindow != nullptr && m_bGameWindow == true)
+	{
+		m_bGameWindow = false;
+		delete m_ponfirmationWindow;
+		m_ponfirmationWindow = nullptr;
 	}
 }
 

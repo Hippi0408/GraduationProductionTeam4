@@ -43,6 +43,7 @@ public:
 
 private:
 	CObject2D* m_pObject2D;
+
 	float SizeX;
 	float SizeY;
 

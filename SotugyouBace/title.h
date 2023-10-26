@@ -37,6 +37,7 @@ private:
 	
 	static bool m_bWindow;		// ウィンドウ使用状態
 	static bool m_bWindowUninit;
+	bool m_bKeyFlag;
 };
 
 #endif // !_TITLE_H_
