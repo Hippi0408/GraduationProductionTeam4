@@ -13,6 +13,7 @@
 #include "object.h"
 #include "camera.h"
 #include "model.h"
+#include "motion.h"
 #include "light.h"
 #include "mode.h"
 #include "title.h"
@@ -44,6 +45,7 @@ CApplication::MODE CApplication::m_modeType = MODE_NONE;
 CMode* CApplication::m_pGameMode = nullptr;
 CTexture* CApplication::m_pTexture = nullptr;
 CModel* CApplication::m_pModel = nullptr;
+CMotion* CApplication::m_pMotion = nullptr;
 CSound* CApplication::m_pSound = nullptr;
 CLight* CApplication::m_pLight = nullptr;
 CCamera* CApplication::m_pCamera = nullptr;
@@ -83,12 +85,13 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	Window = hWnd;
 
 	// クラスの生成
-	m_pRenderer = new CRenderer;				// レンダリング
-	m_pTexture = new CTexture;					// テクスチャ
-	m_pModel = new CModel;						// モデル
-	m_pLight = new CLight;						// ライト
-	m_pCamera = new CCamera;					// カメラ
-	m_pCollision_Manager = new CCollision_Manager;
+	m_pRenderer = new CRenderer;					// レンダリングの生成
+	m_pTexture = new CTexture;						// テクスチャの生成
+	m_pModel = new CModel;							// モデルの生成
+	m_pMotion = new CMotion;						// モーションの生成
+	m_pLight = new CLight;							// ライトの生成
+	m_pCamera = new CCamera;						// カメラの生成
+	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
 
 	//入力処理
 	m_pInput = CInput::Create();
@@ -172,6 +175,14 @@ void CApplication::Uninit()
 		m_pModel->ReleaseAll();
 		delete m_pModel;
 		m_pModel = nullptr;
+	}
+
+	// モーションの終了
+	if (m_pMotion != nullptr)
+	{
+		m_pMotion->ReleaseAll();
+		delete m_pMotion;
+		m_pMotion = nullptr;
 	}
 
 	// ライトの終了
@@ -337,6 +348,9 @@ void CApplication::SetMode(MODE mode)
 	// 全てのモデル情報の解放処理
 	m_pModel->ReleaseAll();
 
+	// 全てのモーション情報の解放処理
+	m_pMotion->ReleaseAll();
+
 	// モードを切り替える
 	m_modeType = mode;
 
@@ -359,6 +373,8 @@ void CApplication::SetMode(MODE mode)
 		break;
 	case CApplication::MODE_GAME:
 		m_pGameMode = CGame::Create();
+		m_pMenu = CTitleMenu::Create();
+		m_pMenu->SetDisplay(false);
 		break;
 	case CApplication::MODE_RESULT:
 		m_pGameMode = CResult::Create();
