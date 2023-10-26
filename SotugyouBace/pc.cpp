@@ -41,7 +41,7 @@ HRESULT CPC::Init()
 	CPlayer::Init();
 	m_bFlag = false;
 
-	SetEnergyGauge(CEnergy_Gauge::Create({ 1280 / 2, 650.0f, 0.0f }, { 800.0f, 10.0f }));
+	SetEnergyGauge(CEnergy_Gauge::Create({ 1280 / 2, 650.0f, 0.0f }, { 700.0f, 10.0f }));
 	SetGaugeManager(CPlayer_Life_Gauge::Create({ 70.0f,720.0f / 2,0.0f }, { 50.0f,500.0f }));
 
 	return S_OK;
@@ -193,13 +193,15 @@ void CPC::Input()
 		if (pInput->Trigger(MOUSE_INPUT_RIGHT)
 			&& !pGauge->GetConsumption())
 		{
-			SetAvoidanceCount(20);			// 回避の硬直
-			pGauge->Avoidance_Energy();		// エネルギー消費
-			pGauge->Recovery_Pause(50);		// クールタイム
+			SetAvoidanceCount(20);				// 回避の硬直
+			pGauge->Avoidance_Energy();			// エネルギー消費
+			pGauge->Recovery_Pause(50);			// クールタイム
+			pGauge->SetAvoidance_amount(200.0f);// 回避時のエネルギー消費量
 			SetAvoidance(true);
 
+			// ブーストした分の速度を減らす
 			if (GetBoost())
-				move /= 2;
+				move /= 2.0f;
 
 			move *= 5.0f;		// 初速
 			move.y = 0.0f;
@@ -267,7 +269,7 @@ void CPC::Input()
 		if (GetGround())
 		{
 			// 消費速度
-			pGauge->SetConsumption_Speed(2.0f);
+			pGauge->SetConsumption_Speed(1.5f);
 			// 回復速度
 			pGauge->SetRecovery_Speed(10.0f);
 		}
@@ -275,7 +277,7 @@ void CPC::Input()
 		else
 		{
 			// 消費速度
-			pGauge->SetConsumption_Speed(5.0f);
+			pGauge->SetConsumption_Speed(3.0f);
 			// 回復速度
 			pGauge->SetRecovery_Speed(0.3f);
 		}
@@ -349,6 +351,66 @@ void CPC::Perspective()
 		CApplication::GetCamera()->SetPerspective(false);
 		m_bFlag = false;
 	}
+
+	D3DXVECTOR3 MouseMove;
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	MouseMove = pInput->GetMouseMove();
+
+	MouseMove = D3DXVECTOR3(MouseMove.y, MouseMove.x, 0.0f);
+
+	if (D3DXVec3Length(&MouseMove) > 0.25f)
+	{
+		D3DXVec3Normalize(&MouseMove, &MouseMove);
+
+		rot = MouseMove * (D3DX_PI / 180.0f);
+
+		rot.x *= 3.0f;
+		rot.y *= 2.0f;
+	}
+
+	rotCamera += rot;
+
+	if (rotCamera.x  > D3DXToRadian(80))
+	{
+		rotCamera.x = D3DXToRadian(80);
+	}
+	else if (rotCamera.x  < D3DXToRadian(-50))
+	{
+		rotCamera.x = D3DXToRadian(-50);
+	}
+
+	rot = rotCamera;
+
+	if (rot.x > D3DX_PI)
+	{
+		rot.x -= D3DX_PI * 2.0f;
+	}
+	else if (rot.x < -D3DX_PI)
+	{
+		rot.x += D3DX_PI * 2.0f;
+	}
+
+	if (rot.y > D3DX_PI)
+	{
+		rot.y -= D3DX_PI * 2.0f;
+	}
+	else if (rot.y < -D3DX_PI)
+	{
+		rot.y += D3DX_PI * 2.0f;
+	}
+
+	if (rot.z > D3DX_PI)
+	{
+		rot.z -= D3DX_PI * 2.0f;
+	}
+	else if (rot.z < -D3DX_PI)
+	{
+		rot.z += D3DX_PI * 2.0f;
+	}
+
+	rotCamera.y = rot.y;
+	rotCamera.x = rot.x;
 
 	//カメラの向きの設定
 	CApplication::GetCamera()->SetRot(rotCamera);

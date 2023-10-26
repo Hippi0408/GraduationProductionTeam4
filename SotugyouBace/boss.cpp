@@ -41,7 +41,7 @@ HRESULT CBoss::Init()
 	// 体モデルのサイズを5倍
 	GetModelSet(MODEL_BODY).pModel->SetSize({ 5.0f, 5.0f, 5.0f });
 
-	SetGaugeManager(CBoss_Life_Gauge::Create({ 1280 / 2, 100.0f,0.0f }, { 900.0f,20.0f }));
+	SetGaugeManager(CBoss_Life_Gauge::Create({ 1280 / 2, 100.0f,0.0f }, { 800.0f,15.0f }));
 
 	CEnemy::Init();
 

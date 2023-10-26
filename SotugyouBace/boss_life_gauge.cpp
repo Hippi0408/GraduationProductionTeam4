@@ -27,6 +27,8 @@ CBoss_Life_Gauge::~CBoss_Life_Gauge()
 //==============================================================================================
 HRESULT CBoss_Life_Gauge::Init()
 {
+	SetCol({ 1.0f,0.0f,0.0f,1.0f });
+
 	// 後ろのゲージの色
 	SetBackCol({ 0.0f,0.0f,0.0f,1.0f });
 
@@ -52,9 +54,6 @@ void CBoss_Life_Gauge::Uninit()
 void CBoss_Life_Gauge::Update()
 {
 	CGauge_Manager::Update();
-
-	// ゲージの増減
-	//Fluctuation();
 }
 
 //==============================================================================================

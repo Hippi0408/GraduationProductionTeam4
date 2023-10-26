@@ -29,6 +29,9 @@ HRESULT CPlayer_Life_Gauge::Init()
 {
 	CGauge_Manager::Init();
 
+	// 色の設定
+	SetCol({ 1.0f,1.0f,1.0f,1.0f });
+
 	// 後ろのゲージの色
 	SetBackCol({ 0.0f,0.0f,0.0f,1.0f });
 
@@ -88,9 +91,7 @@ void CPlayer_Life_Gauge::Fluctuation()
 	CPlayer *pPlayer = nullptr;
 
 	if (pPlayerManager != nullptr)
-	{
 		pPlayer = pPlayerManager->GetPlayer(0);
-	}
 
 	if (pPlayer != nullptr)
 	{
