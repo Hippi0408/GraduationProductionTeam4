@@ -28,6 +28,8 @@ class CPlayerManager;
 class CEnemyManager;
 class CCollision_Manager;
 class CParticleManager;
+class CConfirmation_Window;
+class CMenu_Window;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -77,6 +79,7 @@ public:
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
 	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
 	static CCollision_Manager* GetCollision_Manager() { return m_pCollision_Manager; }
+	static CConfirmation_Window* GetMenuWindow() { return m_pMenuWindow; }
 
 	static MODE GetModeType() { return m_modeType; }
 
@@ -96,6 +99,7 @@ private:
 	static CCamera* m_pCamera;
 	static CFade* m_pFade;
 	static CMenu* m_pMenu;
+	static CConfirmation_Window* m_pMenuWindow;
 	static CParticleManager* m_pParticleManager;
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;
