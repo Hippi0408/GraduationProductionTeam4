@@ -345,6 +345,66 @@ void CPC::Perspective()
 		m_bFlag = false;
 	}
 
+	D3DXVECTOR3 MouseMove;
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	MouseMove = pInput->GetMouseMove();
+
+	MouseMove = D3DXVECTOR3(MouseMove.y, MouseMove.x, 0.0f);
+
+	if (D3DXVec3Length(&MouseMove) > 0.25f)
+	{
+		D3DXVec3Normalize(&MouseMove, &MouseMove);
+
+		rot = MouseMove * (D3DX_PI / 180.0f);
+
+		rot.x *= 3.0f;
+		rot.y *= 2.0f;
+	}
+
+	rotCamera += rot;
+
+	if (rotCamera.x  > D3DXToRadian(80))
+	{
+		rotCamera.x = D3DXToRadian(80);
+	}
+	else if (rotCamera.x  < D3DXToRadian(-50))
+	{
+		rotCamera.x = D3DXToRadian(-50);
+	}
+
+	rot = rotCamera;
+
+	if (rot.x > D3DX_PI)
+	{
+		rot.x -= D3DX_PI * 2.0f;
+	}
+	else if (rot.x < -D3DX_PI)
+	{
+		rot.x += D3DX_PI * 2.0f;
+	}
+
+	if (rot.y > D3DX_PI)
+	{
+		rot.y -= D3DX_PI * 2.0f;
+	}
+	else if (rot.y < -D3DX_PI)
+	{
+		rot.y += D3DX_PI * 2.0f;
+	}
+
+	if (rot.z > D3DX_PI)
+	{
+		rot.z -= D3DX_PI * 2.0f;
+	}
+	else if (rot.z < -D3DX_PI)
+	{
+		rot.z += D3DX_PI * 2.0f;
+	}
+
+	rotCamera.y = rot.y;
+	rotCamera.x = rot.x;
+
 	//ƒJƒƒ‰‚ÌŒü‚«‚ÌÝ’è
 	CApplication::GetCamera()->SetRot(rotCamera);
 }
