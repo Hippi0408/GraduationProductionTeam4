@@ -39,10 +39,12 @@ private:
 	void Recovery_Gauge();		// エネルギーの回復
 	void GaugeColor();			// ゲージの色
 
+	static const int MAX_ENERGY = 1000;		// ゲージの最大量
+
+	float m_fRemaining_Enerugy;		// ゲージ残量
 	float m_fRecovery_Speed;		// 回復速度
 	float m_fConsumption_Speed;		// 消費速度
 	float m_fAvoidance;				// 回避時の消費量
-	float m_fBaseSize;				// 元のゲージサイズ
 	float m_fRecovery_Interval;		// 回復し始めるまでのインターバル
 	float m_fReuse_Percent;			// 全消費からの回復時に再利用できるタイミング
 	float m_fFluctuation;			// 増減するゲージの量
