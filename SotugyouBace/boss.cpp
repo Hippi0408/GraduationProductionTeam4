@@ -8,6 +8,7 @@
 #include "application.h"
 #include "game.h"
 #include "particle_emitter.h"
+#include "boss_life_gauge.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 500.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -39,6 +40,8 @@ HRESULT CBoss::Init()
 
 	// 体モデルのサイズを5倍
 	GetModelSet(MODEL_BODY).pModel->SetSize({ 5.0f, 5.0f, 5.0f });
+
+	SetGaugeManager(CBoss_Life_Gauge::Create({ 1280 / 2, 100.0f,0.0f }, { 800.0f,15.0f }));
 
 	CEnemy::Init();
 

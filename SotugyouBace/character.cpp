@@ -9,6 +9,8 @@
 #include "game.h"
 #include "meshfield.h"
 #include "tutorial.h"
+#include "gauge_manager.h"
+#include "energy_gauge.h"
 
 const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
 const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
@@ -114,8 +116,17 @@ void CCharacter::Draw()
 //==============================================================================================
 void CCharacter::Move()
 {
-	// 移動量を更新(減衰させる)
-	m_move -= m_move * CHARACTER_MOVE_INERTIE;
+	if (!m_bAvoidance)
+		// 移動量を更新(減衰させる)
+		m_move -= m_move * CHARACTER_MOVE_INERTIE;
+	else
+	{
+		m_move -= m_move * 0.05f;
+
+		m_nAvoidance_Count--;
+		if (m_nAvoidance_Count <= 0)
+			m_bAvoidance = false;
+	}
 
 	// 位置更新
 	AddPos(m_move * m_fSpeed);
@@ -126,14 +137,37 @@ void CCharacter::Move()
 //==============================================================================================
 void CCharacter::Damage(const int value)
 {
+	// ベースの体力の設定
+	if (m_pGaugeManager != nullptr
+		&& m_pGaugeManager->GetBeaseLife() == 0)
+		m_pGaugeManager->SetBeaseLife(m_nLife);
+
 	// 体力 - 与ダメージ
 	m_nLife -= value;
+
+	// 体力ゲージの増減
+	if(m_pGaugeManager != nullptr)
+	m_pGaugeManager->Fluctuation();
 
 	// 体力チェック
 	if (m_nLife <= 0)
 	{
 		// 体力を0にする
 		m_nLife = 0;
+
+		if (GetEnergy_Gauge() != nullptr)
+		{
+			// エネルギーゲージの破棄
+			GetEnergy_Gauge()->GetBackGauge()->Uninit();
+			GetEnergy_Gauge()->Uninit();
+		}
+
+		if (m_pGaugeManager != nullptr)
+		{
+			// 体力ゲージの破棄
+			m_pGaugeManager->GetBackGauge()->Uninit();
+			m_pGaugeManager->Uninit();
+		}
 
 		// 自身を破壊する処理
 		Destroy();
@@ -211,6 +245,7 @@ void CCharacter::FieldCollision()
 	// 接地していない場合
 	else
 	{
+		if (!m_bAvoidance)
 		// メッシュフィールドの上にいる場合は重力をかける
 		CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
 

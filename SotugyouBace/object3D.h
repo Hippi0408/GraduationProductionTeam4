@@ -49,6 +49,7 @@ public:
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }
+	void SetSubSize(const D3DXVECTOR2 halfsize) { m_Subsize = halfsize; }			// 減少するサイズ
 	void SetCol(const D3DXCOLOR col) { m_col = col; }
 	void SetAlpha(const float alpha) { m_col.a = alpha; }
 	void AddAlpha(const float alpha) { m_col.a += alpha; }
@@ -70,6 +71,7 @@ private:
 	D3DXVECTOR2 m_size;						// サイズ
 	D3DXVECTOR3 m_move;						// 移動量
 	D3DXVECTOR3 m_rot;						// 角度
+	D3DXVECTOR2 m_Subsize;					// 減少するサイズ
 	D3DXCOLOR m_col;						// 色
 	CTexture::TEXTURE m_texture;			// テクスチャ
 	bool m_bBillboard;						// ビルボードか
