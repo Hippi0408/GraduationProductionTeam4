@@ -1,46 +1,33 @@
 //=============================================================================
 //
-// character.cpp
+// parts.cpp
 // Author : Tanimoto Kosuke
 //
 //=============================================================================
-#include "character.h"
+#include "parts.h"
 #include "application.h"
 #include "game.h"
-#include "meshfield.h"
-#include "tutorial.h"
-
-const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
-const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
-const float CCharacter::CHARACTER_MOVE_INERTIE = 0.2f;
-const float CCharacter::CHARACTER_GRAVITY = 0.25f;
 
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
-CCharacter::CCharacter(const CObject::PRIORITY priority) : CMove_Object(priority)
+CParts::CParts(const CObject::PRIORITY priority) : CMove_Object(priority)
 {
-	m_fSpeed = CHARACTER_FIRST_MOVE_SPEED;
-	m_fRotSpeed = CHARACTER_ROT_SPEED;
-	m_bGround = false;
-	m_bMotionStop = false;
-	m_bBoost = false;
+
 }
 
 //=====================================
 // デストラクタ
 //=====================================
-CCharacter::~CCharacter()
+CParts::~CParts()
 {
 }
 
 //============================================================================
 // 初期化処理
 //============================================================================
-HRESULT CCharacter::Init()
+HRESULT CParts::Init()
 {
-	m_move = { 0.0f, 0.0f, 0.0f };
-
 	CMove_Object::Init();
 
 	return S_OK;
@@ -49,7 +36,7 @@ HRESULT CCharacter::Init()
 //============================================================================
 // 終了処理
 //============================================================================
-void CCharacter::Uninit()
+void CParts::Uninit()
 {
 	// 全てのモデルセットの終了
 	while (!m_ModelSet.empty())
@@ -66,24 +53,19 @@ void CCharacter::Uninit()
 //============================================================================
 // 更新処理
 //============================================================================
-void CCharacter::Update()
+void CParts::Update()
 {
 	// モーション
 	Motion();
-	// 移動量の処理
-	Move();
 
 	// 角度の正規化
 	NormalizeRot();
-
-	// 床の当たり判定
-	FieldCollision();
 }
 
 //============================================================================
 // 描画処理
 //============================================================================
-void CCharacter::Draw()
+void CParts::Draw()
 {
 	// 描画中の場合
 	if (GetDrawFlag())
@@ -110,123 +92,9 @@ void CCharacter::Draw()
 }
 
 //==============================================================================================
-// 移動処理
-//==============================================================================================
-void CCharacter::Move()
-{
-	// 移動量を更新(減衰させる)
-	m_move -= m_move * CHARACTER_MOVE_INERTIE;
-
-	// 位置更新
-	AddPos(m_move * m_fSpeed);
-}
-
-//==============================================================================================
-// ダメージ処理(与ダメージ)
-//==============================================================================================
-void CCharacter::Damage(const int value)
-{
-	// 体力 - 与ダメージ
-	m_nLife -= value;
-
-	// 体力チェック
-	if (m_nLife <= 0)
-	{
-		// 体力を0にする
-		m_nLife = 0;
-
-		// 自身を破壊する処理
-		Destroy();
-	}
-}
-
-//==============================================================================================
-// 回復処理(回復量)
-//==============================================================================================
-void CCharacter::Recovery(const int value)
-{
-	// 体力 + 回復量
-	m_nLife += value;
-
-	// 体力チェック
-	if (m_nLife > m_nMaxLife)
-	{
-		// 体力の最大値を超えないようにする
-		m_nLife = m_nMaxLife;
-	}
-
-	// 位置更新
-	AddPos(m_move * m_fSpeed);
-}
-
-//============================================================================
-// 自身を破壊する処理
-//============================================================================
-void CCharacter::Destroy()
-{
-	// 自身の終了処理
-	Uninit();
-}
-
-//============================================================================
-// 着地処理
-//============================================================================
-void CCharacter::Landing(const D3DXVECTOR3 pos)
-{
-	// 位置を設定する
-	SetPos(pos);
-
-	// 着地判定を真にする
-	m_bGround = true;
-}
-
-//============================================================================
-// 床の当たり判定
-//============================================================================
-void CCharacter::FieldCollision()
-{
-	// 現在の位置を定数として取得
-	const D3DXVECTOR3 pos = CCharacter::GetPos();
-
-	CMeshField* pMeshField = nullptr;
-	float a = 0.0f;
-
-	if (CApplication::GetModeType() == CApplication::MODE_GAME)
-		pMeshField = CGame::GetMeshField();
-	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
-		pMeshField = CTutorial::GetMeshField();
-
-	if (pMeshField != nullptr)
-	{
-		// 床の当たり判定から高さを定数として取得
-		if (pMeshField != nullptr)
-			a = pMeshField->MeshCollision(pos);
-	}
-	// 接地している場合
-	if (GetGround() == true)
-	{
-		// プレイヤーの高さを設定
-		CCharacter::SetPos({ pos.x, a, pos.z });
-	}
-	// 接地していない場合
-	else
-	{
-		// メッシュフィールドの上にいる場合は重力をかける
-		CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
-
-		// メッシュフィールドより下の位置にいる場合
-		if (a >= pos.y)
-		{
-			// 着地処理を読み込む
-			Landing({ pos.x, a, pos.z });
-		}
-	}
-}
-
-//==============================================================================================
 // モーションの再生
 //==============================================================================================
-void CCharacter::Motion()
+void CParts::Motion()
 {
 	// モーションがストップしている場合
 	if (!m_bMotionStop)
@@ -255,7 +123,7 @@ void CCharacter::Motion()
 						fPosDifference = MotionSet.aKeySet[m_nCurrentKey + 1].aKey[nCnt].KeyPos
 							- MotionSet.aKeySet[m_nCurrentKey].aKey[nCnt].KeyPos;					// 終了値 - 開始値
 
-																														// 角度
+																									// 角度
 						fRotDifference = MotionSet.aKeySet[m_nCurrentKey + 1].aKey[nCnt].KeyRot
 							- MotionSet.aKeySet[m_nCurrentKey].aKey[nCnt].KeyRot;					// 終了値 - 開始値
 					}
@@ -266,7 +134,7 @@ void CCharacter::Motion()
 						fPosDifference = MotionSet.aKeySet[0].aKey[nCnt].KeyPos
 							- MotionSet.aKeySet[m_nCurrentKey].aKey[nCnt].KeyPos;	// 終了値 - 開始値
 
-																										// 角度
+																					// 角度
 						fRotDifference = MotionSet.aKeySet[0].aKey[nCnt].KeyRot
 							- MotionSet.aKeySet[m_nCurrentKey].aKey[nCnt].KeyRot;	// 終了値 - 開始値
 					}
@@ -321,7 +189,7 @@ void CCharacter::Motion()
 //==============================================================================================
 // モーション変更
 //==============================================================================================
-void CCharacter::ChangeMotion()
+void CParts::ChangeMotion()
 {
 	// 前回の止まったモーションをfalseにする
 	m_bMotionStop = false;
@@ -334,7 +202,7 @@ void CCharacter::ChangeMotion()
 //==============================================================================================
 // 回転方向へ振り向かせる処理
 //==============================================================================================
-void CCharacter::Rotation()
+void CParts::Rotation()
 {
 	// 目的の角度にする
 	m_rot.y += (m_rotDest.y - m_rot.y) * m_fRotSpeed;
@@ -343,7 +211,7 @@ void CCharacter::Rotation()
 //==============================================================================================
 // 角度の正規化
 //==============================================================================================
-void CCharacter::NormalizeRot()
+void CParts::NormalizeRot()
 {
 	// 角度の正規化
 	if (m_rot.y > D3DX_PI)
@@ -366,10 +234,34 @@ void CCharacter::NormalizeRot()
 	}
 }
 
+//============================================================================
+// 被弾処理
+//============================================================================
+void CParts::Hit(CMove_Object* pHit)
+{
+	// 自身ではない 且つ プレイヤー側ではない場合
+	if (pHit != nullptr && GetPlayerSide() != pHit->GetPlayerSide())
+	{
+		TAG tag = pHit->GetTag();
+
+		switch (tag)
+		{
+		case TAG_CHARACTER:
+			break;
+		case TAG_BULLET:
+			// 弾のダメージを返す
+			m_pParent->Damage(pHit->GetPower());
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 //==============================================================================================
 // モデルパーツの設定
 //==============================================================================================
-CObjectX* CCharacter::SetModel(const int index, const int parent, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const char* Xfilename)
+CObjectX* CParts::SetModel(const int index, const int parent, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const char* Xfilename)
 {
 	// モデルが存在しない場合
 	if ((int)m_ModelSet.size() <= index)
@@ -402,7 +294,7 @@ CObjectX* CCharacter::SetModel(const int index, const int parent, const D3DXVECT
 //============================================================================
 // 自身の全てのモデルの取得処理
 //============================================================================
-std::vector<CObjectX*> CCharacter::GetModelAll()
+std::vector<CObjectX*> CParts::GetModelAll()
 {
 	std::vector<CObjectX*> vpModel;
 
@@ -416,10 +308,28 @@ std::vector<CObjectX*> CCharacter::GetModelAll()
 	return vpModel;
 }
 
+//============================================================================
+// 生成処理
+//============================================================================
+CParts* CParts::Create(const D3DXVECTOR3 pos, CMove_Object* parent, const bool side)
+{
+	CParts* pPC = new CParts;
+
+	if (FAILED(pPC->Init()))
+	{
+		return nullptr;
+	}
+
+	pPC->SetPos(pos);
+
+	return pPC;
+}
+
+
 //==============================================================================================
 // モデルパーツの設定
 //==============================================================================================
-void CCharacter::LoadFile(const char* Xfilename)
+void CParts::LoadFile(const char* Xfilename)
 {
 	// モーション情報のポインタを取得
 	CMotion* pMotion = CApplication::GetMotion();
@@ -515,7 +425,7 @@ void CCharacter::LoadFile(const char* Xfilename)
 					{
 						int nKey = 0;			// 現在のキーの数
 
-						// モーション情報
+												// モーション情報
 						CMotion::MotionPattern vMotionPattern;	// キーセットの情報
 
 						while (strcmp(&m_aString[0], "END_MOTIONSET") != 0)
@@ -563,7 +473,7 @@ void CCharacter::LoadFile(const char* Xfilename)
 									if (strcmp(&m_aString[0], "KEY") == 0)
 									{
 										// キーのメモリ領域を確保
-										vMotionPattern.aKeySet[nKey].aKey.emplace_back();	
+										vMotionPattern.aKeySet[nKey].aKey.emplace_back();
 
 										while (strcmp(&m_aString[0], "END_KEY") != 0)
 										{

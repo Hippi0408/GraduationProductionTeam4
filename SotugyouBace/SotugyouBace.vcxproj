@@ -61,6 +61,7 @@
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particle_emitter.cpp" />
     <ClCompile Include="particle_manager.cpp" />
+    <ClCompile Include="parts.cpp" />
     <ClCompile Include="pc.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player_manager.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="particle_manager.h" />
+    <ClInclude Include="parts.h" />
     <ClInclude Include="pc.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="player_manager.h" />
