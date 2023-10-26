@@ -9,6 +9,7 @@
 #define	_GAME_H_
 
 #include"mode.h"
+#include <vector>
 
 // 前方宣言
 class CTime;
@@ -16,7 +17,6 @@ class CHalfSphere;
 class CMeshField;
 class CCharacter;
 class CCollision;
-class CEnergy_Gauge;
 class CFontString;
 class CPlayerManager;
 
@@ -41,8 +41,9 @@ public:
 
 	static const bool GetGameEnd() { return m_bGameEnd; }
 	static CMeshField *GetMeshField() { return pMeshField; }
-	static CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayer_Manager; }
+	static std::vector<CCharacter*> GetMob() { return m_pMob; }
+	static CCharacter *GetBoss() { return m_pBoss; }
 
 private:
 
@@ -51,9 +52,10 @@ private:
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
 	static CMeshField *pMeshField;				// メッシュフィールド
-	static CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
 	static CFontString* m_pFinishRogo;			// 終了ロゴ
 	static CPlayerManager *m_pPlayer_Manager;	// プレイヤーマネージャー
+	static std::vector<CCharacter*> m_pMob;		// モブ
+	static CCharacter *m_pBoss;					// ボス
 };
 
 #endif // !_GAME_H_

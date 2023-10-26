@@ -171,6 +171,12 @@
     <ClCompile Include="player_life_gauge.cpp">
       <Filter>04_Object\Gauge</Filter>
     </ClCompile>
+    <ClCompile Include="mob_life_gauge.cpp">
+      <Filter>04_Object\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="boss_life_gauge.cpp">
+      <Filter>04_Object\Gauge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -345,6 +351,12 @@
       <Filter>04_Object\Gauge</Filter>
     </ClInclude>
     <ClInclude Include="player_life_gauge.h">
+      <Filter>04_Object\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="mob_life_gauge.h">
+      <Filter>04_Object\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="boss_life_gauge.h">
       <Filter>04_Object\Gauge</Filter>
     </ClInclude>
   </ItemGroup>

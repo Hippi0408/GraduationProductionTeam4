@@ -19,17 +19,17 @@
 #include "halfsphere.h"
 #include"meshfield.h"
 #include"collision.h"
-#include"energy_gauge.h"
 #include "locus.h"
 #include "object2D.h"
 #include "menu_window.h"
 #include "utility.h"
 
 CMeshField *CGame::pMeshField = nullptr;
-CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
 bool CGame::m_bGameEnd = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPlayerManager* CGame::m_pPlayer_Manager = nullptr;
+std::vector<CCharacter*> CGame::m_pMob;
+CCharacter *CGame::m_pBoss = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -68,12 +68,13 @@ HRESULT CGame::Init()
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
+		m_pMob.emplace_back();
 		// モブキャラの生成
-		CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) });
+		m_pMob[nCnt] = CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) }, nCnt);
 	}
 
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
+	m_pBoss = CBoss::Create({ 0.0f, 0.0f, 10000.0f });
 
 	// タイムの生成
 	m_pTime = CTime::Create();
@@ -84,9 +85,6 @@ HRESULT CGame::Init()
 
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
-
-	// エネルギーゲージ
-	m_pEnergy_Gauge = CEnergy_Gauge::Create({ SCREEN_WIDTH / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });
 
 	m_nEndCounter = 0;
 
@@ -174,7 +172,7 @@ void CGame::Update()
 				else
 				{
 					// 50ダメージ
-					pPlayer->Damage(50);
+					pPlayer->Damage(10);
 				}
 			}
 		}

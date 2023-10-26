@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="boss_life_gauge.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -50,6 +51,7 @@
     <ClCompile Include="menu_window.cpp" />
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="mob.cpp" />
+    <ClCompile Include="mob_life_gauge.cpp" />
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="move_object.cpp" />
@@ -79,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="boss_life_gauge.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
@@ -110,6 +113,7 @@
     <ClInclude Include="menu_window.h" />
     <ClInclude Include="meshfield.h" />
     <ClInclude Include="mob.h" />
+    <ClInclude Include="mob_life_gauge.h" />
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="move_object.h" />

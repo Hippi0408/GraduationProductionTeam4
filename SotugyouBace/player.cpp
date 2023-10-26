@@ -178,13 +178,15 @@ void CPlayer::JumpStart()
 //============================================================================
 void CPlayer::JumpBoost()
 {
-	// エネルギーゲージの取得
-	CEnergy_Gauge* pGauge = nullptr;
+	CPlayerManager *pPlayerManager = CApplication::GetPlayerManager();
+	CPlayer *pPlayer = nullptr;
+   	CEnergy_Gauge *pGauge = nullptr;
 
-	if (CApplication::GetModeType() == CApplication::MODE_GAME)
-		pGauge = CGame::GetEnergy_Gauge();
-	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
-		pGauge = CTutorial::GetEnergy_Gauge();
+	if (pPlayerManager != nullptr)
+	{
+		pPlayer = pPlayerManager->GetPlayer(0);
+		pGauge = pPlayer->GetEnergy_Gauge();
+	}
 
 	if (pGauge != nullptr)
 	{

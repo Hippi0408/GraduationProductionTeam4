@@ -12,6 +12,8 @@
 //=============================================================================
 #include "enemy.h"
 
+class CMob_Life_Gauge;
+
 //---------------------------
 // クラス宣言
 //---------------------------
@@ -52,10 +54,13 @@ public:
 	void ChangeMotion() override;		// モーションの切り替え
 	void Destroy() override;			// 破壊処理
 
-	static CMob* Create(const D3DXVECTOR3 pos);
+	static CMob* Create(const D3DXVECTOR3 pos, const int index);
+
+	void SetMobIndex(int index) { m_nMob_Index = index; }
 
 private:
-
+	CMob_Life_Gauge *m_LifeGauge;
+	int m_nMob_Index;
 };
 
 #endif// _MOB_H_

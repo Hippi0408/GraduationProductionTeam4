@@ -15,6 +15,9 @@
 #include"move_object.h"
 #include <vector>
 
+class CEnergy_Gauge;
+class CGauge_Manager;
+
 //---------------------------
 // クラス宣言
 //---------------------------
@@ -95,9 +98,13 @@ public:
 	void AddRotDest(const D3DXVECTOR3 rot) { m_rotDest += rot; }
 	void SetBoost(const bool boost) { m_bBoost = boost; }
 	void SetJump_Boost(const bool jumpboost) { m_bJump_Boost = jumpboost; }
-	void SetJump_PressCount(const int jumpcount) { Jump_PressCount = jumpcount; }
-	void AddJump_PressCount(const int jumpcount) { Jump_PressCount += jumpcount; }
-	
+	void SetJump_PressCount(const int jumpcount) { m_nJump_PressCount = jumpcount; }
+	void AddJump_PressCount(const int jumpcount) { m_nJump_PressCount += jumpcount; }
+	void SetAvoidance(const bool avoidance) { m_bAvoidance = avoidance; }
+	void SetAvoidanceCount(const int avoidancecount) { m_nAvoidance_Count = avoidancecount; }
+	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
+	void SetGaugeManager(CGauge_Manager *gauge) { m_pGaugeManager = gauge; }
+
 	CObjectX* SetModel(const int index, const int parent, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const char* Xfilename);								// モデルパーツの設定
 	void SetMotionData(const int maxkey, const int key, const int parts, const int motion, const int frame, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const bool loop);	// モーション値の読み込み
 
@@ -113,7 +120,10 @@ public:
 	std::vector<CObjectX*> GetModelAll();
 	const bool GetBoost() { return m_bBoost; }
 	const bool GetJump_Boost() { return m_bJump_Boost; }
-	const int GetJump_PressCount() { return Jump_PressCount; }
+	const int GetJump_PressCount() { return m_nJump_PressCount; }
+	const bool GetAvoidance() { return m_bAvoidance; }
+	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
+	const CGauge_Manager *GetGaugeManager() { return m_pGaugeManager; }
 
 	void LoadFile(const char* Xfilename);
 
@@ -142,7 +152,12 @@ private:
 
 	bool m_bBoost;						// ブーストしているか
 	bool m_bJump_Boost;					// ジャンプブーストしているか
-	int Jump_PressCount;				// ジャンプの長押ししてる時間
+	int m_nJump_PressCount;				// ジャンプの長押ししてる時間
+	bool m_bAvoidance;					// 回避しているか
+	int m_nAvoidance_Count;				// 回避の硬直時間
+
+	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
+	CGauge_Manager *m_pGaugeManager;	// ゲージマネージャー
 };
 
 #endif// _CHARACTER_H_

@@ -13,6 +13,7 @@
 #include "character.h"
 
 class CBullet;
+class CEnergy_Gauge;
 
 //---------------------------
 // クラス宣言
@@ -74,11 +75,14 @@ public:
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
+	//void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 
 	const int GetCharaIndex() { return m_nCharaIndex; }
+	//CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 
 private:
 	int m_nCharaIndex;					// 自身の番号
+	//CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
 };
 
 #endif// _PLAYER_H_
