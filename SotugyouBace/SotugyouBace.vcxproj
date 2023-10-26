@@ -27,6 +27,7 @@
     <ClCompile Include="char_select.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="collision_manager.cpp" />
+    <ClCompile Include="confirmation_window.cpp" />
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
     <ClCompile Include="DirectInput.cpp" />
@@ -51,6 +52,7 @@
     <ClCompile Include="mob.cpp" />
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="motion.cpp" />
     <ClCompile Include="move_object.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="object.cpp" />
@@ -84,6 +86,7 @@
     <ClInclude Include="char_select.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="collision_manager.h" />
+    <ClInclude Include="confirmation_window.h" />
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
     <ClInclude Include="DirectInput.h" />
@@ -109,6 +112,7 @@
     <ClInclude Include="mob.h" />
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="motion.h" />
     <ClInclude Include="move_object.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="object.h" />

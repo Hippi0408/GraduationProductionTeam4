@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// ボスキャラ　　　boss.h
+// ボスキャラ　　　boss.cpp
 // Author : Tanimoto Kosuke
 //
 //=============================================================================
@@ -15,7 +15,7 @@ const float CBoss::BOSS_COLLISION_RADIUS = 500.0f;	// ボスの当たり判定の大きさ
 //=====================================
 CBoss::CBoss()
 {
-	// プレイヤーの初期値を設定
+	// ボスの初期値を設定
 	SetMaxLife(FIRST_MAX_LIFE);
 	SetLife(FIRST_MAX_LIFE);
 	SetRadius(BOSS_COLLISION_RADIUS);

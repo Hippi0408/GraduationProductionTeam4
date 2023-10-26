@@ -15,10 +15,10 @@ class CModel
 public:
 	struct ModelPattern
 	{
+		const char* fileName;				// ファイル名
 		LPD3DXBUFFER pBuffMat;				// マテリアル情報へのポインタ
 		LPD3DXMESH pMesh;					// メッシュ情報へのポインタ
 		DWORD nNumMat;						// マテリアル情報の数
-		const char* fileName;				// ファイル名
 		std::vector <D3DXCOLOR> MatColor;	// 初期マテリアル色情報
 		std::vector <LPDIRECT3DTEXTURE9> pTexture;	// モデルのテクスチャへのポインタの配列
 	};
