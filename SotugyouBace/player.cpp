@@ -154,7 +154,7 @@ void CPlayer::PlayerAttack()
 
 	// 情報の取得
 	D3DXVECTOR3 pos = GetCenterPos();
-	D3DXVECTOR3 rot = GetRot();
+	D3DXVECTOR3 rot = GetBulletRot();
 
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 	pos_vec *= 100.f;
@@ -301,7 +301,7 @@ void CPlayer::Target()
 		float Angle = atan2(GetPos().x - NearMob_Pos.x, GetPos().z - NearMob_Pos.z);
 
 		// 目的の角度の設定
-		CCharacter::SetRot({ 0.0f,Angle,0.0f });
+		CCharacter::SetBulletRot({ 0.0f,Angle,0.0f });
 	}
 	else
 	{// ターゲットがいない場合は正面に弾を撃つ
@@ -310,7 +310,7 @@ void CPlayer::Target()
 		D3DXVECTOR3 rotCamera = Camera->GetRot();
 
 		// 目的の角度の設定
-		CCharacter::SetRot({ rotCamera.x + D3DX_PI,rotCamera.y + D3DX_PI ,rotCamera.z + D3DX_PI });
+		CCharacter::SetBulletRot({ rotCamera.x + D3DX_PI,rotCamera.y + D3DX_PI ,rotCamera.z + D3DX_PI });
 	}
 }
 
