@@ -194,9 +194,9 @@ void CPC::Input()
 			&& !pGauge->GetConsumption())
 		{
 			SetAvoidanceCount(20);				// 回避の硬直
+			pGauge->SetAvoidance_amount(200.0f);// 回避時のエネルギー消費量
 			pGauge->Avoidance_Energy();			// エネルギー消費
 			pGauge->Recovery_Pause(50);			// クールタイム
-			pGauge->SetAvoidance_amount(200.0f);// 回避時のエネルギー消費量
 			SetAvoidance(true);
 
 			// ブーストした分の速度を減らす

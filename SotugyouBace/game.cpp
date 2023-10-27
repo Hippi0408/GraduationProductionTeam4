@@ -73,6 +73,7 @@ HRESULT CGame::Init()
 		m_pMob.emplace_back();
 		// モブキャラの生成
 		m_pMob[nCnt] = CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) }, nCnt);
+		//m_pMob[nCnt] = CMob::Create({ pCamera->GetWorldPosV().x + sinf(44.7f) * 3000, utility::Random<float>(600.0f, -200.0f), pCamera->GetWorldPosV().x + cosf(44.7f) * 3000 }, nCnt);
 	}
 
 	// ボスキャラの生成
@@ -119,6 +120,11 @@ void CGame::Uninit()
 		m_ponfirmationWindow->Uninit();
 		delete m_ponfirmationWindow;
 		m_ponfirmationWindow = nullptr;
+	}
+
+	while (m_pMob.size() != 0)
+	{
+		m_pMob.pop_back();
 	}
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
