@@ -259,43 +259,57 @@ void CPlayer::Target()
 	// 雑魚敵の情報
 	std::vector<CCharacter*> Mob = CGame::GetMob();
 
-	D3DXVECTOR3 Mob_Pos;					// 敵の位置
-	D3DXVECTOR3 NearMob_Pos;				// 一番近い敵の位置
-	m_fTarget_Scope = 3000.0f;				// ターゲットを狙う範囲
-	float NearDistance = m_fTarget_Scope;	// 敵との距離
-	m_bTarget = false;						// 近くに敵がいるか
+	D3DXVECTOR3 Mob_Pos = { 0.0f,0.0f,0.0f };		// 敵の位置
+	D3DXVECTOR3 NearMob_Pos = { 0.0f,0.0f,0.0f };	// 一番近い敵の位置
+	m_fTarget_Scope = 3000.0f;						// ターゲットを狙う範囲
+	float NearDistance = m_fTarget_Scope;			// 敵との距離
+	float NextNearDistance = 0.0f;					// 次に近い敵との距離
+	m_bTarget = false;								// 近くに敵がいるか
+	bool bScreen = false;							// 画面に映っているか
 
-	for (int nCnt = 0; nCnt < Mob.size(); nCnt++)
+	while(true)
 	{
-		if (Mob[nCnt]->GetLife() != 0)
+		for (int nCnt = 0; nCnt < Mob.size(); nCnt++)
 		{
-			// 敵の位置の取得
-			Mob_Pos = Mob[nCnt]->GetPos();
-
-			// 距離の算出
-			float Distance = sqrtf((Mob_Pos.x - GetPos().x) * (Mob_Pos.x - GetPos().x)
-				+ (Mob_Pos.z - GetPos().z) * (Mob_Pos.z - GetPos().z));
-
-			// 距離3000以内
-			if (Distance > m_fTarget_Scope)
-				continue;
-
-			// 距離を比べる
-			if (NearDistance >= Distance)
+			if (Mob[nCnt]->GetLife() != 0)
 			{
-				// 短い方の距離と位置を代入
-				NearDistance = Distance;
-				NearMob_Pos = Mob_Pos;
+				// 敵の位置の取得
+				Mob_Pos = Mob[nCnt]->GetPos();
 
-				m_bTarget = true;
+				// 距離の算出
+				float Distance = sqrtf((Mob_Pos.x - GetPos().x) * (Mob_Pos.x - GetPos().x)
+					+ (Mob_Pos.z - GetPos().z) * (Mob_Pos.z - GetPos().z));
+
+				// 距離3000以上
+				if (Distance > m_fTarget_Scope)
+					continue;
+
+				// 距離を比べる
+				if (NearDistance >= Distance && NextNearDistance < Distance)
+				{
+					// 短い方の距離と位置を代入
+					NearDistance = Distance;
+					NearMob_Pos = Mob_Pos;
+
+					m_bTarget = true;
+
+					// 画面に映っている時だけターゲットする
+					bScreen = Target_Scope(NearMob_Pos);
+				}
 			}
 		}
+
+		if (m_bTarget && bScreen
+			|| !m_bTarget && !bScreen)
+			break;
+
+		// 距離が近いが画面に映っていない敵との距離
+		NextNearDistance = NearDistance;
+		NearDistance = m_fTarget_Scope;
+		m_bTarget = false;
 	}
 
-	// 画面に映っている時だけターゲットする
-	bool bTarget = Target_Scope(NearMob_Pos);
-
-	if (m_bTarget && bTarget)
+	if (m_bTarget && bScreen)
 	{
 		// 一番近い敵の方向
 		float Angle = atan2(GetPos().x - NearMob_Pos.x, GetPos().z - NearMob_Pos.z);
@@ -323,8 +337,8 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	CCamera *Camera = CApplication::GetCamera();
 	D3DXVECTOR3 rotCamera = Camera->GetRot();
 
-	// カメラの視点から注視点までのベクトル
-	D3DXVECTOR3 CameraVec = Camera->GetWorldPosR() - Camera->GetWorldPosV();
+	// プレイヤーから注視点までのベクトル
+	D3DXVECTOR3 CameraVec = Camera->GetWorldPosR() - GetPos();
 
 	// 正規化
 	D3DXVec3Normalize(&CameraVec, &CameraVec);
@@ -355,16 +369,37 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		// 画面に映るぎりぎりの位置
 		Reflected_Pos[nCnt].x = Camera->GetWorldPosV().x + sinf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
 		Reflected_Pos[nCnt].z = Camera->GetWorldPosV().z + cosf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
+		fView_Angle *= -1;
+
+		// カメラの視点
+		D3DXVECTOR3 WorldPosV = Camera->GetWorldPosV();
+
+		// カメラの視点から画角分ずらす
+		if (nCnt == 0)
+		{
+			WorldPosV.x += sinf(rotCamera.y + D3DX_PI / 2);
+			WorldPosV.z += cosf(rotCamera.y + D3DX_PI / 2);
+		}
+		else
+		{
+			WorldPosV.x -= sinf(rotCamera.y + D3DX_PI / 2);
+			WorldPosV.z -= cosf(rotCamera.y + D3DX_PI / 2);
+		}
 
 		// カメラの視点からのベクトル
-		Reflected_PosVec[nCnt] = Reflected_Pos[nCnt] - Camera->GetWorldPosV();
+		Reflected_PosVec[nCnt] = Reflected_Pos[nCnt] - WorldPosV;
 
 		// 正規化
 		D3DXVec3Normalize(&Reflected_PosVec[nCnt], &Reflected_PosVec[nCnt]);
 
+		// 視点からから敵のベクトル
+		EnemyVec = nearpos - WorldPosV;
+
+		// 正規化
+		D3DXVec3Normalize(&EnemyVec, &EnemyVec);
+
 		// 外積
 		fCp[nCnt] = Reflected_PosVec[nCnt].x * EnemyVec.z - Reflected_PosVec[nCnt].z * EnemyVec.x;
-		fView_Angle *= -1;
 
 		// 画面内に映っているか
 		if (nCnt == 0)

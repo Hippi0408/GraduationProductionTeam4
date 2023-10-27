@@ -73,7 +73,6 @@ HRESULT CGame::Init()
 		m_pMob.emplace_back();
 		// モブキャラの生成
 		m_pMob[nCnt] = CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) }, nCnt);
-		//m_pMob[nCnt] = CMob::Create({ pCamera->GetWorldPosV().x + sinf(44.7f) * 3000, utility::Random<float>(600.0f, -200.0f), pCamera->GetWorldPosV().x + cosf(44.7f) * 3000 }, nCnt);
 	}
 
 	// ボスキャラの生成
