@@ -311,10 +311,10 @@ void CPlayer::Target()
 
 	if (m_bTarget && bScreen)
 	{
-		D3DXVECTOR3 pos = GetPos();
+		D3DXVECTOR3 BulletVec = NearMob_Pos - GetPos();
 
 		// ターゲットした敵の方向
-		float Angle = atan2(NearMob_Pos.x - pos.x, NearMob_Pos.z - pos.z);
+		float Angle = atan2(BulletVec.x, BulletVec.z);
 		
 		// 目的の角度の設定
 		CCharacter::SetBulletRot({ 0.0f,Angle + D3DX_PI,0.0f });
