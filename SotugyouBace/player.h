@@ -47,6 +47,15 @@ public:
 		MODEL_MAX,				// モデルの最大数
 	};
 
+	enum PARTS
+	{
+		PARTS_BODY = 0,			// 胴体
+		PARTS_LEG,				// 脚
+		PARTS_ARMS,				// 腕
+
+		PARTS_MAX
+	};
+
 	// モーションのタイプ
 	enum MOTION_TYPE
 	{
@@ -66,7 +75,7 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion() override;		// モーションの切り替え
+	void ChangeMotion();		// モーションの切り替え
 	void Hit(CMove_Object* pHit) override;
 
 	void PlayerAttack();				// プレイヤーの攻撃処理

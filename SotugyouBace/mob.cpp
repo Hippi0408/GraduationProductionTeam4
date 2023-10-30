@@ -35,7 +35,9 @@ CMob::~CMob()
 HRESULT CMob::Init()
 {
 	// プレイヤーのモデルを読み込む
-	LoadFile("Data\\text\\Motion\\motion_mob.txt");
+	//LoadFile("Data\\text\\Motion\\motion_mob.txt");
+
+	SetParts(0, "Data\\text\\Motion\\motion_mob.txt");
 
 	CEnemy::Init();
 
@@ -56,7 +58,7 @@ void CMob::Uninit()
 void CMob::Update()
 {
 	// モーション変更
-	ChangeMotion();
+	//ChangeMotion();
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -69,45 +71,45 @@ void CMob::Draw()
 {
 	CEnemy::Draw();
 }
-
-//============================================================================
-// モーション変更処理
-//============================================================================
-void CMob::ChangeMotion()
-{
-	// 現在のモーション
-	const int nCuttentMotion = GetCurrentMotion();
-	const int nMotion = GetMotion();
-
-	// 現在のモーションから変わった場合
-	if (nCuttentMotion != nMotion)
-	{
-		// 現在モーションの終了処理
-		switch (nCuttentMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
-
-		// 現在モーションの開始処理
-		switch (nMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
-
-		// キャラクターのモーション変更処理
-		CCharacter::ChangeMotion();
-	}
-}
+//
+////============================================================================
+//// モーション変更処理
+////============================================================================
+//void CMob::ChangeMotion()
+//{
+//	// 現在のモーション
+//	const int nCuttentMotion = GetCurrentMotion();
+//	const int nMotion = GetMotion();
+//
+//	// 現在のモーションから変わった場合
+//	if (nCuttentMotion != nMotion)
+//	{
+//		// 現在モーションの終了処理
+//		switch (nCuttentMotion)
+//		{
+//		case MOTION_NEUTRAL:
+//			break;
+//		case MOTION_WALK:
+//			break;
+//		default:
+//			break;
+//		}
+//
+//		// 現在モーションの開始処理
+//		switch (nMotion)
+//		{
+//		case MOTION_NEUTRAL:
+//			break;
+//		case MOTION_WALK:
+//			break;
+//		default:
+//			break;
+//		}
+//
+//		// キャラクターのモーション変更処理
+//		CCharacter::ChangeMotion();
+//	}
+//}
 
 //============================================================================
 // 破壊処理

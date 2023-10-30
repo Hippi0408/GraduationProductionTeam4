@@ -6,12 +6,12 @@
 //=============================================================================
 #include "parts.h"
 #include "application.h"
-#include "game.h"
+#include "character.h"
 
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
-CParts::CParts(const CObject::PRIORITY priority) : CMove_Object(priority)
+CParts::CParts(const CObject::PRIORITY priority) : CObject(priority)
 {
 
 }
@@ -28,8 +28,6 @@ CParts::~CParts()
 //============================================================================
 HRESULT CParts::Init()
 {
-	CMove_Object::Init();
-
 	return S_OK;
 }
 
@@ -45,8 +43,6 @@ void CParts::Uninit()
 		m_ModelSet.pop_back();
 	}
 
-	CMove_Object::Uninit();
-
 	Release();
 }
 
@@ -55,6 +51,9 @@ void CParts::Uninit()
 //============================================================================
 void CParts::Update()
 {
+	// モーションを切り替える場合
+	ChangeMotion();
+
 	// モーション
 	Motion();
 
@@ -73,9 +72,9 @@ void CParts::Draw()
 		LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
 
 		//計算用のマトリックス
-		D3DXMATRIX mtxRot, mtxTrans;
+		D3DXMATRIX mtxRot, mtxTrans, mtxParent;
 
-		//ワールドマトリックス
+		//ワールドマトリックスの初期化
 		D3DXMatrixIdentity(&m_mtxWorld);
 
 		//向きを反映
@@ -83,8 +82,17 @@ void CParts::Draw()
 		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 		//位置を反映
-		D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
+		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+
+		if (m_pParent != nullptr)
+		{
+			// 親のマトリックスの取得
+			mtxParent = m_pParent->GetWorldMtx();
+
+			// 親モデルのマトリックスとの掛け算
+			D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
+		}
 
 		//ワールドマトリックスの設定
 		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
@@ -146,11 +154,11 @@ void CParts::Motion()
 					m_ModelSet[nCnt].pModel->SetPos(Pos);	// 位置の設定
 					m_ModelSet[nCnt].pModel->SetRot(Rot);	// 回転の設定
 
-															// 親モデルの位置を中心位置に設定
-					if (m_ModelSet[nCnt].nParentIndex < 0)
+					// 親モデルの位置を中心位置に設定
+					if (m_ModelSet[nCnt].bParentIndex == true && m_pParent != nullptr)
 					{
 						// 中心位置の設定
-						SetCenterPos(Pos);
+						m_pParent->SetCenterPos(Pos);
 					}
 				}
 			}
@@ -191,12 +199,16 @@ void CParts::Motion()
 //==============================================================================================
 void CParts::ChangeMotion()
 {
-	// 前回の止まったモーションをfalseにする
-	m_bMotionStop = false;
+	// モーションが切り替わった場合
+	if (m_nCurrentMotion != m_nMotion)
+	{
+		// 前回の止まったモーションをfalseにする
+		m_bMotionStop = false;
 
-	m_nCurrentMotion = m_nMotion;	// モーションを切り替える
-	m_nCurrentKey = 0;				// キーを0にする
-	m_nCountMotion = 0;				// モーションカウントを0にする
+		m_nCurrentMotion = m_nMotion;	// モーションを切り替える
+		m_nCurrentKey = 0;				// キーを0にする
+		m_nCountMotion = 0;				// モーションカウントを0にする
+	}
 }
 
 //==============================================================================================
@@ -234,28 +246,13 @@ void CParts::NormalizeRot()
 	}
 }
 
-//============================================================================
-// 被弾処理
-//============================================================================
-void CParts::Hit(CMove_Object* pHit)
+//==============================================================================================
+// 親パーツを他パーツの子に設定する処理
+//==============================================================================================
+void CParts::SetModelParent(CObjectX* parts, const bool parent)
 {
-	// 自身ではない 且つ プレイヤー側ではない場合
-	if (pHit != nullptr && GetPlayerSide() != pHit->GetPlayerSide())
-	{
-		TAG tag = pHit->GetTag();
-
-		switch (tag)
-		{
-		case TAG_CHARACTER:
-			break;
-		case TAG_BULLET:
-			// 弾のダメージを返す
-			m_pParent->Damage(pHit->GetPower());
-			break;
-		default:
-			break;
-		}
-	}
+	m_ModelSet[0].bParentIndex = parent;
+	m_ModelSet[0].pModel->SetParent(parts);
 }
 
 //==============================================================================================
@@ -275,13 +272,16 @@ CObjectX* CParts::SetModel(const int index, const int parent, const D3DXVECTOR3 
 		if (parent >= 0)
 		{// 親がいる場合
 			m_ModelSet[index].pModel = CObjectX::Create(pos, rot, m_ModelSet[parent].pModel, Xfilename);
+			m_ModelSet[index].bParentIndex = false;
 		}
 		else
 		{// 親がいない場合
 			m_ModelSet[index].pModel = CObjectX::Create(pos, rot, nullptr, Xfilename);
+			m_ModelSet[index].bParentIndex = true;
+
+			// パーツである事を設定する
+			m_ModelSet[index].pModel->SetParts(true);
 		}
-		// 親モデルの番号の追加
-		m_ModelSet[index].nParentIndex = parent;
 
 		// パーツの初期位置
 		m_ModelSet[index].InitPos = m_ModelSet[index].pModel->GetPos();
@@ -311,20 +311,21 @@ std::vector<CObjectX*> CParts::GetModelAll()
 //============================================================================
 // 生成処理
 //============================================================================
-CParts* CParts::Create(const D3DXVECTOR3 pos, CMove_Object* parent, const bool side)
+CParts* CParts::Create(const D3DXVECTOR3 pos, const char* Xfilename, CCharacter* parent)
 {
-	CParts* pPC = new CParts;
+	CParts* pParts = new CParts;
 
-	if (FAILED(pPC->Init()))
+	if (FAILED(pParts->Init()))
 	{
 		return nullptr;
 	}
 
-	pPC->SetPos(pos);
+	pParts->SetPos(pos);
+	pParts->LoadFile(Xfilename);
+	pParts->SetParent(parent);
 
-	return pPC;
+	return pParts;
 }
-
 
 //==============================================================================================
 // モデルパーツの設定
@@ -426,12 +427,10 @@ void CParts::LoadFile(const char* Xfilename)
 						int nKey = 0;			// 現在のキーの数
 
 												// モーション情報
-						CMotion::MotionPattern vMotionPattern;	// キーセットの情報
+						CMotion::MotionPattern vMotionPattern = {};	// キーセットの情報
 
 						while (strcmp(&m_aString[0], "END_MOTIONSET") != 0)
 						{
-							//m_MotionSet.emplace_back();
-
 							fscanf(pFile, "%s", &m_aString[0]);
 
 							// ループするか
@@ -449,7 +448,7 @@ void CParts::LoadFile(const char* Xfilename)
 							if (strcmp(&m_aString[0], "NUM_KEY") == 0)
 							{
 								fscanf(pFile, "%s", &m_aString[0]);
-								fscanf(pFile, "%d", &vMotionPattern.nMaxKey);
+								//fscanf(pFile, "%d", &vMotionPattern.nMaxKey);
 							}
 
 							if (strcmp(&m_aString[0], "KEYSET") == 0)
@@ -508,6 +507,8 @@ void CParts::LoadFile(const char* Xfilename)
 								nKey++;
 							}
 						}
+						vMotionPattern.nMaxKey = nKey;
+
 						// モーションに設定
 						pMotion->SetMotionData(vMotionPattern, m_name);
 

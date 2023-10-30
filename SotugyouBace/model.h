@@ -15,7 +15,6 @@ class CModel
 public:
 	struct ModelPattern
 	{
-		const char* fileName;				// ファイル名
 		LPD3DXBUFFER pBuffMat;				// マテリアル情報へのポインタ
 		LPD3DXMESH pMesh;					// メッシュ情報へのポインタ
 		DWORD nNumMat;						// マテリアル情報の数
@@ -34,6 +33,7 @@ public:
 private:
 
 	std::vector <ModelPattern> m_ModelPattern;		// モデル構造体
+	std::vector <std::string> m_vName;				// 各ファイル名
 };
 
 #endif // !_MODEL_H_

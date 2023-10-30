@@ -25,6 +25,7 @@
 #include "confirmation_window.h"
 #include "menu.h"
 #include "utility.h"
+#include "parts.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;

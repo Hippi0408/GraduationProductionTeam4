@@ -41,7 +41,15 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	LoadFile("Data\\text\\Motion\\motion_player.txt");
+	//LoadFile("Data\\text\\Motion\\motion_player.txt");
+	SetParts(PARTS_BODY, "Data\\text\\Motion\\parts\\motion_Body.txt");
+	SetParts(PARTS_LEG, "Data\\text\\Motion\\parts\\motion_Leg.txt");
+	SetParts(PARTS_ARMS, "Data\\text\\Motion\\parts\\motion_Arms.txt");
+
+	//for (int nCnt = 1; nCnt < (int)GetAllParts().size(); nCnt++)
+	//{
+	//	GetParts(nCnt)->SetModelParent(GetParts(PARTS_BODY)->GetModelSet(0).pModel);
+	//}
 
 	// タグの設定
 	SetTag(TAG_CHARACTER);
@@ -72,6 +80,9 @@ void CPlayer::Uninit()
 //============================================================================
 void CPlayer::Update()
 {
+	// モーション番号の設定
+	ChangeMotion();
+
 	// キャラクターの更新
 	CCharacter::Update();
 }
@@ -89,54 +100,17 @@ void CPlayer::Draw()
 //============================================================================
 void CPlayer::ChangeMotion()
 {
-	// 現在のモーション
-	const int nCuttentMotion = GetCurrentMotion();
-
-	// 着地モーションが終了した場合
-	if (nCuttentMotion == MOTION_LANDING && GetMotionStop() == true)
+	// 着地モーションを設定
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		SetMotion(MOTION_NEUTRAL);
-	}
+		// パーツ
+		CParts* pParts = GetParts(nCnt);
 
-	int nMotion = GetMotion();
-
-
-	// 現在のモーションから変わった場合
-	if (nCuttentMotion != nMotion)
-	{
-		// 現在モーションの終了処理
-		switch (nCuttentMotion)
+		// 着地モーションが終了した場合
+		if (pParts->GetCurrentMotion() == MOTION_LANDING && pParts->GetMotionStop() == true)
 		{
-			// ニュートラル
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		case MOTION_JUMP:
-			break;
-		case MOTION_LANDING:
-			break;
-		default:
-			break;
+			pParts->SetMotion(MOTION_NEUTRAL);
 		}
-
-		// 現在モーションの開始処理
-		switch (nMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		case MOTION_JUMP:
-			break;
-		case MOTION_LANDING:
-			break;
-		default:
-			break;
-		}
-
-		// キャラクターのモーション変更処理
-		CCharacter::ChangeMotion();
 	}
 }
 
@@ -166,7 +140,7 @@ void CPlayer::JumpStart()
 	if (GetGround() == true)
 	{
 		// ジャンプモーションを設定
-		SetMotion(MOTION_JUMP);
+		GetParts(PARTS_LEG)->SetMotion(MOTION_JUMP);
 
 		// 離着状態にする
 		SetGround(false);
@@ -208,14 +182,14 @@ void CPlayer::JumpBoost()
 //============================================================================
 void CPlayer::Landing(const D3DXVECTOR3 pos)
 {
-	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+	// 着地モーションを設定
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		// 着地モーションを設定
-		SetMotion(MOTION_LANDING);
-
-		// キャラクターの着地処理
-		CCharacter::Landing(pos);
+		GetParts(nCnt)->SetMotion(MOTION_LANDING);
 	}
+
+	// キャラクターの着地処理
+	CCharacter::Landing(pos);
 }
 
 //============================================================================

@@ -35,10 +35,13 @@ CBoss::~CBoss()
 HRESULT CBoss::Init()
 {
 	// プレイヤーのモデルを読み込む
-	LoadFile("Data\\text\\Motion\\motion_boss.txt");
+	//LoadFile("Data\\text\\Motion\\motion_boss.txt");
+
+	SetParts(0, "Data\\text\\Motion\\motion_boss.txt");
+	GetParts(0)->GetModelSet(MODEL_BODY).pModel->SetSize({ 5.0f, 5.0f, 5.0f });
 
 	// 体モデルのサイズを5倍
-	GetModelSet(MODEL_BODY).pModel->SetSize({ 5.0f, 5.0f, 5.0f });
+	//GetModelSet(MODEL_BODY).pModel->SetSize({ 5.0f, 5.0f, 5.0f });
 
 	CEnemy::Init();
 
@@ -59,7 +62,7 @@ void CBoss::Uninit()
 void CBoss::Update()
 {
 	// モーション変更
-	ChangeMotion();
+	//ChangeMotion();
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -72,45 +75,45 @@ void CBoss::Draw()
 {
 	CEnemy::Draw();
 }
-
-//============================================================================
-// モーション変更処理
-//============================================================================
-void CBoss::ChangeMotion()
-{
-	// 現在のモーション
-	const int nCuttentMotion = GetCurrentMotion();
-	const int nMotion = GetMotion();
-
-	// 現在のモーションから変わった場合
-	if (nCuttentMotion != nMotion)
-	{
-		// 現在モーションの終了処理
-		switch (nCuttentMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
-
-		// 現在モーションの開始処理
-		switch (nMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
-
-		// キャラクターのモーション変更処理
-		CCharacter::ChangeMotion();
-	}
-}
+//
+////============================================================================
+//// モーション変更処理
+////============================================================================
+//void CBoss::ChangeMotion()
+//{
+//	// 現在のモーション
+//	const int nCuttentMotion = GetCurrentMotion();
+//	const int nMotion = GetMotion();
+//
+//	// 現在のモーションから変わった場合
+//	if (nCuttentMotion != nMotion)
+//	{
+//		// 現在モーションの終了処理
+//		switch (nCuttentMotion)
+//		{
+//		case MOTION_NEUTRAL:
+//			break;
+//		case MOTION_WALK:
+//			break;
+//		default:
+//			break;
+//		}
+//
+//		// 現在モーションの開始処理
+//		switch (nMotion)
+//		{
+//		case MOTION_NEUTRAL:
+//			break;
+//		case MOTION_WALK:
+//			break;
+//		default:
+//			break;
+//		}
+//
+//		// キャラクターのモーション変更処理
+//		CCharacter::ChangeMotion();
+//	}
+//}
 
 //============================================================================
 // 破壊処理

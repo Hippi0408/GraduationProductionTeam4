@@ -29,6 +29,7 @@ public:
 	static CObjectX* Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, const PRIORITY priority = PRIORITY_MODEL);
 
 	void SetShadow(const bool shadow) { m_bShadow = shadow; }
+	void SetParts(const bool parts) { m_bParts = parts; }
 	void SetIndex(const int index) { m_nIndex = index; }
 	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void AddPos(const D3DXVECTOR3 pos) { m_pos += pos; }
@@ -63,6 +64,7 @@ private:
 	int m_nIndex;				// Xファイルの番号
 	int m_nNumMat;				// 現在のモデルのマテリアル数
 	bool m_bShadow;				// 影の描画処理
+	bool m_bParts;				// パーツ用のモデルであるかどうか
 };
 
 #endif // !_MODEL_H_
