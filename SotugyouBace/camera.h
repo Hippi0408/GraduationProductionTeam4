@@ -42,6 +42,8 @@ public:
 	const D3DXVECTOR3 GetPosR() { return m_posR; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const CCamera* GetCamera() { return m_pCamera; }
+	const D3DXVECTOR3 GetWorldPosV() { return m_worldCameraPosV; }
+	const D3DXVECTOR3 GetWorldPosR() { return m_worldCameraPosR; }
 
 private:
 	D3DVIEWPORT9	m_viewport;			// ビューポート

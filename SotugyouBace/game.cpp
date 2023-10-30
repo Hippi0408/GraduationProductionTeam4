@@ -121,6 +121,11 @@ void CGame::Uninit()
 		m_ponfirmationWindow = nullptr;
 	}
 
+	while (m_pMob.size() != 0)
+	{
+		m_pMob.pop_back();
+	}
+
 	m_bGameEnd = false;	// ƒQ[ƒ€I—¹”»’è‚ğ‹U‚É‚·‚é
 }
 

@@ -72,6 +72,7 @@ public:
 	void AddMove(const D3DXVECTOR3 move) { m_move += move; }
 	void SetRotDest(const D3DXVECTOR3 rot) { m_rotDest = rot; }
 	void AddRotDest(const D3DXVECTOR3 rot) { m_rotDest += rot; }
+	void SetBulletRot(const D3DXVECTOR3 bulletrot) { m_BulletRot = bulletrot; }
 	void SetBoost(const bool boost) { m_bBoost = boost; }
 	void SetJump_Boost(const bool jumpboost) { m_bJump_Boost = jumpboost; }
 
@@ -92,6 +93,7 @@ public:
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
+	const D3DXVECTOR3 GetBulletRot() { return m_BulletRot; }
 	MODEL_SET GetModelSet(const int index) { return m_ModelSet[index]; }
 	std::vector<CObjectX*> GetModelAll();
 	const bool GetBoost() { return m_bBoost; }
@@ -110,6 +112,7 @@ private:
 	D3DXVECTOR3 m_move;					// 移動量
 	D3DXVECTOR3 m_rot;					// 現在の角度
 	D3DXVECTOR3 m_rotDest;				// 目的の角度
+	D3DXVECTOR3 m_BulletRot;			// 弾を撃つ角度
 
 	D3DXCOLOR m_col;					// モデルの色
 
