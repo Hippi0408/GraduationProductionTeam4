@@ -135,7 +135,7 @@ void CPlayer::PlayerAttack()
 	pos_vec += pos;
 
 	// 弾の生成
-	CBullet::Create({pos_vec.x, pos_vec.y, pos_vec.z}, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)), true);
+	CBullet::Create({ pos.x, pos.y, pos.z}, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)), true);
 }
 
 //============================================================================
@@ -285,11 +285,13 @@ void CPlayer::Target()
 
 	if (m_bTarget && bScreen)
 	{
-		// 一番近い敵の方向
-		float Angle = atan2(GetPos().x - NearMob_Pos.x, GetPos().z - NearMob_Pos.z);
+		D3DXVECTOR3 BulletVec = NearMob_Pos - GetPos();
 
+		// ターゲットした敵の方向
+		float Angle = atan2(BulletVec.x, BulletVec.z);
+		
 		// 目的の角度の設定
-		CCharacter::SetBulletRot({ 0.0f,Angle,0.0f });
+		CCharacter::SetBulletRot({ 0.0f,Angle + D3DX_PI,0.0f });
 	}
 	else
 	{// ターゲットがいない場合は正面に弾を撃つ
@@ -334,9 +336,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	D3DXVECTOR3 Reflected_Pos[2] = {};
 	D3DXVECTOR3 Reflected_PosVec[2] = {};
 	// 視野角
-	float fView_Angle = 44.9f;
-	// 外積の格納先
-	float fCp[2] = {};
+	float fView_Angle = 44.5f;
 
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
@@ -349,16 +349,16 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		D3DXVECTOR3 WorldPosV = Camera->GetWorldPosV();
 
 		// カメラの視点から画角分ずらす
-		if (nCnt == 0)
+		/*if (nCnt == 0)
 		{
-			WorldPosV.x += sinf(rotCamera.y + D3DX_PI / 2);
-			WorldPosV.z += cosf(rotCamera.y + D3DX_PI / 2);
+			WorldPosV.x += sinf(rotCamera.y + D3DX_PI / 2) * 500;
+			WorldPosV.z += cosf(rotCamera.y + D3DX_PI / 2) * 500;
 		}
 		else
 		{
-			WorldPosV.x -= sinf(rotCamera.y + D3DX_PI / 2);
-			WorldPosV.z -= cosf(rotCamera.y + D3DX_PI / 2);
-		}
+			WorldPosV.x += sinf(rotCamera.y - D3DX_PI / 2) * 500;
+			WorldPosV.z += cosf(rotCamera.y - D3DX_PI / 2) * 500;
+		}*/
 
 		// カメラの視点からのベクトル
 		Reflected_PosVec[nCnt] = Reflected_Pos[nCnt] - WorldPosV;
@@ -371,6 +371,9 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 
 		// 正規化
 		D3DXVec3Normalize(&EnemyVec, &EnemyVec);
+
+		// 外積の格納先
+		float fCp[2] = {};
 
 		// 外積
 		fCp[nCnt] = Reflected_PosVec[nCnt].x * EnemyVec.z - Reflected_PosVec[nCnt].z * EnemyVec.x;

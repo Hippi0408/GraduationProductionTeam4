@@ -63,7 +63,7 @@ private:
 	CConfirmation_Window* m_ponfirmationWindow;		// メニューウィンドウ
 	static CMeshField *pMeshField;					// メッシュフィールド
 	static CEnergy_Gauge* m_pEnergy_Gauge;			// エネルギーゲージ
-	static CFontString* m_pFinishRogo;				// 終了ロゴ
+	static CFontString* m_pFinishRogo;				// 終了ロゴ 
 
 
 	static CPlayerManager *m_pPlayer_Manager;	// プレイヤーマネージャー
