@@ -19,9 +19,6 @@
     <ClCompile Include="enemy_manager.cpp">
       <Filter>04_Object\MoveObject\Character\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="energy_gauge.cpp">
-      <Filter>04_Object\Object2D</Filter>
-    </ClCompile>
     <ClCompile Include="fade.cpp">
       <Filter>03_Mode</Filter>
     </ClCompile>
@@ -175,6 +172,21 @@
     <ClCompile Include="parts.cpp">
       <Filter>04_Object\ObjectX\Parts</Filter>
     </ClCompile>
+    <ClCompile Include="energy_gauge.cpp">
+      <Filter>04_Object\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="gauge_manager.cpp">
+      <Filter>04_Object\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="player_life_gauge.cpp">
+      <Filter>04_Object\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="mob_life_gauge.cpp">
+      <Filter>04_Object\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="boss_life_gauge.cpp">
+      <Filter>04_Object\Gauge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
@@ -194,9 +206,6 @@
     </ClInclude>
     <ClInclude Include="enemy_manager.h">
       <Filter>04_Object\MoveObject\Character\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="energy_gauge.h">
-      <Filter>04_Object\Object2D</Filter>
     </ClInclude>
     <ClInclude Include="fade.h">
       <Filter>03_Mode</Filter>
@@ -355,6 +364,21 @@
     <ClInclude Include="parts.h">
       <Filter>04_Object\ObjectX\Parts</Filter>
     </ClInclude>
+    <ClInclude Include="energy_gauge.h">
+      <Filter>04_Object\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge_manager.h">
+      <Filter>04_Object\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="player_life_gauge.h">
+      <Filter>04_Object\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="mob_life_gauge.h">
+      <Filter>04_Object\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="boss_life_gauge.h">
+      <Filter>04_Object\Gauge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01_Input">
@@ -413,6 +437,9 @@
     </Filter>
     <Filter Include="04_Object\ObjectX\Parts">
       <UniqueIdentifier>{4582fd13-421f-4da3-a1c3-88ee10080dae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Gauge">
+      <UniqueIdentifier>{bbe7de33-e6ac-4ea3-9631-2b27efd3a196}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -8,11 +8,12 @@
 #include "application.h"
 #include "game.h"
 #include "particle_emitter.h"
+#include "mob_life_gauge.h"
 
 const float CMob::MOB_COLLISION_RADIUS = 100.0f;	// ボスの当たり判定の大きさ
-													//=====================================
-													// デフォルトコンストラクタ
-													//=====================================
+//=====================================
+// デフォルトコンストラクタ
+//=====================================
 CMob::CMob()
 {
 	// プレイヤーの初期値を設定
@@ -39,6 +40,9 @@ HRESULT CMob::Init()
 
 	SetParts(0, "Data\\text\\Motion\\motion_mob.txt");
 
+	// 体力ゲージ
+	m_LifeGauge = CMob_Life_Gauge::Create({ GetPos().x,GetPos().y + 50.0f,GetPos().z }, { 200.0f,30.0f }, m_nMob_Index);
+
 	CEnemy::Init();
 
 	return S_OK;
@@ -59,6 +63,9 @@ void CMob::Update()
 {
 	// モーション変更
 	//ChangeMotion();
+
+	// 体力ゲージ
+	m_LifeGauge->SetMobLife_Pos({ GetPos().x,GetPos().y + 400.0f,GetPos().z });
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -119,22 +126,29 @@ void CMob::Destroy()
 	// ボス用撃破パーティクル
 	std::move(CParticleEmitter::Create("MineOre", GetPos()));
 
+	// 体力ゲージ
+	if (m_LifeGauge != nullptr)
+	{
+		m_LifeGauge->GetBackGauge()->Uninit();
+		m_LifeGauge->Uninit();
+	}
+
 	CEnemy::Destroy();
 }
 
 //============================================================================
 // 生成処理
 //============================================================================
-CMob* CMob::Create(const D3DXVECTOR3 pos)
+CMob* CMob::Create(const D3DXVECTOR3 pos, const int index)
 {
 	CMob* pMob = new CMob;
 
-	if (FAILED(pMob->Init()))
+	if (pMob != nullptr)
 	{
-		return nullptr;
+		pMob->SetPos(pos);
+		pMob->SetMobIndex(index);
+		pMob->Init();
 	}
-
-	pMob->SetPos(pos);
 
 	return pMob;
 }

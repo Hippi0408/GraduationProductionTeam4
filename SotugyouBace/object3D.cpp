@@ -198,7 +198,7 @@ void CObject3D::UV()
 	pVtx[0].pos.y = cosf(fAngle) * fLength;
 	pVtx[0].pos.z = 0.0f;
 
-	pVtx[1].pos.x = sinf(fAngle) * fLength;
+	pVtx[1].pos.x = sinf(fAngle) * fLength - m_Subsize.x;
 	pVtx[1].pos.y = cosf(fAngle) * fLength;
 	pVtx[1].pos.z = 0.0f;
 
@@ -206,7 +206,7 @@ void CObject3D::UV()
 	pVtx[2].pos.y = -cosf(fAngle) * fLength;
 	pVtx[2].pos.z = 0.0f;
 
-	pVtx[3].pos.x = sinf(fAngle) * fLength;
+	pVtx[3].pos.x = sinf(fAngle) * fLength - m_Subsize.x;
 	pVtx[3].pos.y = -cosf(fAngle) * fLength;
 	pVtx[3].pos.z = 0.0f;
 

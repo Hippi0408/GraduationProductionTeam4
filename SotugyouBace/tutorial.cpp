@@ -16,7 +16,6 @@
 #include"fontString.h"
 
 CMeshField *CTutorial::pMeshField = nullptr;			// メッシュフィールド
-CEnergy_Gauge *CTutorial::m_pEnergy_Gauge = nullptr;	// エネルギーゲージ
 
 //==============================================================================================
 // コンストラクタ
@@ -55,9 +54,6 @@ HRESULT CTutorial::Init()
 
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
-
-	// エネルギーゲージ
-	m_pEnergy_Gauge = CEnergy_Gauge::Create({ 1280.0f / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });
 
 	return S_OK;
 }

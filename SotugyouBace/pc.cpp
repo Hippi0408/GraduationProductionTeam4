@@ -12,8 +12,10 @@
 #include "meshfield.h"
 #include "energy_gauge.h"
 #include "tutorial.h"
+#include "player_life_gauge.h"
 
 #include"player_manager.h"
+#include"debugProc.h"
 
 //=====================================
 // デフォルトコンストラクタ
@@ -38,6 +40,9 @@ HRESULT CPC::Init()
 {
 	CPlayer::Init();
 	m_bFlag = false;
+
+	SetEnergyGauge(CEnergy_Gauge::Create({ 1280 / 2, 650.0f, 0.0f }, { 700.0f, 10.0f }));
+	SetGaugeManager(CPlayer_Life_Gauge::Create({ 70.0f,720.0f / 2,0.0f }, { 50.0f,500.0f }));
 
 	return S_OK;
 }
@@ -86,13 +91,15 @@ void CPC::Input()
 	// 移動量
 	D3DXVECTOR3 move = GetMove();
 
+	// エネルギーゲージの取得
+	CEnergy_Gauge* pGauge = nullptr;
+	pGauge = GetEnergy_Gauge();
+
 	D3DXVECTOR3 boostMove = { 1.0f,1.0f,1.0f };
 
 	// ブースト中は移動速度が上がる
 	if (GetBoost())
-		boostMove *= 1.8f;
-
-	SetBoost(false);
+		boostMove *= 2.0f;
 
 	// 目的の角度
 	D3DXVECTOR3 rotDest = GetRotDest();
@@ -113,8 +120,8 @@ void CPC::Input()
 		bWalk = true;
 	}
 
-	// 歩いている場合
-	if (bWalk == true)
+		// 歩いている場合
+	if (bWalk == true && !GetAvoidance())
 	{
 		//カメラの向き（Y軸のみ）
 		float rotY = rotCamera.y;
@@ -180,7 +187,26 @@ void CPC::Input()
 		if (GetGround())
 		{
 			// 歩き
+			SetMotion(MOTION_WALK);
+		}
+		// 回避
+		if (pInput->Trigger(MOUSE_INPUT_RIGHT)
+			&& !pGauge->GetConsumption())
+		{
+			// 歩き
 			GetParts(PARTS_LEG)->SetMotion(MOTION_WALK);
+			SetAvoidanceCount(20);				// 回避の硬直
+			pGauge->SetAvoidance_amount(200.0f);// 回避時のエネルギー消費量
+			pGauge->Avoidance_Energy();			// エネルギー消費
+			pGauge->Recovery_Pause(50);			// クールタイム
+			SetAvoidance(true);
+
+			// ブーストした分の速度を減らす
+			if (GetBoost())
+				move /= 2.0f;
+
+			move *= 5.0f;		// 初速
+			move.y = 0.0f;
 		}
 	}
 	// 前回モーションが歩きモーションだった場合
@@ -190,9 +216,11 @@ void CPC::Input()
 		pLeg->SetMotion(MOTION_NEUTRAL);
 	}
 
+	// ダッシュブーストの初期化
+	SetBoost(false);
+
 	// 移動量を更新
 	CCharacter::SetMove(move);
-
 	// 目的の角度の設定
 	CCharacter::SetRotDest(rotDest);
 
@@ -237,21 +265,13 @@ void CPC::Input()
 	// 視点処理
 	Perspective();
 
-	// エネルギーゲージの取得
-	CEnergy_Gauge* pGauge = nullptr;
-
-	if (CApplication::GetModeType() == CApplication::MODE_GAME)
-		pGauge = CGame::GetEnergy_Gauge();
-	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
-		pGauge = CTutorial::GetEnergy_Gauge();
-
 	if (pGauge != nullptr)
 	{
 		// 地上にいる場合
 		if (GetGround())
 		{
 			// 消費速度
-			pGauge->SetConsumption_Speed(3.0f);
+			pGauge->SetConsumption_Speed(1.5f);
 			// 回復速度
 			pGauge->SetRecovery_Speed(10.0f);
 		}
@@ -259,7 +279,7 @@ void CPC::Input()
 		else
 		{
 			// 消費速度
-			pGauge->SetConsumption_Speed(6.0f);
+			pGauge->SetConsumption_Speed(3.0f);
 			// 回復速度
 			pGauge->SetRecovery_Speed(0.3f);
 		}
@@ -279,13 +299,6 @@ void CPC::Input()
 				// エネルギーを消費する
 				pGauge->Consumption_Gauge();
 				//SetMotion(MOTION_BOOST_RUN);
-			}
-
-			// 回避
-			if (pInput->Trigger(DIK_C))
-			{
-				pGauge->Avoidance();			// エネルギー消費
-				pGauge->Recovery_Pause(30);		// クールタイム
 			}
 		}
 	}
@@ -340,6 +353,66 @@ void CPC::Perspective()
 		CApplication::GetCamera()->SetPerspective(false);
 		m_bFlag = false;
 	}
+
+	D3DXVECTOR3 MouseMove;
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	MouseMove = pInput->GetMouseMove();
+
+	MouseMove = D3DXVECTOR3(MouseMove.y, MouseMove.x, 0.0f);
+
+	if (D3DXVec3Length(&MouseMove) > 0.25f)
+	{
+		D3DXVec3Normalize(&MouseMove, &MouseMove);
+
+		rot = MouseMove * (D3DX_PI / 180.0f);
+
+		rot.x *= 3.0f;
+		rot.y *= 2.0f;
+	}
+
+	rotCamera += rot;
+
+	if (rotCamera.x  > D3DXToRadian(80))
+	{
+		rotCamera.x = D3DXToRadian(80);
+	}
+	else if (rotCamera.x  < D3DXToRadian(-50))
+	{
+		rotCamera.x = D3DXToRadian(-50);
+	}
+
+	rot = rotCamera;
+
+	if (rot.x > D3DX_PI)
+	{
+		rot.x -= D3DX_PI * 2.0f;
+	}
+	else if (rot.x < -D3DX_PI)
+	{
+		rot.x += D3DX_PI * 2.0f;
+	}
+
+	if (rot.y > D3DX_PI)
+	{
+		rot.y -= D3DX_PI * 2.0f;
+	}
+	else if (rot.y < -D3DX_PI)
+	{
+		rot.y += D3DX_PI * 2.0f;
+	}
+
+	if (rot.z > D3DX_PI)
+	{
+		rot.z -= D3DX_PI * 2.0f;
+	}
+	else if (rot.z < -D3DX_PI)
+	{
+		rot.z += D3DX_PI * 2.0f;
+	}
+
+	rotCamera.y = rot.y;
+	rotCamera.x = rot.x;
 
 	//カメラの向きの設定
 	CApplication::GetCamera()->SetRot(rotCamera);
