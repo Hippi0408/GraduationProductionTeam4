@@ -2,13 +2,13 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos 318.7688 -104.2064 9830.4004
+	pos 318.7688 -104.2064 3840.0000
 	lookat 0.0000 0.0000 0.0000
-	head 12.3064
-	pich -0.0564
+	head 13.0264
+	pich 0.0336
 	bank 0.0000
 	ortho 0
-	zoom2 0.7629
+	zoom2 1.9530
 	amb 0.250 0.250 0.250
 	dirlights 1 {
 		light {
@@ -19,7 +19,7 @@ Scene {
 }
 Material 2 {
 	"mat1" col(0.518 0.518 0.518 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.860) power(5.00)
-	"mat2" col(0.467 0.447 0.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.480) power(5.00)
+	"mat2" col(0.220 0.467 0.357 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.480) power(5.00)
 }
 Object "obj1" {
 	visible 15
@@ -286,7 +286,7 @@ Object "obj3" {
 	}
 }
 Object "obj4" {
-	visible 15
+	visible 0
 	locking 0
 	shading 1
 	facet 59.5
@@ -356,7 +356,7 @@ Object "obj4" {
 	}
 }
 Object "obj5" {
-	visible 15
+	visible 0
 	locking 0
 	shading 1
 	facet 59.5
@@ -448,7 +448,7 @@ Object "obj5" {
 	}
 }
 Object "obj6" {
-	visible 15
+	visible 0
 	locking 0
 	shading 1
 	facet 59.5
@@ -498,7 +498,7 @@ Object "obj6" {
 	}
 }
 Object "obj7" {
-	visible 15
+	visible 0
 	locking 0
 	shading 1
 	facet 59.5
@@ -786,7 +786,7 @@ Object "obj13" {
 		-619.5170 143.1659 -19.5272
 		-627.6055 143.1659 0.0000
 		-619.5170 143.1659 19.5272
-		-641.5717 94.6014 0.0000
+		-613.2255 125.5728 0.0000
 	}
 	face 40 {
 		4 V(1 2 10 9) M(1) UV(0.00000 0.00000 0.12500 0.00000 0.12500 0.33333 0.00000 0.33333)

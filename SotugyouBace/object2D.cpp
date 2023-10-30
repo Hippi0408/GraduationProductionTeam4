@@ -187,11 +187,11 @@ void CObject2D::UV()
 
 	// í∏ì_èÓïÒÇê›íË
 	pVtx[0].pos.x = m_pos.x - sinf(fAngle + m_rot.x) * fLength;
-	pVtx[0].pos.y = m_pos.y - cosf(fAngle + m_rot.y) * fLength;
+	pVtx[0].pos.y = m_pos.y - cosf(fAngle + m_rot.y) * fLength - m_Subsize.y;
 	pVtx[0].pos.z = m_pos.z;
 
 	pVtx[1].pos.x = m_pos.x + sinf(fAngle - m_rot.x) * fLength - m_Subsize.x;
-	pVtx[1].pos.y = m_pos.y - cosf(fAngle - m_rot.y) * fLength;
+	pVtx[1].pos.y = m_pos.y - cosf(fAngle - m_rot.y) * fLength - m_Subsize.y;
 	pVtx[1].pos.z = m_pos.z;
 
 	pVtx[2].pos.x = m_pos.x - sinf(fAngle - m_rot.x) * fLength;

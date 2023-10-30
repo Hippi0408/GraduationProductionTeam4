@@ -13,6 +13,7 @@
 #include "character.h"
 
 class CBullet;
+class CEnergy_Gauge;
 
 //---------------------------
 // クラス宣言
@@ -73,13 +74,17 @@ public:
 	void JumpStart();					// プレイヤーのジャンプ処理
 	void JumpBoost();					// プレイヤーのジャンプブースト処理
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
+	void Target();						// ターゲット
+	bool Target_Scope(D3DXVECTOR3 nearpos);				// ターゲットを狙う範囲
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 
 	const int GetCharaIndex() { return m_nCharaIndex; }
 
 private:
-	int m_nCharaIndex;					// 自身の番号
+	int m_nCharaIndex;		// 自身の番号
+	float m_fTarget_Scope;	// ターゲットを狙う範囲
+	bool m_bTarget;			// ターゲットがいるか
 };
 
 #endif// _PLAYER_H_
