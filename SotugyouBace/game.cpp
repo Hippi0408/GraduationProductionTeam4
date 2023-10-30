@@ -130,7 +130,7 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	// メニューウィンドウ処理
-	MenuWindow();
+	//MenuWindow();
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
@@ -255,7 +255,7 @@ void CGame::MenuWindow()
 	{
 		m_ponfirmationWindow->Update(); 
 	}
-	// ウィンドウが閉じた場合
+	// ウィンドウが閉じた場合 
 	if (m_ponfirmationWindow != nullptr && m_bGameWindow == true)
 	{
 		m_bGameWindow = false;
