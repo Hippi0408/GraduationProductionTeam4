@@ -108,17 +108,14 @@ private:
 	float m_fSpeed;							// 移動速度
 	float m_fRotSpeed;						// 回転のスピード
 
-	bool m_bBoost;							// ブーストしているか
-	bool m_bJump_Boost;						// ジャンプブーストしているか
-	int Jump_PressCount;					// ジャンプの長押ししてる時間
-
-	std::string m_name;						// 自身の名前
-	std::map<int, CParts*> m_Parts;			// パーツ情報のポインタ
 	bool m_bBoost;						// ブーストしているか
 	bool m_bJump_Boost;					// ジャンプブーストしているか
 	int m_nJump_PressCount;				// ジャンプの長押ししてる時間
 	bool m_bAvoidance;					// 回避しているか
 	int m_nAvoidance_Count;				// 回避の硬直時間
+
+	std::string m_name;						// 自身の名前
+	std::map<int, CParts*> m_Parts;			// パーツ情報のポインタ
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
 	CGauge_Manager *m_pGaugeManager;	// ゲージマネージャー

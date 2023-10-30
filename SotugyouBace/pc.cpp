@@ -187,7 +187,7 @@ void CPC::Input()
 		if (GetGround())
 		{
 			// •à‚«
-			SetMotion(MOTION_WALK);
+			pLeg->SetMotion(MOTION_WALK);
 		}
 		// ‰ñ”ð
 		if (pInput->Trigger(MOUSE_INPUT_RIGHT)
