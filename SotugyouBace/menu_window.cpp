@@ -15,6 +15,7 @@
 #include "menu.h"
 #include "title.h"
 #include "title_menu.h"
+#include "confirmation_window.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -45,6 +46,7 @@ HRESULT CMenuWindow::Init()
 	//==================================================  
 	SizeX = 0.0f;
 	SizeY = 0.0f;
+	m_bScaleFlag = false;
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f),CObject::PRIORITY_FRONT);
 	m_pObject2D->SetCol(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 
@@ -69,7 +71,7 @@ void CMenuWindow::Uninit()
 //=============================================================================
 void CMenuWindow::Update()
 {
-	if (CTitle::GetUninitWindow() == false)
+	if (CTitle::GetUninitWindow() == false && m_bScaleFlag == false)
 	{ // メニューのサイズ拡大処理
 		MenuScale();
 	}
@@ -100,6 +102,7 @@ void CMenuWindow::MenuScale()
 		{
 			CApplication::GetMenu()->SetDisplay(true);		// メニュー画面の表示
 			CTitle::SetWindow(true);						// ウィンドウを使用している状態にする
+			m_bScaleFlag = true;
 		}
 
 		// サイズの設定
@@ -131,6 +134,9 @@ bool CMenuWindow::MenuScaleReduce()
 		if (SizeX <= 0.0f && SizeY <= 0.0f)
 		{
 			CTitle::SetUninitWindow(false);	// ウィンドウを消す
+			// ウィンドウの破棄
+			//DestroyWindow(CApplication::GetWindow());
+			CConfirmation_Window::SetBf(true);
 		
 			Uninit();						// メニューウィンドウの削除
 			return true;

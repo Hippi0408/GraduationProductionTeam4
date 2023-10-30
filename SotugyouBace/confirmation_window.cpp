@@ -16,6 +16,8 @@
 #include "fade.h"
 #include "input.h"
 #include "game.h"
+#include "title.h"
+#include "menu_window.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -23,10 +25,12 @@
 const float CConfirmation_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
 const float CConfirmation_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 
+bool CConfirmation_Window::m_bf = false;
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CConfirmation_Window::CConfirmation_Window() : m_bSelectChoice(0), m_fBlinkSpeed(BLINK_SPEED)
+CConfirmation_Window::CConfirmation_Window() : m_bSelectChoice(1), m_fBlinkSpeed(BLINK_SPEED)
 {
 
 }
@@ -50,7 +54,10 @@ HRESULT CConfirmation_Window::Init()
 	SizeY = 0.0f;
 	m_bScale = false;
 	m_bflag = false;
-	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_FRONT);
+	m_bUninitFlag = false;
+	m_bf = false;
+	m_bSelectChoice = true;
+	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 
 	return S_OK;
@@ -79,13 +86,18 @@ void CConfirmation_Window::Update()
 		// メニューのサイズ拡大処理
 		ConfirmatiomnMenuScale();
 	}
-
-	Choice();
-
 	if (m_bScale == true)
 	{
 		ConfirmatiomnMenuScaleReduce();
 	}
+
+	Choice();
+
+	//if (m_bf == true)
+	//{
+	//	//CApplication::GetMenu()->SetDisplay(false);
+	//	CTitle::GetMenuWindow()->MenuScaleReduce();
+	//}
 }
 
 //=============================================================================
@@ -111,6 +123,11 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 		// ウィンドウが最大値まで行ったら
 		if (SizeX >= SizeXScaleMax && SizeY >= SizeYScaleMax && m_bflag == false)
 		{
+			if (m_pFont == nullptr)
+			{
+				m_pFont = CFontString::Create({ 420.0f, 350.0f, 0.0f }, { 30.0f, 30.0f }, "ゲームをやめますか?");
+			}
+
 			// 選択肢の設定処理
 			SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 40.0f, 40.0f }, "はい"));
 			SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 40.0f, 40.0f }, "いいえ"));
@@ -143,7 +160,8 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 {
 	if (m_pObject2D != nullptr)
 	{// nullチェック
-	 // サイズの縮小
+
+		// サイズの縮小
 		SizeX -= SizeXScaleSpeed;
 		SizeY -= SizeYScaleSpeed;
 
@@ -156,9 +174,18 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 			SizeY = 0.0f;
 		}
 
+		// フォントの削除
+		if (m_pFont != nullptr)
+		{
+			m_pFont->Uninit();
+			m_pFont = nullptr;
+		}
+
 		// ウィンドウが最小値まで行ったら
 		if (SizeX <= 0.0f && SizeY <= 0.0f)
 		{
+			m_bf = true;
+			m_bUninitFlag = true;
 			CGame::SetGameWindow(true);
 			m_bScale = false;
 			Uninit();						// メニューウィンドウの削除
@@ -226,17 +253,21 @@ void CConfirmation_Window::Choice()
 				// はいの場合
 				if (m_bSelectChoice == false)
 				{
-
+					ConfirmatiomnMenuScaleReduce();
+					m_bScale = true;
+					SetDisplay(false);
 				}
 				// いいえの場合
 				else
 				{
+					ConfirmatiomnMenuScaleReduce();
 					m_bScale = true;
 					SetDisplay(false);
 				}
 			}
 		}
 	}
+
 }
 
 //============================================================================
