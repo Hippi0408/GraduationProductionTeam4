@@ -315,6 +315,7 @@ void CPlayer::Target()
 
 		// ターゲットした敵の方向
 		float Angle = atan2(BulletVec.x, BulletVec.z);
+		float Angle2 = atan2(BulletVec.y, BulletVec.x);
 		
 		// 目的の角度の設定
 		CCharacter::SetBulletRot({ 0.0f,Angle + D3DX_PI,0.0f });
@@ -366,7 +367,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
-		// 画面に映るぎりぎりの位置
+		// ターゲット出来るぎりぎりの位置
 		Reflected_Pos[nCnt].x = Camera->GetWorldPosV().x + sinf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
 		Reflected_Pos[nCnt].z = Camera->GetWorldPosV().z + cosf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
 		fView_Angle *= -1;
