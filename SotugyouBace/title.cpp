@@ -103,7 +103,7 @@ void CTitle::Update()
 		m_pMenuWindow->Update();
 	}
 
-	// 
+	 
 	//if (m_pMenuWindow != nullptr && m_bWindow == true)
 	//{
 	//	if (pInput->Trigger(DIK_RETURN))

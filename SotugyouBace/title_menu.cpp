@@ -90,6 +90,7 @@ void CTitleMenu::Update()
 	{// ウィンドウに情報が入っている時 && ウィンドウが使われている時
 		m_pConfirmationWindow->Update();
 	}
+
 	if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetUninit() == true)
 	{
 		delete m_pConfirmationWindow;

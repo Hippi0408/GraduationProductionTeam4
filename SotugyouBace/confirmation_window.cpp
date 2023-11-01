@@ -56,7 +56,7 @@ HRESULT CConfirmation_Window::Init()
 	m_bflag = false;
 	m_bUninitFlag = false;
 	m_bf = false;
-	m_bSelectChoice = true;
+	m_bSelectChoice = false;
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 
@@ -92,12 +92,6 @@ void CConfirmation_Window::Update()
 	}
 
 	Choice();
-
-	//if (m_bf == true)
-	//{
-	//	//CApplication::GetMenu()->SetDisplay(false);
-	//	CTitle::GetMenuWindow()->MenuScaleReduce();
-	//}
 }
 
 //=============================================================================
@@ -184,8 +178,11 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 		// ウィンドウが最小値まで行ったら
 		if (SizeX <= 0.0f && SizeY <= 0.0f)
 		{
-			m_bf = true;
-			m_bUninitFlag = true;
+			if (m_bSelectChoice == false)
+			{
+				m_bf = true;
+			}
+			//m_bUninitFlag = true;
 			CGame::SetGameWindow(true);
 			m_bScale = false;
 			Uninit();						// メニューウィンドウの削除
@@ -253,7 +250,7 @@ void CConfirmation_Window::Choice()
 				// はいの場合
 				if (m_bSelectChoice == false)
 				{
-					ConfirmatiomnMenuScaleReduce();
+					//ConfirmatiomnMenuScaleReduce();
 					m_bScale = true;
 					SetDisplay(false);
 				}
@@ -267,7 +264,11 @@ void CConfirmation_Window::Choice()
 			}
 		}
 	}
-
+	if (m_bf == true)
+	{
+		CApplication::GetMenu()->SetDisplay(false);
+		CTitle::GetMenuWindow()->MenuScaleReduce();
+	}
 }
 
 //============================================================================

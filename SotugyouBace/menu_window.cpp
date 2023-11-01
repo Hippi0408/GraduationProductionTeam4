@@ -134,9 +134,12 @@ bool CMenuWindow::MenuScaleReduce()
 		if (SizeX <= 0.0f && SizeY <= 0.0f)
 		{
 			CTitle::SetUninitWindow(false);	// ウィンドウを消す
-			// ウィンドウの破棄
-			//DestroyWindow(CApplication::GetWindow());
-			CConfirmation_Window::SetBf(true);
+			//if ()
+			//{
+			//	// ウィンドウの破棄
+			//	DestroyWindow(CApplication::GetWindow());
+			//}
+			//CConfirmation_Window::SetBf(true);
 		
 			Uninit();						// メニューウィンドウの削除
 			return true;
