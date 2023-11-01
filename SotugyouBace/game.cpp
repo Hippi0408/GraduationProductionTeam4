@@ -67,10 +67,10 @@ HRESULT CGame::Init()
 	m_pPlayer_Manager = CApplication::GetPlayerManager();
 	m_pPlayer_Manager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
-	for (int nCnt = 0; nCnt < 20; nCnt++)
+	for (int nCnt = 0; nCnt < 1; nCnt++)
 	{
 		// モブキャラの生成
-		CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) });
+		CMob::Create({ 0, 1000, 500 });
 	}
 
 	// ボスキャラの生成

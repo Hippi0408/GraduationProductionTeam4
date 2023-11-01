@@ -227,57 +227,71 @@ void CPlayer::Target()
 	float NextNearDistance = 0.0f;					// ŽŸ‚É‹ß‚¢“G‚Æ‚Ì‹——£
 	m_bTarget = false;								// ‹ß‚­‚É“G‚ª‚¢‚é‚©
 	bool bScreen = false;							// ‰æ–Ê‚É‰f‚Á‚Ä‚¢‚é‚©
+	float DistanceXZ = 0.0f;						// ƒvƒŒƒCƒ„[‚Æ“G‚ÌXZÀ•W‚Ì‹——£
+	D3DXVECTOR3 BulletVec = {0.0f,0.0f,0.0f};
 
-		// ŽG‹›“G‚Ìî•ñ
-	for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+	while (true)
 	{
-		if (pEnemy->GetLife() > 0)
+		// ŽG‹›“G‚Ìî•ñ
+		for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
 		{
-			// “G‚ÌˆÊ’u‚ÌŽæ“¾
-			Mob_Pos = pEnemy->GetPos();
-
-			// ‹——£‚ÌŽZo
-			float Distance = sqrtf((Mob_Pos.x - Player_Pos.x) * (Mob_Pos.x - Player_Pos.x)
-				+ (Mob_Pos.z - Player_Pos.z) * (Mob_Pos.z - Player_Pos.z));
-
-			// ‹——£3000ˆÈã
-			if (Distance > m_fTarget_Scope)
-				continue;
-
-			// ‹——£‚ð”ä‚×‚é
-			if (NearDistance >= Distance && NextNearDistance < Distance)
+			if (pEnemy->GetLife() > 0)
 			{
-				// ’Z‚¢•û‚Ì‹——£‚ÆˆÊ’u‚ð‘ã“ü
-				NearDistance = Distance;
-				NearMob_Pos = Mob_Pos;
+				// “G‚ÌˆÊ’u‚ÌŽæ“¾
+				Mob_Pos = pEnemy->GetPos();
 
-				m_bTarget = true;
+				BulletVec = Mob_Pos - Player_Pos;
 
-				// ‰æ–Ê‚É‰f‚Á‚Ä‚¢‚éŽž‚¾‚¯ƒ^[ƒQƒbƒg‚·‚é
-				bScreen = Target_Scope(NearMob_Pos);
+				// ‹——£‚ÌŽZo
+				DistanceXZ = sqrtf(BulletVec.x * BulletVec.x
+					+ BulletVec.z * BulletVec.z);
+
+				// ‹——£3000ˆÈã
+				if (DistanceXZ > m_fTarget_Scope)
+					continue;
+
+				// ‹——£‚ð”ä‚×‚é
+				if (NearDistance >= DistanceXZ && NextNearDistance < DistanceXZ)
+				{
+					// ’Z‚¢•û‚Ì‹——£‚ÆˆÊ’u‚ð‘ã“ü
+					NearDistance = DistanceXZ;
+					NearMob_Pos = Mob_Pos;
+
+					m_bTarget = true;
+
+					// ‰æ–Ê‚É‰f‚Á‚Ä‚¢‚éŽž‚¾‚¯ƒ^[ƒQƒbƒg‚·‚é
+					bScreen = Target_Scope(NearMob_Pos);
+				}
 			}
 		}
-	}
 
-	if (m_bTarget != bScreen)
-	{
-		// ‹——£‚ª‹ß‚¢‚ª‰æ–Ê‚É‰f‚Á‚Ä‚¢‚È‚¢“G‚Æ‚Ì‹——£
-		NextNearDistance = NearDistance;
-		NearDistance = m_fTarget_Scope;
-		m_bTarget = false;
+		if (m_bTarget != bScreen)
+		{
+			// ‹——£‚ª‹ß‚¢‚ª‰æ–Ê‚É‰f‚Á‚Ä‚¢‚È‚¢“G‚Æ‚Ì‹——£
+			NextNearDistance = NearDistance;
+			NearDistance = m_fTarget_Scope;
+			m_bTarget = false;
+		}
+		else
+			break;
 	}
 
 	if (m_bTarget && bScreen)
 	{
-		D3DXVECTOR3 BulletVec = NearMob_Pos - GetPos();
+		BulletVec = NearMob_Pos - GetPos();
 
 		// ƒ^[ƒQƒbƒg‚µ‚½“G‚Ì•ûŒü
 		float Angle = atan2(BulletVec.x, BulletVec.z);
+		float AngleY = 0.0f;
 
-		//float Angle2 = atan2(BulletVec.y, BulletVec.x);
-		
+		// ƒvƒŒƒCƒ„[‚©‚ç“G‚Ì’¼ü‹——£
+		float fHypotenuse = sqrt((BulletVec.y * BulletVec.y) + (NearDistance * NearDistance));
+
+		// YÀ•W‚Ì’Ç]
+		AngleY = sinf(BulletVec.y / fHypotenuse);
+
 		// –Ú“I‚ÌŠp“x‚ÌÝ’è
-		CCharacter::SetBulletRot({ 0.0f,Angle + D3DX_PI,0.0f });
+		CCharacter::SetBulletRot({ AngleY,Angle + D3DX_PI,0.0f });
 	}
 	else
 	{// ƒ^[ƒQƒbƒg‚ª‚¢‚È‚¢ê‡‚Í³–Ê‚É’e‚ðŒ‚‚Â
