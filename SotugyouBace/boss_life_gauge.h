@@ -7,7 +7,10 @@
 #ifndef _BOSS_LIFE_GAUGE_H_
 #define _BOSS_LIFE_GAUGE_H_
 
+class CObject2D;
+
 #include"gauge_manager.h"
+
 
 class CBoss_Life_Gauge : public CGauge_Manager
 {
@@ -24,8 +27,13 @@ public:
 
 	static CBoss_Life_Gauge *Create(const D3DXVECTOR3 &pos, D3DXVECTOR2 size);
 
+	CObject2D *GetBackGauge() { return m_BackGauge; }
+
 private:
 	int m_nBoss_Base_Life;	// ƒ{ƒX‚ÌŒ³‚Ì‘Ì—Í
+
+	CObject2D *m_BackGauge;		// ƒQ[ƒW‚Ì”wŒi
+	CObject2D *m_FrontGauge;	// ƒQ[ƒW‚Ì‘OŒi
 };
 
 #endif // !_BOSS_LIFE_GAUGE_H_

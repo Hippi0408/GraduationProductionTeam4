@@ -49,7 +49,6 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion() override;		// ƒ‚[ƒVƒ‡ƒ“‚ÌØ‚è‘Ö‚¦
 	void Destroy() override;			// ”j‰óˆ—
 
 	static CBoss* Create(const D3DXVECTOR3 pos);

@@ -11,7 +11,7 @@
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CMob_Life_Gauge::CMob_Life_Gauge(const PRIORITY priority) : CObject3D(priority)
+CMob_Life_Gauge::CMob_Life_Gauge()
 {
 }
 
@@ -27,14 +27,19 @@ CMob_Life_Gauge::~CMob_Life_Gauge()
 //==============================================================================================
 HRESULT CMob_Life_Gauge::Init()
 {
-	CObject3D::Init();
+	CGauge_Manager::Init();
+
+	const D3DXVECTOR3 pos = GetGaugePos();
+	const D3DXVECTOR2 size = GetGaugeSize();
 
 	// ゲージの元の長さ
-	m_nBase_GaugeSize = (int)GetScale().x;
+	SetBeaseSize((int)GetGaugeSize().x);
 
-	m_BackGauge = CObject3D::Create(GetPos(), GetScale(), PRIORITY_CENTER);
-	m_BackGauge->SetCol({ 0.0f,0.0f,0.0f,1.0f });
-	m_BackGauge->Setbillboard(true);
+	// 後ろのゲージ
+	m_BackGauge = CObject3D::Create(pos, size, PRIORITY_CENTER, { 0.0f,0.0f,0.0f,1.0f }, true);
+
+	// 前方のゲージ
+	m_FrontGauge = CObject3D::Create(pos, size, PRIORITY_FRONT, { 1.0f,1.0f,1.0f,1.0f }, true);
 
 	return S_OK;
 }
@@ -44,7 +49,21 @@ HRESULT CMob_Life_Gauge::Init()
 //==============================================================================================
 void CMob_Life_Gauge::Uninit()
 {
-	CObject3D::Uninit();
+	// 後ろのゲージが使用中の場合
+	if (m_BackGauge != nullptr)
+	{
+		m_BackGauge->Uninit();
+		m_BackGauge = nullptr;
+	}
+
+	// 前方のゲージが使用中の場合
+	if (m_FrontGauge != nullptr)
+	{
+		m_FrontGauge->Uninit();
+		m_FrontGauge = nullptr;
+	}
+
+	CGauge_Manager::Uninit();
 }
 
 //==============================================================================================
@@ -52,29 +71,12 @@ void CMob_Life_Gauge::Uninit()
 //==============================================================================================
 void CMob_Life_Gauge::Update()
 {
-	SetPos(m_Pos);
-	m_BackGauge->SetPos(m_Pos);
+	const D3DXVECTOR3 pos = GetGaugePos();
 
-	// 雑魚敵の情報
-	std::vector<CCharacter*> Mob = CGame::GetMob();
+	m_BackGauge->SetPos(pos);
+	m_FrontGauge->SetPos(pos);
 
-	if (Mob[m_nGauge_Index] != nullptr)
-	{
-		// 敵の元の体力
-		if (m_nMob_Base_Life == 0)
-			m_nMob_Base_Life = Mob[m_nGauge_Index]->GetLife();
-
-		// 現在の体力の割合
-		float Life_Percent = (float)Mob[m_nGauge_Index]->GetLife() / m_nMob_Base_Life * 100;
-
-		// ゲージサイズを同じ割合にする
-		float Gauge_Percent = GetScale().x * Life_Percent / 100;
-
-		// ゲージの増減
-		SetSubSize({ m_nBase_GaugeSize - Gauge_Percent, 0.0f });
-	}
-
-	CObject3D::Update();
+	CGauge_Manager::Update();
 }
 
 //==============================================================================================
@@ -83,22 +85,36 @@ void CMob_Life_Gauge::Update()
 void CMob_Life_Gauge::Draw()
 {
 	//if (m_bDraw)
-		CObject3D::Draw();
+	CGauge_Manager::Draw();
+}
+
+//==============================================================================================
+// ゲージの増減
+//==============================================================================================
+void CMob_Life_Gauge::Fluctuation()
+{
+
+	// 現在の体力の割合
+	float Life_Percent = (float)GetLife() / GetBeaseLife() * 100;
+
+	// ゲージサイズを同じ割合にする
+	float Gauge_Percent = GetGaugeSize().x * Life_Percent / 100;
+
+	// ゲージの増減
+	m_FrontGauge->SetSubSize({ GetBeaseSize() - Gauge_Percent, 0.0f });
 }
 
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CMob_Life_Gauge *CMob_Life_Gauge::Create(const D3DXVECTOR3 &pos, D3DXVECTOR2 size, int index)
+CMob_Life_Gauge *CMob_Life_Gauge::Create(const D3DXVECTOR3 &pos, D3DXVECTOR2 size)
 {
-	CMob_Life_Gauge *pMob_Life_Gauge = new CMob_Life_Gauge(PRIORITY_FRONT);
+	CMob_Life_Gauge *pMob_Life_Gauge = new CMob_Life_Gauge;
 
 	if (pMob_Life_Gauge != nullptr)
 	{
-		pMob_Life_Gauge->SetPos(pos);
-		pMob_Life_Gauge->SetSize(size);
-		pMob_Life_Gauge->SetIndex(index);
-		pMob_Life_Gauge->Setbillboard(true);
+		pMob_Life_Gauge->SetGaugePos(pos);
+		pMob_Life_Gauge->SetGaugeSize(size);
 		pMob_Life_Gauge->Init();
 	}
 

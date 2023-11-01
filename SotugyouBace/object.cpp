@@ -96,7 +96,6 @@ void CObject::UpdateAll()
 				{
 					pObject->Update();
 				}
-
 				pObject = pObjectNext;
 			}
 

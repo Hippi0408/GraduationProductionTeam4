@@ -60,9 +60,6 @@ void CPC::Uninit()
 //============================================================================
 void CPC::Update()
 {
-	// モーション番号の設定
-	ChangeMotion();
-
 	// 入力処理
 	Input();
 
@@ -106,6 +103,9 @@ void CPC::Input()
 
 	// 目的の角度
 	D3DXVECTOR3 rotDest = GetRotDest();
+
+	// 脚パーツ
+	CParts* pLeg = GetParts(PARTS_LEG);
 
 	// 歩き判定
 	bool bWalk = false;
@@ -187,12 +187,14 @@ void CPC::Input()
 		if (GetGround())
 		{
 			// 歩き
-			SetMotion(MOTION_WALK);
+			pLeg->SetMotion(MOTION_WALK);
 		}
 		// 回避
 		if (pInput->Trigger(MOUSE_INPUT_RIGHT)
 			&& !pGauge->GetConsumption())
 		{
+			// 歩き
+			GetParts(PARTS_LEG)->SetMotion(MOTION_WALK);
 			SetAvoidanceCount(20);				// 回避の硬直
 			pGauge->SetAvoidance_amount(200.0f);// 回避時のエネルギー消費量
 			pGauge->Avoidance_Energy();			// エネルギー消費
@@ -208,10 +210,10 @@ void CPC::Input()
 		}
 	}
 	// 前回モーションが歩きモーションだった場合
-	else if (GetCurrentMotion() != MOTION_LANDING && GetGround())
+	else if (pLeg->GetCurrentMotion() != MOTION_LANDING && GetGround())
 	{
 		// 歩きを終了させる
-		SetMotion(MOTION_NEUTRAL);
+		pLeg->SetMotion(MOTION_NEUTRAL);
 	}
 
 	// ダッシュブーストの初期化
@@ -296,7 +298,7 @@ void CPC::Input()
 
 				// エネルギーを消費する
 				pGauge->Consumption_Gauge();
-				SetMotion(MOTION_BOOST_RUN);
+				pLeg->SetMotion(MOTION_BOOST_RUN);
 			}
 		}
 	}
