@@ -12,7 +12,7 @@
 #include"texture.h"
 #include"move_object.h"
 
-class CLocus : public CMove_Object
+class CLocus : public CObject
 {
 public:
 	// 3D頂点フォーマット
@@ -36,7 +36,6 @@ public:
 	void Draw()  override;
 
 	void UV();
-	virtual void Hit(CMove_Object* pHit) override {};
 
 	static CLocus* Create(const D3DXVECTOR3 pos, const float fsize, int nAnchorPoints, const PRIORITY priority = PRIORITY_CENTER, const D3DXCOLOR col = { 1.0f,1.0f, 1.0f, 1.0f }, const bool billboard = false);
 
@@ -58,6 +57,7 @@ public:
 
 private:
 
+	D3DXVECTOR3 m_pos;
 	// 頂点フォーマット
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		// 頂点バッファ
 	D3DXMATRIX m_mtxWorld;					// ワールドマトリックス

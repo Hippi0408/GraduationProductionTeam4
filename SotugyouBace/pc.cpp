@@ -12,6 +12,7 @@
 #include "meshfield.h"
 #include "energy_gauge.h"
 #include "tutorial.h"
+#include "locus.h"
 
 #include"player_manager.h"
 
@@ -407,6 +408,11 @@ void CPC::Perspective()
 
 	//ƒJƒƒ‰‚ÌŒü‚«‚ÌÝ’è
 	CApplication::GetCamera()->SetRot(rotCamera);
+
+	if (pInput->Trigger(DIK_0))
+	{
+		CLocus::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 100.0f, 5, CObject::PRIORITY_CENTER, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 }
 
 //============================================================================
