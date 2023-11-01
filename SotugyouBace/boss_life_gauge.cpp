@@ -7,6 +7,7 @@
 #include"boss_life_gauge.h"
 #include"game.h"
 #include"character.h"
+#include "object2D.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -27,12 +28,20 @@ CBoss_Life_Gauge::~CBoss_Life_Gauge()
 //==============================================================================================
 HRESULT CBoss_Life_Gauge::Init()
 {
-	SetCol({ 1.0f,0.0f,0.0f,1.0f });
-
-	// 後ろのゲージの色
-	SetBackCol({ 0.0f,0.0f,0.0f,1.0f });
-
 	CGauge_Manager::Init();
+
+	const D3DXVECTOR3 pos = GetGaugePos();
+	const D3DXVECTOR2 size = GetGaugeSize();
+
+	// 後ろのゲージ
+	m_BackGauge = CObject2D::Create(pos, size, PRIORITY_FRONT);
+	// 後ろのゲージの色
+	m_BackGauge->SetCol({ 0.0f,0.0f,0.0f,1.0f });
+
+	// 前方のゲージ
+	m_FrontGauge = CObject2D::Create(pos, size, PRIORITY_FRONT);
+	// 前方のゲージの色
+	m_FrontGauge->SetCol({ 1.0f,0.0f,0.0f,1.0f });
 
 	// ゲージの元の長さ
 	SetBeaseSize((int)GetGaugeSize().x);
@@ -45,6 +54,20 @@ HRESULT CBoss_Life_Gauge::Init()
 //==============================================================================================
 void CBoss_Life_Gauge::Uninit()
 {
+	// 後ろのゲージが使用中の場合
+	if (m_BackGauge != nullptr)
+	{
+		m_BackGauge->Uninit();
+		m_BackGauge = nullptr;
+	}
+
+	// 前方のゲージが使用中の場合
+	if (m_FrontGauge != nullptr)
+	{
+		m_FrontGauge->Uninit();
+		m_FrontGauge = nullptr;
+	}
+
 	CGauge_Manager::Uninit();
 }
 
@@ -69,19 +92,14 @@ void CBoss_Life_Gauge::Draw()
 //==============================================================================================
 void CBoss_Life_Gauge::Fluctuation()
 {
-	CCharacter *pBoss = CGame::GetBoss();
+	// 現在の体力の割合
+	float Life_Percent = (float)GetLife() / GetBeaseLife() * 100;
 
-	if (pBoss != nullptr)
-	{
-		// 現在の体力の割合
-		float Life_Percent = (float)pBoss->GetLife() / GetBeaseLife() * 100;
+	// ゲージサイズを同じ割合にする
+	float Gauge_Percent = GetGaugeSize().x * Life_Percent / 100;
 
-		// ゲージサイズを同じ割合にする
-		float Gauge_Percent = GetGaugeSize().x * Life_Percent / 100;
-
-		// ゲージの増減
-		SetSubSize({ GetBeaseSize() - Gauge_Percent, 0.0f });
-	}
+	// ゲージの増減
+	m_FrontGauge->SetSubSize({ GetBeaseSize() - Gauge_Percent, 0.0f });
 }
 
 //==============================================================================================

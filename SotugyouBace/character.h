@@ -15,7 +15,6 @@
 #include <vector>
 #include <map>
 
-class CEnergy_Gauge;
 class CGauge_Manager;
 
 //---------------------------
@@ -63,22 +62,19 @@ public:
 	void SetJump_Boost(const bool jumpboost) { m_bJump_Boost = jumpboost; }
 
 	void SetParts(const int index, const char* Xfilename);				// パーツの設定処理
-	//void ChangeParts(std::string name, const char* Xfilename);		// パーツの変更処理
 	
 	void SetJump_PressCount(const int jumpcount) { m_nJump_PressCount = jumpcount; }
 	void AddJump_PressCount(const int jumpcount) { m_nJump_PressCount += jumpcount; }
 	void SetAvoidance(const bool avoidance) { m_bAvoidance = avoidance; }
 	void SetAvoidanceCount(const int avoidancecount) { m_nAvoidance_Count = avoidancecount; }
-	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 	void SetGaugeManager(CGauge_Manager *gauge) { m_pGaugeManager = gauge; }
-
-	CObjectX* SetModel(const int index, const int parent, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const char* Xfilename);								// モデルパーツの設定
 
 	const bool GetGround() { return m_bGround; }
 	const int GetLife() { return m_nLife; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
+	const D3DXVECTOR3 GetBulletRot() { return m_BulletRot; }
 	const D3DXMATRIX GetWorldMtx() { return m_mtxWorld; }
 	CParts* GetParts(const int index) { return m_Parts[index]; }
 	std::map<int, CParts*> GetAllParts() { return m_Parts; }
@@ -86,8 +82,7 @@ public:
 	const bool GetJump_Boost() { return m_bJump_Boost; }
 	const int GetJump_PressCount() { return m_nJump_PressCount; }
 	const bool GetAvoidance() { return m_bAvoidance; }
-	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
-	const CGauge_Manager *GetGaugeManager() { return m_pGaugeManager; }
+	CGauge_Manager *GetGaugeManager() { return m_pGaugeManager; }
 
 private:
 
@@ -117,7 +112,6 @@ private:
 	std::string m_name;						// 自身の名前
 	std::map<int, CParts*> m_Parts;			// パーツ情報のポインタ
 
-	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
 	CGauge_Manager *m_pGaugeManager;	// ゲージマネージャー
 };
 

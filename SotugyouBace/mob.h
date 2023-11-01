@@ -51,16 +51,12 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	//void ChangeMotion() override;		// ƒ‚[ƒVƒ‡ƒ“‚ÌØ‚è‘Ö‚¦
 	void Destroy() override;			// ”j‰óˆ—
 
-	static CMob* Create(const D3DXVECTOR3 pos, const int index);
-
-	void SetMobIndex(int index) { m_nMob_Index = index; }
+	static CMob* Create(const D3DXVECTOR3 pos);
 
 private:
-	CMob_Life_Gauge *m_LifeGauge;
-	int m_nMob_Index;
+
 };
 
 #endif// _MOB_H_

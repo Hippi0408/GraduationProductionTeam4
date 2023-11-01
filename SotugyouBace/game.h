@@ -48,8 +48,6 @@ public:
 	static const bool GetGameWindow() { return m_bGameWindow; }
 	static CMeshField *GetMeshField() { return pMeshField; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayer_Manager; }
-	static std::vector<CCharacter*> GetMob() { return m_pMob; }
-	static CCharacter *GetBoss() { return m_pBoss; }
 
 private:
 
@@ -67,8 +65,6 @@ private:
 
 
 	static CPlayerManager *m_pPlayer_Manager;	// プレイヤーマネージャー
-	static std::vector<CCharacter*> m_pMob;		// モブ
-	static CCharacter *m_pBoss;					// ボス
 };
 
 #endif // !_GAME_H_

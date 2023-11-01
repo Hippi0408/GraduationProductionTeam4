@@ -33,9 +33,6 @@ CEnemy::~CEnemy()
 //============================================================================
 HRESULT CEnemy::Init()
 {
-	// É^ÉOÇÃê›íË
-	SetTag(TAG_CHARACTER);
-
 	// ìGë§Ç…ê›íË
 	SetPlayerSide(false);
 

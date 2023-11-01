@@ -24,6 +24,7 @@ class CPlayer : public CCharacter
 	static const int FIRST_MAX_LIFE = 100;		// 初期最大体力の値
 	static const float PLAYER_COLLISION_RADIUS;	// プレイヤーの当たり判定の大きさ
 	static const float PLAYER_JUMP_POWER;		// プレイヤーのジャンプ力
+	static const float VIEW_SCOPE_ANGLE;		// 画面に映るぎりぎりの位置
 
 public:
 
@@ -87,13 +88,17 @@ public:
 	bool Target_Scope(D3DXVECTOR3 nearpos);				// ターゲットを狙う範囲
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
+	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 
 	const int GetCharaIndex() { return m_nCharaIndex; }
+	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 
 private:
 	int m_nCharaIndex;		// 自身の番号
 	float m_fTarget_Scope;	// ターゲットを狙う範囲
 	bool m_bTarget;			// ターゲットがいるか
+
+	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
 };
 
 #endif// _PLAYER_H_

@@ -10,7 +10,6 @@
 #include "meshfield.h"
 #include "tutorial.h"
 #include "gauge_manager.h"
-#include "energy_gauge.h"
 
 const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
 const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
@@ -22,6 +21,9 @@ const float CCharacter::CHARACTER_GRAVITY = 0.25f;
 //=====================================
 CCharacter::CCharacter(const CObject::PRIORITY priority) : CMove_Object(priority)
 {
+	// タグの設定
+	SetTag(TAG_CHARACTER);
+
 	m_fSpeed = CHARACTER_FIRST_MOVE_SPEED;
 	m_fRotSpeed = CHARACTER_ROT_SPEED;
 	m_bGround = false;
@@ -52,8 +54,6 @@ HRESULT CCharacter::Init()
 //============================================================================
 void CCharacter::Uninit()
 {
-	CMove_Object::Uninit();
-
 	// パーツの終了処理
 	for (int nCnt = 0; nCnt < (int)m_Parts.size(); nCnt++)
 	{
@@ -62,9 +62,17 @@ void CCharacter::Uninit()
 			m_Parts[nCnt]->Uninit();
 		}
 	}
+
+	// ゲージが使用中の場合
+	if (m_pGaugeManager != nullptr)
+	{
+		m_pGaugeManager->Uninit();
+		m_pGaugeManager = nullptr;
+	}
+
 	m_Parts.clear();
 
-	Release();
+	CMove_Object::Uninit();
 }
 
 //============================================================================
@@ -140,34 +148,25 @@ void CCharacter::Damage(const int value)
 	// ベースの体力の設定
 	if (m_pGaugeManager != nullptr
 		&& m_pGaugeManager->GetBeaseLife() == 0)
+	{
 		m_pGaugeManager->SetBeaseLife(m_nLife);
+	}
 
 	// 体力 - 与ダメージ
 	m_nLife -= value;
 
 	// 体力ゲージの増減
-	if(m_pGaugeManager != nullptr)
-	m_pGaugeManager->Fluctuation();
+	if (m_pGaugeManager != nullptr)
+	{
+		m_pGaugeManager->SetLife(m_nLife);
+		m_pGaugeManager->Fluctuation();
+	}
 
 	// 体力チェック
 	if (m_nLife <= 0)
 	{
 		// 体力を0にする
 		m_nLife = 0;
-
-		if (GetEnergy_Gauge() != nullptr)
-		{
-			// エネルギーゲージの破棄
-			GetEnergy_Gauge()->GetBackGauge()->Uninit();
-			GetEnergy_Gauge()->Uninit();
-		}
-
-		if (m_pGaugeManager != nullptr)
-		{
-			// 体力ゲージの破棄
-			m_pGaugeManager->GetBackGauge()->Uninit();
-			m_pGaugeManager->Uninit();
-		}
 
 		// 自身を破壊する処理
 		Destroy();

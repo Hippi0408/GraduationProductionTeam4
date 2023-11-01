@@ -298,7 +298,7 @@ void CPC::Input()
 
 				// ƒGƒlƒ‹ƒM[‚ðÁ”ï‚·‚é
 				pGauge->Consumption_Gauge();
-				//SetMotion(MOTION_BOOST_RUN);
+				pLeg->SetMotion(MOTION_BOOST_RUN);
 			}
 		}
 	}

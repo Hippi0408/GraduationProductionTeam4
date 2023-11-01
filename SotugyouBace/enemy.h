@@ -19,6 +19,12 @@ class CEnemy : public CCharacter
 {
 
 public:
+	// 敵キャラの種類
+	enum ENEMY_TYPE
+	{
+		ENEMY_TYPE_MOB = 0,	// モブキャラ
+		ENEMY_TYPE_BOSS		// ボスキャラ
+	};
 
 	CEnemy();
 	virtual ~CEnemy() override;
@@ -32,7 +38,13 @@ public:
 
 	virtual void Destroy() override;			// 破壊処理
 
+	void SetEnemyType(ENEMY_TYPE type) { m_type = type; }	// 敵キャラの種類を設定
+
+	ENEMY_TYPE GetEnemyType() { return m_type; }			// 敵キャラの種類を取得
+
 private:
+
+	ENEMY_TYPE m_type;						// 敵キャラの種類
 };
 
 #endif// _ENEMY_H_
