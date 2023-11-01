@@ -60,6 +60,7 @@ void CCharacter::Uninit()
 		if (m_Parts[nCnt] != nullptr)
 		{
 			m_Parts[nCnt]->Uninit();
+			m_Parts[nCnt] = nullptr;
 		}
 	}
 
@@ -188,8 +189,12 @@ void CCharacter::Recovery(const int value)
 		m_nLife = m_nMaxLife;
 	}
 
-	// 位置更新
-	AddPos(m_move * m_fSpeed);
+	// 体力ゲージの増減
+	if (m_pGaugeManager != nullptr)
+	{
+		m_pGaugeManager->SetLife(m_nLife);
+		m_pGaugeManager->Fluctuation();
+	}
 }
 
 //============================================================================
