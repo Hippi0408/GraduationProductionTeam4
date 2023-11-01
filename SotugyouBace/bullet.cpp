@@ -143,7 +143,7 @@ void CBullet::FieldCollision()
 		// メッシュフィールドより下の位置にいる場合
 		if (a >= pos.y)
 		{
-			pMeshField->Ground_Broken(pos, 50.0f, 5);
+			//pMeshField->Ground_Broken(pos, 50.0f, 5);
 
 			// 弾を破壊する
 			Destroy();
