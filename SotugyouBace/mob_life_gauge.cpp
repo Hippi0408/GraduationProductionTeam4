@@ -39,7 +39,7 @@ HRESULT CMob_Life_Gauge::Init()
 	m_BackGauge = CObject3D::Create(pos, size, PRIORITY_CENTER, { 0.0f,0.0f,0.0f,1.0f }, true);
 
 	// ëOï˚ÇÃÉQÅ[ÉW
-	m_FrontGauge = CObject3D::Create(pos, size, PRIORITY_FRONT, { 1.0f,0.0f,0.0f,1.0f }, true);
+	m_FrontGauge = CObject3D::Create(pos, size, PRIORITY_FRONT, { 1.0f,1.0f,1.0f,1.0f }, true);
 
 	return S_OK;
 }
