@@ -240,6 +240,7 @@ void CPlayer::Target()
 				// 敵の位置の取得
 				Mob_Pos = pEnemy->GetPos();
 
+				// プレイヤーから敵の距離
 				BulletVec = Mob_Pos - Player_Pos;
 
 				// 距離の算出
@@ -278,6 +279,7 @@ void CPlayer::Target()
 
 	if (m_bTarget && bScreen)
 	{
+		// プレイヤーから敵の距離
 		BulletVec = NearMob_Pos - GetPos();
 
 		// ターゲットした敵の方向
@@ -337,7 +339,6 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	D3DXVECTOR3 Reflected_PosVec[2] = {};
 	// 視野角
 	float fView_Angle = VIEW_SCOPE_ANGLE;
-	//VIEW_SCOPE_ANGLE;
 
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
