@@ -274,7 +274,7 @@ void CPlayer::Target()
 		// ターゲットした敵の方向
 		float Angle = atan2(BulletVec.x, BulletVec.z);
 
-		float Angle2 = atan2(BulletVec.y, BulletVec.x);
+		//float Angle2 = atan2(BulletVec.y, BulletVec.x);
 		
 		// 目的の角度の設定
 		CCharacter::SetBulletRot({ 0.0f,Angle + D3DX_PI,0.0f });
