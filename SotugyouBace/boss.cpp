@@ -8,6 +8,7 @@
 #include "application.h"
 #include "game.h"
 #include "particle_emitter.h"
+#include "boss_life_gauge.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 500.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -15,6 +16,9 @@ const float CBoss::BOSS_COLLISION_RADIUS = 500.0f;	// ボスの当たり判定の大きさ
 //=====================================
 CBoss::CBoss()
 {
+	// ボスキャラ
+	SetEnemyType(ENEMY_TYPE_BOSS);
+
 	// ボスの初期値を設定
 	SetMaxLife(FIRST_MAX_LIFE);
 	SetLife(FIRST_MAX_LIFE);
@@ -34,11 +38,11 @@ CBoss::~CBoss()
 //============================================================================
 HRESULT CBoss::Init()
 {
-	// プレイヤーのモデルを読み込む
-	LoadFile("Data\\text\\Motion\\motion_boss.txt");
+	// ボスのモデルパーツを設定
+	SetParts(0, "Data\\text\\Motion\\motion_boss.txt");
+	GetParts(0)->GetModelSet(MODEL_BODY).pModel->SetSize({ 5.0f, 5.0f, 5.0f });
 
-	// 体モデルのサイズを5倍
-	GetModelSet(MODEL_BODY).pModel->SetSize({ 5.0f, 5.0f, 5.0f });
+	SetGaugeManager(CBoss_Life_Gauge::Create({ 1280 / 2, 100.0f,0.0f }, { 800.0f,15.0f }));
 
 	CEnemy::Init();
 
@@ -58,9 +62,6 @@ void CBoss::Uninit()
 //============================================================================
 void CBoss::Update()
 {
-	// モーション変更
-	ChangeMotion();
-
 	// キャラクターの更新
 	CEnemy::Update();
 }
@@ -71,45 +72,6 @@ void CBoss::Update()
 void CBoss::Draw()
 {
 	CEnemy::Draw();
-}
-
-//============================================================================
-// モーション変更処理
-//============================================================================
-void CBoss::ChangeMotion()
-{
-	// 現在のモーション
-	const int nCuttentMotion = GetCurrentMotion();
-	const int nMotion = GetMotion();
-
-	// 現在のモーションから変わった場合
-	if (nCuttentMotion != nMotion)
-	{
-		// 現在モーションの終了処理
-		switch (nCuttentMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
-
-		// 現在モーションの開始処理
-		switch (nMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
-
-		// キャラクターのモーション変更処理
-		CCharacter::ChangeMotion();
-	}
 }
 
 //============================================================================

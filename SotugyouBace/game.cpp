@@ -19,18 +19,18 @@
 #include "halfsphere.h"
 #include"meshfield.h"
 #include"collision.h"
-#include"energy_gauge.h"
 #include "locus.h"
 #include "object2D.h"
 #include "confirmation_window.h"
 #include "menu.h"
 #include "utility.h"
+#include "parts.h"
 
 CMeshField *CGame::pMeshField = nullptr;
-CEnergy_Gauge *CGame::m_pEnergy_Gauge = nullptr;
 bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
+CPlayerManager* CGame::m_pPlayer_Manager = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -64,7 +64,8 @@ HRESULT CGame::Init()
 	pCamera->SetPosR({ 0.0f, 250.0f, 1000.0f });
 
 	// プレイヤーの生成(テスト)
-	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	m_pPlayer_Manager = CApplication::GetPlayerManager();
+	m_pPlayer_Manager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
@@ -84,9 +85,6 @@ HRESULT CGame::Init()
 
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
-
-	// エネルギーゲージ
-	m_pEnergy_Gauge = CEnergy_Gauge::Create({ SCREEN_WIDTH / 2, 650.0f, 0.0f }, { 800.0f, 10.0f });
 
 	m_nEndCounter = 0;
 
@@ -130,7 +128,7 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	// メニューウィンドウ処理
-	MenuWindow();
+	//MenuWindow();
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
@@ -143,10 +141,10 @@ void CGame::Update()
 		if (m_pTime != nullptr)
 			m_pTime->Update();
 
-		CInput* pInput = CInput::GetKey();
 
 		// デバッグ専用コマンド
 #ifdef _DEBUG
+		CInput* pInput = CInput::GetKey();
 		if (pInput->Trigger(DIK_F5))
 		{
 			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
@@ -185,7 +183,7 @@ void CGame::Update()
 				else
 				{
 					// 50ダメージ
-					pPlayer->Damage(50);
+					pPlayer->Damage(10);
 				}
 			}
 		}
@@ -255,7 +253,7 @@ void CGame::MenuWindow()
 	{
 		m_ponfirmationWindow->Update(); 
 	}
-	// ウィンドウが閉じた場合
+	// ウィンドウが閉じた場合 
 	if (m_ponfirmationWindow != nullptr && m_bGameWindow == true)
 	{
 		m_bGameWindow = false;

@@ -8,13 +8,17 @@
 #include "application.h"
 #include "game.h"
 #include "particle_emitter.h"
+#include "mob_life_gauge.h"
 
-const float CMob::MOB_COLLISION_RADIUS = 100.0f;	// ボスの当たり判定の大きさ
-													//=====================================
-													// デフォルトコンストラクタ
-													//=====================================
+const float CMob::MOB_COLLISION_RADIUS = 200.0f;	// モブキャラの当たり判定の大きさ
+//=====================================
+// デフォルトコンストラクタ
+//=====================================
 CMob::CMob()
 {
+	// モブキャラ
+	SetEnemyType(ENEMY_TYPE_MOB);
+
 	// プレイヤーの初期値を設定
 	SetMaxLife(FIRST_MAX_LIFE);
 	SetLife(FIRST_MAX_LIFE);
@@ -34,10 +38,13 @@ CMob::~CMob()
 //============================================================================
 HRESULT CMob::Init()
 {
-	// プレイヤーのモデルを読み込む
-	LoadFile("Data\\text\\Motion\\motion_mob.txt");
+	// モブのモデルパーツを設定
+	SetParts(0, "Data\\text\\Motion\\motion_mob.txt");
 
 	CEnemy::Init();
+
+	// 体力ゲージ
+	SetGaugeManager(CMob_Life_Gauge::Create({0.0f, 0.0f, 0.0f}, { 200.0f,30.0f }));
 
 	return S_OK;
 }
@@ -55,8 +62,10 @@ void CMob::Uninit()
 //============================================================================
 void CMob::Update()
 {
-	// モーション変更
-	ChangeMotion();
+	D3DXVECTOR3 pos = GetPos();
+	pos.y += 400.0f;
+	// 体力ゲージ
+	GetGaugeManager()->SetGaugePos(pos);
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -71,50 +80,11 @@ void CMob::Draw()
 }
 
 //============================================================================
-// モーション変更処理
-//============================================================================
-void CMob::ChangeMotion()
-{
-	// 現在のモーション
-	const int nCuttentMotion = GetCurrentMotion();
-	const int nMotion = GetMotion();
-
-	// 現在のモーションから変わった場合
-	if (nCuttentMotion != nMotion)
-	{
-		// 現在モーションの終了処理
-		switch (nCuttentMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
-
-		// 現在モーションの開始処理
-		switch (nMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		default:
-			break;
-		}
-
-		// キャラクターのモーション変更処理
-		CCharacter::ChangeMotion();
-	}
-}
-
-//============================================================================
 // 破壊処理
 //============================================================================
 void CMob::Destroy()
 {
-	// ボス用撃破パーティクル
+	// 撃破パーティクル
 	std::move(CParticleEmitter::Create("MineOre", GetPos()));
 
 	CEnemy::Destroy();
@@ -131,7 +101,6 @@ CMob* CMob::Create(const D3DXVECTOR3 pos)
 	{
 		return nullptr;
 	}
-
 	pMob->SetPos(pos);
 
 	return pMob;

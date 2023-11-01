@@ -65,15 +65,15 @@ HRESULT CBullet::Init()
 //=============================================================================
 void CBullet::Uninit()
 {
-	// オブジェクト3Dの終了処理
-	CMove_Object::Uninit();
-
 	// 3Dオブジェクトが使用されている場合
 	if (m_pObj3D != nullptr)
 	{
 		m_pObj3D->Uninit();
 		m_pObj3D = nullptr;
 	}
+
+	// オブジェクト3Dの終了処理
+	CMove_Object::Uninit();
 }
 
 //=============================================================================
@@ -99,9 +99,6 @@ void CBullet::Update()
 	m_pObj3D->SetPos(pos);
 	m_pObj3D->SetSize(size);
 
-	// 床の当たり判定
-	FieldCollision();
-
 	// 寿命を減らす
 	m_nLife--;
 	if (m_nLife <= 0)
@@ -109,6 +106,10 @@ void CBullet::Update()
 		Uninit();
 		return;
 	}
+
+	// 床の当たり判定
+	FieldCollision();
+
 }
 
 //=============================================================================
@@ -142,10 +143,10 @@ void CBullet::FieldCollision()
 		// メッシュフィールドより下の位置にいる場合
 		if (a >= pos.y)
 		{
+			pMeshField->Ground_Broken(pos, 50.0f, 5);
+
 			// 弾を破壊する
 			Destroy();
-
-			pMeshField->Ground_Broken(pos, 50.0f, 5);
 		}
 	}
 }

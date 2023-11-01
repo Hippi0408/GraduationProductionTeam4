@@ -47,7 +47,7 @@ void CCPU::Uninit()
 void CCPU::Update()
 {
 	// ƒ‚[ƒVƒ‡ƒ“”Ô†‚Ìİ’è
-	ChangeMotion();
+	//ChangeMotion();
 
 	CPlayer::Update();
 }

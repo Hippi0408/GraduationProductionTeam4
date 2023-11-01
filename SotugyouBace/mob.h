@@ -12,6 +12,8 @@
 //=============================================================================
 #include "enemy.h"
 
+class CMob_Life_Gauge;
+
 //---------------------------
 // クラス宣言
 //---------------------------
@@ -49,7 +51,6 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion() override;		// モーションの切り替え
 	void Destroy() override;			// 破壊処理
 
 	static CMob* Create(const D3DXVECTOR3 pos);

@@ -13,8 +13,10 @@
 #include "energy_gauge.h"
 #include "tutorial.h"
 #include "locus.h"
+#include "player_life_gauge.h"
 
 #include"player_manager.h"
+#include"debugProc.h"
 
 //=====================================
 // デフォルトコンストラクタ
@@ -40,6 +42,9 @@ HRESULT CPC::Init()
 	CPlayer::Init();
 	m_bFlag = false;
 
+	SetEnergyGauge(CEnergy_Gauge::Create({ 1280 / 2, 650.0f, 0.0f }, { 700.0f, 10.0f }));
+	SetGaugeManager(CPlayer_Life_Gauge::Create({ 70.0f,720.0f / 2,0.0f }, { 50.0f,500.0f }));
+
 	return S_OK;
 }
 
@@ -56,9 +61,6 @@ void CPC::Uninit()
 //============================================================================
 void CPC::Update()
 {
-	// モーション番号の設定
-	ChangeMotion();
-
 	// 入力処理
 	Input();
 
@@ -90,16 +92,21 @@ void CPC::Input()
 	// 移動量
 	D3DXVECTOR3 move = GetMove();
 
+	// エネルギーゲージの取得
+	CEnergy_Gauge* pGauge = nullptr;
+	pGauge = GetEnergy_Gauge();
+
 	D3DXVECTOR3 boostMove = { 1.0f,1.0f,1.0f };
 
 	// ブースト中は移動速度が上がる
 	if (GetBoost())
-		boostMove *= 1.8f;
-
-	SetBoost(false);
+		boostMove *= 2.0f;
 
 	// 目的の角度
 	D3DXVECTOR3 rotDest = GetRotDest();
+
+	// 脚パーツ
+	CParts* pLeg = GetParts(PARTS_LEG);
 
 	// 歩き判定
 	bool bWalk = false;
@@ -114,90 +121,107 @@ void CPC::Input()
 		bWalk = true;
 	}
 
-	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
-	{
 		// 歩いている場合
-		if (bWalk == true)
-		{
-			//カメラの向き（Y軸のみ）
-			float rotY = rotCamera.y;
+	if (bWalk == true && !GetAvoidance())
+	{
+		//カメラの向き（Y軸のみ）
+		float rotY = rotCamera.y;
 
-			//視点移動
-			if (pInput->MovePress(GAME_MOVE_UP))
-			{//上キーが押された
-				if (pInput->MovePress(GAME_MOVE_LEFT))
-				{
-					rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
-					move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
-					move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
-				}
-				else if (pInput->MovePress(GAME_MOVE_RIGHT))
-				{
-					rotDest.y = rotCamera.y + D3DX_PI * -0.75f;
-					move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
-					move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
-				}
-				else
-				{
-					rotDest.y = rotCamera.y + D3DX_PI;
-					move.x = sinf(rotY) * boostMove.x;
-					move.z = cosf(rotY) * boostMove.z;
-				}
-			}
-
-			else if (pInput->MovePress(GAME_MOVE_DOWN))
-			{//下キーが押された
-				if (pInput->MovePress(GAME_MOVE_LEFT))
-				{
-					rotDest.y = rotCamera.y + D3DX_PI * 0.25f;
-					move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
-					move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
-				}
-				else if (pInput->MovePress(GAME_MOVE_RIGHT))
-				{
-					rotDest.y = rotCamera.y + D3DX_PI * -0.25f;
-					move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
-					move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
-				}
-				else
-				{
-					rotDest.y = rotCamera.y;
-					move.x = sinf(rotY + D3DX_PI) * boostMove.x;
-					move.z = cosf(rotY + D3DX_PI) * boostMove.z;
-				}
-			}
-			else if (pInput->MovePress(GAME_MOVE_LEFT))
-			{//左キーが押された
-				rotDest.y = rotCamera.y + D3DX_PI * 0.5f;
-				move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
-				move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
+		//視点移動
+		if (pInput->MovePress(GAME_MOVE_UP))
+		{//上キーが押された
+			if (pInput->MovePress(GAME_MOVE_LEFT))
+			{
+				rotDest.y = rotCamera.y + D3DX_PI * 0.75f;
+				move.x = -sinf(rotY + D3DX_PI * 0.75f) * boostMove.x;
+				move.z = -cosf(rotY + D3DX_PI * 0.75f) * boostMove.z;
 			}
 			else if (pInput->MovePress(GAME_MOVE_RIGHT))
-			{//右キーが押された
-				rotDest.y = rotCamera.y + D3DX_PI * -0.5f;
-				move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
-				move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
-			}
-
-			// 接地している場合に歩きモーション
-			if (GetGround())
 			{
-				// 歩き
-				SetMotion(MOTION_WALK);
+				rotDest.y = rotCamera.y + D3DX_PI * -0.75f;
+				move.x = -sinf(rotY + D3DX_PI * -0.75f) * boostMove.x;
+				move.z = -cosf(rotY + D3DX_PI * -0.75f) * boostMove.z;
 			}
-			// 前回モーションが歩きモーションだった場合
-
+			else
+			{
+				rotDest.y = rotCamera.y + D3DX_PI;
+				move.x = sinf(rotY) * boostMove.x;
+				move.z = cosf(rotY) * boostMove.z;
+			}
 		}
-		else if (GetCurrentMotion() != MOTION_LANDING && GetGround())
+
+		else if (pInput->MovePress(GAME_MOVE_DOWN))
+		{//下キーが押された
+			if (pInput->MovePress(GAME_MOVE_LEFT))
+			{
+				rotDest.y = rotCamera.y + D3DX_PI * 0.25f;
+				move.x = -sinf(rotY + D3DX_PI * 0.25f) * boostMove.x;
+				move.z = -cosf(rotY + D3DX_PI * 0.25f) * boostMove.z;
+			}
+			else if (pInput->MovePress(GAME_MOVE_RIGHT))
+			{
+				rotDest.y = rotCamera.y + D3DX_PI * -0.25f;
+				move.x = -sinf(rotY + D3DX_PI * -0.25f) * boostMove.x;
+				move.z = -cosf(rotY + D3DX_PI * -0.25f) * boostMove.z;
+			}
+			else
+			{
+				rotDest.y = rotCamera.y;
+				move.x = sinf(rotY + D3DX_PI) * boostMove.x;
+				move.z = cosf(rotY + D3DX_PI) * boostMove.z;
+			}
+		}
+		else if (pInput->MovePress(GAME_MOVE_LEFT))
+		{//左キーが押された
+			rotDest.y = rotCamera.y + D3DX_PI * 0.5f;
+			move.x = sinf(rotY + D3DX_PI * -0.5f) * boostMove.x;
+			move.z = cosf(rotY + D3DX_PI * -0.5f) * boostMove.z;
+		}
+		else if (pInput->MovePress(GAME_MOVE_RIGHT))
+		{//右キーが押された
+			rotDest.y = rotCamera.y + D3DX_PI * -0.5f;
+			move.x = sinf(rotY + D3DX_PI * 0.5f) * boostMove.x;
+			move.z = cosf(rotY + D3DX_PI * 0.5f) * boostMove.z;
+		}
+
+		// 接地している場合に歩きモーション
+		if (GetGround())
 		{
-			// 歩きを終了させる
-			SetMotion(MOTION_NEUTRAL);
+			// 歩き
+			pLeg->SetMotion(MOTION_WALK);
+		}
+		// 回避
+		if (pInput->Trigger(MOUSE_INPUT_RIGHT)
+			&& !pGauge->GetConsumption())
+		{
+			// 歩き
+			GetParts(PARTS_LEG)->SetMotion(MOTION_WALK);
+			SetAvoidanceCount(20);				// 回避の硬直
+			pGauge->SetAvoidance_amount(200.0f);// 回避時のエネルギー消費量
+			pGauge->Avoidance_Energy();			// エネルギー消費
+			pGauge->Recovery_Pause(50);			// クールタイム
+			SetAvoidance(true);
+
+			// ブーストした分の速度を減らす
+			if (GetBoost())
+				move /= 2.0f;
+
+			move *= 5.0f;		// 初速
+			move.y = 0.0f;
 		}
 	}
+	// 前回モーションが歩きモーションだった場合
+	else if (pLeg->GetCurrentMotion() != MOTION_LANDING && GetGround())
+	{
+		// 歩きを終了させる
+		pLeg->SetMotion(MOTION_NEUTRAL);
+	}
+
+	// ダッシュブーストの初期化
+	SetBoost(false);
 
 	// 移動量を更新
 	CCharacter::SetMove(move);
-
 	// 目的の角度の設定
 	CCharacter::SetRotDest(rotDest);
 
@@ -242,21 +266,13 @@ void CPC::Input()
 	// 視点処理
 	Perspective();
 
-	// エネルギーゲージの取得
-	CEnergy_Gauge* pGauge = nullptr;
-
-	if (CApplication::GetModeType() == CApplication::MODE_GAME)
-		pGauge = CGame::GetEnergy_Gauge();
-	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
-		pGauge = CTutorial::GetEnergy_Gauge();
-
 	if (pGauge != nullptr)
 	{
 		// 地上にいる場合
 		if (GetGround())
 		{
 			// 消費速度
-			pGauge->SetConsumption_Speed(3.0f);
+			pGauge->SetConsumption_Speed(1.5f);
 			// 回復速度
 			pGauge->SetRecovery_Speed(10.0f);
 		}
@@ -264,7 +280,7 @@ void CPC::Input()
 		else
 		{
 			// 消費速度
-			pGauge->SetConsumption_Speed(6.0f);
+			pGauge->SetConsumption_Speed(3.0f);
 			// 回復速度
 			pGauge->SetRecovery_Speed(0.3f);
 		}
@@ -283,14 +299,7 @@ void CPC::Input()
 
 				// エネルギーを消費する
 				pGauge->Consumption_Gauge();
-				SetMotion(MOTION_BOOST_RUN);
-			}
-
-			// 回避
-			if (pInput->Trigger(DIK_C))
-			{
-				pGauge->Avoidance();			// エネルギー消費
-				pGauge->Recovery_Pause(30);		// クールタイム
+				pLeg->SetMotion(MOTION_BOOST_RUN);
 			}
 		}
 	}
