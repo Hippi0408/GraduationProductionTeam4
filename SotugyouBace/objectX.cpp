@@ -15,8 +15,9 @@
 //==============================================================================================
 CObjectX::CObjectX(const PRIORITY priority) : CObject(priority)
 {
-	// デフォルトで影を描画しない
+	// デフォルト
 	m_bShadow = false;
+	m_bParts = false;
 
 	m_size = { 1.0f, 1.0f, 1.0f };
 }
@@ -62,7 +63,7 @@ void CObjectX::Draw()
 	D3DMATERIAL9 matDef;				//現在のマテリアルの保存用
 	D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
 
-										//ワールドマトリックス
+	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// サイズを反映
@@ -83,14 +84,17 @@ void CObjectX::Draw()
 	if (m_pParent != nullptr)
 	{// パーツが親の場合
 		mtxParent = m_pParent->GetMatrix();
+
+		// 親のマトリックスとかける
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
 	}
-	else
+	else if(m_bParts == true)
 	{// 現在のMatrix(PlayerのMatrix)を取得
 		pDevice->GetTransform(D3DTS_WORLD, &mtxParent);
-	}
 
-	// 親のマトリックスとかける
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
+		// 親のマトリックスとかける
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
+	}
 
 	// 自身の番号のモデル情報を取得
 	CModel::ModelPattern modelPattern = CApplication::GetModel()->GetModelPattern(m_nIndex);
@@ -106,7 +110,6 @@ void CObjectX::Draw()
 
 	// 現在のマテリアルを保持
 	pDevice->GetMaterial(&matDef);
-
 
 	// マテリアルデータへのポインタを取得
 	pMat = (D3DXMATERIAL*)modelPattern.pBuffMat->GetBufferPointer();

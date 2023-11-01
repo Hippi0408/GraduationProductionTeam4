@@ -53,6 +53,8 @@ void CModel::ReleaseAll()
 		// 一番後ろの要素をリストから排除する
 		m_ModelPattern.pop_back();
 	}
+
+	m_vName.clear();
 }
 
 //==============================================================================================
@@ -65,9 +67,10 @@ const int CModel::ReadObject(const char* name)
 	int nIndex = 0;
 
 	// 作成された全てのモデルを読み込む
-	for (auto model : m_ModelPattern)
+	for (auto Name : m_vName)
 	{
-		if (model.fileName == name)
+		// 同じファイルを読み込まない処理
+		if (!strcmp(Name.data(), name))
 		{
 			// 使用中のモデルと一致する場合終了
 			return nIndex;
@@ -78,10 +81,16 @@ const int CModel::ReadObject(const char* name)
 	// モデル情報の後ろの要素を追加
 	m_ModelPattern.emplace_back();
 
-	m_ModelPattern.back().fileName = name;
+	// 文字列に変換
+	char cName[0xff] = {};
+	strncpy(cName, name, strlen(name));
+
+	// 文字列をstring型に変換
+	std::string dna_seq(cName, sizeof(cName) / sizeof(cName[0]));
+	m_vName.push_back(dna_seq);
 
 	//Xファイルの読み込み
-	D3DXLoadMeshFromX(m_ModelPattern.back().fileName,
+	D3DXLoadMeshFromX(m_vName.back().data(),
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,

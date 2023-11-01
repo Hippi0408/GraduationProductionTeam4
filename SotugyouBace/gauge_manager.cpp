@@ -10,7 +10,7 @@
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CGauge_Manager::CGauge_Manager(const PRIORITY priority) : CObject2D(priority)
+CGauge_Manager::CGauge_Manager(const PRIORITY priority) : CObject(priority)
 {
 }
 
@@ -26,14 +26,6 @@ CGauge_Manager::~CGauge_Manager()
 //==============================================================================================
 HRESULT CGauge_Manager::Init()
 {
-	CObject2D::Init();
-
-	CObject2D::SetPos(m_Pos);
-	CObject2D::SetSize(m_Size);
-
-	// 後ろのゲージ
-	m_BackGauge = CObject2D::Create(GetPos(), GetSize(), PRIORITY_FRONT);
-
 	return S_OK;
 }
 
@@ -42,7 +34,7 @@ HRESULT CGauge_Manager::Init()
 //==============================================================================================
 void CGauge_Manager::Uninit()
 {
-	CObject2D::Uninit();
+	Release();
 }
 
 //==============================================================================================
@@ -50,9 +42,7 @@ void CGauge_Manager::Uninit()
 //==============================================================================================
 void CGauge_Manager::Update()
 {
-	CObject2D::Update();
 
-	m_BackGauge->SetCol(m_BackCol);
 }
 
 //==============================================================================================
@@ -60,5 +50,5 @@ void CGauge_Manager::Update()
 //==============================================================================================
 void CGauge_Manager::Draw()
 {
-	CObject2D::Draw();
+	
 }
