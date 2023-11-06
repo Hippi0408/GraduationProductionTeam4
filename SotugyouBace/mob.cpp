@@ -121,9 +121,15 @@ void CMob::DrawLifeGauge()
 	if (pPlayerManager != nullptr)
 		pPlayer = pPlayerManager->GetPlayer(0);
 
-	// 位置の取得
-	D3DXVECTOR3 Player_Pos = pPlayer->GetPos();
-	D3DXVECTOR3 Mob_Pos = GetPos();
+	D3DXVECTOR3 Player_Pos = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 Mob_Pos = { 0.0f,0.0f,0.0f };
+
+	if (pPlayer != nullptr)
+	{
+		// 位置の取得
+		Player_Pos = pPlayer->GetPos();
+		Mob_Pos = GetPos();
+	}
 
 	// プレイヤーから敵の距離
 	D3DXVECTOR3 Vec = Player_Pos - Mob_Pos;

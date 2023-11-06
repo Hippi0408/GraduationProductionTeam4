@@ -21,6 +21,8 @@
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
 const float CPlayer::VIEW_SCOPE_ANGLE = 44.5f;		// プレイヤーの視野角
+const float CPlayer::RETICLE_TRANSPARENCY_SIZE = 300.0f;
+const float CPlayer::RETICLE_SIZE = 200.0f;
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -61,6 +63,8 @@ HRESULT CPlayer::Init()
 	SetCollision();
 
 	m_bTarget = false;
+	m_Reticle_Size = { RETICLE_TRANSPARENCY_SIZE,RETICLE_TRANSPARENCY_SIZE };
+	m_fReticle_Alpha = 0.0f;
 
 	CCharacter::Init();
 
@@ -87,6 +91,9 @@ void CPlayer::Uninit()
 //============================================================================
 void CPlayer::Update()
 {
+	// ターゲット
+	Target();
+
 	// モーション番号の設定
 	ChangeMotion();
 
@@ -126,8 +133,6 @@ void CPlayer::ChangeMotion()
 //============================================================================
 void CPlayer::PlayerAttack()
 {
-	Target();
-
 	// 情報の取得
 	D3DXVECTOR3 pos = GetCenterPos();
 	D3DXVECTOR3 rot = GetBulletRot();
@@ -239,7 +244,7 @@ void CPlayer::Target()
 			if (pEnemy->GetLife() > 0)
 			{
 				// 敵の位置の取得
-				Mob_Pos = pEnemy->GetPos();
+				Mob_Pos = pEnemy->GetCenterPos();
 
 				// プレイヤーから敵の距離
 				BulletVec = Mob_Pos - Player_Pos;
@@ -280,6 +285,8 @@ void CPlayer::Target()
 
 	if (m_bTarget && bScreen)
 	{
+		m_bReticle_Draw = true;
+
 		// プレイヤーから敵の距離
 		BulletVec = NearMob_Pos - GetPos();
 
@@ -298,6 +305,8 @@ void CPlayer::Target()
 	}
 	else
 	{// ターゲットがいない場合は正面に弾を撃つ
+		m_bReticle_Draw = false;
+
 		// カメラの角度
 		CCamera *Camera = CApplication::GetCamera();
 		D3DXVECTOR3 rotCamera = Camera->GetRot();
@@ -305,6 +314,9 @@ void CPlayer::Target()
 		// 目的の角度の設定
 		CCharacter::SetBulletRot({ rotCamera.x + D3DX_PI,rotCamera.y + D3DX_PI ,rotCamera.z + D3DX_PI });
 	}
+
+	// レティクルの設定
+	Reticle(NearMob_Pos);
 }
 
 //============================================================================
@@ -392,12 +404,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		}
 		else
 			if (fCp[nCnt] <= 0.0f)
-			{
-				// レティクル
-				Reticle();
-
 				return true;
-			}
 	}
 
 	return false;
@@ -406,10 +413,53 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 //============================================================================
 // レティクル
 //============================================================================
-void CPlayer::Reticle()
+void CPlayer::Reticle(D3DXVECTOR3 target)
 {
-	if (m_pReticle == nullptr)
-		m_pReticle = CObject3D::Create({ 0.0f,100.0f,0.0f }, { 30.0f,30.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+	// ターゲットの位置
+	if (m_Reticle_Pos.x == 0)
+		m_Reticle_Pos = target;
 
+	// 拡大縮小の速度
+	float Size_Speed = 7;
+	// アルファ値の加算減算の速度
+	float Alpha_Speed = 1 / ((RETICLE_TRANSPARENCY_SIZE - RETICLE_SIZE) / Size_Speed);
 
+	if (m_bReticle_Draw)
+	{
+		// レティクルの移動
+		if (m_Reticle_Pos != target)
+			m_Reticle_Pos += (target - m_Reticle_Pos) *  0.1f;
+
+		// レティクルの生成
+		if (m_pReticle == nullptr)
+			m_pReticle = CObject3D::Create({ m_Reticle_Pos }, { m_Reticle_Size }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,m_fReticle_Alpha }, true);
+
+		if (m_Reticle_Size.x > RETICLE_SIZE)
+		{
+			// サイズとアルファ値の設定
+			m_fReticle_Alpha += Alpha_Speed;
+			m_Reticle_Size.x -= Size_Speed;
+			m_Reticle_Size.y -= Size_Speed;
+		}
+
+		// 位置の設定
+		m_pReticle->SetPos(m_Reticle_Pos);
+	}
+	else
+	{
+		if (m_Reticle_Size.x < RETICLE_TRANSPARENCY_SIZE)
+		{
+			// サイズとアルファ値の設定
+			m_fReticle_Alpha -= Alpha_Speed;
+			m_Reticle_Size.x += Size_Speed;
+			m_Reticle_Size.y += Size_Speed;
+		}
+		else
+			// 位置の設定
+			m_Reticle_Pos = { 0.0f,0.0f,0.0f };
+	}
+
+	// サイズと色の設定
+	m_pReticle->SetSize({ m_Reticle_Size });
+	m_pReticle->SetCol({ 1.0f,1.0f,1.0f,m_fReticle_Alpha });
 }

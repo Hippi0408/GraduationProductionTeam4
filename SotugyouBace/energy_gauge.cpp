@@ -135,10 +135,11 @@ void CEnergy_Gauge::Fluctuation()
 	float fEnergy_Percent = fEnergy / MAX_ENERGY * 100;
 
 	// ゲージサイズをエネルギーの割合に合わせる
-	float fGeuge_Size = GetGaugeSize().x * fEnergy_Percent / 100.0f;
+	float fGeuge_Size = GetGaugeSize().y * fEnergy_Percent / 100.0f;
 
 	// ゲージの増減
-	m_FrontGauge->SetSubSize({ GetGaugeSize().x - fGeuge_Size ,0.0f });
+	//m_FrontGauge->SetSubSize({ GetGaugeSize().x - fGeuge_Size ,0.0f });
+	m_FrontGauge->SetSubSize({ 0.0 ,-GetGaugeSize().y + fGeuge_Size });
 }
 
 //==============================================================================================
@@ -235,8 +236,8 @@ void CEnergy_Gauge::GaugeColor()
 		// 残量25%以下or全て消費した後、全回復するまで(赤)
 		m_FrontGauge->SetCol({ 1.0f,0.0f,0.0f,1.0f });
 	else if (Gauge_Percent > 20.0f || !m_bAllConsumption)
-		// 残量26%以上(白)
-		m_FrontGauge->SetCol({ 1.0f,1.0f,1.0f,1.0f });
+		// 残量26%以上(橙)
+		m_FrontGauge->SetCol({ 1.0f,0.5f,0.0f,1.0f });
 
 	// 後ろのゲージの色
 	m_BackGauge->SetCol({ 0.0f,0.0f,0.0f,1.0f });

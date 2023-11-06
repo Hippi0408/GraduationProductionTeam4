@@ -41,7 +41,7 @@ HRESULT CPlayer_Life_Gauge::Init()
 	// 前方のゲージ
 	m_FrontGauge = CObject2D::Create(pos, size, PRIORITY_FRONT);
 	// 前方のゲージの色
-	m_FrontGauge->SetCol({1.0f, 1.0f, 1.0f, 1.0f});
+	m_FrontGauge->SetCol({ 0.0f,1.0f,1.0f,1.0f });
 
 	// ゲージの元の長さ
 	SetBeaseSize((int)GetGaugeSize().y);
@@ -138,11 +138,7 @@ void CPlayer_Life_Gauge::Col()
 {
 	// 現在の体力の割合
 	if (m_fLife_Percent <= 25.0f)
-	{
 		m_FrontGauge->SetCol({ 1.0f,0.0f,0.0f,1.0f });
-	}
 	else
-	{
-		m_FrontGauge->SetCol({ 1.0f,1.0f,1.0f,1.0f });
-	}
+		m_FrontGauge->SetCol({ 0.0f,1.0f,1.0f,1.0f });
 }
