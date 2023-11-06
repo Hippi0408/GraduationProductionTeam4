@@ -58,8 +58,8 @@ void CCollision_Manager::UpdateAll()
 		// Ž€–Sƒtƒ‰ƒO‚ªŒš‚Á‚Ä‚¢‚éê‡
 		if (pCollision->GetDeath())
 		{
-			it = m_AllCollision.erase(it);
 			delete pCollision;
+			it = m_AllCollision.erase(it);
 		}
 		else
 		{
