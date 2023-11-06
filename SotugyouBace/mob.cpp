@@ -9,6 +9,8 @@
 #include "game.h"
 #include "particle_emitter.h"
 #include "mob_life_gauge.h"
+#include "player.h"
+#include "player_manager.h"
 
 const float CMob::MOB_COLLISION_RADIUS = 200.0f;	// モブキャラの当たり判定の大きさ
 //=====================================
@@ -64,8 +66,26 @@ void CMob::Update()
 {
 	D3DXVECTOR3 pos = GetPos();
 	pos.y += 400.0f;
-	// 体力ゲージ
-	GetGaugeManager()->SetGaugePos(pos);
+
+	CGauge_Manager *GaugeManager = GetGaugeManager();
+
+	if (GaugeManager != nullptr)
+	{
+		// 体力ゲージ
+		GaugeManager->SetGaugePos(pos);
+
+		// 体力ゲージの表示
+		DrawLifeGauge();
+	}
+
+	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+	{
+		// 距離5000以上で敵を表示
+		if (m_fDistance > DRAW_DISTANCE)
+			GetParts(0)->GetModelSet(nCnt).pModel->SetDrawFlag(false);
+		else
+			GetParts(0)->GetModelSet(nCnt).pModel->SetDrawFlag(true);
+	}
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -88,6 +108,34 @@ void CMob::Destroy()
 	std::move(CParticleEmitter::Create("MineOre", GetPos()));
 
 	CEnemy::Destroy();
+}
+
+//============================================================================
+// 体力ゲージの表示
+//============================================================================
+void CMob::DrawLifeGauge()
+{
+	CPlayerManager *pPlayerManager = CApplication::GetPlayerManager();
+	CPlayer *pPlayer = nullptr;
+
+	if (pPlayerManager != nullptr)
+		pPlayer = pPlayerManager->GetPlayer(0);
+
+	// 位置の取得
+	D3DXVECTOR3 Player_Pos = pPlayer->GetPos();
+	D3DXVECTOR3 Mob_Pos = GetPos();
+
+	// プレイヤーから敵の距離
+	D3DXVECTOR3 Vec = Player_Pos - Mob_Pos;
+
+	// 距離の算出
+	m_fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
+
+	// 距離3000以上
+	if (m_fDistance > DRAW_HP_DISTANCE || GetLife() == FIRST_MAX_LIFE)
+		GetGaugeManager()->SetDraw(false);
+	else
+		GetGaugeManager()->SetDraw(true);
 }
 
 //============================================================================

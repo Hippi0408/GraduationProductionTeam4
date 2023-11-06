@@ -19,7 +19,9 @@ public:
 	CCollision_Manager();
 	~CCollision_Manager();
 
-	void ReleaseAllCollision() { for (auto pCollision : m_AllCollision) pCollision->Uninit(); }
+	void UpdateAll();
+
+	void ReleaseAllCollision();
 	void DestroyCollision(CCollision* collision) { m_AllCollision.erase(std::find(m_AllCollision.begin(), m_AllCollision.end(), collision)); }
 	void SetCollision(CCollision* collision) { m_AllCollision.push_back(collision); }
 

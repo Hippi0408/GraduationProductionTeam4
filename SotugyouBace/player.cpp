@@ -16,6 +16,7 @@
 #include "camera.h"
 #include <vector>
 #include"debugProc.h"
+#include"object3D.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
@@ -227,55 +228,73 @@ void CPlayer::Target()
 	float NextNearDistance = 0.0f;					// 次に近い敵との距離
 	m_bTarget = false;								// 近くに敵がいるか
 	bool bScreen = false;							// 画面に映っているか
+	float DistanceXZ = 0.0f;						// プレイヤーと敵のXZ座標の距離
+	D3DXVECTOR3 BulletVec = {0.0f,0.0f,0.0f};
 
-		// 雑魚敵の情報
-	for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+	while (true)
 	{
-		if (pEnemy->GetLife() > 0)
+		// 雑魚敵の情報
+		for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
 		{
-			// 敵の位置の取得
-			Mob_Pos = pEnemy->GetPos();
-
-			// 距離の算出
-			float Distance = sqrtf((Mob_Pos.x - Player_Pos.x) * (Mob_Pos.x - Player_Pos.x)
-				+ (Mob_Pos.z - Player_Pos.z) * (Mob_Pos.z - Player_Pos.z));
-
-			// 距離3000以上
-			if (Distance > m_fTarget_Scope)
-				continue;
-
-			// 距離を比べる
-			if (NearDistance >= Distance && NextNearDistance < Distance)
+			if (pEnemy->GetLife() > 0)
 			{
-				// 短い方の距離と位置を代入
-				NearDistance = Distance;
-				NearMob_Pos = Mob_Pos;
+				// 敵の位置の取得
+				Mob_Pos = pEnemy->GetPos();
 
-				m_bTarget = true;
+				// プレイヤーから敵の距離
+				BulletVec = Mob_Pos - Player_Pos;
 
-				// 画面に映っている時だけターゲットする
-				bScreen = Target_Scope(NearMob_Pos);
+				// 距離の算出
+				DistanceXZ = sqrtf(BulletVec.x * BulletVec.x
+					+ BulletVec.z * BulletVec.z);
+
+				// 距離3000以上
+				if (DistanceXZ > m_fTarget_Scope)
+					continue;
+
+				// 距離を比べる
+				if (NearDistance >= DistanceXZ && NextNearDistance < DistanceXZ)
+				{
+					// 短い方の距離と位置を代入
+					NearDistance = DistanceXZ;
+					NearMob_Pos = Mob_Pos;
+
+					m_bTarget = true;
+
+					// 画面に映っている時だけターゲットする
+					bScreen = Target_Scope(NearMob_Pos);
+				}
 			}
 		}
-	}
 
-	if (m_bTarget != bScreen)
-	{
-		// 距離が近いが画面に映っていない敵との距離
-		NextNearDistance = NearDistance;
-		NearDistance = m_fTarget_Scope;
-		m_bTarget = false;
+		if (m_bTarget != bScreen)
+		{
+			// 距離が近いが画面に映っていない敵との距離
+			NextNearDistance = NearDistance;
+			NearDistance = m_fTarget_Scope;
+			m_bTarget = false;
+		}
+		else
+			break;
 	}
 
 	if (m_bTarget && bScreen)
 	{
-		D3DXVECTOR3 BulletVec = NearMob_Pos - GetPos();
+		// プレイヤーから敵の距離
+		BulletVec = NearMob_Pos - GetPos();
 
 		// ターゲットした敵の方向
 		float Angle = atan2(BulletVec.x, BulletVec.z);
+		float AngleY = 0.0f;
+
+		// プレイヤーから敵の直線距離
+		float fHypotenuse = sqrt((BulletVec.y * BulletVec.y) + (NearDistance * NearDistance));
+
+		// Y座標の追従
+		AngleY = sinf(BulletVec.y / fHypotenuse);
 
 		// 目的の角度の設定
-		CCharacter::SetBulletRot({ 0.0f,Angle + D3DX_PI,0.0f });
+		CCharacter::SetBulletRot({ AngleY,Angle + D3DX_PI,0.0f });
 	}
 	else
 	{// ターゲットがいない場合は正面に弾を撃つ
@@ -319,13 +338,13 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	// 画面に映るぎりぎりの位置
 	D3DXVECTOR3 Reflected_Pos[2] = {};
 	D3DXVECTOR3 Reflected_PosVec[2] = {};
+
 	// 視野角
 	float fView_Angle = VIEW_SCOPE_ANGLE;
-	//VIEW_SCOPE_ANGLE;
 
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
-		// 画面に映るぎりぎりの位置
+		// ターゲット出来るぎりぎりの位置
 		Reflected_Pos[nCnt].x = Camera->GetWorldPosV().x + sinf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
 		Reflected_Pos[nCnt].z = Camera->GetWorldPosV().z + cosf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
 		fView_Angle *= -1;
@@ -334,7 +353,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		D3DXVECTOR3 WorldPosV = Camera->GetWorldPosV();
 
 		// カメラの視点から画角分ずらす
-		/*if (nCnt == 0)
+		if (nCnt == 0)
 		{
 			WorldPosV.x += sinf(rotCamera.y + D3DX_PI / 2) * 500;
 			WorldPosV.z += cosf(rotCamera.y + D3DX_PI / 2) * 500;
@@ -343,7 +362,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		{
 			WorldPosV.x += sinf(rotCamera.y - D3DX_PI / 2) * 500;
 			WorldPosV.z += cosf(rotCamera.y - D3DX_PI / 2) * 500;
-		}*/
+		}
 
 		// カメラの視点からのベクトル
 		Reflected_PosVec[nCnt] = Reflected_Pos[nCnt] - WorldPosV;
@@ -377,4 +396,15 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	}
 
 	return false;
+}
+
+//============================================================================
+// レティクル
+//============================================================================
+void CPlayer::Reticle()
+{
+	if (m_pReticle != nullptr)
+		m_pReticle = CObject3D::Create({ 0.0f,0.0f,0.0f }, { 30.0f,30.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+
+
 }
