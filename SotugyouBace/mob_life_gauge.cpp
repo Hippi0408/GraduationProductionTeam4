@@ -84,7 +84,17 @@ void CMob_Life_Gauge::Update()
 //==============================================================================================
 void CMob_Life_Gauge::Draw()
 {
-	//if (m_bDraw)
+	if (GetDraw())
+	{
+		m_BackGauge->SetDraw(true);
+		m_FrontGauge->SetDraw(true);
+	}
+	else
+	{
+		m_BackGauge->SetDraw(false);
+		m_FrontGauge->SetDraw(false);
+	}
+
 	CGauge_Manager::Draw();
 }
 
