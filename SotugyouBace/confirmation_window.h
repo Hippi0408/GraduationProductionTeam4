@@ -44,7 +44,7 @@ public:
 	void Update();									// 更新処理
 
 	void ConfirmatiomnMenuScale();					// メニューのサイズ処理
-	bool ConfirmatiomnMenuScaleReduce();			// メニューのサイズ縮小処理
+	bool ConfirmatiomnMenuScaleReduce();			// タイトルメニューのサイズ縮小処理
 
 	virtual void Choice();							// 選択肢の処理
 	void ChangeChoice(const bool nextChoice);		// 選択肢を変更した時の処理
@@ -52,12 +52,15 @@ public:
 	void SetChoice(CFontString* choice) { m_vpListChoice.push_back(choice); }
 
 	bool GetUninit() { return m_bUninitFlag; }
+	bool GetSelectChoice() { return m_bSelectChoice; }
+	bool GetDecition() { return m_bDecition; }
+	void SetSelectChoice(bool flag) { m_bSelectChoice = flag; }
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
 
 	static CConfirmation_Window* Create();			// 生成
-	static bool GetBf() { return m_bf; }
-	static void SetBf(bool f) { m_bf = f; }
+	static bool GetSapawnWindow() { return m_bSpawnWindow; }
+	static void SetSapawnWindow(bool flag) { m_bSpawnWindow = flag; }
 
 private:
 	CObject2D* m_pObject2D;
@@ -70,12 +73,12 @@ private:
 	float	m_fBlinkSpeed;						// 点滅速度
 
 	bool	m_bMaxSize;							// XとYのサイズが最大値まで行ったか
-	bool	m_bflag;
 	bool	m_bSelectChoice;					// 選択肢の番号
 	bool	m_bDisplay;							// 表示中の判定
 	bool	m_bScale;
 	bool    m_bUninitFlag;
-	static bool    m_bf;
+	bool    m_bDecition;
+	static bool    m_bSpawnWindow;
 
 	std::vector<CFontString*> m_vpListChoice;	// 選択肢ポインタの配列
 };

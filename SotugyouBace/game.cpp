@@ -35,6 +35,7 @@ CPlayerManager* CGame::m_pPlayer_Manager = nullptr;
 //==============================================================================================
 // 静的メンバ変数宣言
 //==============================================================================================
+CConfirmation_Window* CGame::m_pConfirmationWindow = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -60,8 +61,8 @@ HRESULT CGame::Init()
 	CCamera* pCamera = CApplication::GetCamera();
 
 	// 視点、注視点の設定
-	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
-	pCamera->SetPosR({ 0.0f, 250.0f, 1000.0f });
+	pCamera->SetPosV({ 0.0f, 225.0f, -450.0f });
+	pCamera->SetPosR({ 0.0f, 112.5f, 450.0f });
 
 	// プレイヤーの生成(テスト)
 	m_pPlayer_Manager = CApplication::GetPlayerManager();
@@ -112,11 +113,11 @@ void CGame::Uninit()
 	}
 
 	// メニューウィンドウの終了処理
-	if (m_ponfirmationWindow != nullptr)
+	if (m_pConfirmationWindow != nullptr)
 	{
-		m_ponfirmationWindow->Uninit();
-		delete m_ponfirmationWindow;
-		m_ponfirmationWindow = nullptr;
+		m_pConfirmationWindow->Uninit();
+		delete m_pConfirmationWindow;
+		m_pConfirmationWindow = nullptr;
 	}
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
@@ -241,24 +242,24 @@ void CGame::GameEnd()
 void CGame::MenuWindow()
 {
 	CInput* pInput = CInput::GetKey();
-	if (m_ponfirmationWindow == nullptr)
+	if (m_pConfirmationWindow == nullptr)
 	{
 		if (pInput->Trigger(DIK_M))
 		{
-			m_ponfirmationWindow = CConfirmation_Window::Create();
+			m_pConfirmationWindow = CConfirmation_Window::Create();
 			return;
 		}
 	}
 	else
 	{
-		m_ponfirmationWindow->Update(); 
+		m_pConfirmationWindow->Update();
 	}
 	// ウィンドウが閉じた場合 
-	if (m_ponfirmationWindow != nullptr && m_bGameWindow == true)
+	if (m_pConfirmationWindow != nullptr && m_bGameWindow == true)
 	{
 		m_bGameWindow = false;
-		delete m_ponfirmationWindow;
-		m_ponfirmationWindow = nullptr;
+		delete m_pConfirmationWindow;
+		m_pConfirmationWindow = nullptr;
 	}
 }
 

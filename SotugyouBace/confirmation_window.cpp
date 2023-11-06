@@ -18,6 +18,7 @@
 #include "game.h"
 #include "title.h"
 #include "menu_window.h"
+#include "title_menu.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -25,7 +26,7 @@
 const float CConfirmation_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
 const float CConfirmation_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 
-bool CConfirmation_Window::m_bf = false;
+bool CConfirmation_Window::m_bSpawnWindow = false;
 
 //=============================================================================
 // コンストラクタ
@@ -53,10 +54,11 @@ HRESULT CConfirmation_Window::Init()
 	SizeX = 0.0f;
 	SizeY = 0.0f;
 	m_bScale = false;
-	m_bflag = false;
+	m_bMaxSize = false;
 	m_bUninitFlag = false;
-	m_bf = false;
+	m_bSpawnWindow = false;
 	m_bSelectChoice = false;
+	m_bDecition = false;
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 
@@ -82,15 +84,18 @@ void CConfirmation_Window::Uninit()
 void CConfirmation_Window::Update()
 {
 	if (m_bScale == false)
-	{
-		// メニューのサイズ拡大処理
+	{// 拡大されていない時
+
+		// ウィンドウの拡大処理
 		ConfirmatiomnMenuScale();
 	}
 	if (m_bScale == true)
-	{
+	{// 拡大した時
+
+		// ウィンドウの縮小処理
 		ConfirmatiomnMenuScaleReduce();
 	}
-
+	// 選択肢処理
 	Choice();
 }
 
@@ -101,6 +106,7 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 {
 	if (m_pObject2D != nullptr)
 	{// nullチェック
+
 	 // サイズの拡大
 		SizeX += SizeXScaleSpeed;
 		SizeY += SizeYScaleSpeed;
@@ -115,7 +121,7 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 		}
 
 		// ウィンドウが最大値まで行ったら
-		if (SizeX >= SizeXScaleMax && SizeY >= SizeYScaleMax && m_bflag == false)
+		if (SizeX >= SizeXScaleMax && SizeY >= SizeYScaleMax && m_bMaxSize == false)
 		{
 			if (m_pFont == nullptr)
 			{
@@ -138,7 +144,7 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 				m_vpListChoice[m_bSelectChoice]->SetAlpha(1.0f);
 			}
 			SetDisplay(true);
-			m_bflag = true;
+			m_bMaxSize = true;
 			return;
 		}
 
@@ -178,13 +184,11 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 		// ウィンドウが最小値まで行ったら
 		if (SizeX <= 0.0f && SizeY <= 0.0f)
 		{
-			if (m_bSelectChoice == false)
-			{
-				m_bf = true;
-			}
-			//m_bUninitFlag = true;
+			
+			m_bSpawnWindow = true;
+			
 			CGame::SetGameWindow(true);
-			m_bScale = false;
+
 			Uninit();						// メニューウィンドウの削除
 			return true;
 		}
@@ -208,9 +212,6 @@ void CConfirmation_Window::Choice()
 		{
 			// 入力デバイスの情報
 			CInput* pInput = CInput::GetKey();
-
-			// 決定の判定
-			bool bDecition = false;
 
 			// 選択肢が2つ以上使用されている場合
 			if (m_vpListChoice.size() >= 2)
@@ -241,30 +242,30 @@ void CConfirmation_Window::Choice()
 				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 
 				// 選択を決定する
-				bDecition = true;
+				m_bDecition = true;
 			}
 
 			// 決定された場合
-			if (bDecition == true)
+			if (m_bDecition == true)
 			{
 				// はいの場合
 				if (m_bSelectChoice == false)
 				{
-					//ConfirmatiomnMenuScaleReduce();
 					m_bScale = true;
 					SetDisplay(false);
+					m_bSelectChoice = true;
 				}
 				// いいえの場合
 				else
 				{
-					ConfirmatiomnMenuScaleReduce();
 					m_bScale = true;
 					SetDisplay(false);
+					m_bSelectChoice = false;
 				}
 			}
 		}
 	}
-	if (m_bf == true)
+	if (m_bSpawnWindow == true && CTitle::GetMenuWindow() != nullptr)
 	{
 		CApplication::GetMenu()->SetDisplay(false);
 		CTitle::GetMenuWindow()->MenuScaleReduce();

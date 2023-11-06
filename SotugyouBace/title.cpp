@@ -100,26 +100,20 @@ void CTitle::Update()
 	else
 	{
 		// メニューウィンドウの更新
-		m_pMenuWindow->Update();
+        m_pMenuWindow->Update();
 	}
+}
 
-	 
-	//if (m_pMenuWindow != nullptr && m_bWindow == true)
-	//{
-	//	if (pInput->Trigger(DIK_RETURN))
-	//	{
-	//		m_bWindowUninit = true;
-	//	}
-	//}
-
-	//if (m_pMenuWindow != nullptr && m_bWindowUninit == true)
-	//{
-	//	if (m_pMenuWindow->MenuScaleReduce() == true)
-	//	{
-	//		delete m_pMenuWindow;
-	//		m_pMenuWindow = nullptr;
-	//	}
-	//}
+//==============================================================================================
+// メニューウィンドウを破棄する処理
+//==============================================================================================
+void CTitle::UninitMenuWindow()
+{
+	if (m_pMenuWindow != nullptr)
+	{
+		delete m_pMenuWindow;
+		m_pMenuWindow = nullptr;
+	}
 }
 
 //==============================================================================================

@@ -70,6 +70,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player_life_gauge.cpp" />
     <ClCompile Include="player_manager.cpp" />
+    <ClCompile Include="player_ui.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="player_life_gauge.h" />
     <ClInclude Include="player_manager.h" />
+    <ClInclude Include="player_ui.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />

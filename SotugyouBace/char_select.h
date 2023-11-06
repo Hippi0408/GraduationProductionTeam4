@@ -9,6 +9,8 @@
 
 #include"mode.h"
 
+class CConfirmation_Window;
+
 class CChar_Select : public CMode
 {
 public:
@@ -22,7 +24,7 @@ public:
 	static CChar_Select* Create();
 
 private:
-
+	CConfirmation_Window* m_pConfirmation;
 };
 
 #endif // !_CHAR_SELECT_H_

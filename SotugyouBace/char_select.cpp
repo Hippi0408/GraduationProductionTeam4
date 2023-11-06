@@ -9,6 +9,7 @@
 #include"application.h"
 #include"fade.h"
 #include"fontString.h"
+#include"confirmation_window.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -39,7 +40,13 @@ HRESULT CChar_Select::Init()
 //==============================================================================================
 void CChar_Select::Uninit()
 {
-
+	// メニューウィンドウの終了処理
+	if (m_pConfirmation != nullptr)
+	{
+		m_pConfirmation->Uninit();
+		delete m_pConfirmation;
+		m_pConfirmation = nullptr;
+	}
 }
 
 //==============================================================================================
@@ -55,7 +62,10 @@ void CChar_Select::Update()
 			|| pInput->Trigger(JOYPAD_START, nCnt))
 			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 		{
-			CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
+			if (m_pConfirmation == nullptr)
+			{
+				m_pConfirmation = CConfirmation_Window::Create();
+			}
 		}
 
 		// キャラセレクト画面に戻る
@@ -65,6 +75,23 @@ void CChar_Select::Update()
 			// 画面遷移
 			CFade::SetFade(CApplication::MODE_TITLE, 0.05f);
 		}
+	}
+
+	if (m_pConfirmation != nullptr)
+	{
+		m_pConfirmation->Update();
+		if (m_pConfirmation->GetSelectChoice() == true && m_pConfirmation->GetDecition() == true)
+		{
+			CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
+		}
+	}
+
+	// ウィンドウが閉じた場合 
+	if (m_pConfirmation != nullptr && m_pConfirmation->GetSapawnWindow() == true)
+	{
+		m_pConfirmation->SetSapawnWindow(false);
+		delete m_pConfirmation;
+		m_pConfirmation = nullptr;
 	}
 }
 

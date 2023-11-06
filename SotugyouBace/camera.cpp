@@ -45,7 +45,6 @@ void CCamera::Init(void)
 	m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);	// –Ú“I‚Ì’‹“_
 	m_bPerspective = false;
 	m_bValue = false;
-	m_nKeyCount = 0;
 }
 
 //==============================================
