@@ -55,6 +55,7 @@ public:
 	void AddAlpha(const float alpha) { m_col.a += alpha; }
 	void Setbillboard(const bool billboard) { m_bBillboard = billboard; }
 	void SetTexture(CTexture::TEXTURE texture) { m_texture = texture; }
+	void SetDraw(const bool draw) { m_bDraw = draw; }
 
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
 	const D3DXVECTOR3 GetMove() { return m_move; }
@@ -75,6 +76,7 @@ private:
 	D3DXCOLOR m_col;						// 色
 	CTexture::TEXTURE m_texture;			// テクスチャ
 	bool m_bBillboard;						// ビルボードか
+	bool m_bDraw;							// 描画するか
 };
 
 #endif // !_OBJECT3D_H_

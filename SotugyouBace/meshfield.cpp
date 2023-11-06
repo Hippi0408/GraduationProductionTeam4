@@ -94,15 +94,15 @@ HRESULT CMeshField::Init()
 	srand((unsigned int)time(NULL));
 
 	// 頂点数分繰り返す
-	//for (int nCntZ = 0; nCntZ <= m_nZBlock; nCntZ++)
-	//{
-	//	for (int nCntX = 0; nCntX <= m_nXBlock; nCntX++)
-	//	{
-	//		// 凹凸をつける
-	//		int nHeight = rand() % m_nHeight;
-	//		pVtx[nCntX + (m_nXBlock + 1) * nCntZ].pos.y = (float)nHeight;
-	//	}
-	//}
+	for (int nCntZ = 0; nCntZ <= m_nZBlock; nCntZ++)
+	{
+		for (int nCntX = 0; nCntX <= m_nXBlock; nCntX++)
+		{
+			// 凹凸をつける
+			int nHeight = rand() % m_nHeight;
+			pVtx[nCntX + (m_nXBlock + 1) * nCntZ].pos.y = (float)nHeight;
+		}
+	}
 
 	//頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();

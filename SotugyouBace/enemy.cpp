@@ -87,7 +87,7 @@ void CEnemy::Hit(CMove_Object* pHit)
 			break;
 		case TAG_BULLET:
 			// ’e‚Ìƒ_ƒ[ƒW‚ð•Ô‚·
-			//Damage(pHit->GetPower());
+			Damage(pHit->GetPower());
 			break;
 		default:
 			break;

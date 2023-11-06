@@ -14,6 +14,7 @@
 
 class CBullet;
 class CEnergy_Gauge;
+class CObject3D;
 
 //---------------------------
 // クラス宣言
@@ -86,6 +87,7 @@ public:
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
 	void Target();						// ターゲット
 	bool Target_Scope(D3DXVECTOR3 nearpos);				// ターゲットを狙う範囲
+	void Reticle();
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
@@ -99,6 +101,7 @@ private:
 	bool m_bTarget;			// ターゲットがいるか
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
+	CObject3D *m_pReticle;				// レティクル
 };
 
 #endif// _PLAYER_H_

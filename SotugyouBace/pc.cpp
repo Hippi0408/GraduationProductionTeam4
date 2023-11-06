@@ -205,7 +205,7 @@ void CPC::Input()
 			if (GetBoost())
 				move /= 2.0f;
 
-			move *= 5.0f;		// ‰‘¬
+			move *= 7.0f;		// ‰‘¬
 			move.y = 0.0f;
 		}
 	}

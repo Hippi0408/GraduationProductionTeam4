@@ -16,6 +16,7 @@
 #include "camera.h"
 #include <vector>
 #include"debugProc.h"
+#include"object3D.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
@@ -337,6 +338,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	// 画面に映るぎりぎりの位置
 	D3DXVECTOR3 Reflected_Pos[2] = {};
 	D3DXVECTOR3 Reflected_PosVec[2] = {};
+
 	// 視野角
 	float fView_Angle = VIEW_SCOPE_ANGLE;
 
@@ -351,7 +353,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		D3DXVECTOR3 WorldPosV = Camera->GetWorldPosV();
 
 		// カメラの視点から画角分ずらす
-		/*if (nCnt == 0)
+		if (nCnt == 0)
 		{
 			WorldPosV.x += sinf(rotCamera.y + D3DX_PI / 2) * 500;
 			WorldPosV.z += cosf(rotCamera.y + D3DX_PI / 2) * 500;
@@ -360,7 +362,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		{
 			WorldPosV.x += sinf(rotCamera.y - D3DX_PI / 2) * 500;
 			WorldPosV.z += cosf(rotCamera.y - D3DX_PI / 2) * 500;
-		}*/
+		}
 
 		// カメラの視点からのベクトル
 		Reflected_PosVec[nCnt] = Reflected_Pos[nCnt] - WorldPosV;
@@ -394,4 +396,15 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	}
 
 	return false;
+}
+
+//============================================================================
+// レティクル
+//============================================================================
+void CPlayer::Reticle()
+{
+	if (m_pReticle != nullptr)
+		m_pReticle = CObject3D::Create({ 0.0f,0.0f,0.0f }, { 30.0f,30.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+
+
 }
