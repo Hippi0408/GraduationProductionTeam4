@@ -40,7 +40,7 @@ HRESULT CEnergy_Gauge::Init()
 	// 前方のゲージ
 	m_FrontGauge = CObject2D::Create(pos, size, PRIORITY_FRONT);
 	// 前方のゲージの色
-	m_FrontGauge->SetCol({ 1.0f,0.0f,0.0f,1.0f });
+	m_FrontGauge->SetCol({ 1.0f, 1.0f, 1.0f,1.0f });
 
 	m_fRecovery_Interval = 300.0f;	// 回復し始めるまでのインターバル
 	m_fReuse_Percent = 30.0f;		// 全消費からの回復時に再利用できるタイミング
