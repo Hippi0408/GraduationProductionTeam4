@@ -41,6 +41,7 @@ public:
 
 	void SetTexPos(const float top, const float row, const float right, const float left);			// テクスチャの分割
 
+	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetSize(const float fsize) { m_fsize = fsize; }
