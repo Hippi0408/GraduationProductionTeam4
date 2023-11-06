@@ -27,13 +27,6 @@ CCollision::CCollision()
 //=============================================================================
 CCollision::~CCollision()
 {
-	//CCollision_Manager* pManager = CApplication::GetCollision_Manager();
-
-	//if (pManager != nullptr)
-	//{
-	//	// “–‚½‚è”»’è‚ğÁ‚·
-	//	pManager->DestroyCollision(this);
-	//}
 }
 
 //=============================================================================
@@ -88,7 +81,7 @@ void CCollision::Collision()
 	for (auto pCollision : CApplication::GetCollision_Manager()->GetAllCollision())
 	{
 		// “–‚½‚è”»’è‚ª‘¶İ‚·‚éê‡ && “–‚½‚è”»’è‚ª©g‚Å‚Í‚È‚¢ê‡
-		if (pCollision != nullptr && pCollision != this)
+		if (!pCollision->GetParent()->GetDeathFlag() && pCollision != this)
 		{
 			// ‘Šè‚Ìmoveobject‚Ìî•ñ
 			CMove_Object* pMove_Object = pCollision->GetParent();

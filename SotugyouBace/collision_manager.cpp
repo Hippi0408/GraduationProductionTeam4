@@ -5,6 +5,7 @@
 //
 //==============================================================================================
 #include"collision_manager.h"
+#include"move_object.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -44,7 +45,7 @@ void CCollision_Manager::UpdateAll()
 	for (auto pCollision : m_AllCollision)
 	{
 		// 死亡フラグが建っていない場合
-		if (!pCollision->GetDeath())
+		if (!pCollision->GetDeath() && !pCollision->GetParent()->GetDeathFlag())
 		{
 			pCollision->Update();
 		}
@@ -58,8 +59,8 @@ void CCollision_Manager::UpdateAll()
 		// 死亡フラグが建っている場合
 		if (pCollision->GetDeath())
 		{
-			delete pCollision;
 			it = m_AllCollision.erase(it);
+			delete pCollision;
 		}
 		else
 		{
