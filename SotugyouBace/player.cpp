@@ -392,7 +392,12 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		}
 		else
 			if (fCp[nCnt] <= 0.0f)
+			{
+				// ƒŒƒeƒBƒNƒ‹
+				Reticle();
+
 				return true;
+			}
 	}
 
 	return false;
@@ -403,8 +408,8 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 //============================================================================
 void CPlayer::Reticle()
 {
-	if (m_pReticle != nullptr)
-		m_pReticle = CObject3D::Create({ 0.0f,0.0f,0.0f }, { 30.0f,30.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+	if (m_pReticle == nullptr)
+		m_pReticle = CObject3D::Create({ 0.0f,100.0f,0.0f }, { 30.0f,30.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
 
 
 }
