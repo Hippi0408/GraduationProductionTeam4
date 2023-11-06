@@ -103,7 +103,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	}
 
 	//ウィンドウの設定
-	BOOL bWindow = FALSE;
+	BOOL bWindow = TRUE;
 
 #ifdef _DEBUG
 	bWindow = TRUE;
@@ -244,7 +244,11 @@ void CApplication::Uninit()
 		m_pSound = nullptr;
 	}
 
+	// 全てのオブジェクトの解放処理
 	CObject::ReleaseAll();
+
+	// 全ての当たり判定の解放処理
+	m_pCollision_Manager->ReleaseAllCollision();
 
 	// パーティクルマネージャの破棄
 	if (m_pParticleManager != nullptr)
@@ -342,6 +346,9 @@ void CApplication::SetMode(MODE mode)
 
 		// 全てのオブジェクトの解放処理
 		CObject::ReleaseAll();
+
+		// 全ての当たり判定の解放処理
+		m_pCollision_Manager->ReleaseAllCollision();
 	}
 	// カメラの初期化
 	m_pCamera->Init();

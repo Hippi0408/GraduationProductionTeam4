@@ -271,9 +271,6 @@
     <ClInclude Include="meshfield.h">
       <Filter>04_Object\Object3D</Filter>
     </ClInclude>
-    <ClInclude Include="mob.h">
-      <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
-    </ClInclude>
     <ClInclude Include="mode.h">
       <Filter>03_Mode</Filter>
     </ClInclude>
@@ -381,6 +378,9 @@
     </ClInclude>
     <ClInclude Include="tutorial.h">
       <Filter>03_Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="mob.h">
+      <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
     </ClInclude>
     <ClInclude Include="player_ui.h">
       <Filter>04_Object\Object2D\PlayerUi</Filter>

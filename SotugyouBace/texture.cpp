@@ -24,6 +24,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/number.png",						// ナンバーのテクスチャ
 	"Data/texture/bullet000.png",					// 弾のテクスチャ
 	"Data/texture/floor.png",						// 地面のテクスチャ
+	"Data/texture/circle.png",						// 円のテクスチャ
 
 	/* エフェクト群 */
 	"Data/texture/particle/smoke.png",				// 煙
@@ -36,6 +37,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/jewel.png",				// パーティクル用宝石
 	"Data/texture/particle/soul.png",				// 魂
 	"Data/texture/particle/up.png",					// 上矢印
+
 
 };
 

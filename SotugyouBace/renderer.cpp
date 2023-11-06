@@ -14,6 +14,7 @@
 #include "game.h"
 #include "camera.h"
 #include "object.h"
+#include "collision_manager.h"
 #include "mode.h"
 
 #ifdef _DEBUG
@@ -154,6 +155,9 @@ void CRenderer::Update()
 
 		// オブジェクトの更新処理
 		CObject::UpdateAll();
+
+		// 当たり判定の更新処理
+		CApplication::GetCollision_Manager()->UpdateAll();
 	}
 }
 
