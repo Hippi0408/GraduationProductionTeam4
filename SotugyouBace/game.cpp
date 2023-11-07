@@ -68,7 +68,7 @@ HRESULT CGame::Init()
 	m_pPlayer_Manager = CApplication::GetPlayerManager();
 	m_pPlayer_Manager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
-	for (int nCnt = 0; nCnt < 1; nCnt++)
+	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
 		CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) });
@@ -77,7 +77,13 @@ HRESULT CGame::Init()
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
 
-	CDrop_Weapon::Creat({ 0.0f,0.0f,1000.0f }, "Data/model/Player/Ghost.x");
+	for (int nCnt = 0; nCnt < 10; nCnt++)
+	{
+		// ランダムな位置
+		D3DXVECTOR3 RandPos = { utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) };
+		// 武器の生成
+		CDrop_Weapon::Creat(RandPos, utility::Random<int>(CDrop_Weapon::WEAPON_MAX, 0));
+	}
 
 	// タイムの生成
 	m_pTime = CTime::Create();
