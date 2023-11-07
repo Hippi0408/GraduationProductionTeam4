@@ -424,42 +424,45 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 	// アルファ値の加算減算の速度
 	float Alpha_Speed = 1 / ((RETICLE_TRANSPARENCY_SIZE - RETICLE_SIZE) / Size_Speed);
 
-	if (m_bReticle_Draw)
+	// レティクルの生成
+	if (m_pReticle == nullptr)
+		m_pReticle = CObject3D::Create({ m_Reticle_Pos }, { m_Reticle_Size }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,m_fReticle_Alpha }, true);
+
+	if (m_pReticle != nullptr)
 	{
-		// レティクルの移動
-		if (m_Reticle_Pos != target)
-			m_Reticle_Pos += (target - m_Reticle_Pos) *  0.1f;
-
-		// レティクルの生成
-		if (m_pReticle == nullptr)
-			m_pReticle = CObject3D::Create({ m_Reticle_Pos }, { m_Reticle_Size }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,m_fReticle_Alpha }, true);
-
-		if (m_Reticle_Size.x > RETICLE_SIZE)
+		if (m_bReticle_Draw)
 		{
-			// サイズとアルファ値の設定
-			m_fReticle_Alpha += Alpha_Speed;
-			m_Reticle_Size.x -= Size_Speed;
-			m_Reticle_Size.y -= Size_Speed;
-		}
+			// レティクルの移動
+			if (m_Reticle_Pos != target)
+				m_Reticle_Pos += (target - m_Reticle_Pos) *  0.1f;
 
-		// 位置の設定
-		m_pReticle->SetPos(m_Reticle_Pos);
-	}
-	else
-	{
-		if (m_Reticle_Size.x < RETICLE_TRANSPARENCY_SIZE)
-		{
-			// サイズとアルファ値の設定
-			m_fReticle_Alpha -= Alpha_Speed;
-			m_Reticle_Size.x += Size_Speed;
-			m_Reticle_Size.y += Size_Speed;
+			if (m_Reticle_Size.x > RETICLE_SIZE)
+			{
+				// サイズとアルファ値の設定
+				m_fReticle_Alpha += Alpha_Speed;
+				m_Reticle_Size.x -= Size_Speed;
+				m_Reticle_Size.y -= Size_Speed;
+			}
+
+			// 位置の設定
+			m_pReticle->SetPos(m_Reticle_Pos);
 		}
 		else
-			// 位置の設定
-			m_Reticle_Pos = { 0.0f,0.0f,0.0f };
-	}
+		{
+			if (m_Reticle_Size.x < RETICLE_TRANSPARENCY_SIZE)
+			{
+				// サイズとアルファ値の設定
+				m_fReticle_Alpha -= Alpha_Speed;
+				m_Reticle_Size.x += Size_Speed;
+				m_Reticle_Size.y += Size_Speed;
+			}
+			else
+				// 位置の設定
+				m_Reticle_Pos = { 0.0f,0.0f,0.0f };
+		}
 
-	// サイズと色の設定
-	m_pReticle->SetSize({ m_Reticle_Size });
-	m_pReticle->SetCol({ 1.0f,1.0f,1.0f,m_fReticle_Alpha });
+		// サイズと色の設定
+		m_pReticle->SetSize({ m_Reticle_Size });
+		m_pReticle->SetCol({ 1.0f,1.0f,1.0f,m_fReticle_Alpha });
+	}
 }
