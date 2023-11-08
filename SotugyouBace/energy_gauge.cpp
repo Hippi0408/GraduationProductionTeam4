@@ -6,6 +6,7 @@
 //==============================================================================================
 #include"energy_gauge.h"
 #include"debugProc.h"
+#include "object2D.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -28,15 +29,25 @@ HRESULT CEnergy_Gauge::Init()
 {
 	CGauge_Manager::Init();
 
+	const D3DXVECTOR3 pos = GetGaugePos();
+	const D3DXVECTOR2 size = GetGaugeSize();
+
+	// 後ろのゲージ
+	m_BackGauge = CObject2D::Create(pos, size, PRIORITY_FRONT);
+	// 後ろのゲージの色
+	m_BackGauge->SetCol({ 0.0f,0.0f,0.0f,1.0f });
+
+	// 前方のゲージ
+	m_FrontGauge = CObject2D::Create(pos, size, PRIORITY_FRONT);
+	// 前方のゲージの色
+	m_FrontGauge->SetCol({ 1.0f, 1.0f, 1.0f,1.0f });
+
 	m_fRecovery_Interval = 300.0f;	// 回復し始めるまでのインターバル
 	m_fReuse_Percent = 30.0f;		// 全消費からの回復時に再利用できるタイミング
 	m_bConsumption = false;			// 消費中か
 	m_bAllRecovery = true;			// 回復が出来る状態か
 	m_bAllConsumption = false;		// エネルギーを全て消費した
 	m_bRecovery_Pause = false;		// 回復が一時停止中
-
-	// 後ろのゲージの色
-	SetBackCol({ 0.0f,0.0f,0.0f,1.0f });
 
 	return S_OK;
 }
@@ -112,8 +123,10 @@ void CEnergy_Gauge::Fluctuation()
 		}
 	}
 	else if (m_bAllConsumption && !m_bAllRecovery && !m_bRecovery_Pause)
+	{
 		// 最後まで減らす
 		m_fFluctuation = MAX_ENERGY;
+	}
 
 	// 現在のエネルギー残量
 	float fEnergy = MAX_ENERGY - m_fFluctuation;
@@ -122,10 +135,11 @@ void CEnergy_Gauge::Fluctuation()
 	float fEnergy_Percent = fEnergy / MAX_ENERGY * 100;
 
 	// ゲージサイズをエネルギーの割合に合わせる
-	float fGeuge_Size = GetGaugeSize().x * fEnergy_Percent / 100.0f;
+	float fGeuge_Size = GetGaugeSize().y * fEnergy_Percent / 100.0f;
 
 	// ゲージの増減
-	SetSubSize({ GetGaugeSize().x - fGeuge_Size ,0.0f });
+	//m_FrontGauge->SetSubSize({ GetGaugeSize().x - fGeuge_Size ,0.0f });
+	m_FrontGauge->SetSubSize({ 0.0 ,-GetGaugeSize().y + fGeuge_Size });
 }
 
 //==============================================================================================
@@ -220,13 +234,13 @@ void CEnergy_Gauge::GaugeColor()
 	// 色の設定
 	if (Gauge_Percent <= 25.0f || m_bAllConsumption && !m_bRecovery_Pause)
 		// 残量25%以下or全て消費した後、全回復するまで(赤)
-		SetCol({ 1.0f,0.0f,0.0f,1.0f });
+		m_FrontGauge->SetCol({ 1.0f,0.0f,0.0f,1.0f });
 	else if (Gauge_Percent > 20.0f || !m_bAllConsumption)
-		// 残量26%以上(白)
-		SetCol({ 1.0f,1.0f,1.0f,1.0f });
+		// 残量26%以上(橙)
+		m_FrontGauge->SetCol({ 1.0f,0.5f,0.0f,1.0f });
 
 	// 後ろのゲージの色
-	SetBackCol({ 0.0f,0.0f,0.0f,1.0f });
+	m_BackGauge->SetCol({ 0.0f,0.0f,0.0f,1.0f });
 
 	// エネルギーを全て消費した
 	if (!m_bAllRecovery && !m_bRecovery_Pause)
@@ -234,7 +248,7 @@ void CEnergy_Gauge::GaugeColor()
 		// 赤く点滅させる
 		Col_Count++;
 		float fRed = sinf(Col_Count * 0.07f);
-		SetBackCol({ fRed,0.0f,0.0f,1.0f });
+		m_BackGauge->SetCol({ fRed,0.0f,0.0f,1.0f });
 	}
 	else
 		// 点滅のリセット

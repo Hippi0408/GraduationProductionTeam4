@@ -48,6 +48,7 @@ private:
 	float SizeY;
 
 	bool m_bMaxSize;
+	bool m_bScaleFlag;						// メニューウィンドウが
 };
 #endif
 

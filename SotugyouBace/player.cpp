@@ -9,15 +9,20 @@
 #include "input.h"
 #include "bullet.h"
 #include "player_manager.h"
+#include "enemy_manager.h"
 #include "game.h"
 #include "energy_gauge.h"
 #include "tutorial.h"
 #include "camera.h"
 #include <vector>
 #include"debugProc.h"
+#include"object3D.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
+const float CPlayer::VIEW_SCOPE_ANGLE = 44.5f;		// プレイヤーの視野角
+const float CPlayer::RETICLE_TRANSPARENCY_SIZE = 300.0f;
+const float CPlayer::RETICLE_SIZE = 200.0f;
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -44,7 +49,9 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	LoadFile("Data\\text\\Motion\\motion_player.txt");
+	SetParts(PARTS_BODY, "Data\\text\\Motion\\parts\\motion_Body.txt");
+	SetParts(PARTS_LEG, "Data\\text\\Motion\\parts\\motion_Leg.txt");
+	SetParts(PARTS_ARMS, "Data\\text\\Motion\\parts\\motion_Arms.txt");
 
 	// タグの設定
 	SetTag(TAG_CHARACTER);
@@ -56,6 +63,8 @@ HRESULT CPlayer::Init()
 	SetCollision();
 
 	m_bTarget = false;
+	m_Reticle_Size = { RETICLE_TRANSPARENCY_SIZE,RETICLE_TRANSPARENCY_SIZE };
+	m_fReticle_Alpha = 0.0f;
 
 	CCharacter::Init();
 
@@ -67,9 +76,14 @@ HRESULT CPlayer::Init()
 //============================================================================
 void CPlayer::Uninit()
 {
-	CCharacter::Uninit();
+	if (m_pEnergy_Gauge != nullptr)
+	{
+		// エネルギーゲージの破棄
+		m_pEnergy_Gauge->Uninit();
+		m_pEnergy_Gauge = nullptr;
+	}
 
-	CObject::Release();
+	CCharacter::Uninit();
 }
 
 //============================================================================
@@ -77,6 +91,12 @@ void CPlayer::Uninit()
 //============================================================================
 void CPlayer::Update()
 {
+	// ターゲット
+	Target();
+
+	// モーション番号の設定
+	ChangeMotion();
+
 	// キャラクターの更新
 	CCharacter::Update();
 }
@@ -94,54 +114,17 @@ void CPlayer::Draw()
 //============================================================================
 void CPlayer::ChangeMotion()
 {
-	// 現在のモーション
-	const int nCuttentMotion = GetCurrentMotion();
-
-	// 着地モーションが終了した場合
-	if (nCuttentMotion == MOTION_LANDING && GetMotionStop() == true)
+	// 着地モーションを設定
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		SetMotion(MOTION_NEUTRAL);
-	}
+		// パーツ
+		CParts* pParts = GetParts(nCnt);
 
-	int nMotion = GetMotion();
-
-
-	// 現在のモーションから変わった場合
-	if (nCuttentMotion != nMotion)
-	{
-		// 現在モーションの終了処理
-		switch (nCuttentMotion)
+		// 着地モーションが終了した場合
+		if (pParts->GetCurrentMotion() == MOTION_LANDING && pParts->GetMotionStop() == true)
 		{
-			// ニュートラル
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		case MOTION_JUMP:
-			break;
-		case MOTION_LANDING:
-			break;
-		default:
-			break;
+			pParts->SetMotion(MOTION_NEUTRAL);
 		}
-
-		// 現在モーションの開始処理
-		switch (nMotion)
-		{
-		case MOTION_NEUTRAL:
-			break;
-		case MOTION_WALK:
-			break;
-		case MOTION_JUMP:
-			break;
-		case MOTION_LANDING:
-			break;
-		default:
-			break;
-		}
-
-		// キャラクターのモーション変更処理
-		CCharacter::ChangeMotion();
 	}
 }
 
@@ -150,18 +133,14 @@ void CPlayer::ChangeMotion()
 //============================================================================
 void CPlayer::PlayerAttack()
 {
-	Target();
-
 	// 情報の取得
 	D3DXVECTOR3 pos = GetCenterPos();
 	D3DXVECTOR3 rot = GetBulletRot();
 
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
-	pos_vec *= 100.f;
-	pos_vec += pos;
 
 	// 弾の生成
-	CBullet::Create({pos_vec.x, pos_vec.y, pos_vec.z}, D3DXVECTOR2(60.0f, 60.0f), D3DXVECTOR3(-sinf(rot.y), sinf(rot.x), -cosf(rot.y)), true);
+	CBullet::Create({ pos.x, pos.y, pos.z}, D3DXVECTOR2(60.0f, 60.0f), pos_vec, true);
 }
 
 //============================================================================
@@ -173,7 +152,7 @@ void CPlayer::JumpStart()
 	if (GetGround() == true)
 	{
 		// ジャンプモーションを設定
-		SetMotion(MOTION_JUMP);
+		GetParts(PARTS_LEG)->SetMotion(MOTION_JUMP);
 
 		// 離着状態にする
 		SetGround(false);
@@ -188,26 +167,16 @@ void CPlayer::JumpStart()
 //============================================================================
 void CPlayer::JumpBoost()
 {
-	CPlayerManager *pPlayerManager = CApplication::GetPlayerManager();
-	CPlayer *pPlayer = nullptr;
-   	CEnergy_Gauge *pGauge = nullptr;
-
-	if (pPlayerManager != nullptr)
-	{
-		pPlayer = pPlayerManager->GetPlayer(0);
-		pGauge = pPlayer->GetEnergy_Gauge();
-	}
-
-	if (pGauge != nullptr)
+	if (m_pEnergy_Gauge != nullptr)
 	{
 		// 空中にいる場合、エネルギーが残っている場合
-		if (!GetGround() && !pGauge->GetConsumption())
+		if (!GetGround() && !m_pEnergy_Gauge->GetConsumption())
 		{
 			// 上昇する
 			AddMove({ 0.0f, 0.5f, 0.0f });
 
 			// エネルギーを消費する
-			pGauge->Consumption_Gauge();
+			m_pEnergy_Gauge->Consumption_Gauge();
 		}
 	}
 }
@@ -217,14 +186,14 @@ void CPlayer::JumpBoost()
 //============================================================================
 void CPlayer::Landing(const D3DXVECTOR3 pos)
 {
-	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+	// 着地モーションを設定
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		// 着地モーションを設定
-		SetMotion(MOTION_LANDING);
-
-		// キャラクターの着地処理
-		CCharacter::Landing(pos);
+		GetParts(nCnt)->SetMotion(MOTION_LANDING);
 	}
+
+	// キャラクターの着地処理
+	CCharacter::Landing(pos);
 }
 
 //============================================================================
@@ -256,9 +225,7 @@ void CPlayer::Hit(CMove_Object* pHit)
 //============================================================================
 void CPlayer::Target()
 {
-	// 雑魚敵の情報
-	std::vector<CCharacter*> Mob = CGame::GetMob();
-
+	D3DXVECTOR3 Player_Pos = GetPos();				// プレイヤーの位置
 	D3DXVECTOR3 Mob_Pos = { 0.0f,0.0f,0.0f };		// 敵の位置
 	D3DXVECTOR3 NearMob_Pos = { 0.0f,0.0f,0.0f };	// 一番近い敵の位置
 	m_fTarget_Scope = 3000.0f;						// ターゲットを狙う範囲
@@ -266,29 +233,35 @@ void CPlayer::Target()
 	float NextNearDistance = 0.0f;					// 次に近い敵との距離
 	m_bTarget = false;								// 近くに敵がいるか
 	bool bScreen = false;							// 画面に映っているか
+	float DistanceXZ = 0.0f;						// プレイヤーと敵のXZ座標の距離
+	D3DXVECTOR3 BulletVec = {0.0f,0.0f,0.0f};
 
-	while(true)
+	while (true)
 	{
-		for (int nCnt = 0; nCnt < Mob.size(); nCnt++)
+		// 雑魚敵の情報
+		for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
 		{
-			if (Mob[nCnt]->GetLife() != 0)
+			if (pEnemy->GetLife() > 0)
 			{
 				// 敵の位置の取得
-				Mob_Pos = Mob[nCnt]->GetPos();
+				Mob_Pos = pEnemy->GetCenterPos();
+
+				// プレイヤーから敵の距離
+				BulletVec = Mob_Pos - Player_Pos;
 
 				// 距離の算出
-				float Distance = sqrtf((Mob_Pos.x - GetPos().x) * (Mob_Pos.x - GetPos().x)
-					+ (Mob_Pos.z - GetPos().z) * (Mob_Pos.z - GetPos().z));
+				DistanceXZ = sqrtf(BulletVec.x * BulletVec.x
+					+ BulletVec.z * BulletVec.z);
 
 				// 距離3000以上
-				if (Distance > m_fTarget_Scope)
+				if (DistanceXZ > m_fTarget_Scope)
 					continue;
 
 				// 距離を比べる
-				if (NearDistance >= Distance && NextNearDistance < Distance)
+				if (NearDistance >= DistanceXZ && NextNearDistance < DistanceXZ)
 				{
 					// 短い方の距離と位置を代入
-					NearDistance = Distance;
+					NearDistance = DistanceXZ;
 					NearMob_Pos = Mob_Pos;
 
 					m_bTarget = true;
@@ -299,26 +272,41 @@ void CPlayer::Target()
 			}
 		}
 
-		if (m_bTarget && bScreen
-			|| !m_bTarget && !bScreen)
+		if (m_bTarget != bScreen)
+		{
+			// 距離が近いが画面に映っていない敵との距離
+			NextNearDistance = NearDistance;
+			NearDistance = m_fTarget_Scope;
+			m_bTarget = false;
+		}
+		else
 			break;
-
-		// 距離が近いが画面に映っていない敵との距離
-		NextNearDistance = NearDistance;
-		NearDistance = m_fTarget_Scope;
-		m_bTarget = false;
 	}
 
 	if (m_bTarget && bScreen)
 	{
-		// 一番近い敵の方向
-		float Angle = atan2(GetPos().x - NearMob_Pos.x, GetPos().z - NearMob_Pos.z);
+		m_bReticle_Draw = true;
+
+		// プレイヤーから敵の距離
+		BulletVec = NearMob_Pos - GetPos();
+
+		// ターゲットした敵の方向
+		float Angle = atan2(BulletVec.x, BulletVec.z);
+		float AngleY = 0.0f;
+
+		// プレイヤーから敵の直線距離
+		float fHypotenuse = sqrt((BulletVec.y * BulletVec.y) + (NearDistance * NearDistance));
+
+		// Y座標の追従
+		AngleY = sinf(BulletVec.y / fHypotenuse);
 
 		// 目的の角度の設定
-		CCharacter::SetBulletRot({ 0.0f,Angle,0.0f });
+		CCharacter::SetBulletRot({ AngleY,Angle + D3DX_PI,0.0f });
 	}
 	else
 	{// ターゲットがいない場合は正面に弾を撃つ
+		m_bReticle_Draw = false;
+
 		// カメラの角度
 		CCamera *Camera = CApplication::GetCamera();
 		D3DXVECTOR3 rotCamera = Camera->GetRot();
@@ -326,6 +314,9 @@ void CPlayer::Target()
 		// 目的の角度の設定
 		CCharacter::SetBulletRot({ rotCamera.x + D3DX_PI,rotCamera.y + D3DX_PI ,rotCamera.z + D3DX_PI });
 	}
+
+	// レティクルの設定
+	Reticle(NearMob_Pos);
 }
 
 //============================================================================
@@ -359,14 +350,13 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	// 画面に映るぎりぎりの位置
 	D3DXVECTOR3 Reflected_Pos[2] = {};
 	D3DXVECTOR3 Reflected_PosVec[2] = {};
+
 	// 視野角
-	float fView_Angle = 44.9f;
-	// 外積の格納先
-	float fCp[2] = {};
+	float fView_Angle = VIEW_SCOPE_ANGLE;
 
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
-		// 画面に映るぎりぎりの位置
+		// ターゲット出来るぎりぎりの位置
 		Reflected_Pos[nCnt].x = Camera->GetWorldPosV().x + sinf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
 		Reflected_Pos[nCnt].z = Camera->GetWorldPosV().z + cosf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
 		fView_Angle *= -1;
@@ -377,13 +367,13 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		// カメラの視点から画角分ずらす
 		if (nCnt == 0)
 		{
-			WorldPosV.x += sinf(rotCamera.y + D3DX_PI / 2);
-			WorldPosV.z += cosf(rotCamera.y + D3DX_PI / 2);
+			WorldPosV.x += sinf(rotCamera.y + D3DX_PI / 2) * 500;
+			WorldPosV.z += cosf(rotCamera.y + D3DX_PI / 2) * 500;
 		}
 		else
 		{
-			WorldPosV.x -= sinf(rotCamera.y + D3DX_PI / 2);
-			WorldPosV.z -= cosf(rotCamera.y + D3DX_PI / 2);
+			WorldPosV.x += sinf(rotCamera.y - D3DX_PI / 2) * 500;
+			WorldPosV.z += cosf(rotCamera.y - D3DX_PI / 2) * 500;
 		}
 
 		// カメラの視点からのベクトル
@@ -397,6 +387,9 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 
 		// 正規化
 		D3DXVec3Normalize(&EnemyVec, &EnemyVec);
+
+		// 外積の格納先
+		float fCp[2] = {};
 
 		// 外積
 		fCp[nCnt] = Reflected_PosVec[nCnt].x * EnemyVec.z - Reflected_PosVec[nCnt].z * EnemyVec.x;
@@ -415,4 +408,58 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	}
 
 	return false;
+}
+
+//============================================================================
+// レティクル
+//============================================================================
+void CPlayer::Reticle(D3DXVECTOR3 target)
+{
+	// ターゲットの位置
+	if (m_Reticle_Pos.x == 0)
+		m_Reticle_Pos = target;
+
+	// 拡大縮小の速度
+	float Size_Speed = 7;
+	// アルファ値の加算減算の速度
+	float Alpha_Speed = 1 / ((RETICLE_TRANSPARENCY_SIZE - RETICLE_SIZE) / Size_Speed);
+
+	if (m_bReticle_Draw)
+	{
+		// レティクルの移動
+		if (m_Reticle_Pos != target)
+			m_Reticle_Pos += (target - m_Reticle_Pos) *  0.1f;
+
+		// レティクルの生成
+		if (m_pReticle == nullptr)
+			m_pReticle = CObject3D::Create({ m_Reticle_Pos }, { m_Reticle_Size }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,m_fReticle_Alpha }, true);
+
+		if (m_Reticle_Size.x > RETICLE_SIZE)
+		{
+			// サイズとアルファ値の設定
+			m_fReticle_Alpha += Alpha_Speed;
+			m_Reticle_Size.x -= Size_Speed;
+			m_Reticle_Size.y -= Size_Speed;
+		}
+
+		// 位置の設定
+		m_pReticle->SetPos(m_Reticle_Pos);
+	}
+	else
+	{
+		if (m_Reticle_Size.x < RETICLE_TRANSPARENCY_SIZE)
+		{
+			// サイズとアルファ値の設定
+			m_fReticle_Alpha -= Alpha_Speed;
+			m_Reticle_Size.x += Size_Speed;
+			m_Reticle_Size.y += Size_Speed;
+		}
+		else
+			// 位置の設定
+			m_Reticle_Pos = { 0.0f,0.0f,0.0f };
+	}
+
+	// サイズと色の設定
+	m_pReticle->SetSize({ m_Reticle_Size });
+	m_pReticle->SetCol({ 1.0f,1.0f,1.0f,m_fReticle_Alpha });
 }

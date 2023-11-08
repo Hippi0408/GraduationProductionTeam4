@@ -24,14 +24,13 @@
 #include "confirmation_window.h"
 #include "menu.h"
 #include "utility.h"
+#include "parts.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPlayerManager* CGame::m_pPlayer_Manager = nullptr;
-std::vector<CCharacter*> CGame::m_pMob;
-CCharacter *CGame::m_pBoss = nullptr;
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -70,13 +69,12 @@ HRESULT CGame::Init()
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
-		m_pMob.emplace_back();
 		// モブキャラの生成
-		m_pMob[nCnt] = CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) }, nCnt);
+		CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) });
 	}
 
 	// ボスキャラの生成
-	m_pBoss = CBoss::Create({ 0.0f, 0.0f, 10000.0f });
+	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
 
 	// タイムの生成
 	m_pTime = CTime::Create();
@@ -121,11 +119,6 @@ void CGame::Uninit()
 		m_ponfirmationWindow = nullptr;
 	}
 
-	while (m_pMob.size() != 0)
-	{
-		m_pMob.pop_back();
-	}
-
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
 
@@ -135,7 +128,7 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	// メニューウィンドウ処理
-	MenuWindow();
+	//MenuWindow();
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
@@ -148,10 +141,10 @@ void CGame::Update()
 		if (m_pTime != nullptr)
 			m_pTime->Update();
 
-		CInput* pInput = CInput::GetKey();
 
 		// デバッグ専用コマンド
 #ifdef _DEBUG
+		CInput* pInput = CInput::GetKey();
 		if (pInput->Trigger(DIK_F5))
 		{
 			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
@@ -260,7 +253,7 @@ void CGame::MenuWindow()
 	{
 		m_ponfirmationWindow->Update(); 
 	}
-	// ウィンドウが閉じた場合
+	// ウィンドウが閉じた場合 
 	if (m_ponfirmationWindow != nullptr && m_bGameWindow == true)
 	{
 		m_bGameWindow = false;

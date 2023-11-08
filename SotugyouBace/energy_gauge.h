@@ -7,6 +7,8 @@
 #ifndef _ENERGY_GAUGE_H_
 #define _ENERGY_GAUGE_H_
 
+class CObject2D;
+
 #include"gauge_manager.h"
 
 class CEnergy_Gauge : public CGauge_Manager
@@ -34,6 +36,7 @@ public:
 	void SetRecovery_Interval(const float interval) { m_fRecovery_Interval = interval; }
 	
 	const bool GetConsumption() { return m_bAllConsumption; }		// エネルギーを全て消費しているか
+	CObject2D *GetBackGauge() { return m_BackGauge; }
 
 private:
 	void Recovery_Gauge();		// エネルギーの回復
@@ -56,6 +59,9 @@ private:
 	int Col_Count;					// 点滅のカウント
 	int Pause_Count;				// 回復の一時停止中のカウント
 	int BasePause_Count;			// 回復の一時停止中のカウントのベース
+
+	CObject2D *m_BackGauge;		// ゲージの背景
+	CObject2D *m_FrontGauge;	// ゲージの前景
 };
 
 #endif // !_ENERGY_GAUGE_H_

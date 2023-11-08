@@ -30,6 +30,7 @@
 #include "char_select.h"
 #include "stage_select.h"
 #include "tutorial.h"
+#include "confirmation_window.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -102,7 +103,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	}
 
 	//ウィンドウの設定
-	BOOL bWindow = FALSE;
+	BOOL bWindow = TRUE;
 
 #ifdef _DEBUG
 	bWindow = TRUE;
@@ -243,7 +244,11 @@ void CApplication::Uninit()
 		m_pSound = nullptr;
 	}
 
+	// 全てのオブジェクトの解放処理
 	CObject::ReleaseAll();
+
+	// 全ての当たり判定の解放処理
+	m_pCollision_Manager->ReleaseAllCollision();
 
 	// パーティクルマネージャの破棄
 	if (m_pParticleManager != nullptr)
@@ -341,6 +346,9 @@ void CApplication::SetMode(MODE mode)
 
 		// 全てのオブジェクトの解放処理
 		CObject::ReleaseAll();
+
+		// 全ての当たり判定の解放処理
+		m_pCollision_Manager->ReleaseAllCollision();
 	}
 	// カメラの初期化
 	m_pCamera->Init();
@@ -373,8 +381,6 @@ void CApplication::SetMode(MODE mode)
 		break;
 	case CApplication::MODE_GAME:
 		m_pGameMode = CGame::Create();
-		m_pMenu = CTitleMenu::Create();
-		m_pMenu->SetDisplay(false);
 		break;
 	case CApplication::MODE_RESULT:
 		m_pGameMode = CResult::Create();

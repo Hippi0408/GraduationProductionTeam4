@@ -15,12 +15,13 @@
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CLocus::CLocus(const CObject::PRIORITY priority) : CMove_Object(priority)
+CLocus::CLocus(const CObject::PRIORITY priority) : CObject(priority)
 {
 	m_pVtxBuff = nullptr;					// 頂点バッファ
 	m_texture = CTexture::TEXTURE_NONE;		// テクスチャ
 	m_bBillboard = false;					// ビルボードかどうか
 	m_nAnchorPoint = 0;
+	m_pos = D3DXVECTOR3(0.0f,0.0f,0.0f);
 }
 
 //==============================================================================================
@@ -54,7 +55,7 @@ HRESULT CLocus::Init()
 	// 頂点バッファをロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	D3DXVECTOR3 ParentPos = GetPos();
+	D3DXVECTOR3 ParentPos = m_pos;
 	D3DXVECTOR3 PrevPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	m_pAnchorPoints[0] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -95,8 +96,6 @@ HRESULT CLocus::Init()
 	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 
-	CMove_Object::Init();
-
 	return S_OK;
 }
 
@@ -117,8 +116,6 @@ void CLocus::Uninit()
 		delete m_pAnchorPoints;
 		m_pAnchorPoints = nullptr;
 	}
-
-	CMove_Object::Uninit();
 
 	Release();
 }
@@ -152,7 +149,7 @@ void CLocus::Draw()
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// カメラの逆列を設定(ビルボード)
-	if (m_bBillboard)
+	/*if (m_bBillboard)
 	{
 		D3DXMATRIX mtxView;
 		pDevice->GetTransform(D3DTS_VIEW, &mtxView);
@@ -166,14 +163,14 @@ void CLocus::Draw()
 		m_mtxWorld._31 = mtxView._13;
 		m_mtxWorld._32 = mtxView._23;
 		m_mtxWorld._33 = mtxView._33;
-	}
+	}*/
 
 	//角度を反映
 	//D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.x, m_rot.y, m_rot.z);
 	//D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	//位置を反映
-	D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 	//ワールドマトリックスの設定

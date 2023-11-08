@@ -21,6 +21,8 @@ class CMob : public CEnemy
 {
 	static const int FIRST_MAX_LIFE = 100;		// 初期最大体力の値
 	static const float MOB_COLLISION_RADIUS;	// ボスの当たり判定の大きさ
+	static const int DRAW_HP_DISTANCE = 3000;	// HPゲージを表示する距離
+	static const int DRAW_DISTANCE = 7000;	// 敵を表示する距離
 public:
 
 	// モデルの配置情報
@@ -51,16 +53,13 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion() override;		// モーションの切り替え
 	void Destroy() override;			// 破壊処理
+	void DrawLifeGauge();		// 体力ゲージの表示
 
-	static CMob* Create(const D3DXVECTOR3 pos, const int index);
-
-	void SetMobIndex(int index) { m_nMob_Index = index; }
+	static CMob* Create(const D3DXVECTOR3 pos);
 
 private:
-	CMob_Life_Gauge *m_LifeGauge;
-	int m_nMob_Index;
+	float m_fDistance;
 };
 
 #endif// _MOB_H_

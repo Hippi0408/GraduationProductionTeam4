@@ -11,6 +11,8 @@
 #include "menu.h"
 #include "object2D.h"
 
+class CConfirmation_Window;
+
 //---------------------------
 // ÉNÉâÉXêÈåæ
 //---------------------------
@@ -37,7 +39,8 @@ public:
 	static CTitleMenu* Create();
 
 private:
-
+	CConfirmation_Window* m_pConfirmationWindow;
+	bool m_bConfirmation;
 };
 
 #endif // !_TITLE_MENU_H_

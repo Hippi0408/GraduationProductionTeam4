@@ -14,6 +14,7 @@
 
 class CBullet;
 class CEnergy_Gauge;
+class CObject3D;
 
 //---------------------------
 // クラス宣言
@@ -21,9 +22,12 @@ class CEnergy_Gauge;
 class CPlayer : public CCharacter
 {
 
-	static const int FIRST_MAX_LIFE = 100;		// 初期最大体力の値
-	static const float PLAYER_COLLISION_RADIUS;	// プレイヤーの当たり判定の大きさ
-	static const float PLAYER_JUMP_POWER;		// プレイヤーのジャンプ力
+	static const int FIRST_MAX_LIFE = 100;			// 初期最大体力の値
+	static const float PLAYER_COLLISION_RADIUS;		// プレイヤーの当たり判定の大きさ
+	static const float PLAYER_JUMP_POWER;			// プレイヤーのジャンプ力
+	static const float VIEW_SCOPE_ANGLE;			// 画面に映るぎりぎりの位置
+	static const float RETICLE_TRANSPARENCY_SIZE;	// レティクル透明時のサイズ
+	static const float RETICLE_SIZE;				// レティクルのサイズ
 
 public:
 
@@ -48,6 +52,15 @@ public:
 		MODEL_MAX,				// モデルの最大数
 	};
 
+	enum PARTS
+	{
+		PARTS_BODY = 0,			// 胴体
+		PARTS_LEG,				// 脚
+		PARTS_ARMS,				// 腕
+
+		PARTS_MAX
+	};
+
 	// モーションのタイプ
 	enum MOTION_TYPE
 	{
@@ -67,7 +80,7 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 
-	void ChangeMotion() override;		// モーションの切り替え
+	void ChangeMotion();		// モーションの切り替え
 	void Hit(CMove_Object* pHit) override;
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
@@ -76,15 +89,27 @@ public:
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
 	void Target();						// ターゲット
 	bool Target_Scope(D3DXVECTOR3 nearpos);				// ターゲットを狙う範囲
+	void Reticle(D3DXVECTOR3 target);	// レティクル
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
+	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 
 	const int GetCharaIndex() { return m_nCharaIndex; }
+	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 
 private:
 	int m_nCharaIndex;		// 自身の番号
 	float m_fTarget_Scope;	// ターゲットを狙う範囲
 	bool m_bTarget;			// ターゲットがいるか
+
+	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
+
+	CObject3D *m_pReticle;				// レティクル
+	D3DXVECTOR3 m_Reticle_Pos;
+	D3DXVECTOR2 m_Reticle_Size;
+	D3DXVECTOR2 m_Reticle_Tran_Size;
+	float m_fReticle_Alpha;
+	bool m_bReticle_Draw;
 };
 
 #endif// _PLAYER_H_

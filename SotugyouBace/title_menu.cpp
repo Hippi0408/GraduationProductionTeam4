@@ -36,9 +36,12 @@ CTitleMenu::~CTitleMenu()
 //============================================================================
 HRESULT CTitleMenu::Init()
 {
+	// メンバ変数の初期化
+	m_bConfirmation = false;
+
 	// 選択肢の設定処理
 	SetChoice(CFontString::Create({ 400.0f, 400.0f, 0.0f}, { 40.0f, 40.0f }, "ゲームをはじめる"));
-	SetChoice(CFontString::Create({ 800.0f / 2, 500.0f ,0.0f }, { 40.0f, 40.0f }, "とじる"));
+	SetChoice(CFontString::Create({ 800.0f / 2, 500.0f ,0.0f }, { 40.0f, 40.0f }, "ゲームをやめる"));
 
 	//GetChoice(Choice_GameStart)->SetPos({ SCREEN_WIDTH / 2 - 200, 400.0f, 0.0f });
 
@@ -61,6 +64,14 @@ void CTitleMenu::Uninit()
 {
 	// メニューの終了処理
 	CMenu::Uninit();
+
+	// ウィンドウの終了処理
+	if (m_pConfirmationWindow != nullptr)
+	{
+		m_pConfirmationWindow->Uninit();
+		delete m_pConfirmationWindow;
+		m_pConfirmationWindow = nullptr;
+	}
 }
 
 //============================================================================
@@ -73,6 +84,18 @@ void CTitleMenu::Update()
 
 	// 選択肢の処理
 	Choice();
+
+	// 更新処理
+	if (m_pConfirmationWindow != nullptr && m_bConfirmation == true)
+	{// ウィンドウに情報が入っている時 && ウィンドウが使われている時
+		m_pConfirmationWindow->Update();
+	}
+	if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetUninit() == true)
+	{
+		delete m_pConfirmationWindow;
+		m_pConfirmationWindow = nullptr;
+	}
+
 }
 
 //============================================================================
@@ -103,13 +126,22 @@ void CTitleMenu::Choice()
 			// 決定SE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 
+			if (m_pConfirmationWindow == nullptr)
+			{
+				m_pConfirmationWindow = CConfirmation_Window::Create();
+				
+				return;
+			}
+			else
+			{
+				m_bConfirmation = true;
+			}
+	
 			// 表示判定を偽にする
-			SetDisplay(false);
-
-		//CApplication::GetMenuWindow()->ConfirmatiomnMenuScaleReduce();
+			//SetDisplay(false);
 
 			// ウィンドウの破棄
-			DestroyWindow(CApplication::GetWindow());
+			//DestroyWindow(CApplication::GetWindow());
 			break;
 		default:
 			break;
