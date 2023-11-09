@@ -131,7 +131,7 @@ void CTitleMenu::Choice()
 
 			if (m_pConfirmationWindow == nullptr)
 			{
-				m_pConfirmationWindow = CConfirmation_Window::Create();
+				m_pConfirmationWindow = CConfirmation_Window::Create("ÉQÅ[ÉÄÇÇ‚ÇﬂÇ‹Ç∑Ç©?", "ÇÕÇ¢", "Ç¢Ç¢Ç¶", D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 				
 				return;
 			}

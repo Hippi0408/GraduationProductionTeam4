@@ -26,6 +26,7 @@ public: /* 定義 */
 		TEXTURE_BULLET,				// 弾
 		TEXTURE_FLOOR,				// 地面
 		TEXTURE_CIRCLE,				// 丸
+		TEXTURE_UI,					// UI
 
 		/* エフェクト群 */
 		TEXTURE_EFFECT_SMOKE,

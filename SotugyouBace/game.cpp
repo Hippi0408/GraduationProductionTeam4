@@ -25,6 +25,7 @@
 #include "menu.h"
 #include "utility.h"
 #include "parts.h"
+#include "player_ui.h"
 
 CMeshField *CGame::pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
@@ -86,6 +87,11 @@ HRESULT CGame::Init()
 
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
+
+	// プレイヤーUIの生成
+	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f),CPlayerUi::UITYPE_ONE,CObject::PRIORITY_CENTER);
+	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_TWO, CObject::PRIORITY_CENTER);
+	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_THREE, CObject::PRIORITY_CENTER);
 
 	m_nEndCounter = 0;
 
@@ -246,7 +252,7 @@ void CGame::MenuWindow()
 	{
 		if (pInput->Trigger(DIK_M))
 		{
-			m_pConfirmationWindow = CConfirmation_Window::Create();
+			m_pConfirmationWindow = CConfirmation_Window::Create("ゲームをやめますか?", "はい", "いいえ", D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 			return;
 		}
 	}

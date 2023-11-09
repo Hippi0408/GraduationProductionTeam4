@@ -64,7 +64,7 @@ void CChar_Select::Update()
 		{
 			if (m_pConfirmation == nullptr)
 			{
-				m_pConfirmation = CConfirmation_Window::Create();
+				m_pConfirmation = CConfirmation_Window::Create("", "ストライカー", "コマンダー",D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
 			}
 		}
 

@@ -22,6 +22,7 @@ class CMenuWindow;
 class CConfirmation_Window;
 class CPlayerManager;
 class CEnergy_Gauge;
+class CPlayerUi;
 
 class CGame : public CMode
 {
@@ -58,6 +59,7 @@ private:
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
+	CPlayerUi* m_pPlayerUI;
 	
 	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ
 	static CMeshField *pMeshField;					// メッシュフィールド

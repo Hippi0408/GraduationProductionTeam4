@@ -58,13 +58,15 @@ public:
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
 
-	static CConfirmation_Window* Create();			// ¶¬
+	static CConfirmation_Window* Create(const std::string letter, const std::string letter2, const std::string letter3, D3DXCOLOR col);			// ¶¬
 	static bool GetSapawnWindow() { return m_bSpawnWindow; }
 	static void SetSapawnWindow(bool flag) { m_bSpawnWindow = flag; }
 
 private:
 	CObject2D* m_pObject2D;
 	CFontString* m_pFont;
+	D3DXCOLOR m_Color;
+	std::string m_Letter[3];
 
 	int		m_nMenuInitiative;					// ƒƒjƒ…[‚Ìå“±Œ 
 

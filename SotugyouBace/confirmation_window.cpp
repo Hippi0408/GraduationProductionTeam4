@@ -60,7 +60,7 @@ HRESULT CConfirmation_Window::Init()
 	m_bSelectChoice = false;
 	m_bDecition = false;
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
-	m_pObject2D->SetCol(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
+	m_pObject2D->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
 
 	return S_OK;
 }
@@ -125,12 +125,12 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 		{
 			if (m_pFont == nullptr)
 			{
-				m_pFont = CFontString::Create({ 420.0f, 350.0f, 0.0f }, { 30.0f, 30.0f }, "ゲームをやめますか?");
+				m_pFont = CFontString::Create({ 420.0f, 350.0f, 0.0f }, { 30.0f, 30.0f }, m_Letter[0]);
 			}
 
 			// 選択肢の設定処理
-			SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 40.0f, 40.0f }, "はい"));
-			SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 40.0f, 40.0f }, "いいえ"));
+			SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 40.0f, 40.0f }, m_Letter[1]));
+			SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 40.0f, 40.0f }, m_Letter[2]));
 
 			// 選択肢が使用されている場合
 			if (!m_vpListChoice.empty())
@@ -308,7 +308,7 @@ void CConfirmation_Window::SetDisplay(const bool decition)
 //=============================================================================
 // メニューの生成
 //=============================================================================
-CConfirmation_Window* CConfirmation_Window::Create()
+CConfirmation_Window* CConfirmation_Window::Create(const std::string letter, const std::string letter2, const std::string letter3, D3DXCOLOR col)
 {
 	//クラスの生成
 	CConfirmation_Window* pMenuWindow = new CConfirmation_Window;
@@ -316,8 +316,12 @@ CConfirmation_Window* CConfirmation_Window::Create()
 	//nullチェック
 	if (pMenuWindow != nullptr)
 	{
+		pMenuWindow->m_Color = col;
 		//初期化処理
 		pMenuWindow->Init();
+		pMenuWindow->m_Letter[0] = letter;
+		pMenuWindow->m_Letter[1] = letter2;
+		pMenuWindow->m_Letter[2] = letter3;
 	}
 	else
 	{
