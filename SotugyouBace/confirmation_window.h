@@ -55,10 +55,11 @@ public:
 	bool GetSelectChoice() { return m_bSelectChoice; }
 	bool GetDecition() { return m_bDecition; }
 	void SetSelectChoice(bool flag) { m_bSelectChoice = flag; }
+	void SetLetter(const std::string letter[]);
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
 
-	static CConfirmation_Window* Create(const std::string letter, const std::string letter2, const std::string letter3, D3DXCOLOR col);			// ê∂ê¨
+	static CConfirmation_Window* Create(D3DXCOLOR col);			// ê∂ê¨
 	static bool GetSapawnWindow() { return m_bSpawnWindow; }
 	static void SetSapawnWindow(bool flag) { m_bSpawnWindow = flag; }
 

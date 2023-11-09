@@ -129,8 +129,8 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 			}
 
 			// 選択肢の設定処理
-			SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 40.0f, 40.0f }, m_Letter[1]));
-			SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 40.0f, 40.0f }, m_Letter[2]));
+			SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, m_Letter[1]));
+			SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, m_Letter[2]));
 
 			// 選択肢が使用されている場合
 			if (!m_vpListChoice.empty())
@@ -306,9 +306,20 @@ void CConfirmation_Window::SetDisplay(const bool decition)
 }
 
 //=============================================================================
+//	文字処理
+//=============================================================================
+void CConfirmation_Window::SetLetter(const std::string letter[])
+{
+	for (int i = 0; i < 3; i++)
+	{
+		m_Letter[i] = letter[i];
+	}
+}
+
+//=============================================================================
 // メニューの生成
 //=============================================================================
-CConfirmation_Window* CConfirmation_Window::Create(const std::string letter, const std::string letter2, const std::string letter3, D3DXCOLOR col)
+CConfirmation_Window* CConfirmation_Window::Create(D3DXCOLOR col)
 {
 	//クラスの生成
 	CConfirmation_Window* pMenuWindow = new CConfirmation_Window;
@@ -319,9 +330,6 @@ CConfirmation_Window* CConfirmation_Window::Create(const std::string letter, con
 		pMenuWindow->m_Color = col;
 		//初期化処理
 		pMenuWindow->Init();
-		pMenuWindow->m_Letter[0] = letter;
-		pMenuWindow->m_Letter[1] = letter2;
-		pMenuWindow->m_Letter[2] = letter3;
 	}
 	else
 	{

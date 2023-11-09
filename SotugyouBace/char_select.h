@@ -8,8 +8,11 @@
 #define	_CHAR_SELECT_H_
 
 #include"mode.h"
+#include "fontString.h"
+#include <vector>
 
 class CConfirmation_Window;
+class CFontString;
 
 class CChar_Select : public CMode
 {
@@ -25,6 +28,8 @@ public:
 
 private:
 	CConfirmation_Window* m_pConfirmation;
+	CFontString* m_pFont;
+	std::string m_Letter[3];
 };
 
 #endif // !_CHAR_SELECT_H_

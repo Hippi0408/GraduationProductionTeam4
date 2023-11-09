@@ -281,7 +281,8 @@ void CGame::MenuWindow()
 	{
 		if (pInput->Trigger(DIK_M))
 		{
-			m_pConfirmationWindow = CConfirmation_Window::Create("ƒQ[ƒ€‚ğ‚â‚ß‚Ü‚·‚©?", "‚Í‚¢", "‚¢‚¢‚¦", D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
+			m_pConfirmationWindow = CConfirmation_Window::Create(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
+			//m_pConfirmationWindow->SetLetter("ƒQ[ƒ€‚ğ‚â‚ß‚Ü‚·‚©H");
 			return;
 		}
 	}
