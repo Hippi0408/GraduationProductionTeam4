@@ -187,6 +187,9 @@
     <ClCompile Include="tutorial.cpp">
       <Filter>03_Mode</Filter>
     </ClCompile>
+    <ClCompile Include="drop_weapon.cpp">
+      <Filter>04_Object\MoveObject\weapon</Filter>
+    </ClCompile>
     <ClCompile Include="player_ui.cpp">
       <Filter>04_Object\Object2D\PlayerUi</Filter>
     </ClCompile>
@@ -382,6 +385,9 @@
     <ClInclude Include="mob.h">
       <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
     </ClInclude>
+    <ClInclude Include="drop_weapon.h">
+      <Filter>04_Object\MoveObject\weapon</Filter>
+    </ClInclude>
     <ClInclude Include="player_ui.h">
       <Filter>04_Object\Object2D\PlayerUi</Filter>
     </ClInclude>
@@ -449,6 +455,9 @@
     </Filter>
     <Filter Include="04_Object\Object2D\Number">
       <UniqueIdentifier>{74e1f057-b736-4c8f-997c-2d4e43ed6b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\MoveObject\weapon">
+      <UniqueIdentifier>{0a9cf788-7d61-40d4-8c65-6b0c52f9f0c8}</UniqueIdentifier>
     </Filter>
     <Filter Include="04_Object\Object2D\PlayerUi">
       <UniqueIdentifier>{2f8f74e8-3596-46d5-8e5c-f3b06d58c47f}</UniqueIdentifier>

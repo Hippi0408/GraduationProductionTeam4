@@ -42,8 +42,9 @@ HRESULT CPC::Init()
 	CPlayer::Init();
 	m_bFlag = false;
 
-	SetEnergyGauge(CEnergy_Gauge::Create({ 1280 / 2, 650.0f, 0.0f }, { 700.0f, 10.0f }));
-	SetGaugeManager(CPlayer_Life_Gauge::Create({ 70.0f,720.0f / 2,0.0f }, { 50.0f,500.0f }));
+	//SetEnergyGauge(CEnergy_Gauge::Create({ 1280 / 2, 650.0f, 0.0f }, { 700.0f, 10.0f }));
+	SetEnergyGauge(CEnergy_Gauge::Create({ 70,720.0f / 2,0.0f }, { 20.0f,500.0f }));
+	SetGaugeManager(CPlayer_Life_Gauge::Create({ 1210.0f,720.0f / 2,0.0f }, { 20.0f,500.0f }));
 
 	return S_OK;
 }
@@ -100,7 +101,7 @@ void CPC::Input()
 
 	// ブースト中は移動速度が上がる
 	if (GetBoost())
-		boostMove *= 2.0f;
+		boostMove *= 3.0f;
 
 	// 目的の角度
 	D3DXVECTOR3 rotDest = GetRotDest();
@@ -204,7 +205,7 @@ void CPC::Input()
 
 			// ブーストした分の速度を減らす
 			if (GetBoost())
-				move /= 2.0f;
+				move /= boostMove.x;
 
 			move *= 7.0f;		// 初速
 			move.y = 0.0f;

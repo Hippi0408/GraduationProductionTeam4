@@ -22,10 +22,12 @@ class CObject3D;
 class CPlayer : public CCharacter
 {
 
-	static const int FIRST_MAX_LIFE = 100;		// 初期最大体力の値
-	static const float PLAYER_COLLISION_RADIUS;	// プレイヤーの当たり判定の大きさ
-	static const float PLAYER_JUMP_POWER;		// プレイヤーのジャンプ力
-	static const float VIEW_SCOPE_ANGLE;		// 画面に映るぎりぎりの位置
+	static const int FIRST_MAX_LIFE = 100;			// 初期最大体力の値
+	static const float PLAYER_COLLISION_RADIUS;		// プレイヤーの当たり判定の大きさ
+	static const float PLAYER_JUMP_POWER;			// プレイヤーのジャンプ力
+	static const float VIEW_SCOPE_ANGLE;			// 画面に映るぎりぎりの位置
+	static const float RETICLE_TRANSPARENCY_SIZE;	// レティクル透明時のサイズ
+	static const float RETICLE_SIZE;				// レティクルのサイズ
 
 public:
 
@@ -87,7 +89,7 @@ public:
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
 	void Target();						// ターゲット
 	bool Target_Scope(D3DXVECTOR3 nearpos);				// ターゲットを狙う範囲
-	void Reticle();
+	void Reticle(D3DXVECTOR3 target);	// レティクル
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
@@ -101,7 +103,13 @@ private:
 	bool m_bTarget;			// ターゲットがいるか
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
+
 	CObject3D *m_pReticle;				// レティクル
+	D3DXVECTOR3 m_Reticle_Pos;
+	D3DXVECTOR2 m_Reticle_Size;
+	D3DXVECTOR2 m_Reticle_Tran_Size;
+	float m_fReticle_Alpha;
+	bool m_bReticle_Draw;
 };
 
 #endif// _PLAYER_H_

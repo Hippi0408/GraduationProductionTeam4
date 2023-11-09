@@ -25,6 +25,7 @@
 #include "menu.h"
 #include "utility.h"
 #include "parts.h"
+#include "drop_weapon.h"
 #include "player_ui.h"
 
 CMeshField *CGame::pMeshField = nullptr;
@@ -72,11 +73,39 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-		CMob::Create({ utility::Random<float>(1000.0f, -1000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(9000.0f, 200.0f) });
+		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
 	}
 
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
+
+	for (int nCnt = 0; nCnt < 20; nCnt++)
+	{
+		// ランダムな位置
+		D3DXVECTOR3 RandPos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) };
+
+		// タイプの設定
+		int nRandType = 0;
+
+		// タイプ
+		nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
+
+		while (CDrop_Weapon::WEAPON_MAX == nRandType || CDrop_Weapon::BODY_MAX == nRandType
+			|| CDrop_Weapon::HIP_MAX == nRandType || CDrop_Weapon::HEAD_MAX == nRandType
+			|| CDrop_Weapon::RIGHT_UPPER_ARM_MAX == nRandType || CDrop_Weapon::RIGHT_FOREARM_MAX == nRandType
+			|| CDrop_Weapon::RIGHT_ARM_MAX == nRandType || CDrop_Weapon::LEFT_UPPER_ARM_MAX == nRandType
+			|| CDrop_Weapon::LEFT_FOREARM_MAX == nRandType || CDrop_Weapon::LEFT_ARM_MAX == nRandType
+			|| CDrop_Weapon::RIGHT_THIGH_MAX == nRandType || CDrop_Weapon::RIGHT_SHIN_MAX == nRandType
+			|| CDrop_Weapon::RIGHT_LEG_MAX == nRandType || CDrop_Weapon::LEFT_THIGH_MAX == nRandType
+			|| CDrop_Weapon::LEFT_SHIN_MAX == nRandType || CDrop_Weapon::LEFT_LEG_MAX == nRandType)
+		{
+			// タイプ
+			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
+		}
+
+		// 生成
+		CDrop_Weapon::Creat(RandPos, nRandType);
+	}
 
 	// タイムの生成
 	m_pTime = CTime::Create();

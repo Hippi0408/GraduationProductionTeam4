@@ -53,7 +53,6 @@ public:
 
 private:
 
-
 	static bool m_bGameEnd;							// ゲーム終了判定
 	static bool m_bGameWindow;
 	int m_nEndCounter;								// ゲーム終了までの時間
