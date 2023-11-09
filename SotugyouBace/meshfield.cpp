@@ -328,7 +328,7 @@ float CMeshField::MeshCollision(D3DXVECTOR3 pos)
 			m_nCntIndex = nCnt;
 
 			// Ú’n‚µ‚Ä‚¢‚éê‡
-			if (m_fPosY > pos.y)
+			if (m_fPosY >= pos.y)
 			{
 				m_bHit = true;
 
