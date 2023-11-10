@@ -14,6 +14,7 @@
 #include "tutorial.h"
 #include "locus.h"
 #include "player_life_gauge.h"
+#include "pause.h"
 
 #include"player_manager.h"
 #include"debugProc.h"
@@ -264,8 +265,20 @@ void CPC::Input()
 		PlayerAttack();
 	}
 
-	// 視点処理
-	Perspective();
+	CPause *pPause = nullptr;
+
+	// ポーズの取得
+	if (CApplication::GetModeType() == CApplication::MODE_GAME)
+		pPause = CGame::GetPause();
+	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+		pPause = CTutorial::GetPause();
+
+	// ポーズしてないとき
+	if (!pPause->GetPause())
+	{
+		// 視点処理
+		Perspective();
+	}
 
 	if (pGauge != nullptr)
 	{

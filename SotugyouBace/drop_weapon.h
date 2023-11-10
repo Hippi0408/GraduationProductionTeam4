@@ -16,6 +16,8 @@ class CObject3D;
 class CDrop_Weapon : public CMove_Object
 {
 public:
+	static const int DRAW_DROP_DISTANCE = 7000;		// “G‚ð•\Ž¦‚·‚é‹——£
+
 	CDrop_Weapon(const PRIORITY priority = PRIORITY_MODEL);
 	~CDrop_Weapon();
 

@@ -110,6 +110,7 @@ private:
 	D3DXVECTOR2 m_Reticle_Tran_Size;
 	float m_fReticle_Alpha;
 	bool m_bReticle_Draw;
+	bool m_bReticle_Reset;
 };
 
 #endif// _PLAYER_H_

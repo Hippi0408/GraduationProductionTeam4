@@ -108,6 +108,9 @@ void CMob::Destroy()
 	std::move(CParticleEmitter::Create("MineOre", GetPos()));
 
 	CEnemy::Destroy();
+
+	// 武器、パーツのドロップ
+	//CGame::SetParts(1, GetPos());
 }
 
 //============================================================================
