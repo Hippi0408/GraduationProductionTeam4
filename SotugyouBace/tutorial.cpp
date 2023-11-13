@@ -14,9 +14,11 @@
 #include"input.h"
 #include"fade.h"
 #include"fontString.h"
+#include"pause.h"
 #include "parts_file.h"
 
 CMeshField *CTutorial::pMeshField = nullptr;			// メッシュフィールド
+CPause *CTutorial::m_pPause = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -58,6 +60,9 @@ HRESULT CTutorial::Init()
 
 	// メッシュフィールドの生成
 	pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
+
+	// ポーズ画面
+	m_pPause = CPause::Create();
 
 	return S_OK;
 }

@@ -11,6 +11,8 @@
 #include"input.h"
 #include"object3D.h"
 #include"debugProc.h"
+#include"application.h"
+#include"player_manager.h"
 
 const float CDrop_Weapon::PARTS_COLLISION_RADIUS = 150.0f;	// 落ちてる武器の当たり判定の大きさ
 
@@ -180,6 +182,34 @@ void CDrop_Weapon::Update()
 	m_fRot += 0.03f;
 	// 角度の設定
 	m_pDrop_Weapon->SetRot({ 0.4f,m_fRot,0.0f });
+
+	CPlayerManager *pPlayerManager = CApplication::GetPlayerManager();
+	CPlayer *pPlayer = nullptr;
+
+	if (pPlayerManager != nullptr)
+		pPlayer = pPlayerManager->GetPlayer(0);
+
+	D3DXVECTOR3 Player_Pos = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 Mob_Pos = { 0.0f,0.0f,0.0f };
+
+	if (pPlayer != nullptr)
+	{
+		// 位置の取得
+		Player_Pos = pPlayer->GetPos();
+		Mob_Pos = GetPos();
+	}
+
+	// プレイヤーから落ちてるパーツの距離
+	D3DXVECTOR3 Vec = Player_Pos - Mob_Pos;
+
+	// 距離の算出
+	float fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
+
+	// 距離7000以上
+	if (fDistance > DRAW_DROP_DISTANCE)
+		m_pDrop_Weapon->SetDrawFlag(false);
+	else
+		m_pDrop_Weapon->SetDrawFlag(true);
 }
 
 //=============================================================================
@@ -213,7 +243,7 @@ void CDrop_Weapon::Hit(CMove_Object* pHit)
 }
 
 //=============================================================================
-// 武器を拾う
+// 武器を拾うゲームの終了タイトルに戻る
 //=============================================================================
 void CDrop_Weapon::Pick_Up_Weapon()
 {

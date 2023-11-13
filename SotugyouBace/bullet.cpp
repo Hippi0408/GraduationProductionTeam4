@@ -157,7 +157,7 @@ void CBullet::FieldCollision()
 void CBullet::Hit(CMove_Object* pHit)
 {
 	// ’e‚Å‚Í–³‚¢ê‡ && “¯‚¶ƒTƒCƒh‚Å‚Í‚È‚¢ê‡
-	if (pHit->GetTag() != TAG_BULLET && GetPlayerSide() != pHit->GetPlayerSide())
+	if (pHit->GetTag() == TAG_CHARACTER && GetPlayerSide() != pHit->GetPlayerSide())
 	{
 		Destroy();
 	}

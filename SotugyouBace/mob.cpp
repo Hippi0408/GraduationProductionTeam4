@@ -120,6 +120,9 @@ void CMob::Destroy()
 	std::move(CParticleEmitter::Create("MineOre", GetPos()));
 
 	CEnemy::Destroy();
+
+	// 武器、パーツのドロップ
+	CGame::SetDrop_Parts(1, GetPos());
 }
 
 //============================================================================
@@ -132,7 +135,7 @@ void CMob::DrawLifeGauge()
 
 	if (pPlayerManager != nullptr)
 		pPlayer = pPlayerManager->GetPlayer(0);
-
+	
 	D3DXVECTOR3 Player_Pos = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 Mob_Pos = { 0.0f,0.0f,0.0f };
 
