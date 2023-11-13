@@ -119,7 +119,7 @@ private:
 	float m_fRot;				// Šp“x
 	float m_fMove;				// —‰º‘¬“x
 	bool m_bPick_Up;			// E‚¦‚é”ÍˆÍ‚É‚¢‚é‚©
-	CPlayer::MODEL m_Model;
+	CPlayer::MODEL m_Parts;
 };
 
 #endif // !_DORP_WAPON_H_

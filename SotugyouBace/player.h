@@ -58,6 +58,7 @@ public:
 		PARTS_BODY = 0,			// ì∑ëÃ
 		PARTS_ARMS,				// òr
 		PARTS_LEG,				// ãr
+		//PARTS_WEAPON,			// ïêäÌ
 
 		PARTS_MAX
 	};

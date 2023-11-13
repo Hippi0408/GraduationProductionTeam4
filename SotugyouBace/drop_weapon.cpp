@@ -293,37 +293,37 @@ void CDrop_Weapon::Pick_Up_Weapon()
 void CDrop_Weapon::Parts_Type()
 {
 	if (WEAPON_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_BODY;
+	m_Parts = CPlayer::MODEL_BODY;
 	else if(BODY_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_BODY;
+	m_Parts = CPlayer::MODEL_BODY;
 	else if (HIP_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_HIP;
+	m_Parts = CPlayer::MODEL_HIP;
 	else if (HEAD_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_HEAD;
+	m_Parts = CPlayer::MODEL_HEAD;
 	else if (RIGHT_UPPER_ARM_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_RIGHT_UPPER_ARM;
+	m_Parts = CPlayer::MODEL_RIGHT_UPPER_ARM;
 	else if (RIGHT_FOREARM_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_RIGHT_FOREARM;
+	m_Parts = CPlayer::MODEL_RIGHT_FOREARM;
 	else if (RIGHT_ARM_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_RIGHT_ARM;
+	m_Parts = CPlayer::MODEL_RIGHT_ARM;
 	else if (LEFT_UPPER_ARM_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_LEFT_UPPER_ARM;
+	m_Parts = CPlayer::MODEL_LEFT_UPPER_ARM;
 	else if (LEFT_FOREARM_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_LEFT_FOREARM;
+	m_Parts = CPlayer::MODEL_LEFT_FOREARM;
 	else if (LEFT_ARM_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_LEFT_ARM;
+	m_Parts = CPlayer::MODEL_LEFT_ARM;
 	else if (RIGHT_THIGH_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_RIGHT_THIGH;
+	m_Parts = CPlayer::MODEL_RIGHT_THIGH;
 	else if (RIGHT_SHIN_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_RIGHT_SHIN;
+	m_Parts = CPlayer::MODEL_RIGHT_SHIN;
 	else if (RIGHT_LEG_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_RIGHT_LEG;
+	m_Parts = CPlayer::MODEL_RIGHT_LEG;
 	else if (LEFT_THIGH_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_LEFT_THIGH;
+	m_Parts = CPlayer::MODEL_LEFT_THIGH;
 	else if (LEFT_SHIN_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_LEFT_SHIN;
+	m_Parts = CPlayer::MODEL_LEFT_SHIN;
 	else if (LEFT_LEG_MAX > m_nWeapon_Type)
-	m_Model = CPlayer::MODEL_LEFT_LEG;
+	m_Parts = CPlayer::MODEL_LEFT_LEG;
 }
 
 //=============================================================================
