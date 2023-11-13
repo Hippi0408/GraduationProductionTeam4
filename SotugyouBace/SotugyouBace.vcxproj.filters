@@ -187,6 +187,9 @@
     <ClCompile Include="tutorial.cpp">
       <Filter>03_Mode</Filter>
     </ClCompile>
+    <ClCompile Include="parts_file.cpp">
+      <Filter>02_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -378,6 +381,9 @@
     </ClInclude>
     <ClInclude Include="mob.h">
       <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="parts_file.h">
+      <Filter>02_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

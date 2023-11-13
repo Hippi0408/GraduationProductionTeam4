@@ -96,28 +96,24 @@ void CCharacter::Update()
 //============================================================================
 void CCharacter::Draw()
 {
-	// 描画中の場合
-	if (GetDrawFlag())
-	{
-		LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
 
-		//計算用のマトリックス
-		D3DXMATRIX mtxRot, mtxTrans;
+	//計算用のマトリックス
+	D3DXMATRIX mtxRot, mtxTrans;
 
-		//ワールドマトリックスの初期化
-		D3DXMatrixIdentity(&m_mtxWorld);
+	//ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&m_mtxWorld);
 
-		//向きを反映
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+	//向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
-		//位置を反映
-		D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+	//位置を反映
+	D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
-		//ワールドマトリックスの設定
-		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
-	}
+	//ワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 }
 
 //==============================================================================================
@@ -303,11 +299,20 @@ void CCharacter::NormalizeRot()
 //==============================================================================================
 // パーツの設定処理
 //==============================================================================================
-void CCharacter::SetParts(const int index, const char* Xfilename)
+void CCharacter::SetParts(const int charaParts, const int partsIndex)
 {
 	// パーツが未使用の場合
-	if (m_Parts[index] == nullptr)
+	if (m_Parts[charaParts] == nullptr)
 	{
-		m_Parts[index] = CParts::Create(GetPos(), Xfilename, this);
+		m_Parts[charaParts] = CParts::Create(GetPos(), partsIndex, this);
 	}
+	//else
+	//{
+	//	// パーツ変更処理(index, filename)
+	//	for (auto pParts : m_Parts[index]->GetModelAll())
+	//	{
+
+	//	}
+	//}
 }
+

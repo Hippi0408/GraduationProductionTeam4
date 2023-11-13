@@ -31,6 +31,7 @@
 #include "stage_select.h"
 #include "tutorial.h"
 #include "confirmation_window.h"
+#include "parts_file.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -52,6 +53,7 @@ CLight* CApplication::m_pLight = nullptr;
 CCamera* CApplication::m_pCamera = nullptr;
 CFade* CApplication::m_pFade = nullptr;
 CMenu* CApplication::m_pMenu = nullptr;
+CParts_File* CApplication::m_pPartsFile = nullptr;
 CParticleManager* CApplication::m_pParticleManager = nullptr;
 CPlayerManager* CApplication::m_pPlayerManager = nullptr;
 CEnemyManager* CApplication::m_pEnemyManager = nullptr;
@@ -92,6 +94,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	m_pMotion = new CMotion;						// モーションの生成
 	m_pLight = new CLight;							// ライトの生成
 	m_pCamera = new CCamera;						// カメラの生成
+	m_pPartsFile = new CParts_File;					// パーツファイルの生成
 	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
 
 	//入力処理
@@ -244,6 +247,14 @@ void CApplication::Uninit()
 		m_pSound = nullptr;
 	}
 
+	// パーツファイルの終了
+	if (m_pPartsFile != nullptr)
+	{
+		m_pPartsFile->Uninit();
+		delete m_pPartsFile;
+		m_pPartsFile = nullptr;
+	}
+
 	// 全てのオブジェクトの解放処理
 	CObject::ReleaseAll();
 
@@ -349,6 +360,9 @@ void CApplication::SetMode(MODE mode)
 
 		// 全ての当たり判定の解放処理
 		m_pCollision_Manager->ReleaseAllCollision();
+
+		// 全てのモデルセットの終了
+		m_pPartsFile->ReleaseAllFile();
 	}
 	// カメラの初期化
 	m_pCamera->Init();
