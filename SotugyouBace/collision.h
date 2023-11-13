@@ -12,10 +12,7 @@
 
 // 前方宣言
 class CMove_Object;
-
-#ifdef _DEBUG
 class CObject3D;
-#endif
 
 class CCollision
 {
@@ -31,24 +28,23 @@ public:
 
 	void Collision();
 	bool Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius);	// 円の当たり判定
+	void DebugObj();			// デバッグオブジェクトの処理
+
+	static CCollision* Create(CMove_Object* pParent, const D3DXCOLOR col = { 1.0f, 1.0f, 1.0f, 1.0f });
 
 	void SetParent(CMove_Object* parent) { m_pParent = parent; }
 
 	const bool GetDeath() { return m_bDeath; }		// 死亡フラグの取得
 	CMove_Object* GetParent() { return m_pParent; }
 
-	static CCollision* Create(CMove_Object* pParent);
+	CObject3D* GetDebugObj() { return m_pDebugObj; }		// デバッグオブジェクトのポインタ
 
 private:
 
 	bool m_bDeath;				// 死亡フラグ
 
 	CMove_Object* m_pParent;	// 親オブジェクト
-
-#ifdef _DEBUG
-	void DebugObj();			// デバッグオブジェクトの処理
 	CObject3D* m_pDebugObj;		// デバッグオブジェクトのポインタ
-#endif
 
 };
 

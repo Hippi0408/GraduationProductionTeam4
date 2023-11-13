@@ -111,7 +111,7 @@ HRESULT CDrop_Weapon::Init()
 	SetCenterPos({ 0.0f,100.0f,0.0f });
 
 	// “–‚½‚è”»’è‚Ì¶¬
-	SetCollision();
+	SetCollision({ 1.0f, 1.0f, 1.0f, 1.0f });
 
 	// —Ž‚¿‚Ä‚é•Ší‚Ì¶¬
 	m_pDrop_Weapon = CObjectX::Create(GetPos(), { 0.0f,0.0f,0.0f }, nullptr, s_Weapon_FileName[m_nWeapon_Type]);
@@ -133,6 +133,18 @@ HRESULT CDrop_Weapon::Init()
 //=============================================================================
 void CDrop_Weapon::Uninit()
 {
+	if (m_pDrop_Weapon != nullptr)
+	{
+		m_pDrop_Weapon->Uninit();
+		m_pDrop_Weapon = nullptr;
+	}
+
+	if (m_pPick_Up != nullptr)
+	{
+		m_pPick_Up->Uninit();
+		m_pPick_Up = nullptr;
+	}
+
 	CMove_Object::Uninit();
 }
 
@@ -173,11 +185,6 @@ void CDrop_Weapon::Update()
 		}
 	}
 
-	// •Ší‚ðE‚¤
-	Pick_Up_Weapon();
-
-	m_bPick_Up = false;
-
 	// ‰ñ“]‘¬“x
 	m_fRot += 0.03f;
 	// Šp“x‚ÌÝ’è
@@ -210,6 +217,11 @@ void CDrop_Weapon::Update()
 		m_pDrop_Weapon->SetDrawFlag(false);
 	else
 		m_pDrop_Weapon->SetDrawFlag(true);
+
+	// •Ší‚ðE‚¤
+	Pick_Up_Weapon();
+
+	m_bPick_Up = false;
 }
 
 //=============================================================================
@@ -243,7 +255,7 @@ void CDrop_Weapon::Hit(CMove_Object* pHit)
 }
 
 //=============================================================================
-// •Ší‚ðE‚¤ƒQ[ƒ€‚ÌI—¹ƒ^ƒCƒgƒ‹‚É–ß‚é
+// •Ší‚ðE‚¤
 //=============================================================================
 void CDrop_Weapon::Pick_Up_Weapon()
 {
@@ -267,8 +279,6 @@ void CDrop_Weapon::Pick_Up_Weapon()
 			{
 				// I—¹ˆ—
 				Uninit();
-				m_pDrop_Weapon->Uninit();
-				m_pPick_Up->Uninit();
 			}
 		}
 		else

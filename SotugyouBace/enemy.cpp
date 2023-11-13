@@ -37,7 +37,7 @@ HRESULT CEnemy::Init()
 	SetPlayerSide(false);
 
 	// “–‚½‚è”»’è‚Ì¶¬
-	SetCollision();
+	SetCollision({ 1.0f, 0.0f, 0.0f, 1.0f });
 
 	CCharacter::Init();
 

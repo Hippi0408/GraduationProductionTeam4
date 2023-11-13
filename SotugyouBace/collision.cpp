@@ -8,10 +8,7 @@
 #include "application.h"
 #include "collision_manager.h"
 #include "move_object.h"
-
-#ifdef _DEBUG
 #include "object3D.h"
-#endif
 
 //=============================================================================
 // コンストラクタ
@@ -42,14 +39,12 @@ HRESULT CCollision::Init()
 //=============================================================================
 void CCollision::Uninit()
 {
-#ifdef _DEBUG
 	// デバッグオブジェクトが使用中の場合
 	if (m_pDebugObj != nullptr)
 	{
 		m_pDebugObj->Uninit();
 		m_pDebugObj = nullptr;
 	}
-#endif
 
 	Releace();
 }
@@ -59,9 +54,7 @@ void CCollision::Uninit()
 //=============================================================================
 void CCollision::Update()
 {
-#ifdef _DEBUG
 	DebugObj();
-#endif
 
 	// 当たり判定
 	Collision();
@@ -126,7 +119,6 @@ bool CCollision::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, con
 	return false;
 }
 
-#ifdef _DEBUG
 //=============================================================================
 // デバッグオブジェクトの処理
 //=============================================================================
@@ -139,12 +131,11 @@ void CCollision::DebugObj()
 		m_pDebugObj->SetPos(m_pParent->GetCenterPos());
 	}
 }
-#endif
 
 //=============================================================================
 // 生成処理
 //=============================================================================
-CCollision* CCollision::Create(CMove_Object* pParent)
+CCollision* CCollision::Create(CMove_Object* pParent, const D3DXCOLOR col)
 {
 	CCollision* pCollision = new CCollision;
 
@@ -157,13 +148,12 @@ CCollision* CCollision::Create(CMove_Object* pParent)
 		{
 			pCollision->m_pParent = pParent;
 
-#ifdef _DEBUG
 			const float fRadius = pCollision->m_pParent->GetRadius() * 2.0f;
 
 			pCollision->m_pDebugObj = CObject3D::Create(pCollision->m_pParent->GetCenterPos(), D3DXVECTOR2(fRadius, fRadius));
 			pCollision->m_pDebugObj->SetTexture(CTexture::TEXTURE_CIRCLE);
-			pCollision->m_pDebugObj->SetCol({1.0f, 0.0f, 0.0f, 1.0f});
-#endif
+			pCollision->m_pDebugObj->SetCol(col);
+			pCollision->m_pDebugObj->Setbillboard(true);
 		}
 	}
 

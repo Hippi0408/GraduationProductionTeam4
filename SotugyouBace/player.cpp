@@ -60,7 +60,7 @@ HRESULT CPlayer::Init()
 	SetPlayerSide(true);
 
 	// “–‚½‚è”»’è‚Ì¶¬
-	SetCollision();
+	SetCollision({ 0.0f, 1.0f, 1.0f, 1.0f });
 
 	m_bTarget = false;
 	m_bReticle_Reset = true;
