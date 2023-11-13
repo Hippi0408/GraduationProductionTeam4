@@ -57,7 +57,7 @@ void CWeapon::Draw()
 //============================================================================
 // ¶¬ˆ—
 //============================================================================
-CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, const int partsIndex, CObjectX* parent)
+CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, CObjectX* parent)
 {
 	CWeapon* pParts = new CWeapon;
 
@@ -67,7 +67,6 @@ CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, const int partsIndex, CObjectX* 
 	}
 
 	pParts->SetPos(pos);
-	pParts->SetParts(partsIndex);
 	pParts->SetParent(parent);
 
 	return pParts;
