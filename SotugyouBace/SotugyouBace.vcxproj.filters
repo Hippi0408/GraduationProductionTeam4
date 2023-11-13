@@ -196,6 +196,9 @@
     <ClCompile Include="parts_file.cpp">
       <Filter>02_Resource</Filter>
     </ClCompile>
+    <ClCompile Include="weapon.cpp">
+      <Filter>04_Object\MoveObject\weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -396,6 +399,9 @@
     </ClInclude>
     <ClInclude Include="parts_file.h">
       <Filter>02_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="weapon.h">
+      <Filter>04_Object\MoveObject\weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

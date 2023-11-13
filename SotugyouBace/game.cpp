@@ -329,21 +329,15 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand)
 		// タイプ
 		nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
 
-		while (CDrop_Weapon::WEAPON_MAX == nRandType || CDrop_Weapon::BODY_MAX == nRandType
-			|| CDrop_Weapon::HIP_MAX == nRandType || CDrop_Weapon::HEAD_MAX == nRandType
-			|| CDrop_Weapon::RIGHT_UPPER_ARM_MAX == nRandType || CDrop_Weapon::RIGHT_FOREARM_MAX == nRandType
-			|| CDrop_Weapon::RIGHT_ARM_MAX == nRandType || CDrop_Weapon::LEFT_UPPER_ARM_MAX == nRandType
-			|| CDrop_Weapon::LEFT_FOREARM_MAX == nRandType || CDrop_Weapon::LEFT_ARM_MAX == nRandType
-			|| CDrop_Weapon::RIGHT_THIGH_MAX == nRandType || CDrop_Weapon::RIGHT_SHIN_MAX == nRandType
-			|| CDrop_Weapon::RIGHT_LEG_MAX == nRandType || CDrop_Weapon::LEFT_THIGH_MAX == nRandType
-			|| CDrop_Weapon::LEFT_SHIN_MAX == nRandType || CDrop_Weapon::LEFT_LEG_MAX == nRandType)
+		while (CDrop_Weapon::ARMS_MAX == nRandType || CDrop_Weapon::LEG_MAX == nRandType
+			|| CDrop_Weapon::WEAPON_MAX == nRandType)
 		{
 			// タイプ
 			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
 		}
 
 		// 生成
-		CDrop_Weapon::Creat(Pos, nRandType);
+		CDrop_Weapon::Create(Pos, nRandType);
 	}
 }
 

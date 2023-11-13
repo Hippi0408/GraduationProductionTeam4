@@ -31,34 +31,12 @@ class CPlayer : public CCharacter
 
 public:
 
-	// モデルの配置情報
-	enum MODEL
-	{
-		MODEL_BODY = 0,			// [0]胴
-		MODEL_HIP,				// [1]腰
-		MODEL_HEAD,				// [2]頭
-		MODEL_RIGHT_UPPER_ARM,	// [3]右上腕
-		MODEL_RIGHT_FOREARM,	// [4]右前腕
-		MODEL_RIGHT_ARM,		// [5]右手
-		MODEL_LEFT_UPPER_ARM,	// [6]左上腕
-		MODEL_LEFT_FOREARM,		// [7]左前腕
-		MODEL_LEFT_ARM,			// [8]左手
-		MODEL_RIGHT_THIGH,		// [9]右腿
-		MODEL_RIGHT_SHIN,		// [10]右脛
-		MODEL_RIGHT_LEG,		// [11]右足
-		MODEL_LEFT_THIGH,		// [12]左腿
-		MODEL_LEFT_SHIN,		// [13]左脛
-		MODEL_LEFT_LEG,			// [14]左足
-		MODEL_MAX,				// モデルの最大数
-	};
-
 	// パーツの種類
 	enum PARTS
 	{
 		PARTS_BODY = 0,			// 胴体
 		PARTS_ARMS,				// 腕
 		PARTS_LEG,				// 脚
-		//PARTS_WEAPON,			// 武器
 
 		PARTS_MAX
 	};

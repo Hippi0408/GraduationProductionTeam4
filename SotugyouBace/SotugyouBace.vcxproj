@@ -84,6 +84,7 @@
     <ClCompile Include="title_menu.cpp" />
     <ClCompile Include="trail.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="trail.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="utility.h" />
+    <ClInclude Include="weapon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33988321-C2B8-45BE-9836-B21C2E84733F}</ProjectGuid>
