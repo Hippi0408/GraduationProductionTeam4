@@ -81,7 +81,7 @@ HRESULT CGame::Init()
 	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
 
 	// 武器、パーツのドロップ
-	SetParts(20, { 0.0f,0.0f,0.0f }, true);
+	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
 
 	// タイムの生成
 	m_pTime = CTime::Create();
@@ -274,7 +274,7 @@ void CGame::MenuWindow()
 //==============================================================================================
 // 武器、パーツのドロップ
 //==============================================================================================
-void CGame::SetParts(int num, D3DXVECTOR3 pos, bool rand)
+void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand)
 {
 	for (int nCnt = 0; nCnt < num; nCnt++)
 	{

@@ -43,13 +43,13 @@ HRESULT CPause::Init(void)
 
 	// 選択メニューのサイズ
 	m_pPause_Pos[PAUSE_CONTINUE] = { 800.0f, 290.0f, 0.0f };
-	m_pPause_Pos[PAUSE_BACK_TITE] = { 800.0f, 430.0f, 0.0f };
-	m_pPause_Pos[PAUSE_END] = { 810.0f, 570.0f, 0.0f };
+	m_pPause_Pos[PAUSE_STAGE_SELECT] = { 770.0f, 430.0f, 0.0f };
+	m_pPause_Pos[PAUSE_CHAR_SELECT] = { 790.0f, 570.0f, 0.0f };
 
 	// 選択メニューの生成
 	m_pPause_Menu[PAUSE_CONTINUE] = CFontString::Create(m_pPause_Pos[PAUSE_CONTINUE], { m_StringSize }, "ゲームをつづける");
-	m_pPause_Menu[PAUSE_BACK_TITE] = CFontString::Create(m_pPause_Pos[PAUSE_BACK_TITE], { m_StringSize }, "タイトルにもどる");
-	m_pPause_Menu[PAUSE_END] = CFontString::Create(m_pPause_Pos[PAUSE_END], { m_StringSize }, "ゲームをやめる");
+	m_pPause_Menu[PAUSE_STAGE_SELECT] = CFontString::Create(m_pPause_Pos[PAUSE_STAGE_SELECT], { m_StringSize }, "ステージせんたくへ");
+	m_pPause_Menu[PAUSE_CHAR_SELECT] = CFontString::Create(m_pPause_Pos[PAUSE_CHAR_SELECT], { m_StringSize }, "キャラせんたくへ");
 
 	// 選択の初期値
 	m_nSelect = PAUSE_CONTINUE;
@@ -138,7 +138,7 @@ void CPause::Select()
 	CInput *pInput = CInput::GetKey();
 
 	// 選択肢の変更
-	if (pInput->Trigger(DIK_DOWN) && m_nSelect < PAUSE_END)
+	if (pInput->Trigger(DIK_DOWN) && m_nSelect < PAUSE_CHAR_SELECT)
 		m_nSelect++;
 	else if (pInput->Trigger(DIK_UP) && m_nSelect > PAUSE_CONTINUE)
 		m_nSelect--;
@@ -162,15 +162,19 @@ void CPause::Select()
 		case PAUSE_CONTINUE:
 			m_Select_Pause = true;
 			break;
-		case PAUSE_BACK_TITE:
-			// タイトル画面に戻る
+		case PAUSE_STAGE_SELECT:
+			// ステージ選択に戻る
 				if(CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 				// 画面遷移
-				CFade::SetFade(CApplication::MODE_TITLE, 0.05f);
+				CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
 			break;
-		case PAUSE_END:
+		case PAUSE_CHAR_SELECT:
 			// ウィンドウの破棄
-			DestroyWindow(CApplication::GetWindow());
+			//DestroyWindow(CApplication::GetWindow());
+			// キャラ選択に戻る
+			if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+				// 画面遷移
+				CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
 			break;
 		default:
 			break;
