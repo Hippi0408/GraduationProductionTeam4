@@ -193,6 +193,9 @@
     <ClCompile Include="player_ui.cpp">
       <Filter>04_Object\Object2D\PlayerUi</Filter>
     </ClCompile>
+    <ClCompile Include="charselect_window.cpp">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -390,6 +393,9 @@
     </ClInclude>
     <ClInclude Include="player_ui.h">
       <Filter>04_Object\Object2D\PlayerUi</Filter>
+    </ClInclude>
+    <ClInclude Include="charselect_window.h">
+      <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

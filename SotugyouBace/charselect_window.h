@@ -1,11 +1,11 @@
 //==============================================
 //
-// confirmatiomn_window.h (メニューウィンドウ.h)
+// charselect_window.h (キャラ選択ウィンドウ.h)
 // Author : Saito Shian
 //
 //==============================================
-#ifndef  _CONFIRMATION_WINDOW_H_				//このマクロ定義がされてなかったら
-#define  _CONFIRMATION_WINDOW_H_				//二重インクルード防止のマクロ定義
+#ifndef  _CHARSELECT_WINDOW_H_				//このマクロ定義がされてなかったら
+#define  _CHARSELECT_WINDOW_H_				//二重インクルード防止のマクロ定義
 
 //==============================================
 // インクルード
@@ -26,7 +26,7 @@ class CFontString;
 //==============================================
 // メニューウィンドウクラス
 //==============================================
-class CConfirmation_Window
+class CCharSelect_Window
 {
 public:
 	static const float BLINK_SPEED;					// 選択肢の点滅速度
@@ -34,8 +34,8 @@ public:
 	const float SizeXScaleSpeed = 11.8f;			// xサイズ拡大縮小スピード
 	const float SizeYScaleSpeed = 7.5f;				// yサイズ拡大縮小スピード
 
-	CConfirmation_Window();							// メニューウィンドウのコンストラクタ
-	~CConfirmation_Window();						// メニューウィンドウのデストラクタ
+	CCharSelect_Window();							// メニューウィンドウのコンストラクタ
+	~CCharSelect_Window();						// メニューウィンドウのデストラクタ
 
 	HRESULT Init();									// 初期化処理
 	void Uninit();									// 終了処理
@@ -54,7 +54,7 @@ public:
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
 
-	static CConfirmation_Window* Create(D3DXVECTOR3 pos,float xsize, float ysize, D3DXCOLOR col);			// 生成
+	static CCharSelect_Window* Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col);			// 生成
 	bool GetSapawnWindow() { return m_bSpawnWindow; }
 	void SetSapawnWindow(bool flag) { m_bSpawnWindow = flag; }
 

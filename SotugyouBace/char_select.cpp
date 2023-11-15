@@ -30,7 +30,7 @@ CChar_Select::~CChar_Select()
 //==============================================================================================
 HRESULT CChar_Select::Init()
 {
-	m_pFont = CFontString::Create({ 280.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "キャラクターセレクト");
+	m_pFont = CFontString::Create({ 280.0f, 200.0f, 0.0f }, { 50.0f, 50.0f }, "キャラクターセレクト");
 
 	return S_OK;
 }
@@ -64,7 +64,7 @@ void CChar_Select::Update()
 		{
 			if (m_pConfirmation == nullptr)
 			{
-				m_pConfirmation = CConfirmation_Window::Create(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
+				m_pConfirmation = CConfirmation_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), 500.0f, 120.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
 			}
 		}
 
@@ -80,14 +80,8 @@ void CChar_Select::Update()
 	if (m_pConfirmation != nullptr)
 	{
 		m_pConfirmation->Update();
-		for (int i = 0; i < 3; i++)
-		{
-			m_Letter[0] = "";
-			m_Letter[1] = "ストライカー";
-			m_Letter[2] = "コマンダー";
-			m_pConfirmation->SetLetter(m_Letter);
-		}
-		if (m_pConfirmation->GetSelectChoice() == true && m_pConfirmation->GetDecition() == true)
+
+		if (m_pConfirmation->GetSelectChoice() == true)
 		{
 			CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
 		}

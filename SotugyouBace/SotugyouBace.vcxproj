@@ -25,6 +25,7 @@
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="character.cpp" />
+    <ClCompile Include="charselect_window.cpp" />
     <ClCompile Include="char_select.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="collision_manager.cpp" />
@@ -91,6 +92,7 @@
     <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="charselect_window.h" />
     <ClInclude Include="char_select.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="collision_manager.h" />

@@ -26,8 +26,6 @@
 const float CConfirmation_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
 const float CConfirmation_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 
-bool CConfirmation_Window::m_bSpawnWindow = false;
-
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -59,7 +57,7 @@ HRESULT CConfirmation_Window::Init()
 	m_bSpawnWindow = false;
 	m_bSelectChoice = false;
 	m_bDecition = false;
-	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
+	m_pObject2D = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
 
 	return S_OK;
@@ -89,12 +87,13 @@ void CConfirmation_Window::Update()
 		// ウィンドウの拡大処理
 		ConfirmatiomnMenuScale();
 	}
-	if (m_bScale == true)
+	else
 	{// 拡大した時
 
 		// ウィンドウの縮小処理
 		ConfirmatiomnMenuScaleReduce();
 	}
+
 	// 選択肢処理
 	Choice();
 }
@@ -111,26 +110,25 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 		SizeX += SizeXScaleSpeed;
 		SizeY += SizeYScaleSpeed;
 
-		if (SizeX >= SizeXScaleMax)
+		if (SizeX >= MaxSizeX)
 		{// Xサイズの最大
-			SizeX = SizeXScaleMax;
+			SizeX = MaxSizeX;
 		}
-		if (SizeY >= SizeYScaleMax)
+		if (SizeY >= MaxSizeY)
 		{// Yサイズの最大
-			SizeY = SizeYScaleMax;
+			SizeY = MaxSizeY;
 		}
 
 		// ウィンドウが最大値まで行ったら
-		if (SizeX >= SizeXScaleMax && SizeY >= SizeYScaleMax && m_bMaxSize == false)
+		if (SizeX >= MaxSizeX && SizeY >= MaxSizeY && m_bMaxSize == false)
 		{
 			if (m_pFont == nullptr)
 			{
-				m_pFont = CFontString::Create({ 420.0f, 350.0f, 0.0f }, { 30.0f, 30.0f }, m_Letter[0]);
+				m_pFont = CFontString::Create({ 420.0f, 350.0f, 0.0f }, { 30.0f, 30.0f }, "やめますか?");
 			}
 
-			// 選択肢の設定処理
-			SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, m_Letter[1]));
-			SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, m_Letter[2]));
+			SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "はい"));
+			SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "いいえ"));
 
 			// 選択肢が使用されている場合
 			if (!m_vpListChoice.empty())
@@ -143,6 +141,7 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 				m_vpListChoice[m_bSelectChoice]->SetBlink(BLINK_SPEED);
 				m_vpListChoice[m_bSelectChoice]->SetAlpha(1.0f);
 			}
+
 			SetDisplay(true);
 			m_bMaxSize = true;
 			return;
@@ -160,6 +159,9 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 {
 	if (m_pObject2D != nullptr)
 	{// nullチェック
+
+	 // 現在のモード
+		CApplication::MODE Mode = CApplication::GetModeType();
 
 		// サイズの縮小
 		SizeX -= SizeXScaleSpeed;
@@ -184,11 +186,14 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 		// ウィンドウが最小値まで行ったら
 		if (SizeX <= 0.0f && SizeY <= 0.0f)
 		{
-			
+			// ゲーム終了
+			if (m_bSelectChoice == true && Mode == CApplication::MODE_GAME)
+			{
+				DestroyWindow(CApplication::GetWindow());
+			}
+			m_bScale = false;
 			m_bSpawnWindow = true;
-			
 			CGame::SetGameWindow(true);
-
 			Uninit();						// メニューウィンドウの削除
 			return true;
 		}
@@ -244,7 +249,6 @@ void CConfirmation_Window::Choice()
 				// 選択を決定する
 				m_bDecition = true;
 			}
-
 			// 決定された場合
 			if (m_bDecition == true)
 			{
@@ -258,13 +262,14 @@ void CConfirmation_Window::Choice()
 				// いいえの場合
 				else
 				{
+					m_bSelectChoice = false;
 					m_bScale = true;
 					SetDisplay(false);
-					m_bSelectChoice = false;
 				}
 			}
 		}
 	}
+
 	if (m_bSpawnWindow == true && CTitle::GetMenuWindow() != nullptr)
 	{
 		CApplication::GetMenu()->SetDisplay(false);
@@ -306,20 +311,9 @@ void CConfirmation_Window::SetDisplay(const bool decition)
 }
 
 //=============================================================================
-//	文字処理
-//=============================================================================
-void CConfirmation_Window::SetLetter(const std::string letter[])
-{
-	for (int i = 0; i < 3; i++)
-	{
-		m_Letter[i] = letter[i];
-	}
-}
-
-//=============================================================================
 // メニューの生成
 //=============================================================================
-CConfirmation_Window* CConfirmation_Window::Create(D3DXCOLOR col)
+CConfirmation_Window* CConfirmation_Window::Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col)
 {
 	//クラスの生成
 	CConfirmation_Window* pMenuWindow = new CConfirmation_Window;
@@ -327,7 +321,10 @@ CConfirmation_Window* CConfirmation_Window::Create(D3DXCOLOR col)
 	//nullチェック
 	if (pMenuWindow != nullptr)
 	{
+		pMenuWindow->m_pos = pos;
 		pMenuWindow->m_Color = col;
+		pMenuWindow->MaxSizeX = xsize;
+		pMenuWindow->MaxSizeY = ysize;
 		//初期化処理
 		pMenuWindow->Init();
 	}

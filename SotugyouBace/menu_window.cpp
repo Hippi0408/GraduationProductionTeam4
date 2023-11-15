@@ -133,13 +133,13 @@ bool CMenuWindow::MenuScaleReduce()
 		// ウィンドウが最小値まで行ったら
 		if (SizeX <= 0.0f && SizeY <= 0.0f)
 		{
-			CConfirmation_Window::SetSapawnWindow(false);
+			CTitleMenu::GetComfirmationWindow()->SetSapawnWindow(false);
 			if (CTitleMenu::GetComfirmationWindow()->GetSelectChoice() == true)
 			{
 				DestroyWindow(CApplication::GetWindow());
 			}
 		
-			Uninit();						// メニューウィンドウの削除
+			//Uninit();						// メニューウィンドウの削除
 			CTitle::UninitMenuWindow();
 			CTitleMenu::UninitComfirmationWindow();
 			return true;
