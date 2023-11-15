@@ -19,8 +19,8 @@
 //==============================================================================================
 const char* CTexture::s_FileName[] =
 {// テクスチャのパス
-	"Data/texture/Font/Japanese2000unicode.png",	// 日本語フォント
-	"Data/texture/Font/Alphabet.png",				// アルファベットフォントフォント
+	"Data/texture/Font/Font_Japanese.png",	// 日本語フォント
+	"Data/texture/Font/Font_Alphabet.png",				// アルファベットフォントフォント
 	"Data/texture/number.png",						// ナンバーのテクスチャ
 	"Data/texture/bullet000.png",					// 弾のテクスチャ
 	"Data/texture/floor.png",						// 地面のテクスチャ

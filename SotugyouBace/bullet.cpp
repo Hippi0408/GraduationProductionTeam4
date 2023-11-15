@@ -55,7 +55,7 @@ HRESULT CBullet::Init()
 	// メンバ変数の初期化
 	//==================================================
 	// 当たり判定の生成
-	SetCollision();
+	SetCollision({1.0f, 0.0f, 0.0f, 1.0f});
 
 	return S_OK;
 }
@@ -157,7 +157,7 @@ void CBullet::FieldCollision()
 void CBullet::Hit(CMove_Object* pHit)
 {
 	// 弾では無い場合 && 同じサイドではない場合
-	if (pHit->GetTag() != TAG_BULLET && GetPlayerSide() != pHit->GetPlayerSide())
+	if (pHit->GetTag() == TAG_CHARACTER && GetPlayerSide() != pHit->GetPlayerSide())
 	{
 		Destroy();
 	}

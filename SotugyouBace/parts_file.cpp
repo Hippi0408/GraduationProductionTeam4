@@ -1,0 +1,287 @@
+//=============================================================================
+//
+// parts_file.cpp
+// Author : Tanimoto Kosuke
+//
+//=============================================================================
+#include "parts_file.h"
+#include "application.h"
+#include "model.h"
+
+const char* CParts_File::m_cFileName[] =
+{
+	"Data\\text\\Motion\\parts\\motion_Body.txt",
+	"Data\\text\\Motion\\parts\\motion_Arms.txt",
+	"Data\\text\\Motion\\parts\\motion_Leg.txt",
+	"Data\\text\\Motion\\parts\\motion_Body_02.txt",
+	"Data\\text\\Motion\\parts\\motion_Arms_02.txt",
+	"Data\\text\\Motion\\parts\\motion_Leg_02.txt",
+
+	"Data\\text\\Motion\\motion_mob.txt",
+
+	"Data\\text\\Motion\\motion_boss.txt",
+};
+
+//=====================================
+// デフォルトコンストラクタ
+//=====================================
+CParts_File::CParts_File()
+{
+
+}
+
+//=====================================
+// デストラクタ
+//=====================================
+CParts_File::~CParts_File()
+{
+}
+
+//============================================================================
+// 初期化処理
+//============================================================================
+HRESULT CParts_File::Init()
+{
+	return S_OK;
+}
+
+//============================================================================
+// 終了処理
+//============================================================================
+void CParts_File::Uninit()
+{
+	// 全てのモデルセットの終了
+	ReleaseAllFile();
+}
+
+//============================================================================
+// 終了処理
+//============================================================================
+void CParts_File::ReleaseAllFile()
+{
+	// 全てのモデルセットの終了
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_PartsSet[nCnt] = {}; }
+}
+
+//==============================================================================================
+// モデルパーツの設定(パーツ.モデル.情報)
+//==============================================================================================
+void CParts_File::SetModel(const int partsIndex, const int modelIndex, const int parent, const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const char* Xfilename)
+{
+	// パーツのモデルセット領域を生成する
+	m_PartsSet[partsIndex].ModelSet.emplace_back();
+
+	m_PartsSet[partsIndex].ModelSet[modelIndex].nParentIndex = parent;
+	m_PartsSet[partsIndex].ModelSet[modelIndex].InitPos = pos;
+	m_PartsSet[partsIndex].ModelSet[modelIndex].InitRot = rot;
+	m_PartsSet[partsIndex].ModelSet[modelIndex].nModelIndex = CApplication::GetModel()->ReadObject(Xfilename);
+}
+
+//==============================================================================================
+// モデルパーツの設定
+//==============================================================================================
+void CParts_File::LoadFile(const char* Xfilename, const int partsIndex)
+{
+	// モーション情報のポインタを取得
+	CMotion* pMotion = CApplication::GetMotion();
+
+	// ファイル名
+	FILE* pFile = fopen(Xfilename, "r");
+
+	// キャラクターセット用
+	D3DXVECTOR3 Rot;				// 角度
+	int nIndex = 0;					// 番号
+	int nParentIndex = 0;				// 親の番号
+	int nPartsIndex = 0;			// パーツの番号
+	D3DXVECTOR3 PartsStartPos;		// 初期位置
+	D3DXVECTOR3 PartsStartRot;		// 初期角度
+	char XFileName[0x20][0xff] = {};	// Xファイル名
+
+	int nNumMotion = 0;		// 現在のモーション
+
+	char m_aString[0xff];
+	memset(m_aString, 0, sizeof(m_aString));
+
+	// ファイルが開いた場合
+	if (pFile != NULL)
+	{
+		// 名前を設定する
+		m_PartsSet[partsIndex].Name = Xfilename;
+
+		while (strcmp(&m_aString[0], "END_SCRIPT") != 0)
+		{
+			fscanf(pFile, "%s", &m_aString[0]);
+
+			// SCRIPTが一致
+			if (strcmp(&m_aString[0], "SCRIPT") == 0)
+			{
+				while (strcmp(&m_aString[0], "END_SCRIPT") != 0)
+				{
+					fscanf(pFile, "%s", &m_aString[0]);
+
+					// ファイル名
+					if (strcmp(&m_aString[0], "MODEL_FILENAME") == 0)
+					{
+						// ＝を読み飛ばす
+						fscanf(pFile, "%s", &m_aString[0]);
+						fscanf(pFile, "%s", &XFileName[nIndex][0]);
+						nIndex++;
+					}
+
+					if (strcmp(&m_aString[0], "ALL_PARTSET") == 0)
+					{
+						while (strcmp(&m_aString[0], "END_ALL_PARTSET") != 0)
+						{
+							fscanf(pFile, "%s", &m_aString[0]);
+
+							if (strcmp(&m_aString[0], "PARTSSET") == 0)
+							{
+								while (strcmp(&m_aString[0], "END_PARTSSET") != 0)
+								{
+									fscanf(pFile, "%s", &m_aString[0]);
+
+									// 親の番号
+									if (strcmp(&m_aString[0], "PARENT") == 0)
+									{
+										fscanf(pFile, "%s", &m_aString[0]);
+										fscanf(pFile, "%d", &nParentIndex);
+									}
+
+									// パーツの位置
+									if (strcmp(&m_aString[0], "POS") == 0)
+									{
+										fscanf(pFile, "%s", &m_aString[0]);
+										fscanf(pFile, "%f", &PartsStartPos.x);
+										fscanf(pFile, "%f", &PartsStartPos.y);
+										fscanf(pFile, "%f", &PartsStartPos.z);
+									}
+
+									// パーツの向き
+									if (strcmp(&m_aString[0], "ROT") == 0)
+									{
+										fscanf(pFile, "%s", &m_aString[0]);
+										fscanf(pFile, "%f", &PartsStartRot.x);
+										fscanf(pFile, "%f", &PartsStartRot.y);
+										fscanf(pFile, "%f", &PartsStartRot.z);
+									}
+								}
+								// モデルパーツの設定
+								SetModel(partsIndex, nPartsIndex, nParentIndex, PartsStartPos, PartsStartRot, &XFileName[nPartsIndex][0]);
+								nPartsIndex++;
+							}
+						}
+					}
+
+					if (strcmp(&m_aString[0], "MOTIONSET") == 0)
+					{
+						int nKey = 0;			// 現在のキーの数
+
+												// モーション情報
+						CMotion::MotionPattern vMotionPattern = {};	// キーセットの情報
+
+						while (strcmp(&m_aString[0], "END_MOTIONSET") != 0)
+						{
+							fscanf(pFile, "%s", &m_aString[0]);
+
+							// ループするか
+							if (strcmp(&m_aString[0], "LOOP") == 0)
+							{
+								int nLoop;
+								fscanf(pFile, "%s", &m_aString[0]);
+								fscanf(pFile, "%d", &nLoop);
+
+								// ループ判定の代入(true = 1, false = 0)
+								vMotionPattern.bLoop = nLoop == 1;
+							}
+
+							// キーの数
+							if (strcmp(&m_aString[0], "NUM_KEY") == 0)
+							{
+								fscanf(pFile, "%s", &m_aString[0]);
+								//fscanf(pFile, "%d", &vMotionPattern.nMaxKey);
+							}
+
+							if (strcmp(&m_aString[0], "KEYSET") == 0)
+							{
+								// キーセットのメモリ領域を確保
+								vMotionPattern.aKeySet.emplace_back();
+
+								int nParts = 0;			// 現在のパーツ
+
+								while (strcmp(&m_aString[0], "END_KEYSET") != 0)
+								{
+									fscanf(pFile, "%s", &m_aString[0]);
+
+									// キーフレーム
+									if (strcmp(&m_aString[0], "FRAME") == 0)
+									{
+										fscanf(pFile, "%s", &m_aString[0]);
+										fscanf(pFile, "%d", &vMotionPattern.aKeySet[nKey].nFrame);
+									}
+
+									if (strcmp(&m_aString[0], "KEY") == 0)
+									{
+										// キーのメモリ領域を確保
+										vMotionPattern.aKeySet[nKey].aKey.emplace_back();
+
+										while (strcmp(&m_aString[0], "END_KEY") != 0)
+										{
+											fscanf(pFile, "%s", &m_aString[0]);
+
+											// 位置
+											if (strcmp(&m_aString[0], "POS") == 0)
+											{
+												fscanf(pFile, "%s", &m_aString[0]);
+												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyPos.x);
+												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyPos.y);
+												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyPos.z);
+											}
+
+											// 角度
+											if (strcmp(&m_aString[0], "ROT") == 0)
+											{
+												fscanf(pFile, "%s", &m_aString[0]);
+												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyRot.x);
+												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyRot.y);
+												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyRot.z);
+											}
+
+											if (strcmp(&m_aString[0], "END_KEY") == 0)
+											{
+												// 次のパーツ
+												nParts++;
+											}
+										}
+									}
+								}
+								nKey++;
+							}
+						}
+						vMotionPattern.nMaxKey = nKey;
+
+						// モーションに設定
+						pMotion->SetMotionData(vMotionPattern, Xfilename);
+
+						nNumMotion++;
+					}
+				}
+			}
+		}
+		//ファイルを閉じる
+		fclose(pFile);
+
+		// モーションに名前を設定する
+		pMotion->SetUseFileName(Xfilename);
+	}
+}
+
+//==============================================================================================
+// 全てのモデルパーツの読み込み
+//==============================================================================================
+void CParts_File::LoadAllFile()
+{
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+	{ 
+		LoadFile(m_cFileName[nCnt], nCnt);
+	}
+}

@@ -42,8 +42,10 @@ void CCollision_Manager::ReleaseAllCollision()
 void CCollision_Manager::UpdateAll()
 {
 	// 全ての当たり判定の更新処理
-	for (auto pCollision : m_AllCollision)
+	for (auto it = m_AllCollision.begin(); it != m_AllCollision.end(); it++)
 	{
+		CCollision* pCollision = *it;
+
 		// 死亡フラグが建っていない場合
 		if (!pCollision->GetDeath() && !pCollision->GetParent()->GetDeathFlag())
 		{

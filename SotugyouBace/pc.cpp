@@ -14,6 +14,7 @@
 #include "tutorial.h"
 #include "locus.h"
 #include "player_life_gauge.h"
+#include "pause.h"
 
 #include"player_manager.h"
 #include"debugProc.h"
@@ -101,7 +102,7 @@ void CPC::Input()
 
 	// ブースト中は移動速度が上がる
 	if (GetBoost())
-		boostMove *= 2.0f;
+		boostMove *= 3.0f;
 
 	// 目的の角度
 	D3DXVECTOR3 rotDest = GetRotDest();
@@ -205,7 +206,7 @@ void CPC::Input()
 
 			// ブーストした分の速度を減らす
 			if (GetBoost())
-				move /= 2.0f;
+				move /= boostMove.x;
 
 			move *= 7.0f;		// 初速
 			move.y = 0.0f;
@@ -264,8 +265,20 @@ void CPC::Input()
 		PlayerAttack();
 	}
 
-	// 視点処理
-	Perspective();
+	CPause *pPause = nullptr;
+
+	// ポーズの取得
+	if (CApplication::GetModeType() == CApplication::MODE_GAME)
+		pPause = CGame::GetPause();
+	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+		pPause = CTutorial::GetPause();
+
+	// ポーズしてないとき
+	if (!pPause->GetPause())
+	{
+		// 視点処理
+		Perspective();
+	}
 
 	if (pGauge != nullptr)
 	{

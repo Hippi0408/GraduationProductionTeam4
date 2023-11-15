@@ -32,6 +32,7 @@
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
     <ClCompile Include="DirectInput.cpp" />
+    <ClCompile Include="drop_weapon.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemy_manager.cpp" />
     <ClCompile Include="energy_gauge.cpp" />
@@ -66,6 +67,8 @@
     <ClCompile Include="particle_emitter.cpp" />
     <ClCompile Include="particle_manager.cpp" />
     <ClCompile Include="parts.cpp" />
+    <ClCompile Include="pause.cpp" />
+    <ClCompile Include="parts_file.cpp" />
     <ClCompile Include="pc.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player_life_gauge.cpp" />
@@ -96,6 +99,7 @@
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
     <ClInclude Include="DirectInput.h" />
+    <ClInclude Include="drop_weapon.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemy_manager.h" />
     <ClInclude Include="energy_gauge.h" />
@@ -131,6 +135,8 @@
     <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="particle_manager.h" />
     <ClInclude Include="parts.h" />
+    <ClInclude Include="pause.h" />
+    <ClInclude Include="parts_file.h" />
     <ClInclude Include="pc.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="player_life_gauge.h" />
