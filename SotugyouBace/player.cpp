@@ -49,9 +49,9 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	SetParts(PARTS_BODY, "Data\\text\\Motion\\parts\\motion_Body.txt");
-	SetParts(PARTS_LEG, "Data\\text\\Motion\\parts\\motion_Leg.txt");
-	SetParts(PARTS_ARMS, "Data\\text\\Motion\\parts\\motion_Arms.txt");
+	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1);
 
 	// タグの設定
 	SetTag(TAG_CHARACTER);
@@ -60,9 +60,10 @@ HRESULT CPlayer::Init()
 	SetPlayerSide(true);
 
 	// 当たり判定の生成
-	SetCollision();
+	SetCollision({ 0.0f, 1.0f, 1.0f, 1.0f });
 
 	m_bTarget = false;
+	m_bReticle_Reset = true;
 	m_Reticle_Size = { RETICLE_TRANSPARENCY_SIZE,RETICLE_TRANSPARENCY_SIZE };
 	m_fReticle_Alpha = 0.0f;
 
@@ -313,6 +314,8 @@ void CPlayer::Target()
 
 		// 目的の角度の設定
 		CCharacter::SetBulletRot({ rotCamera.x + D3DX_PI,rotCamera.y + D3DX_PI ,rotCamera.z + D3DX_PI });
+
+		NearMob_Pos = { 0.0f,0.0f,0.0f };
 	}
 
 	// レティクルの設定
@@ -416,7 +419,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 void CPlayer::Reticle(D3DXVECTOR3 target)
 {
 	// ターゲットの位置
-	if (m_Reticle_Pos.x == 0)
+	if (m_bReticle_Reset)
 		m_Reticle_Pos = target;
 
 	// 拡大縮小の速度
@@ -425,7 +428,7 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 	float Alpha_Speed = 1 / ((RETICLE_TRANSPARENCY_SIZE - RETICLE_SIZE) / Size_Speed);
 
 	// レティクルの生成
-	if (m_pReticle == nullptr)
+	if (m_pReticle == nullptr && m_bReticle_Draw)
 		m_pReticle = CObject3D::Create({ m_Reticle_Pos }, { m_Reticle_Size }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,m_fReticle_Alpha }, true);
 
 	if (m_pReticle != nullptr)
@@ -446,6 +449,8 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 
 			// 位置の設定
 			m_pReticle->SetPos(m_Reticle_Pos);
+
+			m_bReticle_Reset = false;
 		}
 		else
 		{
@@ -457,8 +462,8 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 				m_Reticle_Size.y += Size_Speed;
 			}
 			else
-				// 位置の設定
-				m_Reticle_Pos = { 0.0f,0.0f,0.0f };
+				// レティクルのリセット
+				m_bReticle_Reset = true;
 		}
 
 		// サイズと色の設定

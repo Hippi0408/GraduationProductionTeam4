@@ -39,8 +39,8 @@ CBoss::~CBoss()
 HRESULT CBoss::Init()
 {
 	// ボスのモデルパーツを設定
-	SetParts(0, "Data\\text\\Motion\\motion_boss.txt");
-	GetParts(0)->GetModelSet(MODEL_BODY).pModel->SetSize({ 5.0f, 5.0f, 5.0f });
+	SetParts(PARTS_BODY, CParts_File::PARTS_BOSS);
+	GetParts(PARTS_BODY)->GetModel(MODEL_BODY)->SetSize({ 5.0f, 5.0f, 5.0f });
 
 	SetGaugeManager(CBoss_Life_Gauge::Create({ 1280 / 2, 100.0f,0.0f }, { 800.0f,15.0f }));
 

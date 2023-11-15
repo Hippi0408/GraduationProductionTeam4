@@ -41,7 +41,7 @@ CMob::~CMob()
 HRESULT CMob::Init()
 {
 	// モブのモデルパーツを設定
-	SetParts(0, "Data\\text\\Motion\\motion_mob.txt");
+	SetParts(PARTS_BODY, CParts_File::PARTS_MOB);
 
 	CEnemy::Init();
 
@@ -78,13 +78,25 @@ void CMob::Update()
 		DrawLifeGauge();
 	}
 
-	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+	// 全てのパーツの処理
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		// 距離5000以上で敵を表示
-		if (m_fDistance > DRAW_DISTANCE)
-			GetParts(0)->GetModelSet(nCnt).pModel->SetDrawFlag(false);
-		else
-			GetParts(0)->GetModelSet(nCnt).pModel->SetDrawFlag(true);
+		// パーツの情報
+		CParts* pParts = GetParts(nCnt);
+
+		// パーツが持つ全てのモデル
+		for (auto pModel : pParts->GetModelAll())
+		{
+			// 距離5000以上で敵を表示
+			if (m_fDistance > DRAW_DISTANCE)
+			{
+				pModel->SetDrawFlag(false);
+			}
+			else
+			{
+				pModel->SetDrawFlag(true);
+			}
+		}
 	}
 
 	// キャラクターの更新
@@ -108,6 +120,9 @@ void CMob::Destroy()
 	std::move(CParticleEmitter::Create("MineOre", GetPos()));
 
 	CEnemy::Destroy();
+
+	// 武器、パーツのドロップ
+	CGame::SetDrop_Parts(1, GetPos());
 }
 
 //============================================================================
@@ -120,7 +135,7 @@ void CMob::DrawLifeGauge()
 
 	if (pPlayerManager != nullptr)
 		pPlayer = pPlayerManager->GetPlayer(0);
-
+	
 	D3DXVECTOR3 Player_Pos = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 Mob_Pos = { 0.0f,0.0f,0.0f };
 

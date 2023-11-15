@@ -38,7 +38,7 @@ public:
 	void SetRadius(const float radius) { m_fRadius = radius; }			// 半径の設定
 	void SetTag(TAG tag) { m_tag = tag; }								// タグの設定
 	void SetPlayerSide(const bool side) { m_bPlayerSide = side; }		// プレイヤー側かどうかの設定
-	void SetCollision() { m_pCollision = CCollision::Create(this); }	// 当たり判定の生成
+	void SetCollision(const D3DXCOLOR col = { 1.0f, 1.0f, 1.0f, 1.0f }) { m_pCollision = CCollision::Create(this, col); }	// 当たり判定の生成
 
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
 	const D3DXVECTOR3 GetCenterPos() { return m_pos + m_CenterPos; }	// 中心位置の取得

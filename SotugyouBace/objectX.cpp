@@ -58,88 +58,91 @@ void CObjectX::Update()
 //==============================================================================================
 void CObjectX::Draw()
 {
-	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
-	D3DXMATRIX mtxRot, mtxTrans, mtxScaling;	//計算用のマトリックス
-	D3DMATERIAL9 matDef;				//現在のマテリアルの保存用
-	D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
-
-	//ワールドマトリックスの初期化
-	D3DXMatrixIdentity(&m_mtxWorld);
-
-	// サイズを反映
-	D3DXMatrixScaling(&mtxScaling, m_size.x, m_size.y, m_size.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScaling);
-
-	//向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
-
-	//位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-
-	// 親のマトリックス
-	D3DXMATRIX mtxParent;
-
-	if (m_pParent != nullptr)
-	{// パーツが親の場合
-		mtxParent = m_pParent->GetMatrix();
-
-		// 親のマトリックスとかける
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
-	}
-	else if(m_bParts == true)
-	{// 現在のMatrix(PlayerのMatrix)を取得
-		pDevice->GetTransform(D3DTS_WORLD, &mtxParent);
-
-		// 親のマトリックスとかける
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
-	}
-
-	// 自身の番号のモデル情報を取得
-	CModel::ModelPattern modelPattern = CApplication::GetModel()->GetModelPattern(m_nIndex);
-
-	if (m_bShadow == true)
+	if (GetDrawFlag())
 	{
-		// 平面投影
-		DrawShadow(pDevice, modelPattern);
+		LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+		D3DXMATRIX mtxRot, mtxTrans, mtxScaling;	//計算用のマトリックス
+		D3DMATERIAL9 matDef;				//現在のマテリアルの保存用
+		D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
+
+		//ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&m_mtxWorld);
+
+		// サイズを反映
+		D3DXMatrixScaling(&mtxScaling, m_size.x, m_size.y, m_size.z);
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScaling);
+
+		//向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+
+		//位置を反映
+		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+
+		// 親のマトリックス
+		D3DXMATRIX mtxParent;
+
+		if (m_pParent != nullptr)
+		{// パーツが親の場合
+			mtxParent = m_pParent->GetMatrix();
+
+			// 親のマトリックスとかける
+			D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
+		}
+		else if (m_bParts == true)
+		{// 現在のMatrix(PlayerのMatrix)を取得
+			pDevice->GetTransform(D3DTS_WORLD, &mtxParent);
+
+			// 親のマトリックスとかける
+			D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
+		}
+
+		// 自身の番号のモデル情報を取得
+		CModel::ModelPattern modelPattern = CApplication::GetModel()->GetModelPattern(m_nIndex);
+
+		if (m_bShadow == true)
+		{
+			// 平面投影
+			DrawShadow(pDevice, modelPattern);
+		}
+
+		// ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+
+		// 現在のマテリアルを保持
+		pDevice->GetMaterial(&matDef);
+
+		// マテリアルデータへのポインタを取得
+		pMat = (D3DXMATERIAL*)modelPattern.pBuffMat->GetBufferPointer();
+
+		for (int nCntMat = 0; nCntMat < m_nNumMat; nCntMat++)
+		{
+			// マテリアル情報の設定
+			D3DMATERIAL9 matD3D = pMat[nCntMat].MatD3D;
+
+			// マテリアルの色変更
+			matD3D.Diffuse = matD3D.Specular = matD3D.Emissive = m_col[nCntMat];
+
+			// マテリアルの設定
+			pDevice->SetMaterial(&matD3D);
+
+			// テクスチャの設定
+			pDevice->SetTexture(0, modelPattern.pTexture[nCntMat]);
+
+			// モデルパーツの描画
+			modelPattern.pMesh->DrawSubset(nCntMat);
+		}
+
+		// 保持していたマテリアルを元に戻す
+		pDevice->SetMaterial(&matDef);
+
+		//テクスチャの設定
+		pDevice->SetTexture(0, NULL);
+
+		// ステンシルバッファ=>無効
+		pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 	}
-
-	// ワールドマトリックスの設定
-	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
-
-	// 現在のマテリアルを保持
-	pDevice->GetMaterial(&matDef);
-
-	// マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)modelPattern.pBuffMat->GetBufferPointer();
-
-	for (int nCntMat = 0; nCntMat < m_nNumMat; nCntMat++)
-	{
-		// マテリアル情報の設定
-		D3DMATERIAL9 matD3D = pMat[nCntMat].MatD3D;
-
-		// マテリアルの色変更
-		matD3D.Diffuse = matD3D.Specular = matD3D.Emissive = m_col[nCntMat];
-
-		// マテリアルの設定
-		pDevice->SetMaterial(&matD3D);
-
-		// テクスチャの設定
-		pDevice->SetTexture(0, modelPattern.pTexture[nCntMat]);
-
-		// モデルパーツの描画
-		modelPattern.pMesh->DrawSubset(nCntMat);
-	}
-
-	// 保持していたマテリアルを元に戻す
-	pDevice->SetMaterial(&matDef);
-
-	//テクスチャの設定
-	pDevice->SetTexture(0, NULL);
-
-	// ステンシルバッファ=>無効
-	pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 }
 
 //==============================================================================================
@@ -241,16 +244,22 @@ void CObjectX::Stencil()
 //==============================================================================================
 // モデル番号の読み込み
 //==============================================================================================
-void CObjectX::SetModel(const char* Xfilename)
+void CObjectX::SetModel(const int index)
 {
 	// 番号の設定
-	m_nIndex = CApplication::GetModel()->ReadObject(Xfilename);
+	m_nIndex = index;
 
 	// 自身の番号のモデル情報を取得
 	CModel::ModelPattern model = CApplication::GetModel()->GetModelPattern(m_nIndex);
 
 	// モデルのマテリアル頂点数を設定
 	m_nNumMat = model.nNumMat;
+
+	// 使用中の色の初期化
+	if (!m_col.empty())
+	{
+		m_col.clear();
+	}
 
 	// マテリアル色を初期化する
 	for (int i = 0; i < m_nNumMat; i++)
@@ -330,7 +339,26 @@ CObjectX* CObjectX::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObject
 	pObjectX->SetPos(pos);
 	pObjectX->SetRot(rot);
 	pObjectX->SetParent(parent);
-	pObjectX->SetModel(Xfilename);
+	pObjectX->SetModel(CApplication::GetModel()->ReadObject(Xfilename));
+
+	return pObjectX;
+}
+
+//==============================================================================================
+// 生成処理
+//==============================================================================================
+CObjectX* CObjectX::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const int index, const PRIORITY priority)
+{
+	CObjectX* pObjectX = new CObjectX(priority);
+
+	if (FAILED(pObjectX->Init()))
+	{
+		return nullptr;
+	}
+	pObjectX->SetPos(pos);
+	pObjectX->SetRot(rot);
+	pObjectX->SetParent(parent);
+	pObjectX->SetModel(index);
 
 	return pObjectX;
 }

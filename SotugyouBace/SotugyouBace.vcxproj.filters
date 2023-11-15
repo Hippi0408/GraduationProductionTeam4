@@ -196,6 +196,12 @@
     <ClCompile Include="charselect_window.cpp">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>04_Object\Object2D\Pause</Filter>
+    </ClCompile>
+    <ClCompile Include="parts_file.cpp">
+      <Filter>02_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -397,6 +403,12 @@
     <ClInclude Include="charselect_window.h">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>04_Object\Object2D\Pause</Filter>
+    </ClInclude>
+    <ClInclude Include="parts_file.h">
+      <Filter>02_Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01_Input">
@@ -453,9 +465,6 @@
     <Filter Include="04_Object\Object3D\particle">
       <UniqueIdentifier>{8e7147a3-2ae4-40d8-a6f1-33df9464c5da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04_Object\Object2D\Gauge">
-      <UniqueIdentifier>{acf97077-0ce9-4613-9250-9523643d88b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04_Object\Object2D\Font">
       <UniqueIdentifier>{b13c307e-86dd-4e23-b13b-b797dade3dec}</UniqueIdentifier>
     </Filter>
@@ -467,6 +476,12 @@
     </Filter>
     <Filter Include="04_Object\Object2D\PlayerUi">
       <UniqueIdentifier>{2f8f74e8-3596-46d5-8e5c-f3b06d58c47f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\Pause">
+      <UniqueIdentifier>{e1a072b7-693e-4ebd-89c8-4d21776b55a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\Gauge">
+      <UniqueIdentifier>{acf97077-0ce9-4613-9250-9523643d88b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
