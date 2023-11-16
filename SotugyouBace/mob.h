@@ -22,7 +22,7 @@ class CMob : public CEnemy
 	static const int FIRST_MAX_LIFE = 100;		// 初期最大体力の値
 	static const float MOB_COLLISION_RADIUS;	// ボスの当たり判定の大きさ
 	static const int DRAW_HP_DISTANCE = 3000;	// HPゲージを表示する距離
-	static const int DRAW_DISTANCE = 7000;	// 敵を表示する距離
+	static const int DRAW_DISTANCE = 7000;		// 敵を表示する距離
 public:
 
 	// モデルの配置情報
@@ -35,6 +35,14 @@ public:
 		MODEL_RIGHT_LEG,	// [4]右脚
 		MODEL_LEFT_LEG,		// [5]左脚
 		MODEL_MAX,			// モデルの最大数
+	};
+
+	// パーツの種類
+	enum PARTS
+	{
+		PARTS_BODY = 0,			// 胴体
+
+		PARTS_MAX
 	};
 
 	// モーションのタイプ

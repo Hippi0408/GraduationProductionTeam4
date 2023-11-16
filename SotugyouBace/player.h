@@ -52,11 +52,12 @@ public:
 		MODEL_MAX,				// モデルの最大数
 	};
 
+	// パーツの種類
 	enum PARTS
 	{
 		PARTS_BODY = 0,			// 胴体
-		PARTS_LEG,				// 脚
 		PARTS_ARMS,				// 腕
+		PARTS_LEG,				// 脚
 
 		PARTS_MAX
 	};
@@ -110,6 +111,7 @@ private:
 	D3DXVECTOR2 m_Reticle_Tran_Size;
 	float m_fReticle_Alpha;
 	bool m_bReticle_Draw;
+	bool m_bReticle_Reset;
 };
 
 #endif// _PLAYER_H_

@@ -27,6 +27,7 @@ public:
 	void Stencil();
 
 	static CObjectX* Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, const PRIORITY priority = PRIORITY_MODEL);
+	static CObjectX* Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const int index, const PRIORITY priority = PRIORITY_MODEL);
 
 	void SetShadow(const bool shadow) { m_bShadow = shadow; }
 	void SetParts(const bool parts) { m_bParts = parts; }
@@ -36,7 +37,7 @@ public:
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetSize(const D3DXVECTOR3 size) { m_size = size; }
 	void SetParent(CObjectX* pModel) { m_pParent = pModel; }
-	void SetModel(const char* Xfilename);
+	void SetModel(const int index);
 
 	// マテリアルの色情報を初期マテリアル色に戻す処理
 	void SetColor(const D3DXCOLOR col) { for (int nCntMat = 0; nCntMat < m_nNumMat; nCntMat++) { m_col[nCntMat] = col; } }
