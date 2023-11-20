@@ -196,6 +196,15 @@
     <ClCompile Include="parts_file.cpp">
       <Filter>02_Resource</Filter>
     </ClCompile>
+    <ClCompile Include="normal_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="homing_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="diffusion_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -396,6 +405,15 @@
     </ClInclude>
     <ClInclude Include="parts_file.h">
       <Filter>02_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="normal_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="homing_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="diffusion_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
