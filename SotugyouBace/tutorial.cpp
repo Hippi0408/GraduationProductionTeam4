@@ -15,6 +15,7 @@
 #include"fade.h"
 #include"fontString.h"
 #include"pause.h"
+#include "parts_file.h"
 
 CMeshField *CTutorial::pMeshField = nullptr;			// メッシュフィールド
 CPause *CTutorial::m_pPause = nullptr;
@@ -46,6 +47,9 @@ HRESULT CTutorial::Init()
 	// 視点、注視点の設定
 	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
 	pCamera->SetPosR({ 0.0f, 250.0f, 1000.0f });
+
+	// 全てのモデルパーツの読み込み
+	CApplication::GetPartsFile()->LoadAllFile();
 
 	// プレイヤーの生成(テスト)
 	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);

@@ -28,8 +28,9 @@
 #include "drop_weapon.h"
 #include"debugProc.h"
 #include"pause.h"
+#include "parts_file.h"
 
-CMeshField *CGame::pMeshField = nullptr;
+CMeshField *CGame::m_pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
@@ -67,6 +68,9 @@ HRESULT CGame::Init()
 	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
 	pCamera->SetPosR({ 0.0f, 250.0f, 1000.0f });
 
+	// 全てのモデルパーツの読み込み
+	CApplication::GetPartsFile()->LoadAllFile();
+
 	// プレイヤーの生成(テスト)
 	m_pPlayer_Manager = CApplication::GetPlayerManager();
 	m_pPlayer_Manager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
@@ -91,7 +95,7 @@ HRESULT CGame::Init()
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	// メッシュフィールドの生成
-	pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
+	m_pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
 
 	// ポーズ画面
 	m_pPause = CPause::Create();
@@ -199,6 +203,42 @@ void CGame::Update()
 		// LShiftキー無しの場合
 		else
 		{
+			// パーツ変更処理
+			if (pInput->Press(DIK_C))
+			{
+				int nKey = -1;
+				if (pInput->Trigger(DIK_1))
+				{
+					nKey = 0;
+				}
+				if (pInput->Trigger(DIK_2))
+				{
+					nKey = 1;
+				}
+				if (pInput->Trigger(DIK_3))
+				{
+					nKey = 2;
+				}
+				if (pInput->Trigger(DIK_4))
+				{
+					nKey = 3;
+				}
+				if (pInput->Trigger(DIK_5))
+				{
+					nKey = 4;
+				}
+				if (pInput->Trigger(DIK_6))
+				{
+					nKey = 5;
+				}
+
+				if (nKey >= 0)
+				{
+					CPlayer* pPlayer = CApplication::GetPlayerManager()->GetPlayer(0);
+					pPlayer->GetParts(CPlayer::PARTS_BODY)->SetParts(CParts_File::PARTS_PLAYER_BODY_1 + nKey);
+				}
+			}
+
 			// スコアの加算
 			if (pInput->Trigger(DIK_0))
 			{

@@ -48,7 +48,7 @@ public:
 	static const bool GetGameEnd() { return m_bGameEnd; }
 	static void SetGameWindow(bool flag) { m_bGameWindow = flag; }
 	static const bool GetGameWindow() { return m_bGameWindow; }
-	static CMeshField *GetMeshField() { return pMeshField; }
+	static CMeshField *GetMeshField() { return m_pMeshField; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayer_Manager; }
 	static CPause *GetPause() { return m_pPause; }
 
@@ -61,7 +61,7 @@ private:
 	CHalfSphere* m_pHalfSphere;
 	
 	CConfirmation_Window* m_ponfirmationWindow;		// メニューウィンドウ
-	static CMeshField *pMeshField;					// メッシュフィールド
+	static CMeshField *m_pMeshField;				// メッシュフィールド
 	static CEnergy_Gauge* m_pEnergy_Gauge;			// エネルギーゲージ
 	static CFontString* m_pFinishRogo;				// 終了ロゴ 
 	static CPause *m_pPause;

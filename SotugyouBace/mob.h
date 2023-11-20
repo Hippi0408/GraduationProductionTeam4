@@ -37,6 +37,14 @@ public:
 		MODEL_MAX,			// モデルの最大数
 	};
 
+	// パーツの種類
+	enum PARTS
+	{
+		PARTS_BODY = 0,			// 胴体
+
+		PARTS_MAX
+	};
+
 	// モーションのタイプ
 	enum MOTION_TYPE
 	{

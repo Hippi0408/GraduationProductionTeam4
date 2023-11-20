@@ -244,16 +244,22 @@ void CObjectX::Stencil()
 //==============================================================================================
 // モデル番号の読み込み
 //==============================================================================================
-void CObjectX::SetModel(const char* Xfilename)
+void CObjectX::SetModel(const int index)
 {
 	// 番号の設定
-	m_nIndex = CApplication::GetModel()->ReadObject(Xfilename);
+	m_nIndex = index;
 
 	// 自身の番号のモデル情報を取得
 	CModel::ModelPattern model = CApplication::GetModel()->GetModelPattern(m_nIndex);
 
 	// モデルのマテリアル頂点数を設定
 	m_nNumMat = model.nNumMat;
+
+	// 使用中の色の初期化
+	if (!m_col.empty())
+	{
+		m_col.clear();
+	}
 
 	// マテリアル色を初期化する
 	for (int i = 0; i < m_nNumMat; i++)
@@ -333,7 +339,26 @@ CObjectX* CObjectX::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObject
 	pObjectX->SetPos(pos);
 	pObjectX->SetRot(rot);
 	pObjectX->SetParent(parent);
-	pObjectX->SetModel(Xfilename);
+	pObjectX->SetModel(CApplication::GetModel()->ReadObject(Xfilename));
+
+	return pObjectX;
+}
+
+//==============================================================================================
+// 生成処理
+//==============================================================================================
+CObjectX* CObjectX::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const int index, const PRIORITY priority)
+{
+	CObjectX* pObjectX = new CObjectX(priority);
+
+	if (FAILED(pObjectX->Init()))
+	{
+		return nullptr;
+	}
+	pObjectX->SetPos(pos);
+	pObjectX->SetRot(rot);
+	pObjectX->SetParent(parent);
+	pObjectX->SetModel(index);
 
 	return pObjectX;
 }

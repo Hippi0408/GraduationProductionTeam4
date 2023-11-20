@@ -51,9 +51,9 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	SetParts(PARTS_BODY, "Data\\text\\Motion\\parts\\motion_Body.txt");
-	SetParts(PARTS_LEG, "Data\\text\\Motion\\parts\\motion_Leg.txt");
-	SetParts(PARTS_ARMS, "Data\\text\\Motion\\parts\\motion_Arms.txt");
+	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1);
 
 	// タグの設定
 	SetTag(TAG_CHARACTER);
@@ -62,7 +62,7 @@ HRESULT CPlayer::Init()
 	SetPlayerSide(true);
 
 	// 当たり判定の生成
-	SetCollision();
+	SetCollision({ 0.0f, 1.0f, 1.0f, 1.0f });
 
 	m_bTarget = false;
 	m_bReticle_Reset = true;

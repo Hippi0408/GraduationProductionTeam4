@@ -43,16 +43,16 @@ public:
 	static CInput *GetKey() { return m_pInput; }		//プレイやトリガーなどのアドレスの取得
 
 	/* 総合 */
-	bool Press(STAN_DART_INPUT_KEY key) { return KeyChackAll(key, 1); }		// プレス
-	bool Trigger(STAN_DART_INPUT_KEY key) { return KeyChackAll(key, 2); }	// トリガー
-	bool Release(STAN_DART_INPUT_KEY key) { return KeyChackAll(key, 3); }	// リリース
+	bool Press(STAN_DART_INPUT_KEY key, int nKeyLock) { return KeyChackAll(key, nKeyLock, 1); }		// プレス
+	bool Trigger(STAN_DART_INPUT_KEY key, int nKeyLock) { return KeyChackAll(key, nKeyLock, 2); }	// トリガー
+	bool Release(STAN_DART_INPUT_KEY key, int nKeyLock) { return KeyChackAll(key, nKeyLock, 3); }	// リリース
 
-	bool Press(STAN_DART_INPUT_KEY key, int nNum) { return KeyChackNum(key, 1, nNum); }		// プレス
-	bool Trigger(STAN_DART_INPUT_KEY key, int nNum) { return KeyChackNum(key, 2, nNum); }	// トリガー
-	bool Release(STAN_DART_INPUT_KEY key, int nNum) { return KeyChackNum(key, 3, nNum); }	// リリース
+	bool Press(STAN_DART_INPUT_KEY key, int nKeyLock, int nNum) { return KeyChackNum(key, nKeyLock, 1, nNum); }		// プレス
+	bool Trigger(STAN_DART_INPUT_KEY key, int nKeyLock, int nNum) { return KeyChackNum(key, nKeyLock, 2, nNum); }	// トリガー
+	bool Release(STAN_DART_INPUT_KEY key, int nKeyLock, int nNum) { return KeyChackNum(key, nKeyLock, 3, nNum); }	// リリース
 
 	//本ゲーム専用
-	bool MovePress(BOOK_GAME_DEDICATED_MOVE_KEY key);
+	bool MovePress(BOOK_GAME_DEDICATED_MOVE_KEY key,int nKeyLock = 0);
 
 
 	D3DXVECTOR3 VectorMove(); //移動用ベクトルの取得
@@ -63,24 +63,24 @@ public:
 	std::vector<int> ReleaseDevice(STAN_DART_INPUT_KEY key);	// リリース
 
 	/* Keyboard */
-	bool Press(int nKey , int num = -1);								//プレス
-	bool Trigger(int nkey, int num = -1);								//トリガー
-	bool Release(int nkey, int num = -1);								//リリース
+	bool Press(int nKey, int nKeyLock = 0,int num = -1);								//プレス
+	bool Trigger(int nkey, int nKeyLock = 0, int num = -1);								//トリガー
+	bool Release(int nkey, int nKeyLock = 0, int num = -1);								//リリース
 
 	/* JoyPad */
-	bool Press(DirectJoypad key, int nNum = 0);			//ジョイパットプレス
-	bool Trigger(DirectJoypad key, int nNum = 0);		//ジョイパットトリガー
-	bool Release(DirectJoypad key, int nNum = 0);		//ジョイパットリリース
-	bool StickPress(JOYKEY_DIRECT_CROSS key, int nNum = 0, bool bleftandright = false, float frot = 0.25f); //スティックのプレス
+	bool Press(DirectJoypad key, int nKeyLock = 0, int nNum = 0);			//ジョイパットプレス
+	bool Trigger(DirectJoypad key, int nKeyLock = 0, int nNum = 0);		//ジョイパットトリガー
+	bool Release(DirectJoypad key, int nKeyLock = 0, int nNum = 0);		//ジョイパットリリース
+	bool StickPress(JOYKEY_DIRECT_CROSS key, int nNum = 0, bool bleftandright = false, float frot = 0.25f,int nKeyLock = 0); //スティックのプレス
 
 	D3DXVECTOR3 VectorMoveKey(int nNum);				//十字キー式のベクトル取得
 	D3DXVECTOR3 VectorMoveJoyStick(int nNum = 0, bool bleftandright = false); //ジョイスティックのベクトル取得
 	D3DXVECTOR3 VectorMoveJoyStickAll(bool bleftandright = false); //ジョイスティックのベクトル取得
 
 	/* Mouse */
-	bool Press(MOUSE_KEY key);				//プレス
-	bool Trigger(MOUSE_KEY key);			//トリガー
-	bool Release(MOUSE_KEY key);			//リリース
+	bool Press(MOUSE_KEY key, int nKeyLock = 0);				//プレス
+	bool Trigger(MOUSE_KEY key, int nKeyLock = 0);			//トリガー
+	bool Release(MOUSE_KEY key, int nKeyLock = 0);			//リリース
 
 	D3DXVECTOR3 VectorMoveKeyAll();			//十字キー式のベクトル取得
 
@@ -99,9 +99,12 @@ public:
 	void IntermediateReception(bool bIR = false);	//デバイスの途中検知のオンオフ
 	bool GetIntermediateReception();		//現在デバイスの途中検知を行っているかどうか
 
+	void SetKeyLock(int nKeyLock); //キーの設定(上書き設定はエラーを表示)
+	void UnlockKey(int nKeyLock); //キーの解除
+
 private:
-	bool KeyChackAll(STAN_DART_INPUT_KEY key, int type);			// 全デバイスの入力を確認
-	bool KeyChackNum(STAN_DART_INPUT_KEY key, int type, int nNum);	// 指定したデバイスの入力を確認
+	bool KeyChackAll(STAN_DART_INPUT_KEY key, int type, int nKeyLock);			// 全デバイスの入力を確認
+	bool KeyChackNum(STAN_DART_INPUT_KEY key, int type, int nKeyLock, int nNum);	// 指定したデバイスの入力を確認
 private:
 
 	CInputKeyboard *m_pKeyboard;	//キーボードの情報
@@ -109,6 +112,8 @@ private:
 	CInputMouse *m_pMouse;			//マウスの情報
 	static CInput *m_pInput;		//このクラスの情報
 	InputType m_nOldInputType;		//最後に触ったデバイス
+	int m_nKeyLock;					//キーがしてされているときキーをもっていない処理からの入力を無視する
+
 };
 
 #endif

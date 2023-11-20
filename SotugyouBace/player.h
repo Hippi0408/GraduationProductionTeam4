@@ -52,11 +52,12 @@ public:
 		MODEL_MAX,				// モデルの最大数
 	};
 
+	// パーツの種類
 	enum PARTS
 	{
 		PARTS_BODY = 0,			// 胴体
-		PARTS_LEG,				// 脚
 		PARTS_ARMS,				// 腕
+		PARTS_LEG,				// 脚
 
 		PARTS_MAX
 	};

@@ -29,6 +29,7 @@ class CEnemyManager;
 class CCollision_Manager;
 class CParticleManager;
 class CMenu_Window;
+class CParts_File;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -74,6 +75,7 @@ public:
 	static CMode* GetGameMode() { return m_pGameMode; }
 	static CFade* GetFade() { return m_pFade; }
 	static CMenu* GetMenu() { return m_pMenu; }
+	static CParts_File* GetPartsFile() { return m_pPartsFile; }
 	static CParticleManager* GetParticleManager() { return m_pParticleManager; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
 	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
@@ -97,6 +99,7 @@ private:
 	static CCamera* m_pCamera;
 	static CFade* m_pFade;
 	static CMenu* m_pMenu;
+	static CParts_File* m_pPartsFile;
 	static CParticleManager* m_pParticleManager;
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;

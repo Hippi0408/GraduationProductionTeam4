@@ -41,7 +41,7 @@ CMob::~CMob()
 HRESULT CMob::Init()
 {
 	// モブのモデルパーツを設定
-	SetParts(0, "Data\\text\\Motion\\motion_mob.txt");
+	SetParts(PARTS_BODY, CParts_File::PARTS_MOB);
 
 	CEnemy::Init();
 
@@ -84,13 +84,25 @@ void CMob::Update()
 		DrawLifeGauge();
 	}
 
-	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
+	// 全てのパーツの処理
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		// 距離7000以上で敵を表示
-		if (m_fDistance > DRAW_DISTANCE)
-			GetParts(0)->GetModelSet(nCnt).pModel->SetDrawFlag(false);
-		else
-			GetParts(0)->GetModelSet(nCnt).pModel->SetDrawFlag(true);
+		// パーツの情報
+		CParts* pParts = GetParts(nCnt);
+
+		// パーツが持つ全てのモデル
+		for (auto pModel : pParts->GetModelAll())
+		{
+			// 距離7000以上で敵を表示
+			if (m_fDistance > DRAW_DISTANCE)
+			{
+				pModel->SetDrawFlag(false);
+			}
+			else
+			{
+				pModel->SetDrawFlag(true);
+			}
+		}
 	}
 
 	// キャラクターの更新
