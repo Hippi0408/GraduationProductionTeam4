@@ -43,7 +43,6 @@ HRESULT CPC::Init()
 	CPlayer::Init();
 	m_bFlag = false;
 
-	//SetEnergyGauge(CEnergy_Gauge::Create({ 1280 / 2, 650.0f, 0.0f }, { 700.0f, 10.0f }));
 	SetEnergyGauge(CEnergy_Gauge::Create({ 70,720.0f / 2,0.0f }, { 20.0f,500.0f }));
 	SetGaugeManager(CPlayer_Life_Gauge::Create({ 1210.0f,720.0f / 2,0.0f }, { 20.0f,500.0f }));
 

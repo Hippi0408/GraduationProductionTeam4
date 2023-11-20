@@ -193,6 +193,15 @@
     <ClCompile Include="pause.cpp">
       <Filter>04_Object\Object2D\Pause</Filter>
     </ClCompile>
+    <ClCompile Include="normal_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="homing_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="diffusion_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -390,6 +399,15 @@
     </ClInclude>
     <ClInclude Include="pause.h">
       <Filter>04_Object\Object2D\Pause</Filter>
+    </ClInclude>
+    <ClInclude Include="normal_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="homing_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="diffusion_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

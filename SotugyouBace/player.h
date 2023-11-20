@@ -104,13 +104,17 @@ private:
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
 
+	D3DXVECTOR3 m_NearMob_Pos;
 	CObject3D *m_pReticle;				// レティクル
 	D3DXVECTOR3 m_Reticle_Pos;
 	D3DXVECTOR2 m_Reticle_Size;
 	D3DXVECTOR2 m_Reticle_Tran_Size;
 	float m_fReticle_Alpha;
+	float m_fHypotenuse;
 	bool m_bReticle_Draw;
 	bool m_bReticle_Reset;
+	int m_nEnemy_Count;
+	float m_fEnemy_Speed;
 };
 
 #endif// _PLAYER_H_

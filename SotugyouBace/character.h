@@ -71,6 +71,7 @@ public:
 
 	const bool GetGround() { return m_bGround; }
 	const int GetLife() { return m_nLife; }
+	const float GetSpeed() { return m_fSpeed; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }

@@ -14,6 +14,7 @@
 #include "game.h"
 #include "meshfield.h"
 #include "object3D.h"
+#include "objectX.h"
 #include "particle_emitter.h"
 #include "tutorial.h"
 
@@ -71,6 +72,11 @@ void CBullet::Uninit()
 		m_pObj3D->Uninit();
 		m_pObj3D = nullptr;
 	}
+	if (m_pObjX != nullptr)
+	{
+		m_pObjX->Uninit();
+		m_pObjX = nullptr;
+	}
 
 	// オブジェクト3Dの終了処理
 	CMove_Object::Uninit();
@@ -96,8 +102,15 @@ void CBullet::Update()
 	SetPos(pos);
 
 	// オブジェクト3Dの位置を設定
-	m_pObj3D->SetPos(pos);
-	m_pObj3D->SetSize(size);
+	if (m_pObj3D != nullptr)
+	{
+		m_pObj3D->SetPos(pos);
+		m_pObj3D->SetSize(size);
+	}
+	if (m_pObjX != nullptr)
+	{
+		m_pObjX->SetPos(pos);
+	}
 
 	// 寿命を減らす
 	m_nLife--;
