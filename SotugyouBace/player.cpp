@@ -627,7 +627,7 @@ void CPlayer::CollisionDropWeapon()
 
 	CDropManager* pManager = nullptr;
 
-	// モード毎にプレイヤーを読み込む
+	// モード毎に落とし物を読み込む
 	if (Mode == CApplication::MODE_TUTORIAL)
 	{
 		pManager = CTutorial::GetDropManager();
