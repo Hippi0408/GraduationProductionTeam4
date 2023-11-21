@@ -11,10 +11,10 @@
 const char* CParts_File::m_cFileName[] =
 {
 	"Data\\text\\Motion\\parts\\motion_Body.txt",
-	"Data\\text\\Motion\\parts\\motion_Arms.txt",
-	"Data\\text\\Motion\\parts\\motion_Leg.txt",
 	"Data\\text\\Motion\\parts\\motion_Body_02.txt",
+	"Data\\text\\Motion\\parts\\motion_Arms.txt",
 	"Data\\text\\Motion\\parts\\motion_Arms_02.txt",
+	"Data\\text\\Motion\\parts\\motion_Leg.txt",
 	"Data\\text\\Motion\\parts\\motion_Leg_02.txt",
 
 	"Data\\text\\Motion\\motion_mob.txt",

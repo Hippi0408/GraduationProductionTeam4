@@ -21,7 +21,6 @@ CObject3D::CObject3D(const CObject::PRIORITY priority) : CObject(priority)
 	m_pVtxBuff = nullptr;					// 頂点バッファ
 	m_texture = CTexture::TEXTURE_NONE;		// テクスチャ
 	m_bBillboard = false;					// ビルボードかどうか
-	m_bDraw = true;							// 表示するか
 }
 
 //==============================================================================================
@@ -113,75 +112,72 @@ void CObject3D::Update()
 //==============================================================================================
 void CObject3D::Draw()
 {
-	if (m_bDraw)
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+
+	// 計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans;
+
+	// Zテストの設定
+	pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+
+	// ライトを無効化
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+	// ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&m_mtxWorld);
+
+	// カメラの逆列を設定(ビルボード)
+	if (m_bBillboard)
 	{
-		// デバイスの取得
-		LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+		D3DXMATRIX mtxView;
+		pDevice->GetTransform(D3DTS_VIEW, &mtxView);
 
-		// 計算用マトリックス
-		D3DXMATRIX mtxRot, mtxTrans;
-
-		// Zテストの設定
-		pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
-
-		// ライトを無効化
-		pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-
-		// ワールドマトリックスの初期化
-		D3DXMatrixIdentity(&m_mtxWorld);
-
-		// カメラの逆列を設定(ビルボード)
-		if (m_bBillboard)
-		{
-			D3DXMATRIX mtxView;
-			pDevice->GetTransform(D3DTS_VIEW, &mtxView);
-
-			m_mtxWorld._11 = mtxView._11;
-			m_mtxWorld._12 = mtxView._21;
-			m_mtxWorld._13 = mtxView._31;
-			m_mtxWorld._21 = mtxView._12;
-			m_mtxWorld._22 = mtxView._22;
-			m_mtxWorld._23 = mtxView._32;
-			m_mtxWorld._31 = mtxView._13;
-			m_mtxWorld._32 = mtxView._23;
-			m_mtxWorld._33 = mtxView._33;
-		}
-
-		//角度を反映
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.x, m_rot.y, m_rot.z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
-
-		//位置を反映
-		D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-
-		//ワールドマトリックスの設定
-		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
-
-		//頂点バッファをデータストリームに設定
-		pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
-
-		//頂点フォーマットに設定
-		pDevice->SetFVF(FVF_VERTEX_3D);
-
-		// テクスチャの情報
-		CTexture *pTexture = CApplication::GetTexture();
-
-		//テクスチャの設定
-		pDevice->SetTexture(0, pTexture->GetTexture(m_texture));
-
-		//ビルボードの描画
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-
-		//元に戻す
-		pDevice->SetTexture(0, NULL);
-
-		//ライトを有効にする
-		pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-
-		//Zテストの設定を元に戻す
-		pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+		m_mtxWorld._11 = mtxView._11;
+		m_mtxWorld._12 = mtxView._21;
+		m_mtxWorld._13 = mtxView._31;
+		m_mtxWorld._21 = mtxView._12;
+		m_mtxWorld._22 = mtxView._22;
+		m_mtxWorld._23 = mtxView._32;
+		m_mtxWorld._31 = mtxView._13;
+		m_mtxWorld._32 = mtxView._23;
+		m_mtxWorld._33 = mtxView._33;
 	}
+
+	//角度を反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.x, m_rot.y, m_rot.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+
+	//位置を反映
+	D3DXMatrixTranslation(&mtxTrans, GetPos().x, GetPos().y, GetPos().z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+
+	//ワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+
+	//頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
+
+	//頂点フォーマットに設定
+	pDevice->SetFVF(FVF_VERTEX_3D);
+
+	// テクスチャの情報
+	CTexture *pTexture = CApplication::GetTexture();
+
+	//テクスチャの設定
+	pDevice->SetTexture(0, pTexture->GetTexture(m_texture));
+
+	//ビルボードの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	//元に戻す
+	pDevice->SetTexture(0, NULL);
+
+	//ライトを有効にする
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	//Zテストの設定を元に戻す
+	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 //=====================================

@@ -25,7 +25,8 @@ public: /* 定義 */
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_BULLET,				// 弾
 		TEXTURE_FLOOR,				// 地面
-		TEXTURE_CIRCLE,				// 丸
+		TEXTURE_RETICLE,			// レティクル
+		TEXTURE_CIRCLE,				// 円
 
 		/* エフェクト群 */
 		TEXTURE_EFFECT_SMOKE,

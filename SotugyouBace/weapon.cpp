@@ -6,8 +6,14 @@
 //=============================================================================
 #include "weapon.h"
 #include "application.h"
-#include "character.h"
 
+const char* CWeapon::m_cWeaponFileName[] =
+{
+	"Data/model/SG_01/DummyParent.x",
+	"Data/model/Weapon/knife.x",
+	"Data/model/Weapon/hammer.x",
+	"Data/model/Weapon/scythe.x",
+};
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -28,6 +34,8 @@ CWeapon::~CWeapon()
 //============================================================================
 HRESULT CWeapon::Init()
 {
+	CObjectX::Init();
+
 	return S_OK;
 }
 
@@ -36,7 +44,7 @@ HRESULT CWeapon::Init()
 //============================================================================
 void CWeapon::Uninit()
 {
-	Release();
+	CObjectX::Uninit();
 }
 
 //============================================================================
@@ -44,6 +52,7 @@ void CWeapon::Uninit()
 //============================================================================
 void CWeapon::Update()
 {
+	CObjectX::Update();
 }
 
 //============================================================================
@@ -51,13 +60,21 @@ void CWeapon::Update()
 //============================================================================
 void CWeapon::Draw()
 {
+	CObjectX::Draw();
+}
 
+//============================================================================
+// 武器の変更
+//============================================================================
+void CWeapon::ChangeWeapon(const int type)
+{
+	SetModel(CApplication::GetModel()->ReadObject(m_cWeaponFileName[m_nWeaponType = type]));
 }
 
 //============================================================================
 // 生成処理
 //============================================================================
-CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, CObjectX* parent)
+CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, int type, CObjectX* parent)
 {
 	CWeapon* pParts = new CWeapon;
 
@@ -67,6 +84,7 @@ CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, CObjectX* parent)
 	}
 
 	pParts->SetPos(pos);
+	pParts->SetType(type);
 	pParts->SetParent(parent);
 
 	return pParts;

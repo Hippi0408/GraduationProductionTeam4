@@ -15,6 +15,8 @@
 class CBullet;
 class CEnergy_Gauge;
 class CObject3D;
+class CDrop_Weapon;
+class CWeapon;
 
 //---------------------------
 // クラス宣言
@@ -38,7 +40,8 @@ public:
 		PARTS_ARMS,				// 腕
 		PARTS_LEG,				// 脚
 
-		PARTS_MAX
+		PARTS_MAX,
+		PARTS_WEAPON,			// 武器
 	};
 
 	// モーションのタイプ
@@ -70,10 +73,17 @@ public:
 	void Target();						// ターゲット
 	bool Target_Scope(D3DXVECTOR3 nearpos);				// ターゲットを狙う範囲
 	void Reticle(D3DXVECTOR3 target);	// レティクル
+	void DropGet(CDrop_Weapon* pDrop);		// 落とし物を入手する処理
+
+	void CollisionDropWeapon();			// 落ちてる武器の当たり判定
+	void ChangeWeapon(const int weapon);
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
+	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
+	void SetWeapon(const int weapon);
 
+	const bool GetDropContact() { return m_bDrop_Contact; }
 	const int GetCharaIndex() { return m_nCharaIndex; }
 	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 
@@ -81,8 +91,12 @@ private:
 	int m_nCharaIndex;		// 自身の番号
 	float m_fTarget_Scope;	// ターゲットを狙う範囲
 	bool m_bTarget;			// ターゲットがいるか
+	bool m_bDrop_Contact;	// 落とし物との接触判定
+	bool m_bDrop_Get;		// 落とし物を入手する判定
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
+	CWeapon* m_pRightWeapon;			// 右手武器
+	CWeapon* m_pLeftWeapon;				// 左手武器
 
 	CObject3D *m_pReticle;				// レティクル
 	D3DXVECTOR3 m_Reticle_Pos;

@@ -26,7 +26,7 @@ public:
 	static CMob_Life_Gauge *Create(const D3DXVECTOR3 &pos, D3DXVECTOR2 size);
 
 	void SetMobLife_Pos(D3DXVECTOR3 pos) { m_Pos = pos; }
-	void SetDraw(bool draw) { m_bDraw = draw; }
+	void SetDrawGauge(bool draw) override;
 
 	CObject3D *GetBackGauge() { return m_BackGauge; }
 
@@ -34,7 +34,6 @@ private:
 	D3DXVECTOR3 m_Pos;			// à íu
 	CObject3D *m_BackGauge;		// ÉQÅ[ÉWÇÃîwåi
 	CObject3D *m_FrontGauge;	// ÉQÅ[ÉWÇÃëOåi
-	bool m_bDraw;				// ï\é¶Ç∑ÇÈÇ©
 };
 
 #endif // !_MOB_LIFE_GAUGE

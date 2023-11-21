@@ -24,9 +24,6 @@ class CFade;
 class CInput;
 class CMenu;
 class CMode;
-class CPlayerManager;
-class CEnemyManager;
-class CCollision_Manager;
 class CParticleManager;
 class CMenu_Window;
 class CParts_File;
@@ -77,9 +74,6 @@ public:
 	static CMenu* GetMenu() { return m_pMenu; }
 	static CParts_File* GetPartsFile() { return m_pPartsFile; }
 	static CParticleManager* GetParticleManager() { return m_pParticleManager; }
-	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
-	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
-	static CCollision_Manager* GetCollision_Manager() { return m_pCollision_Manager; }
 
 	static MODE GetModeType() { return m_modeType; }
 
@@ -101,9 +95,6 @@ private:
 	static CMenu* m_pMenu;
 	static CParts_File* m_pPartsFile;
 	static CParticleManager* m_pParticleManager;
-	static CPlayerManager* m_pPlayerManager;
-	static CEnemyManager* m_pEnemyManager;
-	static CCollision_Manager* m_pCollision_Manager;
 	CInput* m_pInput;
 
 #ifdef _DEBUG

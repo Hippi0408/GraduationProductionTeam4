@@ -27,10 +27,12 @@ public:
 	enum PARTS
 	{
 		PARTS_PLAYER_BODY_1 = 0,	// 体パーツ1
-		PARTS_PLAYER_ARMS_1,		// 腕パーツ1
-		PARTS_PLAYER_LEG_1,			// 脚パーツ1
 		PARTS_PLAYER_BODY_2,		// 体パーツ2
+
+		PARTS_PLAYER_ARMS_1,		// 腕パーツ1
 		PARTS_PLAYER_ARMS_2,		// 腕パーツ2
+
+		PARTS_PLAYER_LEG_1,			// 脚パーツ1
 		PARTS_PLAYER_LEG_2,			// 脚パーツ2
 
 		PARTS_MOB,					// モブパーツ

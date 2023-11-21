@@ -6,6 +6,7 @@
 //=============================================================================
 #include "mob.h"
 #include "application.h"
+#include "tutorial.h"
 #include "game.h"
 #include "particle_emitter.h"
 #include "mob_life_gauge.h"
@@ -130,12 +131,20 @@ void CMob::Destroy()
 //============================================================================
 void CMob::DrawLifeGauge()
 {
-	CPlayerManager *pPlayerManager = CApplication::GetPlayerManager();
-	CPlayer *pPlayer = nullptr;
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
 
-	if (pPlayerManager != nullptr)
-		pPlayer = pPlayerManager->GetPlayer(0);
-	
+	CPlayer* pPlayer = nullptr;
+
+	// モード毎にプレイヤーを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pPlayer = CTutorial::GetPlayerManager()->GetPlayer(0);
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+	}
 	D3DXVECTOR3 Player_Pos = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 Mob_Pos = { 0.0f,0.0f,0.0f };
 
@@ -154,9 +163,13 @@ void CMob::DrawLifeGauge()
 
 	// 距離3000以上
 	if (m_fDistance > DRAW_HP_DISTANCE || GetLife() == FIRST_MAX_LIFE)
-		GetGaugeManager()->SetDraw(false);
+	{
+		GetGaugeManager()->SetDrawGauge(false);
+	}
 	else
-		GetGaugeManager()->SetDraw(true);
+	{
+		GetGaugeManager()->SetDrawGauge(true);
+	}
 }
 
 //============================================================================
