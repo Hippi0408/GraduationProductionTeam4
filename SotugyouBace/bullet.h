@@ -18,6 +18,7 @@
 // 前方宣言
 //==============================================
 class CObject3D;
+class CObjectX;
 
 //==============================================
 // 弾クラス
@@ -51,12 +52,16 @@ public:
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }	// 移動量の設定
 	void AddMove(const D3DXVECTOR3 move) { m_move += move; }// 移動量の加算
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }	// サイズの設定
+	void SetObj3D(CObject3D *obj3d) { m_pObj3D = obj3d; }
+	void SetObjX(CObjectX *objx) { m_pObjX = objx; }
 
 	const int GetLife() { return m_nLife; }					// 弾の寿命の取得
 	const float GetSpeed() { return m_fSpeed; }				// 弾の速度の取得
 	const int GetPower() override { return m_nPower; }		// 威力の取得
 	const D3DXVECTOR3 GetMove() { return m_move; }			// 移動量の取得
 	const D3DXVECTOR2 GetSize() { return m_size; }			// サイズの取得
+	CObject3D *GetObj3D() { return m_pObj3D; }
+	CObjectX *GetObjX() { return m_pObjX; }
 
 	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move, const bool side, const PRIORITY priority = PRIORITY_BACK);	// 生成
 
@@ -72,5 +77,6 @@ private:
 	float m_fSpeed;							// 弾のスピード
 
 	CObject3D* m_pObj3D;					// オブジェクト3Dのポインタ
+	CObjectX* m_pObjX;					// オブジェクトXのポインタ
 };
 #endif

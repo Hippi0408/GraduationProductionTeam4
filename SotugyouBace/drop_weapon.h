@@ -16,7 +16,7 @@ class CObject3D;
 class CDrop_Weapon : public CMove_Object
 {
 public:
-	static const int DRAW_DROP_DISTANCE = 7000;		// 敵を表示する距離
+	static const int DRAW_DROP_DISTANCE = 7000;		// 武器、パーツを表示する距離
 
 	CDrop_Weapon(const PRIORITY priority = PRIORITY_MODEL);
 	~CDrop_Weapon();
