@@ -12,6 +12,11 @@
 #include"confirmation_window.h"
 
 //==============================================================================================
+// 静的メンバ変数宣言
+//==============================================================================================
+CConfirmation_Window* CChar_Select::m_pConfirmation = nullptr;
+
+//==============================================================================================
 // コンストラクタ
 //==============================================================================================
 CChar_Select::CChar_Select()
@@ -81,10 +86,10 @@ void CChar_Select::Update()
 	{
 		m_pConfirmation->Update();
 
-		if (m_pConfirmation->GetSelectChoice() == true)
+		/*if (m_pConfirmation->GetSelectChoice() == true)
 		{
 			CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
-		}
+		}*/
 	}
 
 	// ウィンドウが閉じた場合 

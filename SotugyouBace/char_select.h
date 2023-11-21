@@ -24,10 +24,12 @@ public:
 	void Uninit() override;
 	void Update() override;
 
+	static CConfirmation_Window* GetConfimationWindow() { return m_pConfirmation; }
+
 	static CChar_Select* Create();
 
 private:
-	CConfirmation_Window* m_pConfirmation;
+	static CConfirmation_Window* m_pConfirmation;
 	CFontString* m_pFont;
 };
 

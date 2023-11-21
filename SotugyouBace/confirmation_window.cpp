@@ -19,10 +19,12 @@
 #include "title.h"
 #include "menu_window.h"
 #include "title_menu.h"
+#include "charselect_window.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
+CCharSelect_Window* CConfirmation_Window::m_pCharSelectWindow = nullptr;
 const float CConfirmation_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
 const float CConfirmation_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 
@@ -57,6 +59,7 @@ HRESULT CConfirmation_Window::Init()
 	m_bSpawnWindow = false;
 	m_bSelectChoice = false;
 	m_bDecition = false;
+	m_bInputFlag = false;
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
 
@@ -68,11 +71,19 @@ HRESULT CConfirmation_Window::Init()
 //=============================================================================
 void CConfirmation_Window::Uninit()
 {
-	//メンバ変数の初期化
+	//メンバ変数の破棄
 	if (m_pObject2D != nullptr)
 	{
 		m_pObject2D->Uninit();
 		m_pObject2D = nullptr;
+	}
+
+	// キャラ選択画面の破棄
+	if (m_pCharSelectWindow != nullptr)
+	{
+		m_pCharSelectWindow->Uninit();
+		delete m_pCharSelectWindow;
+		m_pCharSelectWindow = nullptr;
 	}
 }
 
@@ -81,6 +92,14 @@ void CConfirmation_Window::Uninit()
 //=============================================================================
 void CConfirmation_Window::Update()
 {
+	// 入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
+
+	if (pInput->Trigger(DIK_F7))
+	{
+		pInput->UnlockKey(100);
+	}
+
 	if (m_bScale == false)
 	{// 拡大されていない時
 
@@ -96,6 +115,11 @@ void CConfirmation_Window::Update()
 
 	// 選択肢処理
 	Choice();
+
+	if (m_pCharSelectWindow != nullptr)
+	{
+		m_pCharSelectWindow->Update();
+	}
 }
 
 //=============================================================================
@@ -103,6 +127,9 @@ void CConfirmation_Window::Update()
 //=============================================================================
 void CConfirmation_Window::ConfirmatiomnMenuScale()
 {
+	// 入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
+
 	if (m_pObject2D != nullptr)
 	{// nullチェック
 
@@ -122,13 +149,29 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 		// ウィンドウが最大値まで行ったら
 		if (SizeX >= MaxSizeX && SizeY >= MaxSizeY && m_bMaxSize == false)
 		{
-			if (m_pFont == nullptr)
+			// ゲームモードの取得
+			CApplication::MODE Mode = CApplication::GetModeType();
+
+			if (Mode == CApplication::MODE_GAME)
 			{
-				m_pFont = CFontString::Create({ 420.0f, 350.0f, 0.0f }, { 30.0f, 30.0f }, "やめますか?");
+				pInput->SetKeyLock(100);
 			}
 
-			SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "はい"));
-			SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "いいえ"));
+			if (!Mode == CApplication::MODE_CHAR_SELECT)
+			{
+				if (m_pFont == nullptr)
+				{
+					m_pFont = CFontString::Create({ 420.0f, 350.0f, 0.0f }, { 30.0f, 30.0f }, "やめますか?");
+				}
+
+				SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "はい"));
+				SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "いいえ"));
+			}
+			else
+			{
+				SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "ストライカー"));
+				SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "コマンダー"));
+			}
 
 			// 選択肢が使用されている場合
 			if (!m_vpListChoice.empty())
@@ -191,10 +234,13 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 			{
 				DestroyWindow(CApplication::GetWindow());
 			}
-			m_bScale = false;
-			m_bSpawnWindow = true;
-			CGame::SetGameWindow(true);
-			Uninit();						// メニューウィンドウの削除
+			if (!Mode == CApplication::MODE_CHAR_SELECT)
+			{
+				m_bScale = false;
+				m_bSpawnWindow = true;
+				CGame::SetGameWindow(true);
+				Uninit();						// メニューウィンドウの削除
+			}
 			return true;
 		}
 
@@ -209,14 +255,17 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 //============================================================================
 void CConfirmation_Window::Choice()
 {
+	// 入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
 	// フェード中では無い場合 && 表示中の場合
 	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE && m_bDisplay == true)
 	{
 		// 選択肢が使用されている場合
 		if (!m_vpListChoice.empty())
 		{
-			// 入力デバイスの情報
-			CInput* pInput = CInput::GetKey();
 
 			// 選択肢が2つ以上使用されている場合
 			if (m_vpListChoice.size() >= 2)
@@ -233,6 +282,7 @@ void CConfirmation_Window::Choice()
 				// 下に移動する
 				else if (pInput->Trigger(DIK_E) || (pInput->Trigger(JOYPAD_DOWN, m_nMenuInitiative)))
 				{
+					//m_bInputFlag = true;
 					// 選択SE
 					CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 
@@ -255,13 +305,27 @@ void CConfirmation_Window::Choice()
 				// はいの場合
 				if (m_bSelectChoice == false)
 				{
-					m_bScale = true;
-					SetDisplay(false);
-					m_bSelectChoice = true;
+					if ((Mode == CApplication::MODE_CHAR_SELECT))
+					{
+						if (m_pCharSelectWindow == nullptr)
+						{
+							m_pCharSelectWindow = CCharSelect_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
+						}
+					}
+						m_bScale = true;
+						SetDisplay(false);
+						m_bSelectChoice = true;
 				}
 				// いいえの場合
 				else
 				{
+					if ((Mode == CApplication::MODE_CHAR_SELECT))
+					{
+						if (m_pCharSelectWindow == nullptr)
+						{
+							m_pCharSelectWindow = CCharSelect_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
+						}
+					}
 					m_bSelectChoice = false;
 					m_bScale = true;
 					SetDisplay(false);
@@ -270,10 +334,26 @@ void CConfirmation_Window::Choice()
 		}
 	}
 
+	// キャラ選択ウィンドウが閉じた場合 
+	if (m_pCharSelectWindow != nullptr && m_pCharSelectWindow->GetSapawnWindow() == true)
+	{
+		// キャラ選択画面の破棄
+		m_pCharSelectWindow->SetSapawnWindow(false);
+		delete m_pCharSelectWindow;
+		m_pCharSelectWindow = nullptr;
+	}
+
+	// メニューウィンドウが閉じた時
 	if (m_bSpawnWindow == true && CTitle::GetMenuWindow() != nullptr)
 	{
+		// 文字を消す
 		CApplication::GetMenu()->SetDisplay(false);
+		// ゲーム開閉時のウィンドウの縮小
 		CTitle::GetMenuWindow()->MenuScaleReduce();
+	}
+	if (m_bInputFlag == true)
+	{
+		pInput->UnlockKey(100);
 	}
 }
 

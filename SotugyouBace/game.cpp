@@ -297,6 +297,20 @@ void CGame::GameEnd()
 void CGame::MenuWindow()
 {
 	CInput* pInput = CInput::GetKey();
+	//// Œ»Ý‚Ìƒ‚[ƒh
+	//CApplication::MODE Mode = CApplication::GetModeType();
+
+	//if (Mode == CApplication::MODE_GAME)
+	//{
+	//	if (this != nullptr && m_bInputFlag == true)
+	//	{
+	//		pInput->SetKeyLock(100);
+	//	}
+	//	/*	else if (this != nullptr && m_bInputFlag == false)
+	//	{
+	//	pInput->UnlockKey(100);
+	//	}*/
+	//}
 	if (m_pConfirmationWindow == nullptr)
 	{
 		if (pInput->Trigger(DIK_M))

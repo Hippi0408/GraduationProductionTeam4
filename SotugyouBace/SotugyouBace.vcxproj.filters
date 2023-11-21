@@ -202,6 +202,9 @@
     <ClCompile Include="parts_file.cpp">
       <Filter>02_Resource</Filter>
     </ClCompile>
+    <ClCompile Include="chardecision_window.cpp">
+      <Filter>04_Object\Object2D\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -408,6 +411,9 @@
     </ClInclude>
     <ClInclude Include="parts_file.h">
       <Filter>02_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="chardecision_window.h">
+      <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

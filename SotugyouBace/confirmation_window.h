@@ -22,6 +22,7 @@
 //==============================================
 class CObject2D;
 class CFontString;
+class CCharSelect_Window;
 
 //==============================================
 // メニューウィンドウクラス
@@ -52,6 +53,8 @@ public:
 	bool GetUninit() { return m_bUninitFlag; }
 	bool GetSelectChoice() { return m_bSelectChoice; }
 
+	static CCharSelect_Window* GetCharSelect() { return m_pCharSelectWindow; }
+
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
 
 	static CConfirmation_Window* Create(D3DXVECTOR3 pos,float xsize, float ysize, D3DXCOLOR col);			// 生成
@@ -60,6 +63,7 @@ public:
 
 private:
 	CObject2D* m_pObject2D;						// オブジェクト2Dのインスタンス
+	static CCharSelect_Window* m_pCharSelectWindow;	// キャラ選択用ウィンドウのインスタンス
 	CFontString* m_pFont;						// フォント
 	D3DXVECTOR3 m_pos;							// 位置
 	D3DXCOLOR m_Color;							// 色
@@ -79,6 +83,7 @@ private:
 	bool    m_bUninitFlag;						// 削除フラグ
 	bool    m_bDecition;						// 決定されたか
 	bool    m_bSpawnWindow;						// ウィンドウが生成されたか
+	bool    m_bInputFlag;
 
 	std::vector<CFontString*> m_vpListChoice;	// 選択肢ポインタの配列
 };
