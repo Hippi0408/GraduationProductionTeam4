@@ -43,7 +43,6 @@ HRESULT CPC::Init()
 	CPlayer::Init();
 	m_bFlag = false;
 
-	//SetEnergyGauge(CEnergy_Gauge::Create({ 1280 / 2, 650.0f, 0.0f }, { 700.0f, 10.0f }));
 	SetEnergyGauge(CEnergy_Gauge::Create({ 70,720.0f / 2,0.0f }, { 20.0f,500.0f }));
 	SetGaugeManager(CPlayer_Life_Gauge::Create({ 1210.0f,720.0f / 2,0.0f }, { 20.0f,500.0f }));
 
@@ -441,11 +440,6 @@ void CPC::Perspective()
 
 	//ƒJƒƒ‰‚ÌŒü‚«‚ÌÝ’è
 	CApplication::GetCamera()->SetRot(rotCamera);
-
-	if (pInput->Trigger(DIK_0))
-	{
-		CLocus::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 100.0f, 5, CObject::PRIORITY_CENTER, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	}
 }
 
 //============================================================================

@@ -29,6 +29,7 @@ CInput::CInput()
 	m_pJoyPad = nullptr;		//ジョイパッドの情報
 	m_pMouse = nullptr;			//マウスの情報
 	m_nOldInputType = INPUT_TYPE_KEYBOARD;
+	m_nKeyLock = 0; //キーの初期定設（キーなし）
 }
 
 //*************************************************************************************
@@ -159,24 +160,24 @@ CInput *CInput::Create()
 //*************************************************************************************
 //本ゲーム専用移動key
 //*************************************************************************************
-bool CInput::MovePress(BOOK_GAME_DEDICATED_MOVE_KEY key)
+bool CInput::MovePress(BOOK_GAME_DEDICATED_MOVE_KEY key,int nKeyLock)
 {
 	switch (key)
 	{
 	case GAME_MOVE_UP:
-		return (Press(DIK_W) || StickPress(JOYKEY_CROSS_UP));
+		return (Press(DIK_W, nKeyLock) || StickPress(JOYKEY_CROSS_UP, nKeyLock));
 		break;
 	case GAME_MOVE_DOWN:
-		return (Press(DIK_S) || StickPress(JOYKEY_CROSS_DOWN));
+		return (Press(DIK_S, nKeyLock) || StickPress(JOYKEY_CROSS_DOWN, nKeyLock));
 		break;
 	case GAME_MOVE_LEFT:
-		return (Press(DIK_A) || StickPress(JOYKEY_CROSS_LEFT));
+		return (Press(DIK_A, nKeyLock) || StickPress(JOYKEY_CROSS_LEFT, nKeyLock));
 		break;
 	case GAME_MOVE_RIGHT:
-		return (Press(DIK_D) || StickPress(JOYKEY_CROSS_RIGHT));
+		return (Press(DIK_D, nKeyLock) || StickPress(JOYKEY_CROSS_RIGHT, nKeyLock));
 		break;
 	case GAME_MOVE_ALL:
-		return (MovePress(GAME_MOVE_UP) || MovePress(GAME_MOVE_DOWN) || MovePress(GAME_MOVE_LEFT) || MovePress(GAME_MOVE_RIGHT));
+		return (MovePress(GAME_MOVE_UP, nKeyLock) || MovePress(GAME_MOVE_DOWN, nKeyLock) || MovePress(GAME_MOVE_LEFT, nKeyLock) || MovePress(GAME_MOVE_RIGHT, nKeyLock));
 		break;
 	default:
 		assert(false);
@@ -302,57 +303,84 @@ std::vector<int> CInput::ReleaseDevice(STAN_DART_INPUT_KEY key)
 //*************************************************************************************
 //プレス処理(キーボード)
 //*************************************************************************************
-bool CInput::Press(int nKey,int)
+bool CInput::Press(int nKey, int nKeyLock, int)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pKeyboard->GetKeyboardPress(nKey);
 }
 
 //*************************************************************************************
 //トリガー処理(キーボード)
 //*************************************************************************************
-bool CInput::Trigger(int nkey, int)
+bool CInput::Trigger(int nkey, int nKeyLock, int)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pKeyboard->GetKeyboardTrigger(nkey);
 }
 
 //*************************************************************************************
 //リリース処理(キーボード)
 //*************************************************************************************
-bool CInput::Release(int nkey, int)
+bool CInput::Release(int nkey, int nKeyLock, int)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pKeyboard->GetKeyboardRelease(nkey);
 }
 
 //*************************************************************************************
 //プレス処理(ジョイパッド)
 //*************************************************************************************
-bool CInput::Press(DirectJoypad key, int nNum)
+bool CInput::Press(DirectJoypad key, int nKeyLock, int nNum)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pJoyPad->GetPress(key, nNum);
 }
 
 //*************************************************************************************
 //トリガー処理(ジョイパッド)
 //*************************************************************************************
-bool CInput::Trigger(DirectJoypad key, int nNum)
+bool CInput::Trigger(DirectJoypad key, int nKeyLock, int nNum)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pJoyPad->GetTrigger(key, nNum);
 }
 
 //*************************************************************************************
 //リリース処理(ジョイパッド)
 //*************************************************************************************
-bool CInput::Release(DirectJoypad key, int nNum)
+bool CInput::Release(DirectJoypad key, int nKeyLock, int nNum)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pJoyPad->GetRelease(key, nNum);
 }
 
 //*************************************************************************************
 //スティックのプレス
 //*************************************************************************************
-bool CInput::StickPress(JOYKEY_DIRECT_CROSS key, int nNum, bool bleftandright, float frot)
+bool CInput::StickPress(JOYKEY_DIRECT_CROSS key, int nNum, bool bleftandright, float frot, int nKeyLock)
 {
-
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	switch (key)
 	{
 	case JOYKEY_CROSS_UP:
@@ -388,24 +416,36 @@ bool CInput::StickPress(JOYKEY_DIRECT_CROSS key, int nNum, bool bleftandright, f
 //*************************************************************************************
 //プレス処理(マウス)
 //*************************************************************************************
-bool CInput::Press(MOUSE_KEY Key)
+bool CInput::Press(MOUSE_KEY Key, int nKeyLock)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pMouse->GetPress(Key);
 }
 
 //*************************************************************************************
 //トリガー処理(マウス)
 //*************************************************************************************
-bool CInput::Trigger(MOUSE_KEY Key)
+bool CInput::Trigger(MOUSE_KEY Key, int nKeyLock)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pMouse->GetTrigger(Key);
 }
 
 //*************************************************************************************
 //リリース処理(マウス)
 //*************************************************************************************
-bool CInput::Release(MOUSE_KEY Key)
+bool CInput::Release(MOUSE_KEY Key, int nKeyLock)
 {
+	if (m_nKeyLock != nKeyLock)
+	{
+		return false;
+	}
 	return m_pMouse->GetRelease(Key);
 }
 
@@ -601,11 +641,41 @@ bool CInput::GetIntermediateReception()
 }
 
 //*************************************************************************************
+//キーの設定(上書き設定はエラーを表示)
+//*************************************************************************************
+void CInput::SetKeyLock(int nKeyLock)
+{
+	//キーの上書きエラー
+	if (m_nKeyLock != 0)
+	{
+		assert(false);
+	}
+
+	//キーの設定
+	m_nKeyLock = nKeyLock;
+}
+
+//*************************************************************************************
+//キーの解除
+//*************************************************************************************
+void CInput::UnlockKey(int nKeyLock)
+{
+	if (m_nKeyLock == nKeyLock)
+	{
+		m_nKeyLock = 0;
+	}
+	else
+	{
+		assert(false);
+	}
+}
+
+//*************************************************************************************
 // 全デバイスの入力を確認
 //*************************************************************************************
-bool CInput::KeyChackAll(STAN_DART_INPUT_KEY key, int type)
+bool CInput::KeyChackAll(STAN_DART_INPUT_KEY key, int nKeyLock, int type)
 {
-	auto lambda = [this, type](auto a)
+	auto lambda = [this, nKeyLock,type](auto a)
 	{
 		if (a == KEY_ALL)
 		{
@@ -628,13 +698,13 @@ bool CInput::KeyChackAll(STAN_DART_INPUT_KEY key, int type)
 		switch (type)
 		{
 		case 1:
-			return Press(a);
+			return Press(a, nKeyLock);
 			break;
 		case 2:
-			return Trigger(a);
+			return Trigger(a, nKeyLock);
 			break;
 		case 3:
-			return Release(a);
+			return Release(a, nKeyLock);
 			break;
 		default:
 			break;
@@ -701,20 +771,20 @@ bool CInput::KeyChackAll(STAN_DART_INPUT_KEY key, int type)
 //*************************************************************************************
 // 指定したデバイスの入力を確認
 //*************************************************************************************
-bool CInput::KeyChackNum(STAN_DART_INPUT_KEY key, int type, int nNum)
+bool CInput::KeyChackNum(STAN_DART_INPUT_KEY key, int nKeyLock, int type, int nNum)
 {
-	auto lambda = [this, nNum, type](auto a)
+	auto lambda = [this, nKeyLock, type, nNum](auto a)
 	{
 		switch (type)
 		{
 		case 1:
-			return Press(a, nNum);
+			return Press(a, nKeyLock, nNum);
 			break;
 		case 2:
-			return Trigger(a, nNum);
+			return Trigger(a, nKeyLock, nNum);
 			break;
 		case 3:
-			return Release(a, nNum);
+			return Release(a, nKeyLock, nNum);
 			break;
 		default:
 			break;

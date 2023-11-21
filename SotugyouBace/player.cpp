@@ -8,6 +8,8 @@
 #include "application.h"
 #include "input.h"
 #include "bullet.h"
+#include "normal_bullet.h"
+#include "homing_bullet.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
 #include "drop_manager.h"
@@ -181,7 +183,8 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 
 	// 弾の生成
-	CBullet::Create({ pos.x, pos.y, pos.z}, D3DXVECTOR2(60.0f, 60.0f), pos_vec, true);
+	CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_nEnemy_Count, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
+	//CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, m_nEnemy_Count, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
 }
 
 //============================================================================
@@ -198,7 +201,7 @@ void CPlayer::JumpStart()
 		// 離着状態にする
 		SetGround(false);
 
-		// 上に上昇する
+		// 上昇する
 		AddMove({ 0.0f, PLAYER_JUMP_POWER, 0.0f });
 	}
 }
@@ -280,7 +283,7 @@ void CPlayer::Target()
 {
 	D3DXVECTOR3 Player_Pos = GetPos();				// プレイヤーの位置
 	D3DXVECTOR3 Mob_Pos = { 0.0f,0.0f,0.0f };		// 敵の位置
-	D3DXVECTOR3 NearMob_Pos = { 0.0f,0.0f,0.0f };	// 一番近い敵の位置
+	m_NearMob_Pos = { 0.0f,0.0f,0.0f };				// 一番近い敵の位置
 	m_fTarget_Scope = 3000.0f;						// ターゲットを狙う範囲
 	float NearDistance = m_fTarget_Scope;			// 敵との距離
 	float NextNearDistance = 0.0f;					// 次に近い敵との距離
@@ -288,6 +291,8 @@ void CPlayer::Target()
 	bool bScreen = false;							// 画面に映っているか
 	float DistanceXZ = 0.0f;						// プレイヤーと敵のXZ座標の距離
 	D3DXVECTOR3 BulletVec = {0.0f,0.0f,0.0f};
+	m_nEnemy_Count = 0;
+	int nCnt = 0;
 
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
@@ -309,6 +314,8 @@ void CPlayer::Target()
 		// 雑魚敵の情報
 		for (auto pEnemy : pEnemyManager->GetAllEnemy())
 		{
+			nCnt++;
+
 			if (pEnemy->GetLife() > 0)
 			{
 				// 敵の位置の取得
@@ -330,12 +337,14 @@ void CPlayer::Target()
 				{
 					// 短い方の距離と位置を代入
 					NearDistance = DistanceXZ;
-					NearMob_Pos = Mob_Pos;
+					m_NearMob_Pos = Mob_Pos;
+					m_nEnemy_Count = nCnt;
+					m_fEnemy_Speed = pEnemy->GetSpeed();
 
 					m_bTarget = true;
 
 					// 画面に映っている時だけターゲットする
-					bScreen = Target_Scope(NearMob_Pos);
+					bScreen = Target_Scope(m_NearMob_Pos);
 				}
 			}
 		}
@@ -345,6 +354,7 @@ void CPlayer::Target()
 			// 距離が近いが画面に映っていない敵との距離
 			NextNearDistance = NearDistance;
 			NearDistance = m_fTarget_Scope;
+			nCnt = 0;
 			m_bTarget = false;
 		}
 		else
@@ -356,17 +366,17 @@ void CPlayer::Target()
 		m_bReticle_Draw = true;
 
 		// プレイヤーから敵の距離
-		BulletVec = NearMob_Pos - GetPos();
+		BulletVec = m_NearMob_Pos - GetPos();
 
 		// ターゲットした敵の方向
 		float Angle = atan2(BulletVec.x, BulletVec.z);
 		float AngleY = 0.0f;
 
 		// プレイヤーから敵の直線距離
-		float fHypotenuse = sqrt((BulletVec.y * BulletVec.y) + (NearDistance * NearDistance));
+		m_fHypotenuse = sqrt((BulletVec.y * BulletVec.y) + (NearDistance * NearDistance));
 
 		// Y座標の追従
-		AngleY = sinf(BulletVec.y / fHypotenuse);
+		AngleY = sinf(BulletVec.y / m_fHypotenuse);
 
 		// 目的の角度の設定
 		CCharacter::SetBulletRot({ AngleY,Angle + D3DX_PI,0.0f });
@@ -382,11 +392,11 @@ void CPlayer::Target()
 		// 目的の角度の設定
 		CCharacter::SetBulletRot({ rotCamera.x + D3DX_PI,rotCamera.y + D3DX_PI ,rotCamera.z + D3DX_PI });
 
-		NearMob_Pos = { 0.0f,0.0f,0.0f };
+		m_NearMob_Pos = { 0.0f,0.0f,0.0f };
 	}
 
 	// レティクルの設定
-	Reticle(NearMob_Pos);
+	Reticle(m_NearMob_Pos);
 }
 
 //============================================================================
@@ -452,7 +462,7 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		// 正規化
 		D3DXVec3Normalize(&Reflected_PosVec[nCnt], &Reflected_PosVec[nCnt]);
 
-		// 視点からから敵のベクトル
+		// 視点から敵のベクトル
 		EnemyVec = nearpos - WorldPosV;
 
 		// 正規化
