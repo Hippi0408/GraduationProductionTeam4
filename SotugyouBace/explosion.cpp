@@ -52,8 +52,11 @@ void CExplosion::Update()
 	m_nContinuation++;
 
 	// ”š”­‚ÌŽ‘±ŽžŠÔ
-	if(m_nContinuation > 60)
-	Uninit();
+	if (m_nContinuation > 60)
+	{
+		SetEndExplosion(true);
+		Uninit();
+	}
 }
 
 //==============================================================================================

@@ -31,11 +31,6 @@ HRESULT CParabola_Bullet::Init()
 {
 	CBullet::Init();
 
-	// XYZの速度を同じにし、重力を変える→計算しらん
-	// XZの速度(最大100)だけ変えて、Yの速度と重力を変えない→高さが一定になる
-	// 距離、重力、XZの速度、弾が着弾するまでの時間 = 55　　距離に応じてXZの速度を変える
-	// 55Fで敵に当てる
-
 	// XZの弾の速度
 	float Speed = m_fHyptenuse / HIT_COUNT;
 
