@@ -78,9 +78,8 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-		//CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
+		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
 	}
-	CMob::Create({ 0.0f,0.0f,9900.0f });
 
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
