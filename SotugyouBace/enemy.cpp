@@ -83,11 +83,19 @@ void CEnemy::Hit(CMove_Object* pHit)
 		// タグから種類を選ぶ
 		switch (tag)
 		{
-		case TAG_CHARACTER :
+		case TAG_CHARACTER:
 			break;
 		case TAG_BULLET:
 			// 弾のダメージを返す
 			Damage(pHit->GetPower());
+			break;
+		case TAG_EXPLOSION:
+			if (!GetHitExplosion())
+			{
+				// 爆発のダメージを返す
+				Damage(pHit->GetPower());
+				SetHitExplosion(true);
+			}
 			break;
 		default:
 			break;

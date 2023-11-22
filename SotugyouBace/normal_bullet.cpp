@@ -31,7 +31,7 @@ HRESULT CNormal_Bullet::Init()
 	CBullet::Init();
 
 	// ’e‚ª“G‚É“Í‚­‚Ü‚Å‚ÌŽžŠÔ
-	float fHitCnt = m_fHypotenuse / GetSpeed();
+	float fHitCnt = m_fHypotenuse / GetSpeed_XZ();
 
 	int nCnt = 0;
 	if (m_bTarget)

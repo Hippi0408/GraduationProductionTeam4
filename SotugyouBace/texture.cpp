@@ -37,7 +37,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/jewel.png",				// パーティクル用宝石
 	"Data/texture/particle/soul.png",				// 魂
 	"Data/texture/particle/up.png",					// 上矢印
-
+	"Data/texture/reticle.png",						// レティクル
 
 };
 

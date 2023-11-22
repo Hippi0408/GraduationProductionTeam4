@@ -205,6 +205,12 @@
     <ClCompile Include="diffusion_bullet.cpp">
       <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="parabola_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="explosion.cpp">
+      <Filter>04_Object\MoveObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -414,6 +420,12 @@
     </ClInclude>
     <ClInclude Include="diffusion_bullet.h">
       <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="parabola_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="explosion.h">
+      <Filter>04_Object\MoveObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

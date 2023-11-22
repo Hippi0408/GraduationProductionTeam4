@@ -10,6 +10,8 @@
 #include "bullet.h"
 #include "normal_bullet.h"
 #include "homing_bullet.h"
+#include "diffusion_bullet.h"
+#include "parabola_bullet.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
 #include "game.h"
@@ -143,8 +145,10 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 
 	// 弾の生成
-	CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_nEnemy_Count, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
-	//CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, m_nEnemy_Count, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
+	/*CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_nEnemy_Count, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
+	CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, m_nEnemy_Count, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);*/
+	//CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);
+	CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
 }
 
 //============================================================================
@@ -218,6 +222,13 @@ void CPlayer::Hit(CMove_Object* pHit)
 			// 弾のダメージを返す
 			Damage(pHit->GetPower());
 			break;
+		case TAG_EXPLOSION:
+			if (!GetHitExplosion())
+			{
+				// 爆発のダメージを返す
+				Damage(pHit->GetPower());
+				SetHitExplosion(true);
+			}
 		default:
 			break;
 		}
@@ -302,7 +313,7 @@ void CPlayer::Target()
 		BulletVec = m_NearMob_Pos - GetPos();
 
 		// ターゲットした敵の方向
-		float Angle = atan2(BulletVec.x, BulletVec.z);
+		m_fAngle = atan2(BulletVec.x, BulletVec.z);
 		float AngleY = 0.0f;
 
 		// プレイヤーから敵の直線距離
@@ -312,7 +323,7 @@ void CPlayer::Target()
 		AngleY = sinf(BulletVec.y / m_fHypotenuse);
 
 		// 目的の角度の設定
-		CCharacter::SetBulletRot({ AngleY,Angle + D3DX_PI,0.0f });
+		CCharacter::SetBulletRot({ AngleY,m_fAngle + D3DX_PI,0.0f });
 	}
 	else
 	{// ターゲットがいない場合は正面に弾を撃つ
@@ -433,7 +444,7 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 		m_Reticle_Pos = target;
 
 	// 拡大縮小の速度
-	float Size_Speed = 7;
+	float Size_Speed = 10;
 	// アルファ値の加算減算の速度
 	float Alpha_Speed = 1 / ((RETICLE_TRANSPARENCY_SIZE - RETICLE_SIZE) / Size_Speed);
 
@@ -479,5 +490,6 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 		// サイズと色の設定
 		m_pReticle->SetSize({ m_Reticle_Size });
 		m_pReticle->SetCol({ 1.0f,1.0f,1.0f,m_fReticle_Alpha });
+		m_pReticle->SetTexture(CTexture::TEXTURE_EFFECT_RETICLE);
 	}
 }
