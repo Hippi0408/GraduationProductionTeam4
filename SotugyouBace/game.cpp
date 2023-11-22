@@ -248,6 +248,11 @@ void CGame::Update()
 					pEnemy->Damage(50);
 				}
 			}
+
+			if (pInput->Trigger(DIK_1))
+			{
+				CLocus::Create(D3DXVECTOR3(0.0f,200.0f,0.0f),1000.0f,10);
+			}
 		}
 #endif
 	}
