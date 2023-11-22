@@ -28,13 +28,13 @@ public:
 		// [1]˜r
 		ARMS_SG01 = 0,			// SG01‚Ì˜r
 		ARMS_SG02,				// SG02‚Ì˜r
-		//ARMS_SG03,			// SG03‚Ì˜r
+		ARMS_SG03,			// SG03‚Ì˜r
 		ARMS_MAX,				// ˜r‚ÌÅ‘å”
 
 		// [2]‹r
 		LEG_SG01,				// SG01‚Ì‹r
 		LEG_SG02,				// SG02‚Ì‹r
-		//LEG_SG03,				// SG03‚Ì‹r
+		LEG_SG03,				// SG03‚Ì‹r
 		LEG_MAX,				// ‹r‚ÌÅ‘å”
 
 		// •Ší

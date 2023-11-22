@@ -31,6 +31,7 @@
 #include"debugProc.h"
 #include"pause.h"
 #include "parts_file.h"
+#include "motion.h"
 
 CPlayerManager* CGame::m_pPlayerManager = nullptr;
 CEnemyManager* CGame::m_pEnemyManager = nullptr;
@@ -75,6 +76,9 @@ HRESULT CGame::Init()
 
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
+
+	// 全てのモデルパーツの読み込み
+	CApplication::GetMotion()->LoadAllFile();
 
 	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成

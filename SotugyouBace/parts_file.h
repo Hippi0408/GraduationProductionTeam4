@@ -28,12 +28,15 @@ public:
 	{
 		PARTS_PLAYER_BODY_1 = 0,	// 体パーツ1
 		PARTS_PLAYER_BODY_2,		// 体パーツ2
+		PARTS_PLAYER_BODY_3,		// 体パーツ3
 
 		PARTS_PLAYER_ARMS_1,		// 腕パーツ1
 		PARTS_PLAYER_ARMS_2,		// 腕パーツ2
+		PARTS_PLAYER_ARMS_3,		// 腕パーツ3
 
 		PARTS_PLAYER_LEG_1,			// 脚パーツ1
 		PARTS_PLAYER_LEG_2,			// 脚パーツ2
+		PARTS_PLAYER_LEG_3,			// 脚パーツ3
 
 		PARTS_MOB,					// モブパーツ
 
@@ -83,7 +86,7 @@ public:
 	void LoadAllFile();																// 全てのモデルパーツの読み込み
 
 private:
-	static const char* m_cFileName[PARTS_MAX];		// ファイル名
+	static const char* m_cPartsFileName[PARTS_MAX];		// ファイル名
 
 	PARTS_SET m_PartsSet[PARTS_MAX];	// パーツの情報
 

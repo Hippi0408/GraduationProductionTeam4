@@ -107,10 +107,8 @@ void CParts::Motion()
 		// モデルセットが使用されている場合
 		if (!m_vpModel.empty())
 		{
-			CParts_File::PARTS_SET pPartsSet = CApplication::GetPartsFile()->GetPartsSet(m_nPartsIndex);
-
 			// 現在モーションのモーション情報を取得(モーション番号, 自身の名前)
-			CMotion::MotionPattern MotionSet = CApplication::GetMotion()->GetMotionPattern(m_nCurrentMotion, pPartsSet.Name);
+			CMotion::MotionPattern MotionSet = CApplication::GetMotion()->GetMotionPattern(m_nCurrentMotion, m_sMotionName);
 
 			// 全てのモデルを読み込む
 			for (int nCnt = 0; nCnt < (int)m_vpModel.size(); nCnt++)
@@ -324,7 +322,7 @@ void CParts::SetParts(const int partsIndex)
 //============================================================================
 // 生成処理
 //============================================================================
-CParts* CParts::Create(const D3DXVECTOR3 pos, const int partsIndex, CCharacter* parent)
+CParts* CParts::Create(const D3DXVECTOR3 pos, const int partsIndex, CMotion::MOTION motion, CCharacter* parent)
 {
 	CParts* pParts = new CParts;
 
@@ -335,6 +333,7 @@ CParts* CParts::Create(const D3DXVECTOR3 pos, const int partsIndex, CCharacter* 
 
 	pParts->SetPos(pos);
 	pParts->SetParts(partsIndex);
+	pParts->SetMotionName(CMotion::m_cMotionFileName[motion]);
 	pParts->SetParent(parent);
 
 	return pParts;

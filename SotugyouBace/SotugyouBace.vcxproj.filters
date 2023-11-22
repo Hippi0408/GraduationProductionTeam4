@@ -196,9 +196,6 @@
     <ClCompile Include="homing_bullet.cpp">
       <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="diffusion_bullet.cpp">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="collision.cpp">
       <Filter>04_Object\Collision</Filter>
     </ClCompile>
@@ -413,9 +410,6 @@
       <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="homing_bullet.h">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="diffusion_bullet.h">
       <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="parts.h">

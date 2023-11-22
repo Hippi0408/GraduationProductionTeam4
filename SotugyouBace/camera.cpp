@@ -240,5 +240,5 @@ void CCamera::Perspective()
 		m_bValue = true;
 	}
 	// s—ñ‚ğg‚Á‚½ƒJƒƒ‰§Œä
-	Matrix(m_rot, m_PPos);
+	Matrix(m_rot, { m_PPos.x, m_PPos.y, m_PPos.z });
 }

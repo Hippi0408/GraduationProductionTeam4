@@ -42,7 +42,7 @@ CMob::~CMob()
 HRESULT CMob::Init()
 {
 	// モブのモデルパーツを設定
-	SetParts(PARTS_BODY, CParts_File::PARTS_MOB);
+	SetParts(PARTS_BODY, CParts_File::PARTS_MOB, CMotion::MOTION_MOB);
 
 	CEnemy::Init();
 

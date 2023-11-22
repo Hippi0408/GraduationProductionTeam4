@@ -53,9 +53,9 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1);
-	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1);
-	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1);
+	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1, CMotion::MOTION_PLAYER_BODY);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1, CMotion::MOTION_PLAYER_ARMS);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1, CMotion::MOTION_PLAYER_LEG);
 	SetWeapon(CWeapon::WEAPON_NONE);
 
 	// タグの設定
