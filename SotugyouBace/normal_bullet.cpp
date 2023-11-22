@@ -8,6 +8,8 @@
 #include"object3D.h"
 #include "application.h"
 #include"enemy_manager.h"
+#include "game.h"
+#include "tutorial.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -36,7 +38,22 @@ HRESULT CNormal_Bullet::Init()
 	int nCnt = 0;
 	if (m_bTarget)
 	{
-		for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+		// 現在のモード
+		CApplication::MODE Mode = CApplication::GetModeType();
+
+		CEnemyManager* pManager = nullptr;
+
+		// モード毎に敵キャラを読み込む
+		if (Mode == CApplication::MODE_TUTORIAL)
+		{
+			pManager = CTutorial::GetEnemyManager();
+		}
+		else if (Mode == CApplication::MODE_GAME)
+		{
+			pManager = CGame::GetEnemyManager();
+		}
+
+		for (auto pEnemy : pManager->GetAllEnemy())
 		{
 			nCnt++;
 

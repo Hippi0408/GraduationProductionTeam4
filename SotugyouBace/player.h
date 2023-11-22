@@ -15,6 +15,8 @@
 class CBullet;
 class CEnergy_Gauge;
 class CObject3D;
+class CDrop_Weapon;
+class CWeapon;
 
 //---------------------------
 // クラス宣言
@@ -31,27 +33,6 @@ class CPlayer : public CCharacter
 
 public:
 
-	// モデルの配置情報
-	enum MODEL
-	{
-		MODEL_BODY = 0,			// [0]胴
-		MODEL_HIP,				// [1]腰
-		MODEL_HEAD,				// [2]頭
-		MODEL_RIGHT_UPPER_ARM,	// [3]右上腕
-		MODEL_RIGHT_FOREARM,	// [4]右前腕
-		MODEL_RIGHT_ARM,		// [5]右手
-		MODEL_LEFT_UPPER_ARM,	// [6]左上腕
-		MODEL_LEFT_FOREARM,		// [7]左前腕
-		MODEL_LEFT_ARM,			// [8]左手
-		MODEL_RIGHT_THIGH,		// [9]右腿
-		MODEL_RIGHT_SHIN,		// [10]右脛
-		MODEL_RIGHT_LEG,		// [11]右足
-		MODEL_LEFT_THIGH,		// [12]左腿
-		MODEL_LEFT_SHIN,		// [13]左脛
-		MODEL_LEFT_LEG,			// [14]左足
-		MODEL_MAX,				// モデルの最大数
-	};
-
 	// パーツの種類
 	enum PARTS
 	{
@@ -59,7 +40,8 @@ public:
 		PARTS_ARMS,				// 腕
 		PARTS_LEG,				// 脚
 
-		PARTS_MAX
+		PARTS_MAX,
+		PARTS_WEAPON,			// 武器
 	};
 
 	// モーションのタイプ
@@ -91,10 +73,17 @@ public:
 	void Target();						// ターゲット
 	bool Target_Scope(D3DXVECTOR3 nearpos);				// ターゲットを狙う範囲
 	void Reticle(D3DXVECTOR3 target);	// レティクル
+	void DropGet(CDrop_Weapon* pDrop);		// 落とし物を入手する処理
+
+	void CollisionDropWeapon();			// 落ちてる武器の当たり判定
+	void ChangeWeapon(const int weapon);
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
+	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
+	void SetWeapon(const int weapon);
 
+	const bool GetDropContact() { return m_bDrop_Contact; }
 	const int GetCharaIndex() { return m_nCharaIndex; }
 	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 
@@ -102,8 +91,12 @@ private:
 	int m_nCharaIndex;		// 自身の番号
 	float m_fTarget_Scope;	// ターゲットを狙う範囲
 	bool m_bTarget;			// ターゲットがいるか
+	bool m_bDrop_Contact;	// 落とし物との接触判定
+	bool m_bDrop_Get;		// 落とし物を入手する判定
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
+	CWeapon* m_pRightWeapon;			// 右手武器
+	CWeapon* m_pLeftWeapon;				// 左手武器
 
 	D3DXVECTOR3 m_NearMob_Pos;
 	CObject3D *m_pReticle;				// レティクル

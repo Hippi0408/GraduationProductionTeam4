@@ -107,10 +107,8 @@ void CParts::Motion()
 		// モデルセットが使用されている場合
 		if (!m_vpModel.empty())
 		{
-			CParts_File::PARTS_SET pPartsSet = CApplication::GetPartsFile()->GetPartsSet(m_nPartsIndex);
-
 			// 現在モーションのモーション情報を取得(モーション番号, 自身の名前)
-			CMotion::MotionPattern MotionSet = CApplication::GetMotion()->GetMotionPattern(m_nCurrentMotion, pPartsSet.Name);
+			CMotion::MotionPattern MotionSet = CApplication::GetMotion()->GetMotionPattern(m_nCurrentMotion, m_sMotionName);
 
 			// 全てのモデルを読み込む
 			for (int nCnt = 0; nCnt < (int)m_vpModel.size(); nCnt++)
@@ -321,73 +319,10 @@ void CParts::SetParts(const int partsIndex)
 	}
 }
 
-////==============================================================================================
-//// モデルパーツの変更処理
-////==============================================================================================
-//void CParts::ChangeParts(const int index)
-//{
-//	// 現在のパーツのモデル数
-//	int nNumCurrentPartsModel = m_vpModel.size();
-//
-//	// 変更したいパーツのモデル数
-//	int nNumPartsModel = CApplication::GetPartsFile()->GetPartsSet(m_nPartsIndex).ModelSet.size();
-//
-//	// パーツのモデル数が増える場合
-//	if (nNumCurrentPartsModel < nNumPartsModel)
-//	{
-//		// 足りない領域分を確保
-//		m_vpModel.reserve(nNumPartsModel - nNumCurrentPartsModel);
-//	}
-//	// パーツのモデル数が減る場合
-//	else if (nNumCurrentPartsModel > nNumPartsModel)
-//	{
-//		// 多い分の領域を削除
-//		for (int nCnt = 0; nCnt < nNumCurrentPartsModel - nNumPartsModel; nCnt++)
-//		{
-//			m_vpModel.back()->Uninit();
-//			m_vpModel.back() = nullptr;
-//			m_vpModel.pop_back();
-//		}
-//	}
-//
-//	CApplication::GetPartsFile()->GetPartsSet(m_nPartsIndex);
-//	// 自身のパーツの番号
-//	m_nPartsIndex = index;
-//
-//	// 
-//
-//	// 指定されたパーツの全てのモデルの情報を読み込む
-//	for (auto ModelSet : CApplication::GetPartsFile()->GetPartsSet(m_nPartsIndex).ModelSet)
-//	{
-//		for (auto pModel : m_vpModel)
-//		{
-//			// モデル番号の設定
-//			pModel->SetModel(ModelSet.nModelIndex);
-//
-//			CObjectX* pParent = nullptr;
-//
-//			// 親ポインタが存在する場合
-//			if (ModelSet.nParentIndex >= 0)
-//			{
-//				pParent = m_vpModel[ModelSet.nParentIndex];
-//			}
-//
-//			// 親ポインタの設定
-//			pModel->SetParent(pParent);
-//
-//			// 親ポインタが存在しない場合
-//			if (ModelSet.nParentIndex < 0)
-//			{
-//				m_vpModel.back()->SetParts(true);
-//			}
-//		}
-//	}
-//}
-
 //============================================================================
 // 生成処理
 //============================================================================
-CParts* CParts::Create(const D3DXVECTOR3 pos, const int partsIndex, CCharacter* parent)
+CParts* CParts::Create(const D3DXVECTOR3 pos, const int partsIndex, CMotion::MOTION motion, CCharacter* parent)
 {
 	CParts* pParts = new CParts;
 
@@ -398,6 +333,7 @@ CParts* CParts::Create(const D3DXVECTOR3 pos, const int partsIndex, CCharacter* 
 
 	pParts->SetPos(pos);
 	pParts->SetParts(partsIndex);
+	pParts->SetMotionName(CMotion::m_cMotionFileName[motion]);
 	pParts->SetParent(parent);
 
 	return pParts;

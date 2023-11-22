@@ -8,6 +8,8 @@
 #include"application.h"
 #include"objectX.h"
 #include"enemy_manager.h"
+#include "game.h"
+#include "tutorial.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -57,9 +59,24 @@ void CHoming_Bullet::Update()
 	float fTarget_Scope = 2000.0f;
 	float fNearDistance = fTarget_Scope;
 	int nCnt = 0;
+	CEnemy* pNearEnemy = nullptr;
 
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CEnemyManager* pManager = nullptr;
+
+	// モード毎に敵キャラを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pManager = CTutorial::GetEnemyManager();
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pManager = CGame::GetEnemyManager();
+	}
 	// 雑魚敵の情報
-	for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+	for (auto pEnemy : pManager->GetAllEnemy())
 	{
 		nCnt++;
 
@@ -87,27 +104,22 @@ void CHoming_Bullet::Update()
 			{
 				// 短い方の距離と位置を代入
 				fNearDistance = m_fHypotenuse;
-				m_nNearEnemy = nCnt;
+				pNearEnemy = pEnemy;
 				m_bTarget = true;
 			}
 		}
 	}
 
-	int nEnemy_Cnt = 0;
-	for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+	// 一番近い敵キャラが使用されている場合
+	if (pNearEnemy != nullptr)
 	{
-		nEnemy_Cnt++;
+		// ターゲットしている敵の位置
+		D3DXVECTOR3 Enemy_Pos = pNearEnemy->GetPos();
 
-		if (nEnemy_Cnt == m_nNearEnemy)
-		{
-			// ターゲットしている敵の位置
-			D3DXVECTOR3 Enemy_Pos = pEnemy->GetPos();
-
-			// 弾から敵までのベクトル
-			D3DXVECTOR3 Mob_Vec = Enemy_Pos - GetPos();
-			D3DXVec3Normalize(&Mob_Vec, &Mob_Vec);
-			SetMove(Mob_Vec);
-		}
+		// 弾から敵までのベクトル
+		D3DXVECTOR3 Mob_Vec = Enemy_Pos - GetPos();
+		D3DXVec3Normalize(&Mob_Vec, &Mob_Vec);
+		SetMove(Mob_Vec);
 	}
 }
 

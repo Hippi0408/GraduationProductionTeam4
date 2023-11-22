@@ -42,31 +42,21 @@ void CCollision_Manager::ReleaseAllCollision()
 void CCollision_Manager::UpdateAll()
 {
 	// 全ての当たり判定の更新処理
-	for (auto it = m_AllCollision.begin(); it != m_AllCollision.end(); it++)
-	{
-		CCollision* pCollision = *it;
-
-		// 死亡フラグが建っていない場合
-		if (!pCollision->GetDeath() && !pCollision->GetParent()->GetDeathFlag())
-		{
-			pCollision->Update();
-		}
-	}
-
-	// 全ての当たり判定の解放判定の処理
 	for (auto it = m_AllCollision.begin(); it != m_AllCollision.end();)
 	{
 		CCollision* pCollision = *it;
 
-		// 死亡フラグが建っている場合
-		if (pCollision->GetDeath())
+		// 親と子のどちらも、死亡フラグが建っていない場合
+		if (!pCollision->GetDeath() && !pCollision->GetParent()->GetDeathFlag())
+		{
+				pCollision->Update();
+				it++;
+		}
+		else
 		{
 			it = m_AllCollision.erase(it);
 			delete pCollision;
 		}
-		else
-		{
-			it++;
-		}
+
 	}
 }

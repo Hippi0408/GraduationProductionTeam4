@@ -24,9 +24,6 @@
 #include "menu.h"
 #include "title_menu.h"
 #include "particle_manager.h"
-#include "player_manager.h"
-#include "enemy_manager.h"
-#include "collision_manager.h"
 #include "char_select.h"
 #include "stage_select.h"
 #include "tutorial.h"
@@ -55,9 +52,6 @@ CFade* CApplication::m_pFade = nullptr;
 CMenu* CApplication::m_pMenu = nullptr;
 CParts_File* CApplication::m_pPartsFile = nullptr;
 CParticleManager* CApplication::m_pParticleManager = nullptr;
-CPlayerManager* CApplication::m_pPlayerManager = nullptr;
-CEnemyManager* CApplication::m_pEnemyManager = nullptr;
-CCollision_Manager* CApplication::m_pCollision_Manager = nullptr;
 
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
@@ -95,7 +89,6 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	m_pLight = new CLight;							// ライトの生成
 	m_pCamera = new CCamera;						// カメラの生成
 	m_pPartsFile = new CParts_File;					// パーツファイルの生成
-	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
 
 	//入力処理
 	m_pInput = CInput::Create();
@@ -125,9 +118,6 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	// パーティクルマネージャの生成
 	m_pParticleManager = new CParticleManager;
 	m_pParticleManager->LoadText("particle.txt");
-
-	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
-	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
 
 	//リリース時はマウスポインターを消す
 	m_pInput->SetCursorErase(false);
@@ -258,37 +248,12 @@ void CApplication::Uninit()
 	// 全てのオブジェクトの解放処理
 	CObject::ReleaseAll();
 
-	// 全ての当たり判定の解放処理
-	m_pCollision_Manager->ReleaseAllCollision();
-
 	// パーティクルマネージャの破棄
 	if (m_pParticleManager != nullptr)
 	{
 		m_pParticleManager->ReleaseAll();
 		delete m_pParticleManager;
 		m_pParticleManager = nullptr;
-	}
-
-	// プレイヤーマネージャーの破棄
-	if (m_pPlayerManager != nullptr)
-	{
-		m_pPlayerManager->Uninit();
-		delete m_pPlayerManager;
-		m_pPlayerManager = nullptr;
-	}
-
-	// 敵キャラマネージャーの破棄
-	if (m_pEnemyManager != nullptr)
-	{
-		delete m_pEnemyManager;
-		m_pEnemyManager = nullptr;
-	}
-
-	// コリジョンマネージャーの破棄
-	if (m_pCollision_Manager != nullptr)
-	{
-		delete m_pCollision_Manager;
-		m_pCollision_Manager = nullptr;
 	}
 }
 
@@ -349,17 +314,8 @@ void CApplication::SetMode(MODE mode)
 			m_pMenu = nullptr;
 		}
 
-		// プレイヤーマネージャーが使用されている場合
-		if (m_pPlayerManager != nullptr)
-		{
-			m_pPlayerManager->Uninit();
-		}
-
 		// 全てのオブジェクトの解放処理
 		CObject::ReleaseAll();
-
-		// 全ての当たり判定の解放処理
-		m_pCollision_Manager->ReleaseAllCollision();
 
 		// 全てのモデルセットの終了
 		m_pPartsFile->ReleaseAllFile();

@@ -31,7 +31,7 @@ HRESULT CExplosion::Init()
 	SetTag(TAG_EXPLOSION);
 
 	// ìñÇΩÇËîªíËÇÃê∂ê¨
-	SetCollision({ 0.0f, 0.0f, 0.0f, 1.0f });
+	SetCollision();
 
 	return S_OK;
 }

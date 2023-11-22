@@ -7,6 +7,8 @@
 #include"player_life_gauge.h"
 #include"player_manager.h"
 #include"application.h"
+#include "tutorial.h"
+#include "game.h"
 #include "object2D.h"
 
 //==============================================================================================
@@ -109,11 +111,20 @@ CPlayer_Life_Gauge *CPlayer_Life_Gauge::Create(const D3DXVECTOR3 &pos, D3DXVECTO
 //==============================================================================================
 void CPlayer_Life_Gauge::Fluctuation()
 {
-	CPlayerManager *pPlayerManager = CApplication::GetPlayerManager();
-	CPlayer *pPlayer = nullptr;
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
 
-	if (pPlayerManager != nullptr)
-		pPlayer = pPlayerManager->GetPlayer(0);
+	CPlayer* pPlayer = nullptr;
+
+	// モード毎にプレイヤーを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pPlayer = CTutorial::GetPlayerManager()->GetPlayer(0);
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+	}
 
 	if (pPlayer != nullptr)
 	{
@@ -141,4 +152,13 @@ void CPlayer_Life_Gauge::Col()
 		m_FrontGauge->SetCol({ 1.0f,0.0f,0.0f,1.0f });
 	else
 		m_FrontGauge->SetCol({ 0.0f,1.0f,1.0f,1.0f });
+}
+
+//==============================================================================================
+// ゲージ描画の設定
+//==============================================================================================
+void CPlayer_Life_Gauge::SetDrawGauge(bool draw)
+{
+	m_BackGauge->SetDrawFlag(draw);
+	m_FrontGauge->SetDrawFlag(draw);
 }

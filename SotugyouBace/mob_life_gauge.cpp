@@ -84,17 +84,6 @@ void CMob_Life_Gauge::Update()
 //==============================================================================================
 void CMob_Life_Gauge::Draw()
 {
-	if (GetDraw())
-	{
-		m_BackGauge->SetDraw(true);
-		m_FrontGauge->SetDraw(true);
-	}
-	else
-	{
-		m_BackGauge->SetDraw(false);
-		m_FrontGauge->SetDraw(false);
-	}
-
 	CGauge_Manager::Draw();
 }
 
@@ -103,7 +92,6 @@ void CMob_Life_Gauge::Draw()
 //==============================================================================================
 void CMob_Life_Gauge::Fluctuation()
 {
-
 	// Œ»Ý‚Ì‘Ì—Í‚ÌŠ„‡
 	float Life_Percent = (float)GetLife() / GetBeaseLife() * 100;
 
@@ -112,6 +100,15 @@ void CMob_Life_Gauge::Fluctuation()
 
 	// ƒQ[ƒW‚Ì‘Œ¸
 	m_FrontGauge->SetSubSize({ GetBeaseSize() - Gauge_Percent, 0.0f });
+}
+
+//==============================================================================================
+// ƒQ[ƒW•`‰æ‚ÌÝ’è
+//==============================================================================================
+void CMob_Life_Gauge::SetDrawGauge(bool draw)
+{
+	m_BackGauge->SetDrawFlag(draw);
+	m_FrontGauge->SetDrawFlag(draw);
 }
 
 //==============================================================================================

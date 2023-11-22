@@ -27,14 +27,13 @@ public:
 	void SetBeaseSize(int beasesize) { m_nBease_GaugeSize = beasesize; }
 	void SetBeaseLife(int beaselife) { m_nBease_Life = beaselife; }
 	void SetLife(int life) { m_nLife = life; }
-	void SetDraw(bool draw) { m_bDraw = draw; }
+	virtual void SetDrawGauge(bool draw) = 0;
 
 	D3DXVECTOR3 GetGaugePos() { return m_Pos; }
 	D3DXVECTOR2 GetGaugeSize() { return m_Size; }
 	int GetBeaseSize() { return m_nBease_GaugeSize; }
 	int GetBeaseLife() { return m_nBease_Life; }
 	int GetLife() { return m_nLife; }
-	bool GetDraw() { return m_bDraw; }
 
 private:
 	D3DXVECTOR3 m_Pos;			// 位置
@@ -42,7 +41,6 @@ private:
 	int m_nBease_GaugeSize;		// 元のゲージサイズ
 	int m_nBease_Life;			// 元の体力
 	int m_nLife;				// 現在の体力
-	bool m_bDraw;				// 表示するか
 };
 
 #endif // !_GAUGE_MANAGER_H_

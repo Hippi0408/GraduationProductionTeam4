@@ -5,8 +5,10 @@
 //
 //=============================================================================
 #include "collision.h"
-#include "application.h"
 #include "collision_manager.h"
+#include "application.h"
+#include "tutorial.h"
+#include "game.h"
 #include "move_object.h"
 #include "object3D.h"
 
@@ -15,7 +17,18 @@
 //=============================================================================
 CCollision::CCollision()
 {
-	CApplication::GetCollision_Manager()->SetCollision(this);
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	// 生成時に自身のポインタを当たり判定マネージャーに設定
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		CTutorial::GetCollision_Manager()->SetCollision(this);
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		CGame::GetCollision_Manager()->SetCollision(this);
+	}
 	m_bDeath = false;
 }
 
@@ -39,12 +52,17 @@ HRESULT CCollision::Init()
 //=============================================================================
 void CCollision::Uninit()
 {
+	// 親の当たり判定ポインタを消す処理
+	m_pParent->CollisionDestroy();
+
+#ifdef _DEBUG
 	// デバッグオブジェクトが使用中の場合
 	if (m_pDebugObj != nullptr)
 	{
 		m_pDebugObj->Uninit();
 		m_pDebugObj = nullptr;
 	}
+#endif // _DEBUG
 
 	Releace();
 }
@@ -54,7 +72,9 @@ void CCollision::Uninit()
 //=============================================================================
 void CCollision::Update()
 {
+#ifdef _DEBUG
 	DebugObj();
+#endif // _DEBUG
 
 	// 当たり判定
 	Collision();
@@ -70,8 +90,23 @@ void CCollision::Collision()
 	// 半径
 	float fRadius = m_pParent->GetRadius();
 	
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CCollision_Manager* pCollision_Manager = nullptr;
+
+	// モード毎にプレイヤーを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pCollision_Manager = CTutorial::GetCollision_Manager();
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pCollision_Manager = CGame::GetCollision_Manager();
+	}
+
 	// 全ての当たり判定を個別に判定
-	for (auto pCollision : CApplication::GetCollision_Manager()->GetAllCollision())
+	for (auto pCollision : pCollision_Manager->GetAllCollision())
 	{
 		// 当たり判定が存在する場合 && 当たり判定が自身ではない場合
 		if (!pCollision->GetParent()->GetDeathFlag() && pCollision != this)
@@ -119,6 +154,8 @@ bool CCollision::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, con
 	return false;
 }
 
+// デバッグ用関数の処理
+#ifdef _DEBUG
 //=============================================================================
 // デバッグオブジェクトの処理
 //=============================================================================
@@ -133,9 +170,26 @@ void CCollision::DebugObj()
 }
 
 //=============================================================================
+// デバッグオブジェクトの処理
+//=============================================================================
+void CCollision::SetDebugObj()
+{
+	const float fRadius = m_pParent->GetRadius() * 2.0f;
+
+	// デバッグオブジェクトの生成
+	m_pDebugObj = CObject3D::Create(m_pParent->GetCenterPos(), D3DXVECTOR2(fRadius, fRadius));
+
+	// 色の設定(プレイヤー側かどうか ? 水色 : 赤色)
+	m_pDebugObj->SetCol(m_pParent->GetPlayerSide() ? D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f) : D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	m_pDebugObj->SetTexture(CTexture::TEXTURE_CIRCLE);
+	m_pDebugObj->Setbillboard(true);
+}
+#endif // _DEBUG
+
+//=============================================================================
 // 生成処理
 //=============================================================================
-CCollision* CCollision::Create(CMove_Object* pParent, const D3DXCOLOR col)
+CCollision* CCollision::Create(CMove_Object* pParent)
 {
 	CCollision* pCollision = new CCollision;
 
@@ -148,12 +202,11 @@ CCollision* CCollision::Create(CMove_Object* pParent, const D3DXCOLOR col)
 		{
 			pCollision->m_pParent = pParent;
 
-			const float fRadius = pCollision->m_pParent->GetRadius() * 2.0f;
+#ifdef _DEBUG
+			// デバッグオブジェクトの設定
+			pCollision->SetDebugObj();
+#endif // _DEBUG
 
-			pCollision->m_pDebugObj = CObject3D::Create(pCollision->m_pParent->GetCenterPos(), D3DXVECTOR2(fRadius, fRadius));
-			pCollision->m_pDebugObj->SetTexture(CTexture::TEXTURE_CIRCLE);
-			pCollision->m_pDebugObj->SetCol(col);
-			pCollision->m_pDebugObj->Setbillboard(true);
 		}
 	}
 

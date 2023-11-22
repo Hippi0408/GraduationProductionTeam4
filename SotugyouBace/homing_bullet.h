@@ -26,7 +26,6 @@ private:
 	D3DXVECTOR3 m_NearMob_Pos;
 	int m_nEnemy_Count;
 	bool m_bTarget;
-	int m_nNearEnemy;
 };
 
 #endif // !_HOMING_BULLET_H_
