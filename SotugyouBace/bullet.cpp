@@ -21,7 +21,8 @@
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-const float CBullet::BULLET_SPEED = 50.0f;				// 弾の速度
+const float CBullet::BULLET_SPEED_XZ = 50.0f;				// 弾の速度
+const float CBullet::BULLET_SPEED_Y = 50.0f;				// 弾の速度
 const float CBullet::BULLET_COLLISION_RADIUS = 30.0f;	// 弾の当たり判定の大きさ
 //=============================================================================
 // コンストラクタ
@@ -30,7 +31,8 @@ CBullet::CBullet(const CObject::PRIORITY priority) : CMove_Object(priority)
 {
 	m_nLife = BULLET_LIFE;
 	SetPower(BULLET_POWER);
-	m_fSpeed = BULLET_SPEED;
+	m_fSpeed_XZ = BULLET_SPEED_XZ;
+	m_fSpeed_Y = BULLET_SPEED_Y;
 	SetRadius(BULLET_COLLISION_RADIUS);
 }
 
@@ -93,7 +95,9 @@ void CBullet::Update()
 	D3DXVECTOR2 size = GetSize();
 
 	//弾の位置更新
-	pos += move * m_fSpeed;
+	pos.x += move.x * m_fSpeed_XZ;
+	pos.z += move.z * m_fSpeed_XZ;
+	pos.y += move.y * m_fSpeed_Y;
 
 	//前回の位置を保存
 	m_nPosOld = pos;

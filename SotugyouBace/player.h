@@ -109,6 +109,7 @@ private:
 	bool m_bReticle_Reset;
 	int m_nEnemy_Count;
 	float m_fEnemy_Speed;
+	float m_fAngle;
 };
 
 #endif// _PLAYER_H_

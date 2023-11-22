@@ -315,4 +315,3 @@ void CCharacter::SetParts(const int charaParts, const int partsIndex, CMotion::M
 	//	}
 	//}
 }
-
