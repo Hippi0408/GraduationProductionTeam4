@@ -64,15 +64,21 @@ void CMob::Uninit()
 //============================================================================
 void CMob::Update()
 {
-	D3DXVECTOR3 pos = GetPos();
-	pos.y += 400.0f;
+	D3DXVECTOR3 Life_Gauge_Pos = GetPos();
+	Life_Gauge_Pos.y += 400.0f;
+
+	/*D3DXVECTOR3 Move_Vec = { 1.0f,0.0f,0.0f };
+	D3DXVec3Normalize(&Move_Vec, &Move_Vec);
+	SetSpeed(20);
+
+	SetMove(Move_Vec);*/
 
 	CGauge_Manager *GaugeManager = GetGaugeManager();
 
 	if (GaugeManager != nullptr)
 	{
 		// 体力ゲージ
-		GaugeManager->SetGaugePos(pos);
+		GaugeManager->SetGaugePos(Life_Gauge_Pos);
 
 		// 体力ゲージの表示
 		DrawLifeGauge();
@@ -87,7 +93,7 @@ void CMob::Update()
 		// パーツが持つ全てのモデル
 		for (auto pModel : pParts->GetModelAll())
 		{
-			// 距離5000以上で敵を表示
+			// 距離7000以上で敵を表示
 			if (m_fDistance > DRAW_DISTANCE)
 			{
 				pModel->SetDrawFlag(false);

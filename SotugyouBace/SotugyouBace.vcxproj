@@ -42,6 +42,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge_manager.cpp" />
     <ClCompile Include="halfsphere.cpp" />
+    <ClCompile Include="homing_bullet.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="inputjoypad.cpp" />
     <ClCompile Include="inputkeyboard.cpp" />
@@ -58,6 +59,7 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="move_object.cpp" />
+    <ClCompile Include="normal_bullet.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="object2D.cpp" />
@@ -109,6 +111,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge_manager.h" />
     <ClInclude Include="halfsphere.h" />
+    <ClInclude Include="homing_bullet.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="inputjoypad.h" />
     <ClInclude Include="inputkeyboard.h" />
@@ -126,6 +129,7 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="move_object.h" />
+    <ClInclude Include="normal_bullet.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="object2D.h" />
