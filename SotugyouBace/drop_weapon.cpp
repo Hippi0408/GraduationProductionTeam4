@@ -248,6 +248,8 @@ void CDrop_Weapon::Hit(CMove_Object* pHit)
 			break;
 		case TAG_BULLET:
 			break;
+		case TAG_EXPLOSION:
+			break;
 		default:
 			break;
 		}

@@ -19,6 +19,7 @@ public:
 		TAG_NONE = 0,
 		TAG_CHARACTER,	// キャラクタータグ
 		TAG_BULLET,		// 弾タグ
+		TAG_EXPLOSION,	// 爆発タグ
 		TAG_MAX,
 	};
 
@@ -46,7 +47,7 @@ public:
 	const float GetRadius() { return m_fRadius; }						// 半径の取得
 	TAG GetTag() { return m_tag; }										// タグの取得
 	const bool GetPlayerSide() { return m_bPlayerSide; }				// プレイヤー側かどうかの取得
-
+	
 private:
 	D3DXVECTOR3 m_pos;			// 位置
 	D3DXVECTOR3 m_CenterPos;	// 中心位置

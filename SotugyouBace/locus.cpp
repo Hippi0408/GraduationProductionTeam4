@@ -46,7 +46,7 @@ HRESULT CLocus::Init()
 		&m_pVtxBuff,
 		nullptr);
 
-	m_texture = CTexture::TEXTURE_FLOOR;
+	m_texture = CTexture::TEXTURE_NONE;
 	m_col = { 1.0f,1.0f,1.0f,1.0f };
 
 	// 頂点バッファ
@@ -69,9 +69,9 @@ HRESULT CLocus::Init()
 	{
 		m_pAnchorPoints[i] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-		m_pAnchorPoints[i].x += (500 - rand() % 1000) / 10.0f;
-		m_pAnchorPoints[i].y += (500 + rand() % 1500) / 10.0f;
-		m_pAnchorPoints[i].z += (500 - rand() % 1000) / 10.0f;
+		m_pAnchorPoints[i].x += (500 - rand() % 10000) / 10.0f;
+		m_pAnchorPoints[i].y += (500 + rand() % 15000) / 10.0f;
+		m_pAnchorPoints[i].z += (500 - rand() % 10000) / 10.0f;
 		
 		D3DXVECTOR3 Pos = PrevPos + m_pAnchorPoints[i];
 		PrevPos = Pos;

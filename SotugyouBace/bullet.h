@@ -27,7 +27,8 @@ class CBullet : public CMove_Object
 {
 	static const int BULLET_LIFE = 60;			// 弾の寿命
 	static const int BULLET_POWER = 50;			// 弾の威力
-	static const float BULLET_SPEED;			// 弾の速度
+	static const float BULLET_SPEED_XZ;			// 弾の速度(XZ座標)
+	static const float BULLET_SPEED_Y;			// 弾の速度(Y座標)
 	static const float BULLET_COLLISION_RADIUS;	// 弾の当たり判定の大きさ
 public:
 
@@ -47,7 +48,9 @@ public:
 	void Destroy();							// 破壊処理
 
 	void SetLife(const int life) { m_nLife = life; }		// 弾の寿命の設定
-	void SetSpeed(const float speed) { m_fSpeed = speed; }	// 弾の速度の設定
+	void SetSpeed_XZ(const float speed) { m_fSpeed_XZ = speed; }	// 弾の速度の設定
+	void SetSpeed_Y(const float speed) { m_fSpeed_Y = speed; }	// 弾の速度の設定
+	void SetSpeed(const float speed) { m_fSpeed_XZ = speed; m_fSpeed_Y = speed;}	// 弾の速度の設定
 	void SetPower(const int power) { m_nPower = power; }
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }	// 移動量の設定
 	void AddMove(const D3DXVECTOR3 move) { m_move += move; }// 移動量の加算
@@ -56,7 +59,8 @@ public:
 	void SetObjX(CObjectX *objx) { m_pObjX = objx; }
 
 	const int GetLife() { return m_nLife; }					// 弾の寿命の取得
-	const float GetSpeed() { return m_fSpeed; }				// 弾の速度の取得
+	const float GetSpeed_XZ() { return m_fSpeed_XZ; }				// 弾の速度の取得
+	const float GetSpeed_Y() { return m_fSpeed_Y; }				// 弾の速度の取得
 	const int GetPower() override { return m_nPower; }		// 威力の取得
 	const D3DXVECTOR3 GetMove() { return m_move; }			// 移動量の取得
 	const D3DXVECTOR2 GetSize() { return m_size; }			// サイズの取得
@@ -74,7 +78,8 @@ private:
 	D3DXVECTOR2 m_size;						// 弾のサイズ
 	int m_nLife;							// 弾の寿命
 	int m_nPower;							// 弾の威力
-	float m_fSpeed;							// 弾のスピード
+	float m_fSpeed_XZ;						// 弾のスピード
+	float m_fSpeed_Y;						// 弾のスピード
 
 	CObject3D* m_pObj3D;					// オブジェクト3Dのポインタ
 	CObjectX* m_pObjX;					// オブジェクトXのポインタ
