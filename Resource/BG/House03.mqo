@@ -4,8 +4,8 @@ Format Text Ver 1.0
 Scene {
 	pos 4.7637 -82.9522 937.5000
 	lookat 0.0000 0.0000 0.0000
-	head 63.3048
-	pich -0.0192
+	head 62.8148
+	pich 0.1308
 	bank 0.0000
 	ortho 0
 	zoom2 8.0000
@@ -18,11 +18,11 @@ Scene {
 	}
 }
 Material 7 {
-	"mat1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(-85.000 195.561 0.000) proj_scale(400.000 245.000 400.000) proj_angle(0.000 0.000 90.000)
-	"mat2" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(-80.000 215.561 85.000) proj_scale(400.000 245.000 400.000) proj_angle(90.000 0.000 90.000)
+	"mat1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(-85.000 195.561 0.000) proj_scale(400.000 245.000 400.000) proj_angle(0.000 0.000 90.000)
+	"mat2" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(-80.000 215.561 85.000) proj_scale(400.000 245.000 400.000) proj_angle(90.000 0.000 90.000)
 	"mat3" col(0.349 0.314 0.341 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\House.png")
-	"mat4" col(0.302 0.271 0.294 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\House.png") proj_type(1) proj_pos(0.000 211.900 0.000) proj_scale(70.000 20.000 100.000) proj_angle(90.000 45.000 0.000)
-	"mat5" col(0.302 0.271 0.294 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\House.png") proj_type(1) proj_pos(0.000 211.900 0.000) proj_scale(70.000 20.000 100.000) proj_angle(90.000 135.000 0.000)
+	"mat4" col(0.302 0.271 0.294 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\House.png") proj_type(1) proj_pos(0.000 211.900 0.000) proj_scale(70.000 20.000 100.000) proj_angle(90.000 45.000 0.000)
+	"mat5" col(0.302 0.271 0.294 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\House.png") proj_type(1) proj_pos(0.000 211.900 0.000) proj_scale(70.000 20.000 100.000) proj_angle(90.000 135.000 0.000)
 	"mat6" col(0.000 0.000 0.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 	"mat7" col(0.302 0.271 0.294 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) proj_type(1) proj_pos(0.000 211.900 0.000) proj_scale(70.000 20.000 100.000) proj_angle(90.000 135.000 0.000)
 }
