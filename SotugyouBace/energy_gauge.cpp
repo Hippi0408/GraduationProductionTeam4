@@ -270,3 +270,12 @@ void CEnergy_Gauge::Recovery_Pause(int count)
 		BasePause_Count = count;
 	}
 }
+
+//==============================================================================================
+// ƒQ[ƒW•`‰æ‚ÌÝ’è
+//==============================================================================================
+void CEnergy_Gauge::SetDrawGauge(bool draw)
+{
+	m_BackGauge->SetDrawFlag(draw);
+	m_FrontGauge->SetDrawFlag(draw);
+}

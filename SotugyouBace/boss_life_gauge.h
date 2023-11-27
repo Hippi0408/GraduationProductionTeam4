@@ -27,6 +27,8 @@ public:
 
 	static CBoss_Life_Gauge *Create(const D3DXVECTOR3 &pos, D3DXVECTOR2 size);
 
+	void SetDrawGauge(bool draw) override;
+
 	CObject2D *GetBackGauge() { return m_BackGauge; }
 
 private:

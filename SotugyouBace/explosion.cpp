@@ -31,7 +31,7 @@ HRESULT CExplosion::Init()
 	SetTag(TAG_EXPLOSION);
 
 	// “–‚½‚è”»’è‚Ì¶¬
-	SetCollision({ 0.0f, 0.0f, 0.0f, 1.0f });
+	SetCollision();
 
 	return S_OK;
 }
@@ -52,8 +52,11 @@ void CExplosion::Update()
 	m_nContinuation++;
 
 	// ”š”­‚ÌŽ‘±ŽžŠÔ
-	if(m_nContinuation > 60)
-	Uninit();
+	if (m_nContinuation > 60)
+	{
+		SetEndExplosion(true);
+		Uninit();
+	}
 }
 
 //==============================================================================================

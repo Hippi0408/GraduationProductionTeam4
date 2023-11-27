@@ -99,31 +99,35 @@ const int CModel::ReadObject(const char* name)
 		&m_ModelPattern.back().nNumMat,
 		&m_ModelPattern.back().pMesh);
 
-	// バッファの先頭ポインタをD3DXMATERIALにキャストして取得
-	D3DXMATERIAL *pMat = (D3DXMATERIAL*)m_ModelPattern.back().pBuffMat->GetBufferPointer();
-
-	// 各メッシュのマテリアル情報を取得する
-	for (int i = 0; i < (int)m_ModelPattern.back().nNumMat; i++)
+	// 頂点マテリアルが存在する場合
+	if (m_ModelPattern.back().pBuffMat != nullptr)
 	{
-		// テクスチャの後ろの要素を追加
-		m_ModelPattern.back().pTexture.emplace_back();
+		// バッファの先頭ポインタをD3DXMATERIALにキャストして取得
+		D3DXMATERIAL *pMat = (D3DXMATERIAL*)m_ModelPattern.back().pBuffMat->GetBufferPointer();
 
-		if (pMat[i].pTextureFilename != nullptr)
-		{// マテリアルで設定されているテクスチャ読み込み
-			D3DXCreateTextureFromFileA(pDevice,
-				pMat[i].pTextureFilename,
-				&m_ModelPattern.back().pTexture.back());
-		}
-		else
+		// 各メッシュのマテリアル情報を取得する
+		for (int i = 0; i < (int)m_ModelPattern.back().nNumMat; i++)
 		{
-			m_ModelPattern.back().pTexture.back() = nullptr;
+			// テクスチャの後ろの要素を追加
+			m_ModelPattern.back().pTexture.emplace_back();
+
+			if (pMat[i].pTextureFilename != nullptr)
+			{// マテリアルで設定されているテクスチャ読み込み
+				D3DXCreateTextureFromFileA(pDevice,
+					pMat[i].pTextureFilename,
+					&m_ModelPattern.back().pTexture.back());
+			}
+			else
+			{
+				m_ModelPattern.back().pTexture.back() = nullptr;
+			}
+
+			// マテリアルの後ろの要素を追加
+			m_ModelPattern.back().MatColor.emplace_back();
+
+			// マテリアルの色情報を保存
+			m_ModelPattern.back().MatColor.back() = pMat[i].MatD3D.Diffuse;
 		}
-
-		// マテリアルの後ろの要素を追加
-		m_ModelPattern.back().MatColor.emplace_back();
-
-		// マテリアルの色情報を保存
-		m_ModelPattern.back().MatColor.back() = pMat[i].MatD3D.Diffuse;
 	}
 
 	return nIndex;

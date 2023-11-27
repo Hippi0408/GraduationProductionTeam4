@@ -31,7 +31,9 @@
     <ClCompile Include="confirmation_window.cpp" />
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
+    <ClCompile Include="diffusion_bullet.cpp" />
     <ClCompile Include="DirectInput.cpp" />
+    <ClCompile Include="drop_manager.cpp" />
     <ClCompile Include="drop_weapon.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemy_manager.cpp" />
@@ -88,6 +90,7 @@
     <ClCompile Include="title_menu.cpp" />
     <ClCompile Include="trail.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -102,7 +105,9 @@
     <ClInclude Include="confirmation_window.h" />
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
+    <ClInclude Include="diffusion_bullet.h" />
     <ClInclude Include="DirectInput.h" />
+    <ClInclude Include="drop_manager.h" />
     <ClInclude Include="drop_weapon.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemy_manager.h" />
@@ -161,6 +166,7 @@
     <ClInclude Include="trail.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="utility.h" />
+    <ClInclude Include="weapon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33988321-C2B8-45BE-9836-B21C2E84733F}</ProjectGuid>

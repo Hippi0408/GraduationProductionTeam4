@@ -53,7 +53,11 @@ void CPlayerManager::PlayerReleaseAll()
 	// 全てのプレイヤーの終了処理
 	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
 	{
-		PlayerRelease(nCnt);
+		if (m_pPlayer[nCnt] != nullptr)
+		{
+			m_pPlayer[nCnt]->Uninit();
+			m_pPlayer[nCnt] = nullptr;
+		}
 	}
 }
 

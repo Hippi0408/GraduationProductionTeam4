@@ -27,6 +27,8 @@ public:
 
 	static CPlayer_Life_Gauge *Create(const D3DXVECTOR3 &pos, D3DXVECTOR2 size);
 
+	void SetDrawGauge(bool draw) override;
+
 private:
 	float m_fLife_Percent;		// ‘Ì—Í‚ÌŠ„‡
 	int m_nPlayer_Base_Life;	// ƒvƒŒƒCƒ„[‚ÌŒ³‚Ì‘Ì—Í

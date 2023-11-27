@@ -34,7 +34,8 @@ public:
 	void SetAvoidance_amount(const float avoidance) { m_fAvoidance = avoidance; }				// 回避時の消費量
 	void SetReuse_Percent(const float reuse) { m_fReuse_Percent = reuse; }						// 全消費からの回復時に再利用できるタイミングの設定
 	void SetRecovery_Interval(const float interval) { m_fRecovery_Interval = interval; }
-	
+	void SetDrawGauge(bool draw) override;
+
 	const bool GetConsumption() { return m_bAllConsumption; }		// エネルギーを全て消費しているか
 	CObject2D *GetBackGauge() { return m_BackGauge; }
 

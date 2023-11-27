@@ -9,6 +9,8 @@
 #include "camera.h"
 #include "input.h"
 #include "application.h"
+#include "game.h"
+#include "tutorial.h"
 #include "player_manager.h"
 #include "mode.h"
 #include "fade.h"
@@ -64,8 +66,8 @@ void CCamera::Update(void)
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
 
-	if ((Mode == CApplication::MODE_GAME || Mode == CApplication::MODE_TUTORIAL)
-		&& CApplication::GetPlayerManager()->GetPlayer(0) != nullptr)
+	if ((Mode == CApplication::MODE_GAME && CGame::GetPlayerManager()->GetPlayer(0) != nullptr)
+		|| (Mode == CApplication::MODE_TUTORIAL && CTutorial::GetPlayerManager()->GetPlayer(0) != nullptr))
 	{
 		// 視点移動
 		Perspective();
@@ -208,20 +210,35 @@ void CCamera::Move()
 //==============================================
 void CCamera::Perspective()
 {
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CPlayer* pPlayer = nullptr;
+
+	// モード毎にプレイヤーを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pPlayer = CTutorial::GetPlayerManager()->GetPlayer(0);
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+	}
+
 	if (m_bPerspective == false)
 	{	// プレイヤーが使われていたら実行
 
 		//取得処理
-		m_PPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
+		m_PPos = pPlayer->GetPos();
 		m_bValue = false;
 	}
 	else if (m_bPerspective == true && m_bValue == false)
 	{	// プレイヤーが使われていたら実行
 
 		//取得処理
-		m_PPos = CApplication::GetPlayerManager()->GetPlayer(0)->GetPos();
+		m_PPos = pPlayer->GetPos();
 		m_bValue = true;
 	}
 	// 行列を使ったカメラ制御
-	Matrix(m_rot, m_PPos);
+	Matrix(m_rot, { m_PPos.x, m_PPos.y, m_PPos.z });
 }
