@@ -17,6 +17,7 @@
 #include "objectX.h"
 #include "particle_emitter.h"
 #include "tutorial.h"
+#include "explosion.h"
 
 //=============================================================================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
@@ -162,6 +163,12 @@ void CBullet::FieldCollision()
 		{
 			//pMeshField->Ground_Broken(pos, 50.0f, 5);
 
+			if (m_bExplosion)
+			{
+				// ’…’eŽž‚Ì”š”­
+				CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
+			}
+
 			// ’e‚ð”j‰ó‚·‚é
 			Destroy();
 		}
@@ -176,6 +183,12 @@ void CBullet::Hit(CMove_Object* pHit)
 	// ’e‚Å‚Í–³‚¢ê‡ && “¯‚¶ƒTƒCƒh‚Å‚Í‚È‚¢ê‡
 	if (pHit->GetTag() == TAG_CHARACTER && GetPlayerSide() != pHit->GetPlayerSide())
 	{
+		if (m_bExplosion)
+		{
+			// ’…’eŽž‚Ì”š”­
+			CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
+		}
+
 		Destroy();
 	}
 }

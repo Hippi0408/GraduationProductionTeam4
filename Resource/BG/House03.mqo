@@ -4,8 +4,8 @@ Format Text Ver 1.0
 Scene {
 	pos 4.7637 -82.9522 937.5000
 	lookat 0.0000 0.0000 0.0000
-	head 63.3048
-	pich -0.0192
+	head 62.8148
+	pich 0.1308
 	bank 0.0000
 	ortho 0
 	zoom2 8.0000

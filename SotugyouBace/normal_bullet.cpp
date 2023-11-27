@@ -35,45 +35,21 @@ HRESULT CNormal_Bullet::Init()
 	// ’e‚ª“G‚É“Í‚­‚Ü‚Å‚ÌŽžŠÔ
 	float fHitCnt = m_fHypotenuse / GetSpeed_XZ();
 
-	int nCnt = 0;
 	if (m_bTarget)
 	{
-		// Œ»Ý‚Ìƒ‚[ƒh
-		CApplication::MODE Mode = CApplication::GetModeType();
+		// ƒ^[ƒQƒbƒg‚µ‚Ä‚¢‚é“G‚ÌˆÊ’u
+		D3DXVECTOR3 Enemy_Pos = pEnemy->GetPos();
+		// ˆÚ“®—Ê
+		D3DXVECTOR3 Enemy_Move = pEnemy->GetMove();
 
-		CEnemyManager* pManager = nullptr;
+		// ’e‚ª“Í‚­‚Æ‚«‚Ì“G‚ÌˆÊ’u
+		Enemy_Pos.x += (Enemy_Move.x * m_fSpeed * fHitCnt);
+		Enemy_Pos.z += (Enemy_Move.z * m_fSpeed * fHitCnt);
 
-		// ƒ‚[ƒh–ˆ‚É“GƒLƒƒƒ‰‚ð“Ç‚Ýž‚Þ
-		if (Mode == CApplication::MODE_TUTORIAL)
-		{
-			pManager = CTutorial::GetEnemyManager();
-		}
-		else if (Mode == CApplication::MODE_GAME)
-		{
-			pManager = CGame::GetEnemyManager();
-		}
-
-		for (auto pEnemy : pManager->GetAllEnemy())
-		{
-			nCnt++;
-
-			if (nCnt == m_nEnemy_Count)
-			{
-				// ƒ^[ƒQƒbƒg‚µ‚Ä‚¢‚é“G‚ÌˆÊ’u
-				D3DXVECTOR3 Enemy_Pos = pEnemy->GetPos();
-				// ˆÚ“®—Ê
-				D3DXVECTOR3 Enemy_Move = pEnemy->GetMove();
-
-				// ’e‚ª“Í‚­‚Æ‚«‚Ì“G‚ÌˆÊ’u
-				Enemy_Pos.x += (Enemy_Move.x * m_fSpeed * fHitCnt);
-				Enemy_Pos.z += (Enemy_Move.z * m_fSpeed * fHitCnt);
-
-				// ’e‚©‚ç“G‚Ü‚Å‚ÌƒxƒNƒgƒ‹
-				D3DXVECTOR3 Mob_Vec = Enemy_Pos - GetPos();
-				D3DXVec3Normalize(&Mob_Vec, &Mob_Vec);
-				SetMove(Mob_Vec);
-			}
-		}
+		// ’e‚©‚ç“G‚Ü‚Å‚ÌƒxƒNƒgƒ‹
+		D3DXVECTOR3 Mob_Vec = Enemy_Pos - GetPos();
+		D3DXVec3Normalize(&Mob_Vec, &Mob_Vec);
+		SetMove(Mob_Vec);
 	}
 
 	return S_OK;
@@ -106,7 +82,7 @@ void CNormal_Bullet::Draw()
 //==============================================================================================
 // ¶¬ˆ—
 //==============================================================================================
-CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, int enemy_cnt, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority)
+CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CEnemy *enemy, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority)
 {
 	//ƒNƒ‰ƒX‚Ì¶¬
 	CNormal_Bullet* pNormal_Bullet = new CNormal_Bullet(priority);
@@ -119,7 +95,7 @@ CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 
 		pNormal_Bullet->SetSize(size);
 		pNormal_Bullet->SetPlayerSide(side);
 		pNormal_Bullet->m_fHypotenuse = hypotenuse;
-		pNormal_Bullet->m_nEnemy_Count = enemy_cnt;
+		pNormal_Bullet->pEnemy = enemy;
 		pNormal_Bullet->m_fSpeed = enemy_speed;
 		pNormal_Bullet->m_bTarget = target;
 		pNormal_Bullet->Init();
