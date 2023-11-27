@@ -9,6 +9,8 @@
 
 #include"bullet.h"
 
+class CEnemy;
+
 class CHoming_Bullet : public CBullet
 {
 public:
@@ -20,11 +22,10 @@ public:
 	void Update() override;		// çXêVèàóù
 	void Draw() override;		// ï`âÊèàóù
 
-	static CHoming_Bullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, D3DXVECTOR3 move, D3DXVECTOR3 nearmob_pos, int enemy_cnt, char *filename, const bool side, const CObject::PRIORITY priority);
+	static CHoming_Bullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, D3DXVECTOR3 move, D3DXVECTOR3 nearmob_pos, char *filename, const bool side, const CObject::PRIORITY priority);
 
 private:
 	D3DXVECTOR3 m_NearMob_Pos;
-	int m_nEnemy_Count;
 	bool m_bTarget;
 };
 

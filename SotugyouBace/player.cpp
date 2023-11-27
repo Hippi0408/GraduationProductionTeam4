@@ -185,9 +185,9 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 
 	// 弾の生成
-	/*CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_nEnemy_Count, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
-	CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, m_nEnemy_Count, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);*/
-	//CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);
+	/*CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
+	CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
+	CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);*/
 	CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
 }
 
@@ -275,12 +275,8 @@ void CPlayer::Hit(CMove_Object* pHit)
 			Damage(pHit->GetPower());
 			break;
 		case TAG_EXPLOSION:
-			if (!GetHitExplosion())
-			{
-				// 爆発のダメージを返す
-				Damage(pHit->GetPower());
-				SetHitExplosion(true);
-			}
+			// 爆発のダメージを返す
+			Damage(pHit->GetPower());
 		default:
 			break;
 		}
@@ -356,6 +352,9 @@ void CPlayer::Target()
 
 					// 画面に映っている時だけターゲットする
 					bScreen = Target_Scope(m_NearMob_Pos);
+
+					// 敵の情報
+					m_pEnemy = pEnemy;
 				}
 			}
 		}

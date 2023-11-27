@@ -58,7 +58,6 @@ void CHoming_Bullet::Update()
 	D3DXVECTOR3 BulletVec = { 0.0f,0.0f,0.0f };
 	float fTarget_Scope = 2000.0f;
 	float fNearDistance = fTarget_Scope;
-	int nCnt = 0;
 	CEnemy* pNearEnemy = nullptr;
 
 	// 現在のモード
@@ -78,8 +77,6 @@ void CHoming_Bullet::Update()
 	// 雑魚敵の情報
 	for (auto pEnemy : pManager->GetAllEnemy())
 	{
-		nCnt++;
-
 		if (pEnemy->GetLife() > 0 && !m_bTarget)
 		{
 			// 敵の位置の取得
@@ -134,7 +131,7 @@ void CHoming_Bullet::Draw()
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CHoming_Bullet *CHoming_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, D3DXVECTOR3 move, D3DXVECTOR3 nearmob_pos, int enemy_cnt, char *filename, const bool side, const CObject::PRIORITY priority)
+CHoming_Bullet *CHoming_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, D3DXVECTOR3 move, D3DXVECTOR3 nearmob_pos, char *filename, const bool side, const CObject::PRIORITY priority)
 {
 	//クラスの生成
 	CHoming_Bullet* pHoming_Bullet = new CHoming_Bullet(priority);
@@ -145,7 +142,6 @@ CHoming_Bullet *CHoming_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 
 		pHoming_Bullet->SetMove(move);
 		pHoming_Bullet->SetPlayerSide(side);
 		pHoming_Bullet->m_NearMob_Pos = nearmob_pos;
-		pHoming_Bullet->m_nEnemy_Count = enemy_cnt;
 		pHoming_Bullet->Init();
 
 		// 弾オブジェクトの生成

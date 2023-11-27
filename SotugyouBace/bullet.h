@@ -57,6 +57,7 @@ public:
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }	// サイズの設定
 	void SetObj3D(CObject3D *obj3d) { m_pObj3D = obj3d; }
 	void SetObjX(CObjectX *objx) { m_pObjX = objx; }
+	void SetExplosion(bool explosion) { m_bExplosion = explosion; }
 
 	const int GetLife() { return m_nLife; }					// 弾の寿命の取得
 	const float GetSpeed_XZ() { return m_fSpeed_XZ; }				// 弾の速度の取得
@@ -80,6 +81,7 @@ private:
 	int m_nPower;							// 弾の威力
 	float m_fSpeed_XZ;						// 弾のスピード
 	float m_fSpeed_Y;						// 弾のスピード
+	bool m_bExplosion;						// ヒット時に爆発するか
 
 	CObject3D* m_pObj3D;					// オブジェクト3Dのポインタ
 	CObjectX* m_pObjX;					// オブジェクトXのポインタ
