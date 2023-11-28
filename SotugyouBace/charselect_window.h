@@ -54,10 +54,12 @@ public:
 	void SetCharSelectChoice(CFontString* choice) { m_vpListChoice.push_back(choice); }
 	void SetUninit(bool flag) { m_bUninitFlag = flag; }										// 終了されたか
 	void SetSapawnWindow(bool flag) { m_bSpawnWindow = flag; }
+	void SetScale(bool flag) { m_bScale = flag; }
 
 	int GetSelectChoice() { return 	m_nSelectChoice = 0; }
 	bool GetUninit() { return m_bUninitFlag; }
 	bool GetSapawnWindow() { return m_bSpawnWindow; }
+	bool GetScale() { return m_bScale; }
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
 
@@ -88,6 +90,8 @@ private:
 	bool    m_bDecition;						// 決定されたか
 	bool    m_bSpawnWindow;						// ウィンドウが生成されたか
 	bool    m_bDicisionCreateFlag;
+
+	bool m_s;
 
 	std::vector<CFontString*> m_vpListChoice;	// 選択肢ポインタの配列
 };

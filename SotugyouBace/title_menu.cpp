@@ -93,12 +93,11 @@ void CTitleMenu::Update()
 		m_pConfirmationWindow->Update();
 	}
 
-	if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetUninit() == true)
-	{
-		delete m_pConfirmationWindow;
-		m_pConfirmationWindow = nullptr;
-	}
-
+	//if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetUninit() == true)
+	//{
+	//	delete m_pConfirmationWindow;
+	//	m_pConfirmationWindow = nullptr;
+	//}
 }
 
 //============================================================================

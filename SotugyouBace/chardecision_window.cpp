@@ -22,6 +22,7 @@
 #include "texture.h"
 #include "confirmation_window.h"
 #include "charselect_window.h"
+#include "char_select.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -56,6 +57,7 @@ HRESULT CCharDecision_Window::Init()
 	m_bScale = false;
 	m_bMaxSize = false;
 	m_bUninitFlag = false;
+	m_bFontFlag = false;
 	m_bSpawnWindow = false;
 	m_bDecition = false;
 	m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
@@ -98,6 +100,20 @@ void CCharDecision_Window::Update()
 	if (pInput->Trigger(DIK_RETURN) && CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
 		CFade::SetFade(CApplication::MODE_GAME, 0.05f);
+	}
+	if (pInput->Trigger(DIK_SPACE))
+	{
+		UninitFont();
+		m_bUninitFlag = true;
+	}
+	if (m_bUninitFlag == true)
+	{
+		CharDecisionMenuScaleReduce();
+	}
+	if (m_bCreateFlag == true)
+	{
+		CChar_Select::GetConfimationWindow()->GetCharSelect()->SetScale(false);
+		m_bCreateFlag = false;
 	}
 }
 
@@ -177,20 +193,12 @@ bool CCharDecision_Window::CharDecisionMenuScaleReduce()
 			m_SizeY = 0.0f;
 		}
 
-		// フォントの削除
-		if (m_pFont != nullptr)
-		{
-			m_pFont->Uninit();
-			m_pFont = nullptr;
-		}
-
 		// ウィンドウが最小値まで行ったら
 		if (m_SizeX <= 0.0f && m_SizeY <= 0.0f)
 		{
-			SetUninit(false);
-			SetSapawnWindow(true);
-			CGame::SetGameWindow(true);
-			Uninit();						// メニューウィンドウの削除
+			m_bCreateFlag = true;
+			m_bSpawnWindow = true;
+
 			return true;
 		}
 		// サイズの設定
@@ -204,10 +212,14 @@ bool CCharDecision_Window::CharDecisionMenuScaleReduce()
 //============================================================================
 void CCharDecision_Window::SetFont(const std::string lette[])
 {
-	if (m_pFont == nullptr)
+	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
-		m_pFont = CFontString::Create(D3DXVECTOR3(750.0f, 200.0f, 0.0f), { 25.0f, 25.0f }, lette[0]);
-		m_pFont = CFontString::Create(D3DXVECTOR3(650.0f, 300.0f, 0.0f), { 35.0f, 35.0f }, lette[1]);
+		if (m_pFont[nCnt] == nullptr && m_bFontFlag == false)
+		{
+			m_pFont[0] = CFontString::Create(D3DXVECTOR3(750.0f, 200.0f, 0.0f), { 25.0f, 25.0f }, lette[0]);
+			m_pFont[1] = CFontString::Create(D3DXVECTOR3(650.0f, 300.0f, 0.0f), { 35.0f, 35.0f }, lette[1]);
+			m_bFontFlag = true;
+		}
 	}
 }
 
@@ -216,11 +228,23 @@ void CCharDecision_Window::SetFont(const std::string lette[])
 //============================================================================
 void CCharDecision_Window::UninitFont()
 {
-	if (m_pFont != nullptr)
+
+	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
-		m_pFont->Uninit();
-		delete m_pFont;
-		m_pFont = nullptr;
+		if (m_pFont != nullptr)
+		{
+			m_pFont[nCnt]->Uninit();
+			m_pFont[nCnt] = nullptr;
+		}
+	}
+
+	for (int nCnt = 1; nCnt < MAX_TEXTURE; nCnt++)
+	{
+		if (m_pObject2D[nCnt] != nullptr)
+		{
+			m_pObject2D[nCnt]->Uninit();
+			m_pObject2D[nCnt] = nullptr;
+		}
 	}
 }
 

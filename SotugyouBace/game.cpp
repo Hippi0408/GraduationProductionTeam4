@@ -31,17 +31,16 @@
 #include"pause.h"
 #include "parts_file.h"
 
+//==============================================================================================
+// 静的メンバ変数宣言
+//==============================================================================================
+CConfirmation_Window* CGame::m_pConfirmationWindow = nullptr;
 CMeshField *CGame::m_pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPlayerManager* CGame::m_pPlayer_Manager = nullptr;
 CPause *CGame::m_pPause = nullptr;
-
-//==============================================================================================
-// 静的メンバ変数宣言
-//==============================================================================================
-CConfirmation_Window* CGame::m_pConfirmationWindow = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -108,6 +107,7 @@ HRESULT CGame::Init()
 	m_pPause = CPause::Create();
 
 	m_nEndCounter = 0;
+	m_bInputFlag = false;
 
 	return S_OK;
 }
@@ -306,10 +306,10 @@ void CGame::MenuWindow()
 	//	{
 	//		pInput->SetKeyLock(100);
 	//	}
-	//	/*	else if (this != nullptr && m_bInputFlag == false)
+	//		else if (this != nullptr && m_bInputFlag == false)
 	//	{
 	//	pInput->UnlockKey(100);
-	//	}*/
+	//	}
 	//}
 	if (m_pConfirmationWindow == nullptr)
 	{
@@ -324,9 +324,8 @@ void CGame::MenuWindow()
 		m_pConfirmationWindow->Update();
 	}
 	// ウィンドウが閉じた場合 
-	if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetSapawnWindow() == true)
+	if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetUninit() == true)
 	{
-		m_pConfirmationWindow->SetSapawnWindow(false);
 		delete m_pConfirmationWindow;
 		m_pConfirmationWindow = nullptr;
 	}

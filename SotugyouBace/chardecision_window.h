@@ -47,6 +47,7 @@ public:
 
 	int GetSelectChoice() { return 	m_nSelectChoice = 0; }
 	bool GetUninit() { return m_bUninitFlag; }	
+	bool GetCreateFlag() { return m_bCreateFlag; }
 	bool GetSapawnWindow() { return m_bSpawnWindow; }
 	bool GetMaxScale() { return m_bMaxSize; }
 
@@ -60,7 +61,7 @@ public:
 
 private:
 	static CObject2D* m_pObject2D[MAX_TEXTURE];						// オブジェクト2Dのインスタンス
-	CFontString* m_pFont;						// フォント
+	CFontString* m_pFont[2];						// フォント
 	D3DXVECTOR3 m_pos;							// 位置
 	D3DXCOLOR m_Color;							// 色
 
@@ -77,6 +78,8 @@ private:
 	bool	m_bDisplay;							// 表示中の判定
 	bool	m_bScale;							// 拡大縮小のフラグ
 	bool    m_bUninitFlag;						// 削除フラグ
+	bool    m_bCreateFlag;
+	bool    m_bFontFlag;
 	bool    m_bDecition;						// 決定されたか
 	bool    m_bSpawnWindow;						// ウィンドウが生成されたか
 

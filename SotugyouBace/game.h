@@ -58,6 +58,7 @@ private:
 
 	static bool m_bGameEnd;							// ゲーム終了判定
 	static bool m_bGameWindow;
+	bool m_bInputFlag;
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;

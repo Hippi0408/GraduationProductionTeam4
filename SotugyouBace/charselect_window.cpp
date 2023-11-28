@@ -63,6 +63,8 @@ HRESULT CCharSelect_Window::Init()
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
 
+	m_s = false;
+
 	return S_OK;
 }
 
@@ -98,7 +100,7 @@ void CCharSelect_Window::Update()
 	 // ウィンドウの拡大処理
 		CharSelectMenuScale();
 	}
-	else 
+	else if(m_bScale == true && m_s == false)
 	{// 拡大した時
 
 	 // ウィンドウの縮小処理
@@ -121,7 +123,7 @@ void CCharSelect_Window::Update()
 
 		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
 		{
-			std::string Name = "ストライダー";
+			std::string Name = "ストライカー";
 
 			if (m_nSelectChoice == 0)
 			{
@@ -174,23 +176,12 @@ void CCharSelect_Window::Update()
 	// キャラ決定ウィンドウが閉じた場合 
 	if (m_pCharDecision != nullptr && m_pCharDecision->GetSapawnWindow() == true)
 	{
+		m_s = false;
 		// キャラ決定画面の破棄
 		m_pCharDecision->Uninit();
 		delete m_pCharDecision;
 		m_pCharDecision = nullptr;
 	}
-
-	// 入力デバイスの情報
-	CInput* pInput = CInput::GetKey();
-	if (pInput->Trigger(DIK_SPACE))
-	{
-		CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
-		/*m_bUninitFlag = true;*/
-	}
-	/*if (m_pCharDecision != nullptr && m_bUninitFlag == true)
-	{
-		m_pCharDecision->CharDecisionMenuScaleReduce();
-	}*/
 }
 
 //=============================================================================
@@ -308,19 +299,28 @@ bool CCharSelect_Window::CharSelectMenuScaleReduce()
 		// ウィンドウが最小値まで行ったら
 		if (m_SizeX <= 0.0f && m_SizeY <= 0.0f)
 		{
+			// キャラ選択画面以外の時
+			if (!Mode == CApplication::MODE_CHAR_SELECT)
+			{			
+				m_bScale = false;
+				CGame::SetGameWindow(true);
+				Uninit();						// メニューウィンドウの削除
+			}
+			else if(Mode == CApplication::MODE_CHAR_SELECT && m_s == false)
+			{
+				m_s = true;
+				m_bMaxSize = false;
+				m_bUninitFlag = false;
+				m_bSpawnWindow = false;
+				m_bDecition = false;
+				m_bDicisionCreateFlag = false;
+			}
+
 			// キャラ決定ウィンドウの生成
 			if (m_pCharDecision == nullptr && m_bDicisionCreateFlag == false)
 			{
 				m_pCharDecision = CCharDecision_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
 				m_bDicisionCreateFlag = true;
-			}
-
-			// キャラ選択画面以外の時
-			if (!Mode == CApplication::MODE_CHAR_SELECT)
-			{
-				m_bScale = false;
-				CGame::SetGameWindow(true);
-				Uninit();						// メニューウィンドウの削除
 			}
 
 			return true;
@@ -363,7 +363,7 @@ void CCharSelect_Window::CharSelectChoice()
 			if (m_vpListChoice.size() >= 2)
 			{
 				// 上に移動する
-				if (pInput->Trigger(DIK_Q) || (pInput->Trigger(JOYPAD_UP, m_nMenuInitiative)))
+				if (pInput->Trigger(DIK_A) || (pInput->Trigger(JOYPAD_UP, m_nMenuInitiative)))
 				{
 					// 選択SE
 					CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
@@ -372,7 +372,7 @@ void CCharSelect_Window::CharSelectChoice()
 					CharSelectChangeChoice(m_nSelectChoice <= 0 ? m_vpListChoice.size() - 1 : m_nSelectChoice - 1);
 				}
 				// 下に移動する
-				else if (pInput->Trigger(DIK_E) || (pInput->Trigger(JOYPAD_DOWN, m_nMenuInitiative)))
+				else if (pInput->Trigger(DIK_D) || (pInput->Trigger(JOYPAD_DOWN, m_nMenuInitiative)))
 				{
 					//m_bInputFlag = true;
 					// 選択SE
@@ -432,12 +432,12 @@ void CCharSelect_Window::SetCharSelectDisplay(const bool display)
 	m_bDisplay = display;
 	for (auto pChoice : GetChoiceAll()) { pChoice->SetFontDraw(display); }
 
-	//// 表示を消す場合
-	//if (display == false)
-	//{
-	//	// 選択肢の情報を初期化する
-	//	CharSelectChangeChoice(0);
-	//}
+	// 表示を消す場合
+	if (m_bDisplay == false)
+	{
+		// 選択肢の情報を初期化する
+		CharSelectChangeChoice(0);
+	}
 }
 
 //============================================================================

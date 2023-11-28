@@ -33,7 +33,6 @@
     <ClCompile Include="confirmation_window.cpp" />
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
-    <ClCompile Include="diffusion_bullet.cpp" />
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="drop_weapon.cpp" />
     <ClCompile Include="enemy.cpp" />
@@ -106,7 +105,6 @@
     <ClInclude Include="confirmation_window.h" />
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
-    <ClInclude Include="diffusion_bullet.h" />
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="drop_weapon.h" />
     <ClInclude Include="enemy.h" />
