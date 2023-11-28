@@ -41,8 +41,7 @@ public:
 	void SetTag(TAG tag) { m_tag = tag; }								// タグの設定
 	void SetPlayerSide(const bool side) { m_bPlayerSide = side; }		// プレイヤー側かどうかの設定
 	void SetCollision() { m_pCollision = CCollision::Create(this); }	// 当たり判定の生成
-	void SetEndExplosion(const bool end) { m_End_Explosion = end; }
-
+	
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
 	const D3DXVECTOR3 GetCenterPos() { return m_pos + m_CenterPos; }	// 中心位置の取得
 	virtual const int GetPower() { return NULL; }						// 威力の取得
@@ -50,8 +49,6 @@ public:
 	TAG GetTag() { return m_tag; }										// タグの取得
 	const bool GetPlayerSide() { return m_bPlayerSide; }				// プレイヤー側かどうかの取得
 	CCollision* GetCollision() { return m_pCollision; }					// 当たり判定の情報
-
-	const bool GetEndExplosion() { return m_End_Explosion; }
 	
 private:
 	D3DXVECTOR3 m_pos;			// 位置
@@ -60,7 +57,6 @@ private:
 	TAG m_tag;					// タグ
 	CCollision* m_pCollision;	// 当たり判定の情報
 	bool m_bPlayerSide;			// プレイヤー側かどうか
-	bool m_End_Explosion;		// 爆発が終わった
 };
 
 #endif // !_MOVE_OBJECT_H_

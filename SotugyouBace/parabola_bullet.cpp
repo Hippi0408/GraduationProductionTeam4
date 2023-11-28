@@ -8,7 +8,6 @@
 #include"objectX.h"
 #include"application.h"
 #include "utility.h"
-#include"explosion.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -50,6 +49,8 @@ HRESULT CParabola_Bullet::Init()
 
 	// 重力の設定
 	m_fGravity= 0.03f;
+
+	SetExplosion(true);
 	
 	return S_OK;
 }
@@ -59,9 +60,6 @@ HRESULT CParabola_Bullet::Init()
 //==============================================================================================
 void CParabola_Bullet::Uninit()
 {
-	// 着弾時の爆発
-	CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
-
 	CBullet::Uninit();
 }
 

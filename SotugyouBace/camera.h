@@ -29,8 +29,6 @@ public:
 	void SetPerspective(bool flag) { m_bPerspective = flag; }
 	D3DXVECTOR3 GetPlayerPos() { return m_PPos; }
 	void SetPlayerPos(D3DXVECTOR3 pos) { m_PPos = pos; }
-	int GetCount() { return m_nKeyCount; }
-	void SetCount(int count) { m_nKeyCount = count; }
 
 	void SetPosV(const D3DXVECTOR3 posV) { m_posV = posV; }
 	void SetPosR(const D3DXVECTOR3 posR) { m_posR = posR; }
@@ -67,7 +65,6 @@ private:
 
 	int				m_nShiftGoalCount;	// ゴールを映す時間
 	int				m_nGoalCount;		// ゴールを映すまでの時間
-	int				m_nKeyCount;		// キーを何回押したかのカウント
 	float			m_fDistance;		// 視点から注視点までの距離
 	float			m_fRotSpeed;		// 回転速度
 	bool			m_bCollision;		// オブジェクトに当たっているか

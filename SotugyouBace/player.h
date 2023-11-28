@@ -17,6 +17,7 @@ class CEnergy_Gauge;
 class CObject3D;
 class CDrop_Weapon;
 class CWeapon;
+class CEnemy;
 
 //---------------------------
 // ƒNƒ‰ƒXéŒ¾
@@ -110,6 +111,7 @@ private:
 	int m_nEnemy_Count;
 	float m_fEnemy_Speed;
 	float m_fAngle;
+	CEnemy *m_pEnemy;
 };
 
 #endif// _PLAYER_H_

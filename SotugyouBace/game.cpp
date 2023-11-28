@@ -28,11 +28,16 @@
 #include "utility.h"
 #include "parts.h"
 #include "drop_weapon.h"
+#include "player_ui.h"
 #include"debugProc.h"
 #include"pause.h"
 #include "parts_file.h"
 #include "motion.h"
 
+//==============================================================================================
+// 静的メンバ変数宣言
+//==============================================================================================
+CConfirmation_Window* CGame::m_pConfirmationWindow = nullptr;
 CPlayerManager* CGame::m_pPlayerManager = nullptr;
 CEnemyManager* CGame::m_pEnemyManager = nullptr;
 CDropManager* CGame::m_pDropManager = nullptr;
@@ -42,10 +47,6 @@ bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPause *CGame::m_pPause = nullptr;
-
-//==============================================================================================
-// 静的メンバ変数宣言
-//==============================================================================================
 
 //==============================================================================================
 // コンストラクタ
@@ -71,8 +72,8 @@ HRESULT CGame::Init()
 	CCamera* pCamera = CApplication::GetCamera();
 
 	// 視点、注視点の設定
-	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
-	pCamera->SetPosR({ 0.0f, 250.0f, 1000.0f });
+	pCamera->SetPosV({ 0.0f, 225.0f, -450.0f });
+	pCamera->SetPosR({ 0.0f, 112.5f, 450.0f });
 
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
@@ -115,10 +116,16 @@ HRESULT CGame::Init()
 	// メッシュフィールドの生成
 	m_pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
 
+	// プレイヤーUIの生成
+	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f),CPlayerUi::UITYPE_ONE,CObject::PRIORITY_CENTER);
+	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_TWO, CObject::PRIORITY_CENTER);
+	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_THREE, CObject::PRIORITY_CENTER);
+
 	// ポーズ画面
 	m_pPause = CPause::Create();
 
 	m_nEndCounter = 0;
+	m_bInputFlag = false;
 
 	return S_OK;
 }
@@ -175,11 +182,11 @@ void CGame::Uninit()
 	}
 
 	// メニューウィンドウの終了処理
-	if (m_ponfirmationWindow != nullptr)
+	if (m_pConfirmationWindow != nullptr)
 	{
-		m_ponfirmationWindow->Uninit();
-		delete m_ponfirmationWindow;
-		m_ponfirmationWindow = nullptr;
+		m_pConfirmationWindow->Uninit();
+		delete m_pConfirmationWindow;
+		m_pConfirmationWindow = nullptr;
 	}
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
@@ -191,7 +198,7 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	// メニューウィンドウ処理
-	//MenuWindow();
+	MenuWindow();
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
@@ -343,24 +350,37 @@ void CGame::GameEnd()
 void CGame::MenuWindow()
 {
 	CInput* pInput = CInput::GetKey();
-	if (m_ponfirmationWindow == nullptr)
+	//// 現在のモード
+	//CApplication::MODE Mode = CApplication::GetModeType();
+
+	//if (Mode == CApplication::MODE_GAME)
+	//{
+	//	if (this != nullptr && m_bInputFlag == true)
+	//	{
+	//		pInput->SetKeyLock(100);
+	//	}
+	//		else if (this != nullptr && m_bInputFlag == false)
+	//	{
+	//	pInput->UnlockKey(100);
+	//	}
+	//}
+	if (m_pConfirmationWindow == nullptr)
 	{
 		if (pInput->Trigger(DIK_M))
 		{
-			m_ponfirmationWindow = CConfirmation_Window::Create();
+			m_pConfirmationWindow = CConfirmation_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f),500.0f, 320.0f, D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 			return;
 		}
 	}
 	else
 	{
-		m_ponfirmationWindow->Update(); 
+		m_pConfirmationWindow->Update();
 	}
 	// ウィンドウが閉じた場合 
-	if (m_ponfirmationWindow != nullptr && m_bGameWindow == true)
+	if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetUninit() == true)
 	{
-		m_bGameWindow = false;
-		delete m_ponfirmationWindow;
-		m_ponfirmationWindow = nullptr;
+		delete m_pConfirmationWindow;
+		m_pConfirmationWindow = nullptr;
 	}
 }
 

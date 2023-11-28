@@ -28,6 +28,7 @@ public:
 	static void SetUninitWindow(bool flag) { m_bWindowUninit = flag; }
 	static bool GetUninitWindow() { return m_bWindowUninit; }
 	static CMenuWindow* GetMenuWindow() { return m_pMenuWindow; }
+	static void UninitMenuWindow();
 	static CTitle* Create();
 
 private:
