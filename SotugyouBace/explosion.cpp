@@ -31,7 +31,7 @@ HRESULT CExplosion::Init()
 	SetTag(TAG_EXPLOSION);
 
 	// “–‚½‚è”»’è‚Ì¶¬
-	SetCollision();
+	SetDelayCollision();
 
 	return S_OK;
 }
@@ -49,6 +49,8 @@ void CExplosion::Uninit()
 //==============================================================================================
 void CExplosion::Update()
 {
+	CMove_Object::Update();
+
 	m_nContinuation++;
 
 	// ”š”­‚Ì‘±ŠÔ

@@ -89,6 +89,8 @@ void CBullet::Uninit()
 //=============================================================================
 void CBullet::Update()
 {
+	CMove_Object::Update();
+
 	// Žæ“¾
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 move = GetMove();

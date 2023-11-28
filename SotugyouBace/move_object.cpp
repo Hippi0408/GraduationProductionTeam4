@@ -5,6 +5,10 @@
 //
 //==============================================================================================
 #include"move_object.h"
+#include "application.h"
+#include "tutorial.h"
+#include "game.h"
+#include "collision_manager.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -13,6 +17,7 @@ CMove_Object::CMove_Object(const PRIORITY priority) : CObject(priority)
 {
 	m_tag = TAG_NONE;
 	m_bPlayerSide = false;
+	m_bCollisionDelay = false;	// 当たり判定の遅延設置判定
 	m_CenterPos = { 0.0f, 0.0f, 0.0f };
 }
 
@@ -46,6 +51,27 @@ void CMove_Object::Uninit()
 }
 
 //==============================================================================================
+// 更新処理
+//==============================================================================================
+void CMove_Object::Update()
+{
+	// 当たり判定を遅延して設定する処理
+	DelayCollision();
+}
+
+//==============================================================================================
+// 当たり判定ポインタを消す処理
+//==============================================================================================
+void CMove_Object::DelayCollision()
+{
+	// 遅延して設定する場合
+	if (m_bCollisionDelay == true)
+	{
+		SetCollision();
+	}
+}
+
+//==============================================================================================
 // 当たり判定ポインタを消す処理
 //==============================================================================================
 void CMove_Object::CollisionDestroy()
@@ -53,5 +79,32 @@ void CMove_Object::CollisionDestroy()
 	if (m_pCollision != nullptr)
 	{
 		m_pCollision = nullptr;
+	}
+}
+
+//==============================================================================================
+// 当たり判定の生成
+//==============================================================================================
+void CMove_Object::SetCollision()
+{
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CCollision_Manager* pManager = nullptr;
+
+	// 生成時に自身のポインタを当たり判定マネージャーに設定
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pManager = CTutorial::GetCollision_Manager();
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pManager = CGame::GetCollision_Manager();
+	}
+
+	// 当たり判定マネージャーが使用されている場合 && 当たり判定が使用されていない場合
+	if (pManager != nullptr && m_pCollision == nullptr)
+	{
+		m_pCollision = CCollision::Create(this);
 	}
 }

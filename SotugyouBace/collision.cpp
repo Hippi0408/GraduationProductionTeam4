@@ -109,7 +109,7 @@ void CCollision::Collision()
 	for (auto pCollision : pCollision_Manager->GetAllCollision())
 	{
 		// “–‚½‚è”»’è‚ª‘¶İ‚·‚éê‡ && “–‚½‚è”»’è‚ª©g‚Å‚Í‚È‚¢ê‡
-		if (!pCollision->GetParent()->GetDeathFlag() && pCollision != this)
+		if (!pCollision->GetParent()->GetDeathFlag() && !pCollision->GetDeath() && pCollision != this)
 		{
 			// ‘Šè‚Ìmoveobject‚Ìî•ñ
 			CMove_Object* pMove_Object = pCollision->GetParent();

@@ -9,6 +9,7 @@
 #include"application.h"
 #include "utility.h"
 #include"explosion.h"
+#include"diffusion_bullet.h"
 
 //==============================================================================================
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
@@ -59,9 +60,6 @@ HRESULT CParabola_Bullet::Init()
 //==============================================================================================
 void CParabola_Bullet::Uninit()
 {
-	// ’…’e‚Ì”š”­
-	CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
-
 	CBullet::Uninit();
 }
 
@@ -94,6 +92,18 @@ void CParabola_Bullet::Update()
 void CParabola_Bullet::Draw()
 {
 	CBullet::Draw();
+}
+
+//=============================================================================
+// ”j‰óˆ—
+//=============================================================================
+void CParabola_Bullet::Destroy()
+{
+	// ’…’e‚Ì”š”­
+	CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
+
+	// ’e‚Ì”j‰óˆ—
+	CBullet::Destroy();
 }
 
 //==============================================================================================

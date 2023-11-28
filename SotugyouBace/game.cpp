@@ -96,7 +96,7 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
+		CMob::Create({ utility::Random<float>(500.0f, -500.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(1500.0f, -500.0f) });
 	}
 
 	// ボスキャラの生成
@@ -367,12 +367,12 @@ void CGame::MenuWindow()
 //==============================================================================================
 // 武器、パーツのドロップ
 //==============================================================================================
-void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand)
+void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 {
 	for (int nCnt = 0; nCnt < num; nCnt++)
 	{
 		D3DXVECTOR3 Pos = pos;
-		if (rand)
+		if (random)
 			// ランダムな位置
 			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) };
 
@@ -380,13 +380,14 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand)
 		int nRandType = 0;
 
 		// タイプ
-		nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
+		nRandType = rand() % CDrop_Weapon::DROP_PARTS_MAX;
 
+		// 最大数 または 素手が読み込まれた場合やり直す処理
 		while (CDrop_Weapon::ARMS_MAX == nRandType || CDrop_Weapon::LEG_MAX == nRandType
 			|| CDrop_Weapon::WEAPON_NONE == nRandType || CDrop_Weapon::WEAPON_MAX == nRandType)
 		{
 			// タイプ
-			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
+			nRandType = rand() % CDrop_Weapon::DROP_PARTS_MAX;
 		}
 
 		// 生成

@@ -200,9 +200,6 @@ void CDrop_Weapon::Draw()
 //=============================================================================
 void CDrop_Weapon::Pick_Up_Weapon()
 {
-	//入力デバイスの情報
-	CInput* pInput = CInput::GetKey();
-
 	// ピックアップUIが存在する場合
 	if(m_pPick_Up != nullptr)
 	{
