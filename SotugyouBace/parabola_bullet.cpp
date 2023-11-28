@@ -8,8 +8,6 @@
 #include"objectX.h"
 #include"application.h"
 #include "utility.h"
-#include"explosion.h"
-#include"diffusion_bullet.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -51,6 +49,8 @@ HRESULT CParabola_Bullet::Init()
 
 	// 重力の設定
 	m_fGravity= 0.03f;
+
+	SetExplosion(true);
 	
 	return S_OK;
 }
@@ -99,9 +99,6 @@ void CParabola_Bullet::Draw()
 //=============================================================================
 void CParabola_Bullet::Destroy()
 {
-	// 着弾時の爆発
-	CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
-
 	// 弾の破壊処理
 	CBullet::Destroy();
 }

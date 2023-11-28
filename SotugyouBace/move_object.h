@@ -32,7 +32,7 @@ public:
 	virtual void Update();
 
 	virtual void Hit(CMove_Object* pHit) = 0;
-	void DelayCollision();												// 当たり判定を遅延して設定する処理
+	void DelayCollision();							// 当たり判定を遅延して設定する処理
 	void CollisionDestroy();											// 当たり判定ポインタを消す処理
 
 	void AddPos(const D3DXVECTOR3 pos) { m_pos += pos; }				// 位置の加算
@@ -42,10 +42,10 @@ public:
 	void SetRadius(const float radius) { m_fRadius = radius; }			// 半径の設定
 	void SetTag(TAG tag) { m_tag = tag; }								// タグの設定
 	void SetPlayerSide(const bool side) { m_bPlayerSide = side; }		// プレイヤー側かどうかの設定
-	void SetCollision();												// 当たり判定の生成
-	void SetDelayCollision() { m_bCollisionDelay = true; }				// 当たり判定を遅延して生成
-	void SetEndExplosion(const bool end) { m_End_Explosion = end; }
-
+	void SetCollisionNoneHit(const bool noneHit) { m_bCollision_NoneHit = noneHit; }	// 当たり判定のヒット処理を読み込まない判定の設定
+	void SetCollision();						// 当たり判定の生成
+	void SetDelayCollision() { m_bCollision_Delay = true; }				// 当たり判定を遅延して生成
+	
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
 	const D3DXVECTOR3 GetCenterPos() { return m_pos + m_CenterPos; }	// 中心位置の取得
 	virtual const int GetPower() { return NULL; }						// 威力の取得
@@ -53,8 +53,6 @@ public:
 	TAG GetTag() { return m_tag; }										// タグの取得
 	const bool GetPlayerSide() { return m_bPlayerSide; }				// プレイヤー側かどうかの取得
 	CCollision* GetCollision() { return m_pCollision; }					// 当たり判定の情報
-
-	const bool GetEndExplosion() { return m_End_Explosion; }
 	
 private:
 	D3DXVECTOR3 m_pos;			// 位置
@@ -63,8 +61,8 @@ private:
 	TAG m_tag;					// タグ
 	CCollision* m_pCollision;	// 当たり判定の情報
 	bool m_bPlayerSide;			// プレイヤー側かどうか
-	bool m_End_Explosion;		// 爆発が終わった
-	bool m_bCollisionDelay;		// 当たり判定の遅延設置判定
+	bool m_bCollision_Delay;	// 当たり判定の遅延設置判定
+	bool m_bCollision_NoneHit;	// 当たり判定のヒット処理を読み込まない判定
 };
 
 #endif // !_MOVE_OBJECT_H_

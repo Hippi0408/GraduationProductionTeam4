@@ -2,13 +2,13 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos 12.4915 -24.4326 585.9375
+	pos 12.4915 -24.4326 1500.0000
 	lookat 0.0000 0.0000 0.0000
 	head 16.6667
 	pich 0.0408
 	bank 0.0000
 	ortho 0
-	zoom2 12.8000
+	zoom2 5.0000
 	amb 0.250 0.250 0.250
 	dirlights 1 {
 		light {
@@ -22,11 +22,11 @@ Material 11 {
 	"mat1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 	"mat2" col(0.541 0.541 0.541 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 	"mat4" col(0.922 0.922 0.922 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
-	"Wall1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(90.000 161.000 -100.000) proj_scale(200.000 161.000 180.000) proj_angle(90.000 0.000 0.000)
-	"Wall2" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(-8.000 161.000 0.000) proj_scale(160.000 161.000 1.000) proj_angle(0.000 0.000 0.000)
-	"Wall3" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(0.000 100.000 0.000) proj_scale(60.000 200.000 100.000) proj_angle(0.000 0.000 0.000)
-	"Wall4" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(0.000 100.000 -100.000) proj_scale(200.000 200.000 100.000) proj_angle(90.000 0.000 0.000)
-	"Wall5" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\GraduationProductionTeam4\Resource\BG\texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(71.674 102.431 -100.000) proj_scale(100.000 100.000 100.000) proj_angle(0.000 0.000 0.000)
+	"Wall1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(90.000 161.000 -100.000) proj_scale(200.000 161.000 180.000) proj_angle(90.000 0.000 0.000)
+	"Wall2" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(-8.000 161.000 0.000) proj_scale(160.000 161.000 1.000) proj_angle(0.000 0.000 0.000)
+	"Wall3" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(0.000 100.000 0.000) proj_scale(60.000 200.000 100.000) proj_angle(0.000 0.000 0.000)
+	"Wall4" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(0.000 100.000 -100.000) proj_scale(200.000 200.000 100.000) proj_angle(90.000 0.000 0.000)
+	"Wall5" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\ConvenienceStoreWall.png") proj_type(1) proj_pos(71.674 102.431 -100.000) proj_scale(100.000 100.000 100.000) proj_angle(0.000 0.000 0.000)
 	"mat9" col(1.000 0.318 0.302 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 	"mat10" col(0.000 1.000 0.784 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 }
@@ -129,7 +129,7 @@ Object "obj3" {
 		4 V(12 13 15 14) M(1) UV(0.00000 0.00000 0.50000 0.00000 0.50000 0.50000 0.00000 0.50000)
 		4 V(13 18 20 15) M(1) UV(0.50000 0.00000 1.00000 0.00000 1.00000 0.50000 0.50000 0.50000)
 		4 V(14 15 17 16) M(0) UV(0.00000 0.50000 0.50000 0.50000 0.50000 1.00000 0.00000 1.00000)
-		4 V(15 20 22 17) M(8) UV(0.49163 0.60215 0.09163 0.60215 0.09163 0.71215 0.49163 0.71215)
+		4 V(15 20 22 17) M(8) UV(0.49163 0.60216 0.09163 0.60216 0.09163 0.71215 0.49163 0.71215)
 		4 V(18 19 21 20) M(1) UV(0.00000 0.00000 0.50000 0.00000 0.50000 0.50000 0.00000 0.50000)
 		4 V(19 0 2 21) M(1) UV(0.50000 0.00000 1.00000 0.00000 1.00000 0.50000 0.50000 0.50000)
 		4 V(20 21 23 22) M(1) UV(0.00000 0.50000 0.50000 0.50000 0.50000 1.00000 0.00000 1.00000)

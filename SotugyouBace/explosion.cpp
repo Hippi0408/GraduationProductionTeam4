@@ -5,12 +5,14 @@
 //
 //==============================================================================================
 #include"explosion.h"
+#include "particle_emitter.h"
 
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
 CExplosion::CExplosion(const PRIORITY priority) : CMove_Object(priority)
 {
+	m_nContinuation = 0;
 }
 
 //==============================================================================================
@@ -30,9 +32,6 @@ HRESULT CExplosion::Init()
 	// タグの設定
 	SetTag(TAG_EXPLOSION);
 
-	// 当たり判定の生成
-	SetDelayCollision();
-
 	return S_OK;
 }
 
@@ -50,15 +49,6 @@ void CExplosion::Uninit()
 void CExplosion::Update()
 {
 	CMove_Object::Update();
-
-	m_nContinuation++;
-
-	// 爆発の持続時間
-	if (m_nContinuation > 60)
-	{
-		SetEndExplosion(true);
-		Uninit();
-	}
 }
 
 //==============================================================================================
@@ -73,23 +63,4 @@ void CExplosion::Draw()
 //==============================================================================================
 void CExplosion::Hit(CMove_Object* pHit)
 {
-}
-
-//==============================================================================================
-// 生成処理
-//==============================================================================================
-CExplosion *CExplosion::Create(D3DXVECTOR3 pos, float radius, int power, const bool side, const CObject::PRIORITY priority)
-{
-	CExplosion *pExplosion = new CExplosion(priority);
-
-	if (pExplosion != nullptr)
-	{
-		pExplosion->SetPos(pos);
-		pExplosion->SetRadius(radius);
-		pExplosion->SetPlayerSide(side);
-		pExplosion->m_nPower = power;
-		pExplosion->Init();
-	}
-
-	return pExplosion;
 }

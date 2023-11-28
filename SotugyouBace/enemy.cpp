@@ -112,12 +112,8 @@ void CEnemy::Hit(CMove_Object* pHit)
 			Damage(pHit->GetPower());
 			break;
 		case TAG_EXPLOSION:
-			if (!GetHitExplosion())
-			{
-				// 爆発のダメージを返す
-				Damage(pHit->GetPower());
-				SetHitExplosion(true);
-			}
+			// 爆発のダメージを返す
+			Damage(pHit->GetPower());
 			break;
 		default:
 			break;

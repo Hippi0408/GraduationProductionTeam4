@@ -16,16 +16,18 @@
 #include "confirmation_window.h"
 #include "menu_window.h"
 
-//=====================================
+CConfirmation_Window* CTitleMenu::m_pConfirmationWindow = nullptr;
+
+//============================================================================
 // コンストラクタ
-//=====================================
+//============================================================================
 CTitleMenu::CTitleMenu()
 {
 }
 
-//=====================================
+//============================================================================
 // デストラクタ
-//=====================================
+//============================================================================
 CTitleMenu::~CTitleMenu()
 {
 
@@ -90,12 +92,12 @@ void CTitleMenu::Update()
 	{// ウィンドウに情報が入っている時 && ウィンドウが使われている時
 		m_pConfirmationWindow->Update();
 	}
-	if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetUninit() == true)
-	{
-		delete m_pConfirmationWindow;
-		m_pConfirmationWindow = nullptr;
-	}
 
+	//if (m_pConfirmationWindow != nullptr && m_pConfirmationWindow->GetUninit() == true)
+	//{
+	//	delete m_pConfirmationWindow;
+	//	m_pConfirmationWindow = nullptr;
+	//}
 }
 
 //============================================================================
@@ -128,7 +130,7 @@ void CTitleMenu::Choice()
 
 			if (m_pConfirmationWindow == nullptr)
 			{
-				m_pConfirmationWindow = CConfirmation_Window::Create();
+				m_pConfirmationWindow = CConfirmation_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f),500.0f, 320.0f, D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 				
 				return;
 			}
@@ -164,4 +166,16 @@ CTitleMenu* CTitleMenu::Create()
 	}
 
 	return pTitleMenu;
+}
+
+//============================================================================
+// ウィンドウを破棄する処理
+//============================================================================
+void CTitleMenu::UninitComfirmationWindow()
+{
+	if (m_pConfirmationWindow != nullptr)
+	{
+		delete m_pConfirmationWindow;
+		m_pConfirmationWindow = nullptr;
+	}
 }

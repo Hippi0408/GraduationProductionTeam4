@@ -37,9 +37,11 @@ public:
 	void Choice() override;		// ‘I‘ğˆ‚Ìˆ—
 
 	static CTitleMenu* Create();
+	static CConfirmation_Window* GetComfirmationWindow() { return m_pConfirmationWindow; }
+	static void UninitComfirmationWindow();
 
 private:
-	CConfirmation_Window* m_pConfirmationWindow;
+	static CConfirmation_Window* m_pConfirmationWindow;
 	bool m_bConfirmation;
 };
 

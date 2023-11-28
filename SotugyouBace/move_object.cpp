@@ -17,7 +17,8 @@ CMove_Object::CMove_Object(const PRIORITY priority) : CObject(priority)
 {
 	m_tag = TAG_NONE;
 	m_bPlayerSide = false;
-	m_bCollisionDelay = false;	// “–‚½‚è”»’è‚Ì’x‰„Ý’u”»’è
+	m_bCollision_Delay = false;		// “–‚½‚è”»’è‚Ì’x‰„Ý’u”»’è
+	m_bCollision_NoneHit = false;	// “–‚½‚è”»’è‚Ìƒqƒbƒgˆ—‚ð“Ç‚Ýž‚Ü‚È‚¢”»’è
 	m_CenterPos = { 0.0f, 0.0f, 0.0f };
 }
 
@@ -65,7 +66,7 @@ void CMove_Object::Update()
 void CMove_Object::DelayCollision()
 {
 	// ’x‰„‚µ‚ÄÝ’è‚·‚éê‡
-	if (m_bCollisionDelay == true)
+	if (m_bCollision_Delay == true)
 	{
 		SetCollision();
 	}
@@ -106,5 +107,6 @@ void CMove_Object::SetCollision()
 	if (pManager != nullptr && m_pCollision == nullptr)
 	{
 		m_pCollision = CCollision::Create(this);
+		m_pCollision->SetNoneHit(m_bCollision_NoneHit);
 	}
 }

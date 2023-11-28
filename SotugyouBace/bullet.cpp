@@ -17,6 +17,7 @@
 #include "objectX.h"
 #include "particle_emitter.h"
 #include "tutorial.h"
+#include "normal_explosion.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -128,7 +129,6 @@ void CBullet::Update()
 
 	// 床の当たり判定
 	FieldCollision();
-
 }
 
 //=============================================================================
@@ -187,6 +187,12 @@ void CBullet::Hit(CMove_Object* pHit)
 //=============================================================================
 void CBullet::Destroy()
 {
+	if (m_bExplosion)
+	{
+		// 着弾時の爆発
+		CNormal_Explosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
+	}
+
 	// 攻撃パーティクル
 	std::move(CParticleEmitter::Create("Attack", GetPos()));
 
