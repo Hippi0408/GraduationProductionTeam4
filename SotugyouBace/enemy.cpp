@@ -7,14 +7,26 @@
 #include "enemy.h"
 #include "enemy_manager.h"
 #include "application.h"
+#include "tutorial.h"
+#include "game.h"
 
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
 CEnemy::CEnemy()
 {
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
 	// 生成時に自身のポインタを敵キャラマネージャーに設定
-	CApplication::GetEnemyManager()->SetEnemy(this);
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		CTutorial::GetEnemyManager()->SetEnemy(this);
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		CGame::GetEnemyManager()->SetEnemy(this);
+	}
 }
 
 //=====================================
@@ -22,10 +34,20 @@ CEnemy::CEnemy()
 //=====================================
 CEnemy::~CEnemy()
 {
-	CEnemyManager* pManager = CApplication::GetEnemyManager();
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
 
 	// マネージャーが使用中の場合、解放時に自身のポインタを配列から除外する
-	if (pManager != nullptr) pManager->DestroyEnemy(this);
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		CEnemyManager* pManager = CTutorial::GetEnemyManager();
+		if(pManager != nullptr) pManager->DestroyEnemy(this);
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		CEnemyManager* pManager = CGame::GetEnemyManager();
+		if (pManager != nullptr) pManager->DestroyEnemy(this);
+	}
 }
 
 //============================================================================
@@ -37,7 +59,7 @@ HRESULT CEnemy::Init()
 	SetPlayerSide(false);
 
 	// 当たり判定の生成
-	SetCollision({ 1.0f, 0.0f, 0.0f, 1.0f });
+	SetCollision();
 
 	CCharacter::Init();
 
@@ -83,10 +105,14 @@ void CEnemy::Hit(CMove_Object* pHit)
 		// タグから種類を選ぶ
 		switch (tag)
 		{
-		case TAG_CHARACTER :
+		case TAG_CHARACTER:
 			break;
 		case TAG_BULLET:
 			// 弾のダメージを返す
+			Damage(pHit->GetPower());
+			break;
+		case TAG_EXPLOSION:
+			// 爆発のダメージを返す
 			Damage(pHit->GetPower());
 			break;
 		default:

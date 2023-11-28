@@ -61,13 +61,14 @@ public:
 	void SetBoost(const bool boost) { m_bBoost = boost; }
 	void SetJump_Boost(const bool jumpboost) { m_bJump_Boost = jumpboost; }
 
-	void SetParts(const int charaParts, const int partsIndex);				// パーツの設定処理
+	void SetParts(const int charaParts, const int partsIndex, CMotion::MOTION motion);				// パーツの設定処理
 	//void ChangeParts(const int index, const char* Xfilename);			// パーツ変更処理
 	
 	void SetJump_PressCount(const int jumpcount) { m_nJump_PressCount = jumpcount; }
 	void AddJump_PressCount(const int jumpcount) { m_nJump_PressCount += jumpcount; }
 	void SetAvoidance(const bool avoidance) { m_bAvoidance = avoidance; }
 	void SetAvoidanceCount(const int avoidancecount) { m_nAvoidance_Count = avoidancecount; }
+	void SetHitExplosion(const bool hit) { m_bHit_Explosion = hit; }
 	void SetGaugeManager(CGauge_Manager *gauge) { m_pGaugeManager = gauge; }
 
 	const bool GetGround() { return m_bGround; }
@@ -84,6 +85,7 @@ public:
 	const bool GetJump_Boost() { return m_bJump_Boost; }
 	const int GetJump_PressCount() { return m_nJump_PressCount; }
 	const bool GetAvoidance() { return m_bAvoidance; }
+	const bool GetHitExplosion() { return m_bHit_Explosion; }
 	CGauge_Manager *GetGaugeManager() { return m_pGaugeManager; }
 
 private:
@@ -110,6 +112,8 @@ private:
 	int m_nJump_PressCount;				// ジャンプの長押ししてる時間
 	bool m_bAvoidance;					// 回避しているか
 	int m_nAvoidance_Count;				// 回避の硬直時間
+
+	bool m_bHit_Explosion;				// 爆発に当たったか
 
 	std::string m_name;						// 自身の名前
 	std::map<int, CParts*> m_Parts;			// パーツ情報のポインタ

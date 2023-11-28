@@ -8,18 +8,23 @@
 #include "application.h"
 #include "model.h"
 
-const char* CParts_File::m_cFileName[] =
+const char* CParts_File::m_cPartsFileName[] =
 {
-	"Data\\text\\Motion\\parts\\motion_Body.txt",
-	"Data\\text\\Motion\\parts\\motion_Arms.txt",
-	"Data\\text\\Motion\\parts\\motion_Leg.txt",
-	"Data\\text\\Motion\\parts\\motion_Body_02.txt",
-	"Data\\text\\Motion\\parts\\motion_Arms_02.txt",
-	"Data\\text\\Motion\\parts\\motion_Leg_02.txt",
+	"Data\\text\\PartsList\\Player\\SG01\\parts_Player_Body_SG01.txt",
+	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Body_SG02.txt",
+	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Body_SG03.txt",
 
-	"Data\\text\\Motion\\motion_mob.txt",
+	"Data\\text\\PartsList\\Player\\SG01\\parts_Player_Arms_SG01.txt",
+	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Arms_SG02.txt",
+	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Arms_SG03.txt",
 
-	"Data\\text\\Motion\\motion_boss.txt",
+	"Data\\text\\PartsList\\Player\\SG01\\parts_Player_Leg_SG01.txt",
+	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Leg_SG02.txt",
+	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Leg_SG03.txt",
+
+	"Data\\text\\PartsList\\Mob\\parts_Mob_mob.txt",
+
+	"Data\\text\\PartsList\\Boss\\parts_Boss_boss.txt",
 };
 
 //=====================================
@@ -171,107 +176,11 @@ void CParts_File::LoadFile(const char* Xfilename, const int partsIndex)
 							}
 						}
 					}
-
-					if (strcmp(&m_aString[0], "MOTIONSET") == 0)
-					{
-						int nKey = 0;			// 現在のキーの数
-
-												// モーション情報
-						CMotion::MotionPattern vMotionPattern = {};	// キーセットの情報
-
-						while (strcmp(&m_aString[0], "END_MOTIONSET") != 0)
-						{
-							fscanf(pFile, "%s", &m_aString[0]);
-
-							// ループするか
-							if (strcmp(&m_aString[0], "LOOP") == 0)
-							{
-								int nLoop;
-								fscanf(pFile, "%s", &m_aString[0]);
-								fscanf(pFile, "%d", &nLoop);
-
-								// ループ判定の代入(true = 1, false = 0)
-								vMotionPattern.bLoop = nLoop == 1;
-							}
-
-							// キーの数
-							if (strcmp(&m_aString[0], "NUM_KEY") == 0)
-							{
-								fscanf(pFile, "%s", &m_aString[0]);
-								//fscanf(pFile, "%d", &vMotionPattern.nMaxKey);
-							}
-
-							if (strcmp(&m_aString[0], "KEYSET") == 0)
-							{
-								// キーセットのメモリ領域を確保
-								vMotionPattern.aKeySet.emplace_back();
-
-								int nParts = 0;			// 現在のパーツ
-
-								while (strcmp(&m_aString[0], "END_KEYSET") != 0)
-								{
-									fscanf(pFile, "%s", &m_aString[0]);
-
-									// キーフレーム
-									if (strcmp(&m_aString[0], "FRAME") == 0)
-									{
-										fscanf(pFile, "%s", &m_aString[0]);
-										fscanf(pFile, "%d", &vMotionPattern.aKeySet[nKey].nFrame);
-									}
-
-									if (strcmp(&m_aString[0], "KEY") == 0)
-									{
-										// キーのメモリ領域を確保
-										vMotionPattern.aKeySet[nKey].aKey.emplace_back();
-
-										while (strcmp(&m_aString[0], "END_KEY") != 0)
-										{
-											fscanf(pFile, "%s", &m_aString[0]);
-
-											// 位置
-											if (strcmp(&m_aString[0], "POS") == 0)
-											{
-												fscanf(pFile, "%s", &m_aString[0]);
-												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyPos.x);
-												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyPos.y);
-												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyPos.z);
-											}
-
-											// 角度
-											if (strcmp(&m_aString[0], "ROT") == 0)
-											{
-												fscanf(pFile, "%s", &m_aString[0]);
-												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyRot.x);
-												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyRot.y);
-												fscanf(pFile, "%f", &vMotionPattern.aKeySet[nKey].aKey[nParts].KeyRot.z);
-											}
-
-											if (strcmp(&m_aString[0], "END_KEY") == 0)
-											{
-												// 次のパーツ
-												nParts++;
-											}
-										}
-									}
-								}
-								nKey++;
-							}
-						}
-						vMotionPattern.nMaxKey = nKey;
-
-						// モーションに設定
-						pMotion->SetMotionData(vMotionPattern, Xfilename);
-
-						nNumMotion++;
-					}
 				}
 			}
 		}
 		//ファイルを閉じる
 		fclose(pFile);
-
-		// モーションに名前を設定する
-		pMotion->SetUseFileName(Xfilename);
 	}
 }
 
@@ -282,6 +191,6 @@ void CParts_File::LoadAllFile()
 {
 	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{ 
-		LoadFile(m_cFileName[nCnt], nCnt);
+		LoadFile(m_cPartsFileName[nCnt], nCnt);
 	}
 }

@@ -20,10 +20,12 @@
 const char* CTexture::s_FileName[] =
 {// テクスチャのパス
 	"Data/texture/Font/Font_Japanese002.png",			// 日本語フォント
+	"Data/texture/Font/Font_Japanese003.png",	// 日本語フォント
 	"Data/texture/Font/Font_Alphabet.png",				// アルファベットフォントフォント
 	"Data/texture/number.png",						// ナンバーのテクスチャ
 	"Data/texture/bullet000.png",					// 弾のテクスチャ
 	"Data/texture/floor.png",						// 地面のテクスチャ
+	"Data/texture/reticle.png",						// レティクルのテクスチャ
 	"Data/texture/circle.png",						// 円のテクスチャ
 	"Data/texture/UI_00.png",						// UIのテクスチャ
 
@@ -38,7 +40,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/jewel.png",				// パーティクル用宝石
 	"Data/texture/particle/soul.png",				// 魂
 	"Data/texture/particle/up.png",					// 上矢印
-
+	"Data/texture/reticle.png",						// レティクル
 
 };
 

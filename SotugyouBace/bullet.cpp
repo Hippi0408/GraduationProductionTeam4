@@ -17,11 +17,13 @@
 #include "objectX.h"
 #include "particle_emitter.h"
 #include "tutorial.h"
+#include "explosion.h"
 
 //=============================================================================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
 //=============================================================================
-const float CBullet::BULLET_SPEED = 50.0f;				// ’e‚Ì‘¬“x
+const float CBullet::BULLET_SPEED_XZ = 50.0f;				// ’e‚Ì‘¬“x
+const float CBullet::BULLET_SPEED_Y = 50.0f;				// ’e‚Ì‘¬“x
 const float CBullet::BULLET_COLLISION_RADIUS = 30.0f;	// ’e‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³
 //=============================================================================
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
@@ -30,7 +32,8 @@ CBullet::CBullet(const CObject::PRIORITY priority) : CMove_Object(priority)
 {
 	m_nLife = BULLET_LIFE;
 	SetPower(BULLET_POWER);
-	m_fSpeed = BULLET_SPEED;
+	m_fSpeed_XZ = BULLET_SPEED_XZ;
+	m_fSpeed_Y = BULLET_SPEED_Y;
 	SetRadius(BULLET_COLLISION_RADIUS);
 }
 
@@ -56,7 +59,7 @@ HRESULT CBullet::Init()
 	// ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
 	//==================================================
 	// “–‚½‚è”»’è‚Ì¶¬
-	SetCollision({1.0f, 0.0f, 0.0f, 1.0f});
+	SetCollision();
 
 	return S_OK;
 }
@@ -93,7 +96,9 @@ void CBullet::Update()
 	D3DXVECTOR2 size = GetSize();
 
 	//’e‚ÌˆÊ’uXV
-	pos += move * m_fSpeed;
+	pos.x += move.x * m_fSpeed_XZ;
+	pos.z += move.z * m_fSpeed_XZ;
+	pos.y += move.y * m_fSpeed_Y;
 
 	//‘O‰ñ‚ÌˆÊ’u‚ð•Û‘¶
 	m_nPosOld = pos;
@@ -158,6 +163,12 @@ void CBullet::FieldCollision()
 		{
 			//pMeshField->Ground_Broken(pos, 50.0f, 5);
 
+			if (m_bExplosion)
+			{
+				// ’…’eŽž‚Ì”š”­
+				CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
+			}
+
 			// ’e‚ð”j‰ó‚·‚é
 			Destroy();
 		}
@@ -172,6 +183,12 @@ void CBullet::Hit(CMove_Object* pHit)
 	// ’e‚Å‚Í–³‚¢ê‡ && “¯‚¶ƒTƒCƒh‚Å‚Í‚È‚¢ê‡
 	if (pHit->GetTag() == TAG_CHARACTER && GetPlayerSide() != pHit->GetPlayerSide())
 	{
+		if (m_bExplosion)
+		{
+			// ’…’eŽž‚Ì”š”­
+			CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
+		}
+
 		Destroy();
 	}
 }

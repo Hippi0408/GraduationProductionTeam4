@@ -94,9 +94,6 @@
     <ClCompile Include="object.cpp">
       <Filter>04_Object</Filter>
     </ClCompile>
-    <ClCompile Include="collision.cpp">
-      <Filter>04_Object\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="collision_manager.cpp">
       <Filter>04_Object\Collision</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
     </ClCompile>
     <ClCompile Include="particle_manager.cpp">
       <Filter>04_Object\Object3D\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="parts.cpp">
-      <Filter>04_Object\ObjectX</Filter>
     </ClCompile>
     <ClCompile Include="pc.cpp">
       <Filter>04_Object\MoveObject\Character\Player</Filter>
@@ -188,7 +182,7 @@
       <Filter>03_Mode</Filter>
     </ClCompile>
     <ClCompile Include="drop_weapon.cpp">
-      <Filter>04_Object\MoveObject\weapon</Filter>
+      <Filter>04_Object\ObjectX\drop</Filter>
     </ClCompile>
     <ClCompile Include="player_ui.cpp">
       <Filter>04_Object\Object2D\PlayerUi</Filter>
@@ -210,6 +204,27 @@
     </ClCompile>
     <ClCompile Include="homing_bullet.cpp">
       <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="parts.cpp">
+      <Filter>04_Object\ObjectX\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="weapon.cpp">
+      <Filter>04_Object\ObjectX\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="drop_manager.cpp">
+      <Filter>04_Object\ObjectX\drop</Filter>
+    </ClCompile>
+    <ClCompile Include="diffusion_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>04_Object\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="parabola_bullet.cpp">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="explosion.cpp">
+      <Filter>04_Object\MoveObject\Explosion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -331,9 +346,6 @@
     <ClInclude Include="particle_manager.h">
       <Filter>04_Object\Object3D\particle</Filter>
     </ClInclude>
-    <ClInclude Include="parts.h">
-      <Filter>04_Object\ObjectX</Filter>
-    </ClInclude>
     <ClInclude Include="pc.h">
       <Filter>04_Object\MoveObject\Character\Player</Filter>
     </ClInclude>
@@ -404,7 +416,7 @@
       <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
     </ClInclude>
     <ClInclude Include="drop_weapon.h">
-      <Filter>04_Object\MoveObject\weapon</Filter>
+      <Filter>04_Object\ObjectX\drop</Filter>
     </ClInclude>
     <ClInclude Include="player_ui.h">
       <Filter>04_Object\Object2D\PlayerUi</Filter>
@@ -426,6 +438,24 @@
     </ClInclude>
     <ClInclude Include="homing_bullet.h">
       <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="parts.h">
+      <Filter>04_Object\ObjectX\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="weapon.h">
+      <Filter>04_Object\ObjectX\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="drop_manager.h">
+      <Filter>04_Object\ObjectX\drop</Filter>
+    </ClInclude>
+    <ClInclude Include="diffusion_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="parabola_bullet.h">
+      <Filter>04_Object\MoveObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="explosion.h">
+      <Filter>04_Object\MoveObject\Explosion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -489,9 +519,6 @@
     <Filter Include="04_Object\Object2D\Number">
       <UniqueIdentifier>{74e1f057-b736-4c8f-997c-2d4e43ed6b99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04_Object\MoveObject\weapon">
-      <UniqueIdentifier>{0a9cf788-7d61-40d4-8c65-6b0c52f9f0c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04_Object\Object2D\PlayerUi">
       <UniqueIdentifier>{2f8f74e8-3596-46d5-8e5c-f3b06d58c47f}</UniqueIdentifier>
     </Filter>
@@ -500,6 +527,15 @@
     </Filter>
     <Filter Include="04_Object\Object2D\Gauge">
       <UniqueIdentifier>{acf97077-0ce9-4613-9250-9523643d88b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\ObjectX\Parts">
+      <UniqueIdentifier>{d6751d27-19da-4b74-a05c-4d36f47a2749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\ObjectX\drop">
+      <UniqueIdentifier>{0a9cf788-7d61-40d4-8c65-6b0c52f9f0c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\MoveObject\Explosion">
+      <UniqueIdentifier>{f9a1ea85-006c-4cef-97a0-0af6586c1ac5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

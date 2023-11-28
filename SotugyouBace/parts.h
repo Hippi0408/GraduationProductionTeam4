@@ -22,15 +22,6 @@ class CCharacter;
 //---------------------------
 class CParts : public CObject
 {
-	//// モデルセット
-	//struct MODEL_SET
-	//{
-	//	D3DXVECTOR3 InitPos;	// 初期位置
-	//	D3DXVECTOR3 InitRot;	// 初期回転
-	//	CObjectX* pModel;		// モデル
-	//	bool bParentIndex;		// 親モデルの判定
-	//};
-
 public:
 
 	CParts(const CObject::PRIORITY priority = CObject::PRIORITY_MODEL);
@@ -58,7 +49,7 @@ public:
 	void SetParts(const int partsIndex);
 	void SetParent(CCharacter* parent) { m_pParent = parent; }
 	void SetModelParent(CObjectX* parts, const bool parent = false);
-	//void ChangeParts(const int index);
+	void SetMotionName(const std::string name) { m_sMotionName = name; }
 
 	const bool GetMotionStop() { return m_bMotionStop; }	// 現在モーションの終了判定を読み込む
 	const int GetMotion() { return m_nMotion; }
@@ -66,11 +57,10 @@ public:
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
-	//MODEL_SET GetModelSet(const int index) { return m_ModelSet[index]; }
 	CObjectX* GetModel(const int index) { return m_vpModel[index]; }
 	std::vector<CObjectX*> GetModelAll() { return m_vpModel; }	// 全てのモデルの取得処理
 
-	static CParts* Create(const D3DXVECTOR3 pos, const int partsIndex, CCharacter* parent = nullptr);
+	static CParts* Create(const D3DXVECTOR3 pos, const int partsIndex, CMotion::MOTION motion, CCharacter* parent = nullptr);
 
 private:
 	int m_nPartsIndex;					// 自身の番号
@@ -91,8 +81,8 @@ private:
 
 	float m_fRotSpeed;					// 回転のスピード
 
+	std::string m_sMotionName;			// パーツのモーション名
 	std::vector<CObjectX*> m_vpModel;	// モデル
-	//std::vector<MODEL_SET> m_ModelSet;	// キャラクターのモデル情報
 
 	CCharacter* m_pParent;				// 自身の親キャラのポインタ
 };

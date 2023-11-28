@@ -25,7 +25,8 @@ public: /* 定義 */
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_BULLET,				// 弾
 		TEXTURE_FLOOR,				// 地面
-		TEXTURE_CIRCLE,				// 丸
+		TEXTURE_RETICLE,			// レティクル
+		TEXTURE_CIRCLE,				// 円
 		TEXTURE_UI,					// UI
 
 		/* エフェクト群 */
@@ -39,6 +40,7 @@ public: /* 定義 */
 		TEXTURE_EFFECT_JEWEL,
 		TEXTURE_EFFECT_SOUL,
 		TEXTURE_EFFECT_UP,
+		TEXTURE_EFFECT_RETICLE,
 
 		TEXTURE_MAX,
 		TEXTURE_NONE

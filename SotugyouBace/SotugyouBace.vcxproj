@@ -34,10 +34,12 @@
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
     <ClCompile Include="DirectInput.cpp" />
+    <ClCompile Include="drop_manager.cpp" />
     <ClCompile Include="drop_weapon.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemy_manager.cpp" />
     <ClCompile Include="energy_gauge.cpp" />
+    <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="fontString.cpp" />
@@ -67,6 +69,7 @@
     <ClCompile Include="object2D.cpp" />
     <ClCompile Include="object3D.cpp" />
     <ClCompile Include="objectX.cpp" />
+    <ClCompile Include="parabola_bullet.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particle_emitter.cpp" />
     <ClCompile Include="particle_manager.cpp" />
@@ -89,6 +92,7 @@
     <ClCompile Include="title_menu.cpp" />
     <ClCompile Include="trail.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -106,10 +110,12 @@
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
     <ClInclude Include="DirectInput.h" />
+    <ClInclude Include="drop_manager.h" />
     <ClInclude Include="drop_weapon.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemy_manager.h" />
     <ClInclude Include="energy_gauge.h" />
+    <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="fontString.h" />
@@ -140,6 +146,7 @@
     <ClInclude Include="object2D.h" />
     <ClInclude Include="object3D.h" />
     <ClInclude Include="objectX.h" />
+    <ClInclude Include="parabola_bullet.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="particle_manager.h" />
@@ -163,6 +170,7 @@
     <ClInclude Include="trail.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="utility.h" />
+    <ClInclude Include="weapon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33988321-C2B8-45BE-9836-B21C2E84733F}</ProjectGuid>

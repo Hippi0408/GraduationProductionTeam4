@@ -20,6 +20,20 @@
 class CMotion
 {
 public:
+	// モーションの情報
+	enum MOTION
+	{
+		MOTION_PLAYER_BODY = 0,	// 体パーツ
+		MOTION_PLAYER_ARMS,		// 腕パーツ
+		MOTION_PLAYER_LEG,		// 脚パーツ
+
+		MOTION_MOB,				// モブパーツ
+
+		MOTION_BOSS,			// ボスパーツ
+
+		MOTION_MAX
+	};
+	static const char* m_cMotionFileName[MOTION_MAX];		// ファイル名
 
 	// キーの情報
 	struct KEY
@@ -54,7 +68,11 @@ public:
 
 	void ReleaseAll();							// 全てのモーションの破棄処理
 
+	void LoadFile(const char* Xfilename);
+	void LoadAllFile();							// 全てのモデルパーツの読み込み
+
 private:
+
 	std::map<std::string, std::vector <MotionPattern>> m_MotionPatternData;	// モーションのデータ(自身のモーション名, モーションの番号)
 	std::vector<std::string> m_UseFileName;									// 使用中ファイルのモーション名
 };

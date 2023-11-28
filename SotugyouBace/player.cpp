@@ -10,15 +10,20 @@
 #include "bullet.h"
 #include "normal_bullet.h"
 #include "homing_bullet.h"
+#include "diffusion_bullet.h"
+#include "parabola_bullet.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
+#include "drop_manager.h"
 #include "game.h"
-#include "energy_gauge.h"
 #include "tutorial.h"
+#include "energy_gauge.h"
 #include "camera.h"
 #include <vector>
 #include"debugProc.h"
 #include"object3D.h"
+#include "drop_weapon.h"
+#include "weapon.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
@@ -41,8 +46,7 @@ CPlayer::CPlayer()
 //=====================================
 CPlayer::~CPlayer()
 {
-	// プレイヤーマネージャーの自身を削除
-	CApplication::GetPlayerManager()->PlayerRelease(m_nCharaIndex);
+
 }
 
 //============================================================================
@@ -51,9 +55,10 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1);
-	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1);
-	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1);
+	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1, CMotion::MOTION_PLAYER_BODY);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1, CMotion::MOTION_PLAYER_ARMS);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1, CMotion::MOTION_PLAYER_LEG);
+	SetWeapon(CWeapon::WEAPON_NONE);
 
 	// タグの設定
 	SetTag(TAG_CHARACTER);
@@ -62,10 +67,12 @@ HRESULT CPlayer::Init()
 	SetPlayerSide(true);
 
 	// 当たり判定の生成
-	SetCollision({ 0.0f, 1.0f, 1.0f, 1.0f });
+	SetCollision();
 
 	m_bTarget = false;
 	m_bReticle_Reset = true;
+	m_bDrop_Contact = false;
+	m_bDrop_Get = false;
 	m_Reticle_Size = { RETICLE_TRANSPARENCY_SIZE,RETICLE_TRANSPARENCY_SIZE };
 	m_fReticle_Alpha = 0.0f;
 
@@ -79,14 +86,46 @@ HRESULT CPlayer::Init()
 //============================================================================
 void CPlayer::Uninit()
 {
-	if (m_pEnergy_Gauge != nullptr)
+	// 右手武器の終了
+	if(m_pRightWeapon != nullptr)
 	{
-		// エネルギーゲージの破棄
-		m_pEnergy_Gauge->Uninit();
-		m_pEnergy_Gauge = nullptr;
+		m_pRightWeapon->Uninit();
+		m_pRightWeapon = nullptr;
+	}
+	// 左手武器の終了
+	if (m_pLeftWeapon != nullptr)
+	{
+		m_pLeftWeapon->Uninit();
+		m_pLeftWeapon = nullptr;
 	}
 
-	CCharacter::Uninit();
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CPlayerManager* pPlayerManager = nullptr;
+
+	// プレイヤーマネージャーの自身を削除
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pPlayerManager = CTutorial::GetPlayerManager();
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pPlayerManager = CGame::GetPlayerManager();
+	}
+	if (pPlayerManager != nullptr)
+	{
+		pPlayerManager->PlayerRelease(m_nCharaIndex);
+
+		if (m_pEnergy_Gauge != nullptr)
+		{
+			// エネルギーゲージの破棄
+			m_pEnergy_Gauge->Uninit();
+			m_pEnergy_Gauge = nullptr;
+		}
+
+		CCharacter::Uninit();
+	}
 }
 
 //============================================================================
@@ -96,6 +135,9 @@ void CPlayer::Update()
 {
 	// ターゲット
 	Target();
+
+	// 落ちてる武器の当たり判定
+	CollisionDropWeapon();
 
 	// モーション番号の設定
 	ChangeMotion();
@@ -143,8 +185,10 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 
 	// 弾の生成
-	CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_nEnemy_Count, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
-	//CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, m_nEnemy_Count, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
+	/*CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
+	CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
+	CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);*/
+	CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
 }
 
 //============================================================================
@@ -205,11 +249,23 @@ void CPlayer::Landing(const D3DXVECTOR3 pos)
 //============================================================================
 void CPlayer::Hit(CMove_Object* pHit)
 {
-	// 自身ではない 且つ プレイヤー側ではない場合
-	if (pHit != nullptr && GetPlayerSide() != pHit->GetPlayerSide())
-	{
-		TAG tag = pHit->GetTag();
+	TAG tag = pHit->GetTag();
 
+	// 自身の情報
+	const D3DXVECTOR3 Pos = GetPos();
+
+	// 相手の情報
+	const D3DXVECTOR3 AtherPos = pHit->GetPos();
+
+	// 自身と相手の距離
+	const D3DXVECTOR3 VecPos = AtherPos - Pos;
+
+	// 落ちてるパーツとの距離
+	const float fDistanceNear = sqrtf(VecPos.x * VecPos.x + VecPos.z * VecPos.z);
+
+	// 相手が敵だった場合
+	if (GetPlayerSide() != pHit->GetPlayerSide())
+	{
 		switch (tag)
 		{
 		case TAG_CHARACTER:
@@ -218,6 +274,9 @@ void CPlayer::Hit(CMove_Object* pHit)
 			// 弾のダメージを返す
 			Damage(pHit->GetPower());
 			break;
+		case TAG_EXPLOSION:
+			// 爆発のダメージを返す
+			Damage(pHit->GetPower());
 		default:
 			break;
 		}
@@ -242,10 +301,25 @@ void CPlayer::Target()
 	m_nEnemy_Count = 0;
 	int nCnt = 0;
 
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CEnemyManager* pEnemyManager = nullptr;
+
+	// モード毎に敵キャラを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pEnemyManager = CTutorial::GetEnemyManager();
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pEnemyManager = CGame::GetEnemyManager();
+	}
+
 	while (true)
 	{
 		// 雑魚敵の情報
-		for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+		for (auto pEnemy : pEnemyManager->GetAllEnemy())
 		{
 			nCnt++;
 
@@ -278,6 +352,9 @@ void CPlayer::Target()
 
 					// 画面に映っている時だけターゲットする
 					bScreen = Target_Scope(m_NearMob_Pos);
+
+					// 敵の情報
+					m_pEnemy = pEnemy;
 				}
 			}
 		}
@@ -302,7 +379,7 @@ void CPlayer::Target()
 		BulletVec = m_NearMob_Pos - GetPos();
 
 		// ターゲットした敵の方向
-		float Angle = atan2(BulletVec.x, BulletVec.z);
+		m_fAngle = atan2(BulletVec.x, BulletVec.z);
 		float AngleY = 0.0f;
 
 		// プレイヤーから敵の直線距離
@@ -312,7 +389,7 @@ void CPlayer::Target()
 		AngleY = sinf(BulletVec.y / m_fHypotenuse);
 
 		// 目的の角度の設定
-		CCharacter::SetBulletRot({ AngleY,Angle + D3DX_PI,0.0f });
+		CCharacter::SetBulletRot({ AngleY,m_fAngle + D3DX_PI,0.0f });
 	}
 	else
 	{// ターゲットがいない場合は正面に弾を撃つ
@@ -433,13 +510,16 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 		m_Reticle_Pos = target;
 
 	// 拡大縮小の速度
-	float Size_Speed = 7;
+	float Size_Speed = 10;
 	// アルファ値の加算減算の速度
 	float Alpha_Speed = 1 / ((RETICLE_TRANSPARENCY_SIZE - RETICLE_SIZE) / Size_Speed);
 
 	// レティクルの生成
 	if (m_pReticle == nullptr && m_bReticle_Draw)
+	{
 		m_pReticle = CObject3D::Create({ m_Reticle_Pos }, { m_Reticle_Size }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,m_fReticle_Alpha }, true);
+		m_pReticle->SetTexture(CTexture::TEXTURE_RETICLE);
+	}
 
 	if (m_pReticle != nullptr)
 	{
@@ -479,5 +559,165 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 		// サイズと色の設定
 		m_pReticle->SetSize({ m_Reticle_Size });
 		m_pReticle->SetCol({ 1.0f,1.0f,1.0f,m_fReticle_Alpha });
+		m_pReticle->SetTexture(CTexture::TEXTURE_EFFECT_RETICLE);
 	}
+}
+
+//============================================================================
+// 落とし物を入手する処理
+//============================================================================
+void CPlayer::DropGet(CDrop_Weapon* pDrop)
+{
+	// プレイヤー用パーツの情報
+	CPlayer::PARTS Parts = pDrop->GetPartsType();
+
+	// 武器の情報
+	const int nWeapon = pDrop->GetWeaponType();
+
+	// 武器パーツではない場合
+	if (Parts != PARTS_WEAPON)
+	{
+		int nPartsFileIndex = 0;	// パーツの番号
+
+		// パーツファイルの最低値を設定
+		switch (Parts)
+		{
+		case CPlayer::PARTS_BODY:
+			nPartsFileIndex = CParts_File::PARTS_PLAYER_BODY_1;
+			break;
+		case CPlayer::PARTS_ARMS:
+			nPartsFileIndex = CParts_File::PARTS_PLAYER_ARMS_1;
+			break;
+		case CPlayer::PARTS_LEG:
+			nPartsFileIndex = CParts_File::PARTS_PLAYER_LEG_1;
+			break;
+		default:
+			break;
+		}
+
+		int nWeaponIndex = 0;	// 武器の番号
+
+		// パーツの最低値を設定
+		if (nWeapon >= CDrop_Weapon::LEG_SG01)
+		{
+			nWeaponIndex = CDrop_Weapon::LEG_SG01;
+		}
+		else if (nWeapon >= CDrop_Weapon::ARMS_SG01)
+		{
+			nWeaponIndex = CDrop_Weapon::ARMS_SG01;
+		}
+		//else if (nWeapon >= CDrop_Weapon::BODY_SG01)
+		//{
+		//	nWeaponIndex = CParts_File::PARTS_PLAYER_BODY_1;
+		//}
+
+		// パーツの番号(パーツファイルの番号 + パーツの番号(パーツそのままの番号 - パーツの最低値))
+		int nPartsIndex = nPartsFileIndex + (nWeapon - nWeaponIndex);
+
+		// 指定したパーツの、パーツ変更処理
+		GetParts(Parts)->SetParts(nPartsIndex);
+	}
+	// 武器パーツの場合
+	else
+	{
+		// 武器パーツの変更処理
+		ChangeWeapon(nWeapon - CDrop_Weapon::WEAPON_NONE);
+	}
+
+	// 落とし物の終了処理
+	pDrop->Uninit();
+}
+
+//============================================================================
+// 落ちてる武器の当たり判定
+//============================================================================
+void CPlayer::CollisionDropWeapon()
+{
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CDropManager* pManager = nullptr;
+
+	// モード毎に落とし物を読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pManager = CTutorial::GetDropManager();
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pManager = CGame::GetDropManager();
+	}
+
+	// 自身の情報
+	const D3DXVECTOR3 pos = GetPos();
+	const float fRadius = GetRadius();
+
+	CDrop_Weapon* pNearDrop = nullptr;	// 最も距離が近い落とし物
+	float fNearDistance = 0.0f;			// 最も近い距離
+
+	// 全ての落とし物を読み込む
+	for (auto pDrop : pManager->GetAllDrop())
+	{
+		// プレイヤーから落ちてるパーツの距離
+		D3DXVECTOR3 Vec = pDrop->GetPos() - pos;
+
+		// 距離の算出
+		float fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
+
+		// 最短距離が更新された場合
+		if (fNearDistance > fDistance)
+		{
+			fNearDistance = fDistance;
+			pNearDrop = pDrop;
+		}
+		// 距離が格納されていない場合 且つ 円と円の当たり判定の中にいる場合
+		else if(fNearDistance == 0.0f && fRadius + CDrop_Weapon::PARTS_COLLISION_RADIUS >= fDistance)
+		{
+			fNearDistance = fDistance;
+			pNearDrop = pDrop;
+		}
+	}
+
+	// 接触している落とし物が存在する場合
+	m_bDrop_Contact = pNearDrop != nullptr;
+
+	// 落とし物と接触している場合
+	if (m_bDrop_Contact == true)
+	{
+		// ピックアップ状態を返す
+		pNearDrop->SetPick_Up(true);
+
+		// 落とし物を入手する場合
+		if (m_bDrop_Get == true)
+		{
+			// 落とし物を入手する処理
+			DropGet(pNearDrop);
+		}
+	}
+	// 落とし物を入手する判定のリセット
+	m_bDrop_Get = false;
+}
+
+//============================================================================
+// 武器の変更
+//============================================================================
+void CPlayer::ChangeWeapon(const int weapon)
+{
+	// 右手(腕[3])に武器を変更
+	m_pRightWeapon->ChangeWeapon(weapon);
+
+	// 左手(腕[6])に素手を設定
+	m_pLeftWeapon->ChangeWeapon(CWeapon::WEAPON_NONE);
+}
+
+//============================================================================
+// 武器の設定
+//============================================================================
+void CPlayer::SetWeapon(const int weapon)
+{
+	// 右手(腕[3])に武器を設定
+	m_pRightWeapon = CWeapon::Create({0.0f, 0.0f, 0.0f}, (CWeapon::WEAPON_TYPE)weapon, GetParts(PARTS_ARMS)->GetModel(3));
+
+	// 左手(腕[6])に素手を設定
+	m_pLeftWeapon = CWeapon::Create({ 0.0f, 0.0f, 0.0f }, CWeapon::WEAPON_NONE, GetParts(PARTS_ARMS)->GetModel(6));
 }

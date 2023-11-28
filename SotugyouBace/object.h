@@ -42,6 +42,8 @@ public:
 	void Release() { m_bDeath = true; }	// Ž€–Sƒtƒ‰ƒO‚ðŒš‚Ä‚é
 	void Death(const int nPriority);
 
+	bool Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius);	// ‰~‚Ì“–‚½‚è”»’è
+
 	CObject* GetNext() { return m_pNext; }
 	static CObject* GetTop(const int Pri) { return m_pTop[Pri]; }
 	bool GetDeathFlag() { return m_bDeath; }

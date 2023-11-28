@@ -299,12 +299,12 @@ void CCharacter::NormalizeRot()
 //==============================================================================================
 // パーツの設定処理
 //==============================================================================================
-void CCharacter::SetParts(const int charaParts, const int partsIndex)
+void CCharacter::SetParts(const int charaParts, const int partsIndex, CMotion::MOTION motion)
 {
 	// パーツが未使用の場合
 	if (m_Parts[charaParts] == nullptr)
 	{
-		m_Parts[charaParts] = CParts::Create(GetPos(), partsIndex, this);
+		m_Parts[charaParts] = CParts::Create(GetPos(), partsIndex, motion, this);
 	}
 	//else
 	//{
@@ -315,4 +315,3 @@ void CCharacter::SetParts(const int charaParts, const int partsIndex)
 	//	}
 	//}
 }
-

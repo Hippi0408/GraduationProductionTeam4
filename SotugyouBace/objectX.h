@@ -35,6 +35,7 @@ public:
 	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void AddPos(const D3DXVECTOR3 pos) { m_pos += pos; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
+	void AddRot(const D3DXVECTOR3 rot) { m_rot += rot; }
 	void SetSize(const D3DXVECTOR3 size) { m_size = size; }
 	void SetParent(CObjectX* pModel) { m_pParent = pModel; }
 	void SetModel(const int index);

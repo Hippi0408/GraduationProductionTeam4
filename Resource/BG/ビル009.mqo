@@ -2,13 +2,13 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos 0.0000 0.0000 9830.4004
+	pos 0.0000 0.0000 6144.0000
 	lookat 0.0000 0.0000 0.0000
-	head -2.0936
-	pich 0.1236
+	head -4.8336
+	pich 0.1036
 	bank 0.0000
 	ortho 0
-	zoom2 0.7629
+	zoom2 1.2206
 	amb 0.250 0.250 0.250
 	dirlights 1 {
 		light {
@@ -18,7 +18,7 @@ Scene {
 	}
 }
 Material 2 {
-	"mat1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Documents\gamedata\ë≤ã∆êßçÏ\GraduationProductionTeam4\Resource\BG\texture\bill008.jpg")
+	"mat1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("texture\bill008.jpg")
 	"mat2" col(0.725 0.725 0.725 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 }
 Object "obj1" {

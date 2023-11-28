@@ -11,6 +11,7 @@
 #include "main.h"
 #include "renderer.h"
 #include "application.h"
+#include "tutorial.h"
 #include "game.h"
 #include "camera.h"
 #include "object.h"
@@ -156,8 +157,18 @@ void CRenderer::Update()
 		// オブジェクトの更新処理
 		CObject::UpdateAll();
 
+		// 現在のモード
+		CApplication::MODE Mode = CApplication::GetModeType();
+
 		// 当たり判定の更新処理
-		CApplication::GetCollision_Manager()->UpdateAll();
+		if (Mode == CApplication::MODE_TUTORIAL)
+		{
+			CTutorial::GetCollision_Manager()->UpdateAll();
+		}
+		else if (Mode == CApplication::MODE_GAME)
+		{
+			CGame::GetCollision_Manager()->UpdateAll();
+		}
 	}
 }
 

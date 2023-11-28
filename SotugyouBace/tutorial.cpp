@@ -7,7 +7,10 @@
 #include"tutorial.h"
 #include"camera.h"
 #include"application.h"
-#include"player_manager.h"
+#include "player_manager.h"
+#include "enemy_manager.h"
+#include "drop_manager.h"
+#include "collision_manager.h"
 #include"halfsphere.h"
 #include"meshfield.h"
 #include"energy_gauge.h"
@@ -16,7 +19,12 @@
 #include"fontString.h"
 #include"pause.h"
 #include "parts_file.h"
+#include "motion.h"
 
+CPlayerManager* CTutorial::m_pPlayerManager = nullptr;
+CEnemyManager* CTutorial::m_pEnemyManager = nullptr;
+CDropManager* CTutorial::m_pDropManager = nullptr;
+CCollision_Manager* CTutorial::m_pCollision_Manager = nullptr;
 CMeshField *CTutorial::pMeshField = nullptr;			// メッシュフィールド
 CPause *CTutorial::m_pPause = nullptr;
 
@@ -51,8 +59,21 @@ HRESULT CTutorial::Init()
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
 
+	// 全てのモデルパーツの読み込み
+	CApplication::GetMotion()->LoadAllFile();
+
+	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
+	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
+	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
+	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
+
+	// 全てのモデルパーツの読み込み
+	CDrop_Weapon* pWeaponDummer = new CDrop_Weapon;
+	pWeaponDummer->LoadAllFile();
+	pWeaponDummer->Uninit();
+
 	// プレイヤーの生成(テスト)
-	CApplication::GetPlayerManager()->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ハーフスフィアの生成
 	CHalfSphere *pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20000.0f, 20000.0f, 20000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
@@ -72,7 +93,36 @@ HRESULT CTutorial::Init()
 //==============================================================================================
 void CTutorial::Uninit()
 {
+	// プレイヤーマネージャーの破棄
+	if (m_pPlayerManager != nullptr)
+	{
+		m_pPlayerManager->Uninit();
+		delete m_pPlayerManager;
+		m_pPlayerManager = nullptr;
+	}
 
+	// 敵キャラマネージャーの破棄
+	if (m_pEnemyManager != nullptr)
+	{
+		delete m_pEnemyManager;
+		m_pEnemyManager = nullptr;
+	}
+
+	// 落とし物マネージャーの破棄
+	if (m_pDropManager != nullptr)
+	{
+		delete m_pDropManager;
+		m_pDropManager = nullptr;
+	}
+
+	// コリジョンマネージャーの破棄
+	if (m_pCollision_Manager != nullptr)
+	{
+		// 全ての当たり判定の解放処理
+		m_pCollision_Manager->ReleaseAllCollision();
+		delete m_pCollision_Manager;
+		m_pCollision_Manager = nullptr;
+	}
 }
 
 //==============================================================================================

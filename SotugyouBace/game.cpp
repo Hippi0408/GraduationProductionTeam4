@@ -12,6 +12,8 @@
 #include "fontString.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
+#include "drop_manager.h"
+#include "collision_manager.h"
 #include "mob.h"
 #include "boss.h"
 #include "score.h"
@@ -30,16 +32,20 @@
 #include"debugProc.h"
 #include"pause.h"
 #include "parts_file.h"
+#include "motion.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
 //==============================================================================================
 CConfirmation_Window* CGame::m_pConfirmationWindow = nullptr;
+CPlayerManager* CGame::m_pPlayerManager = nullptr;
+CEnemyManager* CGame::m_pEnemyManager = nullptr;
+CDropManager* CGame::m_pDropManager = nullptr;
+CCollision_Manager* CGame::m_pCollision_Manager = nullptr;
 CMeshField *CGame::m_pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
-CPlayerManager* CGame::m_pPlayer_Manager = nullptr;
 CPause *CGame::m_pPause = nullptr;
 
 //==============================================================================================
@@ -72,9 +78,21 @@ HRESULT CGame::Init()
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
 
+	// 全てのモデルパーツの読み込み
+	CApplication::GetMotion()->LoadAllFile();
+
+	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
+	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
+	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
+	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
+
+	// 全てのモデルパーツの読み込み
+	CDrop_Weapon* pWeaponDummer = new CDrop_Weapon;
+	pWeaponDummer->LoadAllFile();
+	pWeaponDummer->Uninit();
+
 	// プレイヤーの生成(テスト)
-	m_pPlayer_Manager = CApplication::GetPlayerManager();
-	m_pPlayer_Manager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
@@ -117,6 +135,37 @@ HRESULT CGame::Init()
 //==============================================================================================
 void CGame::Uninit()
 {
+	// プレイヤーマネージャーの破棄
+	if (m_pPlayerManager != nullptr)
+	{
+		m_pPlayerManager->Uninit();
+		delete m_pPlayerManager;
+		m_pPlayerManager = nullptr;
+	}
+
+	// 敵キャラマネージャーの破棄
+	if (m_pEnemyManager != nullptr)
+	{
+		delete m_pEnemyManager;
+		m_pEnemyManager = nullptr;
+	}
+
+	// 落とし物マネージャーの破棄
+	if (m_pDropManager != nullptr)
+	{
+		delete m_pDropManager;
+		m_pDropManager = nullptr;
+	}
+
+	// コリジョンマネージャーの破棄
+	if (m_pCollision_Manager != nullptr)
+	{
+		// 全ての当たり判定の解放処理
+		m_pCollision_Manager->ReleaseAllCollision();
+		delete m_pCollision_Manager;
+		m_pCollision_Manager = nullptr;
+	}
+
 	// タイマーの終了処理
 	if (m_pTime != nullptr)
 	{
@@ -192,13 +241,12 @@ void CGame::Update()
 
 			if (nKey >= 0)
 			{
-				CPlayerManager* pPlayerManager = CApplication::GetPlayerManager();
-				CPlayer* pPlayer = pPlayerManager->GetPlayer(nKey);
+				CPlayer* pPlayer = m_pPlayerManager->GetPlayer(nKey);
 
 				if (pPlayer == nullptr)
 				{
 					// プレイヤーの生成
-					pPlayerManager->SetPlayer({ -300.0f + (200.0f * nKey), 0.0f, 0.0f }, CPlayerManager::TYPE_PC, nKey);
+					m_pPlayerManager->SetPlayer({ -300.0f + (200.0f * nKey), 0.0f, 0.0f }, CPlayerManager::TYPE_PC, nKey);
 				}
 				else
 				{
@@ -241,7 +289,7 @@ void CGame::Update()
 
 				if (nKey >= 0)
 				{
-					CPlayer* pPlayer = CApplication::GetPlayerManager()->GetPlayer(0);
+					CPlayer* pPlayer = m_pPlayerManager->GetPlayer(0);
 					pPlayer->GetParts(CPlayer::PARTS_BODY)->SetParts(CParts_File::PARTS_PLAYER_BODY_1 + nKey);
 				}
 			}
@@ -249,11 +297,16 @@ void CGame::Update()
 			// スコアの加算
 			if (pInput->Trigger(DIK_0))
 			{
-				for (auto pEnemy : CApplication::GetEnemyManager()->GetAllEnemy())
+				for (auto pEnemy : m_pEnemyManager->GetAllEnemy())
 				{
 					// 50ダメージ
 					pEnemy->Damage(50);
 				}
+			}
+
+			if (pInput->Trigger(DIK_1))
+			{
+				CLocus::Create(D3DXVECTOR3(0.0f,200.0f,0.0f),1000.0f,10);
 			}
 		}
 #endif
@@ -349,21 +402,15 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand)
 		// タイプ
 		nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
 
-		while (CDrop_Weapon::WEAPON_MAX == nRandType || CDrop_Weapon::BODY_MAX == nRandType
-			|| CDrop_Weapon::HIP_MAX == nRandType || CDrop_Weapon::HEAD_MAX == nRandType
-			|| CDrop_Weapon::RIGHT_UPPER_ARM_MAX == nRandType || CDrop_Weapon::RIGHT_FOREARM_MAX == nRandType
-			|| CDrop_Weapon::RIGHT_ARM_MAX == nRandType || CDrop_Weapon::LEFT_UPPER_ARM_MAX == nRandType
-			|| CDrop_Weapon::LEFT_FOREARM_MAX == nRandType || CDrop_Weapon::LEFT_ARM_MAX == nRandType
-			|| CDrop_Weapon::RIGHT_THIGH_MAX == nRandType || CDrop_Weapon::RIGHT_SHIN_MAX == nRandType
-			|| CDrop_Weapon::RIGHT_LEG_MAX == nRandType || CDrop_Weapon::LEFT_THIGH_MAX == nRandType
-			|| CDrop_Weapon::LEFT_SHIN_MAX == nRandType || CDrop_Weapon::LEFT_LEG_MAX == nRandType)
+		while (CDrop_Weapon::ARMS_MAX == nRandType || CDrop_Weapon::LEG_MAX == nRandType
+			|| CDrop_Weapon::WEAPON_NONE == nRandType || CDrop_Weapon::WEAPON_MAX == nRandType)
 		{
 			// タイプ
 			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
 		}
 
 		// 生成
-		CDrop_Weapon::Creat(Pos, nRandType);
+		CDrop_Weapon::Create(Pos, nRandType);
 	}
 }
 

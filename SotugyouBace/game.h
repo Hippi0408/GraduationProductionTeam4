@@ -12,6 +12,10 @@
 #include <vector>
 
 // 前方宣言
+class CPlayerManager;
+class CEnemyManager;
+class CDropManager;
+class CCollision_Manager;
 class CTime;
 class CHalfSphere;
 class CMeshField;
@@ -20,7 +24,6 @@ class CCollision;
 class CFontString;
 class CMenuWindow;
 class CConfirmation_Window;
-class CPlayerManager;
 class CEnergy_Gauge;
 class CPlayerUi;
 class CPause;
@@ -49,8 +52,11 @@ public:
 	static const bool GetGameEnd() { return m_bGameEnd; }
 	static void SetGameWindow(bool flag) { m_bGameWindow = flag; }
 	static const bool GetGameWindow() { return m_bGameWindow; }
+	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
+	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
+	static CDropManager* GetDropManager() { return m_pDropManager; }
+	static CCollision_Manager* GetCollision_Manager() { return m_pCollision_Manager; }
 	static CMeshField *GetMeshField() { return m_pMeshField; }
-	static CPlayerManager* GetPlayerManager() { return m_pPlayer_Manager; }
 	static CConfirmation_Window* GetConfirmationWindow() { return m_pConfirmationWindow; }
 	static CPause *GetPause() { return m_pPause; }
 
@@ -65,12 +71,15 @@ private:
 	CPlayerUi* m_pPlayerUI;
 	
 	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ
+	static CPlayerManager* m_pPlayerManager;
+	static CEnemyManager* m_pEnemyManager;
+	static CDropManager* m_pDropManager;
+	static CCollision_Manager* m_pCollision_Manager;
 	static CMeshField *m_pMeshField;				// メッシュフィールド
 	static CEnergy_Gauge* m_pEnergy_Gauge;			// エネルギーゲージ
 	static CFontString* m_pFinishRogo;				// 終了ロゴ 
 	static CPause *m_pPause;
 
-	static CPlayerManager *m_pPlayer_Manager;	// プレイヤーマネージャー
 };
 
 #endif // !_GAME_H_
