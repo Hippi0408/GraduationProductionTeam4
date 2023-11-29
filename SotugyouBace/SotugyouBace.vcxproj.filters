@@ -226,13 +226,13 @@
     <ClCompile Include="smoke_explosion.cpp">
       <Filter>04_Object\MoveObject\Explosion</Filter>
     </ClCompile>
-    <ClCompile Include="move_object.cpp">
-      <Filter>04_Object\MoveObject\Explosion</Filter>
-    </ClCompile>
     <ClCompile Include="map.cpp">
       <Filter>02_Resource</Filter>
     </ClCompile>
     <ClCompile Include="map_object.cpp">
+      <Filter>04_Object\MoveObject</Filter>
+    </ClCompile>
+    <ClCompile Include="move_object.cpp">
       <Filter>04_Object\MoveObject</Filter>
     </ClCompile>
   </ItemGroup>
