@@ -19,14 +19,15 @@
 //==============================================================================================
 const char* CTexture::s_FileName[] =
 {// テクスチャのパス
-	"Data/texture/Font/Font_Japanese002.png",			// 日本語フォント
-	"Data/texture/Font/Font_Japanese003.png",	// 日本語フォント
-	"Data/texture/Font/Font_Alphabet.png",				// アルファベットフォントフォント
+	"Data/texture/Font/Font_Japanese002.png",		// 日本語フォント
+	"Data/texture/Font/Font_Japanese003.png",		// 日本語フォント
+	"Data/texture/Font/Font_Alphabet.png",			// アルファベットフォントフォント
 	"Data/texture/number.png",						// ナンバーのテクスチャ
 	"Data/texture/bullet000.png",					// 弾のテクスチャ
 	"Data/texture/floor.png",						// 地面のテクスチャ
 	"Data/texture/reticle.png",						// レティクルのテクスチャ
 	"Data/texture/circle.png",						// 円のテクスチャ
+	"Data/texture/ItemPointer.png",					// アイテムポインターのテクスチャ
 	"Data/texture/UI_00.png",						// UIのテクスチャ
 
 	/* エフェクト群 */

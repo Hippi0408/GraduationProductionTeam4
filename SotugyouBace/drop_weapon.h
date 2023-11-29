@@ -55,6 +55,7 @@ public:
 	void Update() override;
 	void Draw() override;
 
+	void ItemPointerMove();		// アイテムポインターの移動処理
 	void Pick_Up_Weapon();		// 武器を拾う
 	void Parts_Type();			// パーツの部位の設定
 	void FieldCollision();		// 床との当たり判定
@@ -73,6 +74,7 @@ private:
 
 	D3DXVECTOR3 m_CenterPos;	// 中心位置
 	int m_nWeapon_Type;			// 武器のタイプ
+	CObject3D *m_pPointer;		// アイテムポインターの表示
 	CObject3D *m_pPick_Up;		// 拾う時の表示
 	float m_fMove;				// 落下速度
 	bool m_bPick_Up;			// 拾える範囲にいるか
