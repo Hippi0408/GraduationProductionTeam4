@@ -217,6 +217,12 @@
     <ClCompile Include="explosion.cpp">
       <Filter>04_Object\MoveObject\Explosion</Filter>
     </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>02_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="map_object.cpp">
+      <Filter>04_Object\MoveObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -438,6 +444,12 @@
     </ClInclude>
     <ClInclude Include="explosion.h">
       <Filter>04_Object\MoveObject\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>02_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="map_object.h">
+      <Filter>04_Object\MoveObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

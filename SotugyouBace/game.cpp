@@ -32,6 +32,7 @@
 #include"pause.h"
 #include "parts_file.h"
 #include "motion.h"
+#include "map.h"
 
 CPlayerManager* CGame::m_pPlayerManager = nullptr;
 CEnemyManager* CGame::m_pEnemyManager = nullptr;
@@ -119,6 +120,9 @@ HRESULT CGame::Init()
 	m_pPause = CPause::Create();
 
 	m_nEndCounter = 0;
+
+	// É}ÉbÉvê∂ê¨
+	CMap::ReadMap("Data/text/map.txt");
 
 	return S_OK;
 }

@@ -14,21 +14,21 @@ NUM_MODEL = 15
 #------------------------------------------------------------------------------
 # 読み込むモデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
-MODEL_FILENAME = data/Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
 
 #------------------------------------------------------------------------------
 # 表示するモデルの配置情報
