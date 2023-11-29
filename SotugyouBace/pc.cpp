@@ -366,17 +366,17 @@ void CPC::Perspective()
 		rotCamera.y += 0.015f;		//ƒJƒƒ‰‚Ìã•ûŒü‚Ì‰ÁŽZ
 	}
 
-	// Ž‹“_Ø‚è‘Ö‚¦
-	if (pInput->Trigger(DIK_P) && m_bFlag == false)
-	{
-		CApplication::GetCamera()->SetPerspective(true);
-		m_bFlag = true;
-	}
-	else if(pInput->Trigger(DIK_P) && m_bFlag == true)
-	{
-		CApplication::GetCamera()->SetPerspective(false);
-		m_bFlag = false;
-	}
+	//// Ž‹“_Ø‚è‘Ö‚¦
+	//if (pInput->Trigger(DIK_P) && m_bFlag == false)
+	//{
+	//	CApplication::GetCamera()->SetPerspective(true);
+	//	m_bFlag = true;
+	//}
+	//else if(pInput->Trigger(DIK_P) && m_bFlag == true)
+	//{
+	//	CApplication::GetCamera()->SetPerspective(false);
+	//	m_bFlag = false;
+	//}
 
 	D3DXVECTOR3 MouseMove;
 	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
