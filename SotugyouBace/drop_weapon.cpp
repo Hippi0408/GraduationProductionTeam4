@@ -113,6 +113,7 @@ HRESULT CDrop_Weapon::Init()
 
 	// ピックアップUIの生成
 	m_pPick_Up = CObject3D::Create({ ModelPos.x, ModelPos.y + 120.0f, ModelPos.z }, { 70.0f,70.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+	m_pPick_Up->SetTexture(CTexture::TEXTURE_KEY_E);
 	m_pPick_Up->SetDrawFlag(false);
 
 	CObjectX::Init();

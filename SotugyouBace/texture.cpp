@@ -29,6 +29,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/circle.png",						// 円のテクスチャ
 	"Data/texture/ItemPointer.png",					// アイテムポインターのテクスチャ
 	"Data/texture/UI_00.png",						// UIのテクスチャ
+	"Data/texture/Ekey.png",						// Eキーのテクスチャ
 
 	/* エフェクト群 */
 	"Data/texture/particle/smoke.png",				// 煙
