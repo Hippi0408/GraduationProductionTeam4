@@ -30,6 +30,7 @@ CCollision::CCollision()
 		CGame::GetCollision_Manager()->SetCollision(this);
 	}
 	m_bDeath = false;
+	m_bNoneHit = false;
 }
 
 //=============================================================================
@@ -85,48 +86,53 @@ void CCollision::Update()
 //=============================================================================
 void CCollision::Collision()
 {
-	// 自分の位置
-	D3DXVECTOR3 pos = m_pParent->GetCenterPos();
-	// 半径
-	float fRadius = m_pParent->GetRadius();
-	
-	// 現在のモード
-	CApplication::MODE Mode = CApplication::GetModeType();
-
-	CCollision_Manager* pCollision_Manager = nullptr;
-
-	// モード毎にプレイヤーを読み込む
-	if (Mode == CApplication::MODE_TUTORIAL)
+	// ヒット処理を読み込む場合
+	if (m_bNoneHit == false)
 	{
-		pCollision_Manager = CTutorial::GetCollision_Manager();
-	}
-	else if (Mode == CApplication::MODE_GAME)
-	{
-		pCollision_Manager = CGame::GetCollision_Manager();
-	}
+		// 自分の位置
+		D3DXVECTOR3 pos = m_pParent->GetCenterPos();
+		// 半径
+		float fRadius = m_pParent->GetRadius();
 
-	// 全ての当たり判定を個別に判定
-	for (auto pCollision : pCollision_Manager->GetAllCollision())
-	{
-		// 当たり判定が存在する場合 && 当たり判定が自身ではない場合
-		if (!pCollision->GetParent()->GetDeathFlag() && pCollision != this)
+		// 現在のモード
+		CApplication::MODE Mode = CApplication::GetModeType();
+
+		CCollision_Manager* pCollision_Manager = nullptr;
+
+		// モード毎にプレイヤーを読み込む
+		if (Mode == CApplication::MODE_TUTORIAL)
 		{
-			// 相手のmoveobjectの情報
-			CMove_Object* pMove_Object = pCollision->GetParent();
+			pCollision_Manager = CTutorial::GetCollision_Manager();
+		}
+		else if (Mode == CApplication::MODE_GAME)
+		{
+			pCollision_Manager = CGame::GetCollision_Manager();
+		}
 
-			// 相手の位置
-			D3DXVECTOR3 OtherPos = pMove_Object->GetCenterPos();
-			// 半径
-			float fOtherRadius = pMove_Object->GetRadius();
-
-			// 円同士の当たり判定の計算
-			bool bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
-
-			// ヒットした場合
-			if (bHit)
+		// 全ての当たり判定を個別に判定
+		for (auto pCollision : pCollision_Manager->GetAllCollision())
+		{
+			// 当たり判定が存在する場合 && 当たり判定が自身ではない場合
+			if (!pCollision->GetParent()->GetDeathFlag() && !pCollision->GetDeath() && pCollision != this)
 			{
-				m_pParent->Hit(pMove_Object);
-				pMove_Object->Hit(m_pParent);
+				// 相手のmoveobjectの情報
+				CMove_Object* pMove_Object = pCollision->GetParent();
+
+				// 相手の位置
+				D3DXVECTOR3 OtherPos = pMove_Object->GetCenterPos();
+				// 半径
+				float fOtherRadius = pMove_Object->GetRadius();
+
+				// 円同士の当たり判定の計算
+				bool bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
+
+				// ヒットした場合
+				if (bHit)
+				{
+					// 二回ヒットしてしまう
+					m_pParent->Hit(pMove_Object);
+					pMove_Object->Hit(m_pParent);
+				}
 			}
 		}
 	}

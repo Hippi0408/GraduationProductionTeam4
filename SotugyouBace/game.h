@@ -44,7 +44,7 @@ public:
 	void GameEnd();
 	void MenuWindow();
 
-	static void SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand = false);
+	static void SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random = false);
 	static void SetGameEnd();
 
 	static CGame* Create();
