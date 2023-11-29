@@ -81,6 +81,8 @@ void CCharacter::Uninit()
 //============================================================================
 void CCharacter::Update()
 {
+	CMove_Object::Update();
+
 	// ˆÚ“®—Ê‚Ìˆ—
 	Move();
 

@@ -25,6 +25,7 @@ class CFontString;
 class CMenuWindow;
 class CConfirmation_Window;
 class CEnergy_Gauge;
+class CPlayerUi;
 class CPause;
 
 class CGame : public CMode
@@ -43,7 +44,7 @@ public:
 	void GameEnd();
 	void MenuWindow();
 
-	static void SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand = false);
+	static void SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random = false);
 	static void SetGameEnd();
 
 	static CGame* Create();
@@ -56,17 +57,20 @@ public:
 	static CDropManager* GetDropManager() { return m_pDropManager; }
 	static CCollision_Manager* GetCollision_Manager() { return m_pCollision_Manager; }
 	static CMeshField *GetMeshField() { return m_pMeshField; }
+	static CConfirmation_Window* GetConfirmationWindow() { return m_pConfirmationWindow; }
 	static CPause *GetPause() { return m_pPause; }
 
 private:
 
 	static bool m_bGameEnd;							// ゲーム終了判定
 	static bool m_bGameWindow;
+	bool m_bInputFlag;
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
+	CPlayerUi* m_pPlayerUI;
 	
-	CConfirmation_Window* m_ponfirmationWindow;		// メニューウィンドウ
+	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;
 	static CDropManager* m_pDropManager;
