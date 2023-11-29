@@ -239,7 +239,7 @@ void CPC::Input()
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
 	}
 	// ジャンプ処理
-	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A))
+	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_B))
 	{
 		// ジャンプ入力時間の加算
 		AddJump_PressCount(1);
@@ -305,7 +305,7 @@ void CPC::Input()
 				// ジャンプブースト
 				JumpBoost();
 
-			if ((pInput->Press(DIK_LSHIFT)) && bWalk)
+			if ((pInput->Press(DIK_LSHIFT) || pInput->Press(JOYPAD_A)) && bWalk)
 			{
 				// ブーストする
 				SetBoost(true);
@@ -321,7 +321,7 @@ void CPC::Input()
 	if (GetDropContact() == true)
 	{
 		// Eボタンで落とし物の取得
-		if(pInput->Trigger(DIK_E))
+		if(pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_Y))
 		{
 			SetDropGet(true);
 		}

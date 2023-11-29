@@ -18,7 +18,7 @@
 #include"model.h"
 
 
-const float CDrop_Weapon::PARTS_COLLISION_RADIUS = 150.0f;	// —Ž‚¿‚Ä‚é•Ší‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³
+const float CDrop_Weapon::PARTS_COLLISION_RADIUS = 300.0f;	// —Ž‚¿‚Ä‚é•Ší‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³
 const float CDrop_Weapon::PARTS_FLOTIONG_POS = 100.0f;		// —Ž‚¿‚Ä‚é•Ší‚Ì•‚—VˆÊ’u
 
 //=============================================================================

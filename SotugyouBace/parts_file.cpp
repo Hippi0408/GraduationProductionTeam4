@@ -87,9 +87,6 @@ void CParts_File::SetModel(const int partsIndex, const int modelIndex, const int
 //==============================================================================================
 void CParts_File::LoadFile(const char* Xfilename, const int partsIndex)
 {
-	// モーション情報のポインタを取得
-	CMotion* pMotion = CApplication::GetMotion();
-
 	// ファイル名
 	FILE* pFile = fopen(Xfilename, "r");
 
@@ -101,8 +98,6 @@ void CParts_File::LoadFile(const char* Xfilename, const int partsIndex)
 	D3DXVECTOR3 PartsStartPos;		// 初期位置
 	D3DXVECTOR3 PartsStartRot;		// 初期角度
 	char XFileName[0x20][0xff] = {};	// Xファイル名
-
-	int nNumMotion = 0;		// 現在のモーション
 
 	char m_aString[0xff];
 	memset(m_aString, 0, sizeof(m_aString));
