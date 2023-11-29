@@ -37,7 +37,7 @@ public:
 
 	void UV();
 
-	static CLocus* Create(const D3DXVECTOR3 pos, const float fsize, int nAnchorPoints, const PRIORITY priority = PRIORITY_CENTER, const D3DXCOLOR col = { 1.0f,1.0f, 1.0f, 1.0f }, const bool billboard = false);
+	static CLocus* Create(const D3DXVECTOR3 pos, const float fsize, int nAnchorPoints, const PRIORITY priority = PRIORITY_CENTER, const D3DXCOLOR col = { 1.0f,1.0f, 1.0f, 1.0f }, const bool billboard = true);
 
 	void SetTexPos(const float top, const float row, const float right, const float left);			// テクスチャの分割
 

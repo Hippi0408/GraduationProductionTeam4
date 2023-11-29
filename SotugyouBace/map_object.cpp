@@ -1,22 +1,15 @@
 //==============================================================================================
 //
-// マップ			map.h
-// tutida ryousei
+// マップのオブジェクト　　　map_object.cpp
+// Author : tutida ryousei
 //
 //==============================================================================================
-#ifndef _MAP_H_
-#define _MAP_H_
+#include"map_object.h"
 
-class CMap
+CMap_Object::CMap_Object(const PRIORITY priority) : CMove_Object(priority)
 {
-public:
-	CMap();
-	~CMap();
+}
 
-	static void ReadMap(char *filename);
-
-private:
-
-};
-
-#endif // !_MAP_H_
+CMap_Object::~CMap_Object()
+{
+}

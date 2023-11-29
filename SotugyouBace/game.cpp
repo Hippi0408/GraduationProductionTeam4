@@ -33,6 +33,7 @@
 #include"pause.h"
 #include "parts_file.h"
 #include "motion.h"
+#include "map.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -126,6 +127,9 @@ HRESULT CGame::Init()
 
 	m_nEndCounter = 0;
 	m_bInputFlag = false;
+
+	// マップ生成
+	CMap::ReadMap("Data/text/map.txt");
 
 	return S_OK;
 }
@@ -304,10 +308,10 @@ void CGame::Update()
 				}
 			}
 
-			if (pInput->Trigger(DIK_1))
+			/*if (pInput->Trigger(DIK_O))
 			{
 				CLocus::Create(D3DXVECTOR3(0.0f,200.0f,0.0f),1000.0f,10);
-			}
+			}*/
 		}
 #endif
 	}

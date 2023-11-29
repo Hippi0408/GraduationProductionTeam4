@@ -54,6 +54,8 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="locus.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="map_object.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="menu_window.cpp" />
     <ClCompile Include="meshfield.cpp" />
@@ -133,6 +135,8 @@
     <ClInclude Include="light.h" />
     <ClInclude Include="locus.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="map_object.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="menu_window.h" />
     <ClInclude Include="meshfield.h" />
