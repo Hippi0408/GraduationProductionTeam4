@@ -22,7 +22,7 @@ const char* CParts_File::m_cPartsFileName[] =
 	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Leg_SG02.txt",
 	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Leg_SG03.txt",
 
-	"Data\\text\\PartsList\\Mob\\parts_Mob_mob.txt",
+	"Data\\text\\PartsList\\Mob\\parts_Mob.txt",
 
 	"Data\\text\\PartsList\\Boss\\parts_Boss_boss.txt",
 };

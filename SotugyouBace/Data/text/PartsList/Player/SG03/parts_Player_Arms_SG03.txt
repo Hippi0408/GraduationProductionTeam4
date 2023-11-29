@@ -34,7 +34,7 @@ ALL_PARTSET
 	PARTSSET
 		INDEX = 1					# 右肩
 		PARENT = 0					# (親)体
-		POS = -24.0 10.0 0.0
+		POS = -11.0 10.0 0.0
 		ROT = 0.0 59.7 0.0
 	END_PARTSSET
 
