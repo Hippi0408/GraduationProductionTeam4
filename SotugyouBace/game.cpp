@@ -304,10 +304,10 @@ void CGame::Update()
 				}
 			}
 
-			if (pInput->Trigger(DIK_1))
+			/*if (pInput->Trigger(DIK_O))
 			{
 				CLocus::Create(D3DXVECTOR3(0.0f,200.0f,0.0f),1000.0f,10);
-			}
+			}*/
 		}
 #endif
 	}
