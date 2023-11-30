@@ -53,6 +53,7 @@ HRESULT CCharDecision_Window::Init()
 	// メンバ変数の初期化
 	//==================================================  
 	m_nSelectIndex = 0;
+	index = 0;
 	m_SizeX = 0.0f;
 	m_SizeY = 0.0f;
 	m_fMoveX = 50.0f;
@@ -64,10 +65,9 @@ HRESULT CCharDecision_Window::Init()
 	m_bDisplay = false;
 	m_bStopFlag = false;
 	m_bPosDest = false;
+	m_bExplanationUninit = false;
 	m_pWindow = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pWindow->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
-
-	index = 0;
 
 	return S_OK;
 }
@@ -101,8 +101,8 @@ void CCharDecision_Window::Update()
 	}
 
 	if (pInput->Trigger(DIK_RETURN)
-		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE
-		&& m_MaxSizeX == true)
+		&& m_bMaxSize == true
+		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
 		UninitExplanation();				// フォントの削除
 		// 画面遷移
@@ -155,8 +155,6 @@ void CCharDecision_Window::CharDecisionMenuScale()
 			{
 				pInput->SetKeyLock(100);
 			}
-
-			SetTextue();
 
 			if (m_bUninitFlag == false && m_bScale == true)
 			{
@@ -220,6 +218,7 @@ void CCharDecision_Window::CharSelectChoice()
 		// 左移動
 		if (m_bDecition == false)
 		{
+			m_bExplanationUninit = true;
 			UninitExplanation();				// フォントの削除
 			pos.x -= m_fMoveX;
 			if (pos.x <= -SCREEN_WIDTH / 2 && m_bPosDest == false)
@@ -232,13 +231,14 @@ void CCharDecision_Window::CharSelectChoice()
 				pos.x = SCREEN_WIDTH / 2;
 				m_bFontFlag = false;
 				m_bStopFlag = false;
-				SetTextue();
+				m_bExplanationUninit = false;
 				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(index);
 			}
 		}
 		// 右移動
 		else
 		{
+			m_bExplanationUninit = true;
 			UninitExplanation();				// フォントの削除
 			pos.x += m_fMoveX;
 			if (pos.x >= 1920.0f && m_bPosDest == false)
@@ -251,7 +251,7 @@ void CCharDecision_Window::CharSelectChoice()
 				pos.x = SCREEN_WIDTH / 2;
 				m_bFontFlag = false;
 				m_bStopFlag = false;
-				SetTextue();
+				m_bExplanationUninit = false;
 				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(index);
 			}
 		}
@@ -278,17 +278,17 @@ void CCharDecision_Window::SetFont(const std::string lette[])
 //============================================================================
 // テクスチャの設定処理
 //============================================================================
-void CCharDecision_Window::SetTextue()
+void CCharDecision_Window::SetTextue(CTexture::TEXTURE texture, CTexture::TEXTURE texture1)
 {
 	if (m_pObject2D[0] == nullptr)
 	{
 		m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(700.0f, 250.0f), CObject::PRIORITY_SCREEN);
-		m_pObject2D[0]->SetTexture(CTexture::TEXTURE_FONT_JAPANESE);
+		m_pObject2D[0]->SetTexture(texture1);
 	}
 	if (m_pObject2D[1] == nullptr)
 	{
 		m_pObject2D[1] = CObject2D::Create(D3DXVECTOR3(500.0f, 250.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
-		m_pObject2D[1]->SetTexture(CTexture::TEXTURE_FLOOR);
+		m_pObject2D[1]->SetTexture(texture);
 	}
 }
 

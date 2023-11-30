@@ -62,7 +62,8 @@ public:
 	bool GetScale() { return m_bScale; }
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
-
+	
+	CCharDecision_Window* GetCharDecision() { return m_pCharDecision; }
 	static CCharSelect_Window* Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col);			// ê∂ê¨
 
 private:

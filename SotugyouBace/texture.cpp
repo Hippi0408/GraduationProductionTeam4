@@ -20,6 +20,9 @@
 const char* CTexture::s_FileName[] =
 {// テクスチャのパス
 
+	"Data/texture/Font/Font_Japanese002.png",		// 日本語フォント
+	"Data/texture/Font/Font_Japanese003.png",		// 日本語フォント
+	"Data/texture/Font/Font_Alphabet.png",			// アルファベットフォント
     "Data/texture/number.png",						// ナンバーのテクスチャ
     "Data/texture/bullet000.png",					// 弾のテクスチャ
     "Data/texture/floor.png",						// 地面のテクスチャ
@@ -41,6 +44,15 @@ const char* CTexture::s_FileName[] =
     "Data/texture/particle/soul.png",				// 魂
     "Data/texture/particle/up.png",					// 上矢印
     "Data/texture/reticle.png",						// レティクル
+
+	"Data/texture/job/job_Rush.png",				// ラッシュ
+	"Data/texture/job/job_Vanguard.png",			// ヴァンガード
+	"Data/texture/job/job_Eagleeye.png",			// イーグルアイ
+	"Data/texture/job/job_Marshall.png",			// マーシャル
+	"Data/texture/job/job_Mechanic.png",			// メカニック
+	"Data/texture/job/job_Raider.png",				// レイダー
+	"Data/texture/job/job_Arcphilia.png",			// アークフィリア
+	"Data/texture/job/job_Control.png",				// コントロール
 
 };
 

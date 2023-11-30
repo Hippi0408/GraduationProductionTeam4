@@ -43,13 +43,14 @@ public:
 	void Update();												// 更新処理
 
 	void SetFont(const std::string lette[]);					// フォントの設定処理
-	void SetTextue();											// テクスチャの設定
+	void SetTextue(CTexture::TEXTURE texture, CTexture::TEXTURE texture1);							// テクスチャの設定
 	void UninitExplanation();									// 説明用テクスチャ、フォントの破棄処理
 	void CharDecisionMenuScale();								// メニューのサイズ処理
 	void CharSelectChoice();									// 選択肢の処理
 
 	bool GetSapawnWindow() { return m_bSpawnWindow; }			// ウィンドウが生成されたかの取得処理
-	bool GetMaxScale() { return m_bMaxSize; }					// ウィンドウが最大サイズまで行ったのかを取得する処理1
+	bool GetMaxScale() { return m_bMaxSize; }					// ウィンドウが最大サイズまで行ったのかを取得する処理
+	bool GetExplanationUninit() { return m_bExplanationUninit; }
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }										// 選択肢ポインタの取得処理
 	static CCharDecision_Window* Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col);			// 生成処理
@@ -82,8 +83,10 @@ private:
 	bool    m_bDecition;						// 決定されたか
 	bool    m_bSpawnWindow;						// ウィンドウが生成されたか
 	bool    m_bStopFlag;
+	bool    m_bExplanationUninit;					// テクスチャとフォントの削除フラグ
+	bool    m_bPosDest;	// 目的の位置まで行ったのか
 
-	bool m_bPosDest;	// 目的の位置まで行ったのか
+	
 
 	std::vector<CFontString*> m_vpListChoice;	// 選択肢ポインタの配列
 };

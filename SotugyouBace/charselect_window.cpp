@@ -22,6 +22,7 @@
 #include "chardecision_window.h"
 #include "confirmation_window.h"
 #include "char_select.h"
+#include "texture.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -405,54 +406,68 @@ void CCharSelect_Window::SetSelectChoice(int index)
 	{
 		std::string SkillName;
 
-		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		if (CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetExplanationUninit() == false)
 		{
-			std::string Name = "ストライカー";
+			if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+			{
+				std::string Name = "ストライカー";
 
-			if (m_nSelectChoice == 0)
-			{
-				SkillName = "ラッシュ";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 1)
-			{
-				SkillName = "ヴァンガード";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 2)
-			{
-				SkillName = "イーグルアイ";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 3 || m_nSelectChoice == -1)
-			{
-				SkillName = "マーシャル";
-				CharName(Name, SkillName);
+				if (m_nSelectChoice == 0)
+				{
+					SkillName = "ラッシュ";
+					CharName(Name, SkillName);
+					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RUSH, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+				}
+				if (m_nSelectChoice == 1)
+				{
+					SkillName = "ヴァンガード";
+					CharName(Name, SkillName);
+					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_VANGUARD, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+				}
+				if (m_nSelectChoice == 2)
+				{
+					SkillName = "イーグルアイ";
+					CharName(Name, SkillName);
+					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_EAGLEEYE, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+				}
+				if (m_nSelectChoice == 3 || m_nSelectChoice == -1)
+				{
+					SkillName = "マーシャル";
+					CharName(Name, SkillName);
+					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MARSHALL, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+				}
 			}
 		}
-		else
+		if (CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetExplanationUninit() == false)
 		{
-			std::string Name = "コマンダー";
+			if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == false)
+			{
+				std::string Name = "コマンダー";
 
-			if (m_nSelectChoice == 0)
-			{
-				SkillName = "メカニック";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 1)
-			{
-				SkillName = "レイダー";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 2)
-			{
-				SkillName = "アークフィリア";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 3 || m_nSelectChoice == -1)
-			{
-				SkillName = "コントロール";
-				CharName(Name, SkillName);
+				if (m_nSelectChoice == 0)
+				{
+					SkillName = "メカニック";
+					CharName(Name, SkillName);
+					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MECHANIC, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+				}
+				if (m_nSelectChoice == 1)
+				{
+					SkillName = "レイダー";
+					CharName(Name, SkillName);
+					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RAIDER, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+				}
+				if (m_nSelectChoice == 2)
+				{
+					SkillName = "アークフィリア";
+					CharName(Name, SkillName);
+					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_ARCPHILIA, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+				}
+				if (m_nSelectChoice == 3 || m_nSelectChoice == -1)
+				{
+					SkillName = "コントロール";
+					CharName(Name, SkillName);
+					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_CONTROL, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+				}
 			}
 		}
 	}
