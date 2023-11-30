@@ -49,20 +49,21 @@ public:
 	void CharSelectChangeChoice(const int nextChoice);		// 選択肢を変更した時の処理
 
 	void CharName(const std::string name, const std::string skillname);						// キャラクター名
+	void InitSelect();
 
+	void SetSelectChoice(int index);
 	void SetCharSelectDisplay(const bool display);											// 選択肢の表示判定を設定する
 	void SetCharSelectChoice(CFontString* choice) { m_vpListChoice.push_back(choice); }
-	void SetUninit(bool flag) { m_bUninitFlag = flag; }										// 終了されたか
 	void SetSapawnWindow(bool flag) { m_bSpawnWindow = flag; }
 	void SetScale(bool flag) { m_bScale = flag; }
 
-	int GetSelectChoice() { return 	m_nSelectChoice = 0; }
-	bool GetUninit() { return m_bUninitFlag; }
+	int GetSelectChoice() { return 	m_nSelectChoice; }
 	bool GetSapawnWindow() { return m_bSpawnWindow; }
 	bool GetScale() { return m_bScale; }
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }
-
+	
+	CCharDecision_Window* GetCharDecision() { return m_pCharDecision; }
 	static CCharSelect_Window* Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col);			// 生成
 
 private:
@@ -84,14 +85,12 @@ private:
 	float	m_fBlinkSpeed;						// 点滅速度
 
 	bool	m_bMaxSize;							// XとYのサイズが最大値まで行ったか
-	bool	m_bDisplay;							// 表示中の判定
+	bool	m_bDisplay;							// 表示中の判定 a
 	bool	m_bScale;							// 拡大縮小のフラグ
-	bool    m_bUninitFlag;						// 削除フラグ
 	bool    m_bDecition;						// 決定されたか
 	bool    m_bSpawnWindow;						// ウィンドウが生成されたか
 	bool    m_bDicisionCreateFlag;
-
-	bool m_s;
+	bool    m_bWindowUse;
 
 	std::vector<CFontString*> m_vpListChoice;	// 選択肢ポインタの配列
 };

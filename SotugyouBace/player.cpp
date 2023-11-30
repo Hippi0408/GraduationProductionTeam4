@@ -440,18 +440,18 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 	if (fInner < 0)
 		return false;
 
-	// 画面に映るぎりぎりの位置
-	D3DXVECTOR3 Reflected_Pos[2] = {};
-	D3DXVECTOR3 Reflected_PosVec[2] = {};
-
 	// 視野角
 	float fView_Angle = VIEW_SCOPE_ANGLE;
 
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
+		// 画面に映るぎりぎりの位置
+		D3DXVECTOR3 Reflected_Pos = {0.0f, 0.0f, 0.0f};
+		D3DXVECTOR3 Reflected_PosVec = { 0.0f, 0.0f, 0.0f };
+
 		// ターゲット出来るぎりぎりの位置
-		Reflected_Pos[nCnt].x = Camera->GetWorldPosV().x + sinf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
-		Reflected_Pos[nCnt].z = Camera->GetWorldPosV().z + cosf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
+		Reflected_Pos.x = Camera->GetWorldPosV().x + sinf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
+		Reflected_Pos.z = Camera->GetWorldPosV().z + cosf(rotCamera.y + fView_Angle) * m_fTarget_Scope;
 		fView_Angle *= -1;
 
 		// カメラの視点
@@ -470,10 +470,10 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		}
 
 		// カメラの視点からのベクトル
-		Reflected_PosVec[nCnt] = Reflected_Pos[nCnt] - WorldPosV;
+		Reflected_PosVec = Reflected_Pos - WorldPosV;
 
 		// 正規化
-		D3DXVec3Normalize(&Reflected_PosVec[nCnt], &Reflected_PosVec[nCnt]);
+		D3DXVec3Normalize(&Reflected_PosVec, &Reflected_PosVec);
 
 		// 視点から敵のベクトル
 		EnemyVec = nearpos - WorldPosV;
@@ -482,21 +482,18 @@ bool CPlayer::Target_Scope(D3DXVECTOR3 nearpos)
 		D3DXVec3Normalize(&EnemyVec, &EnemyVec);
 
 		// 外積の格納先
-		float fCp[2] = {};
-
-		// 外積
-		fCp[nCnt] = Reflected_PosVec[nCnt].x * EnemyVec.z - Reflected_PosVec[nCnt].z * EnemyVec.x;
+		float fCp = Reflected_PosVec.x * EnemyVec.z - Reflected_PosVec.z * EnemyVec.x;
 
 		// 画面内に映っているか
 		if (nCnt == 0)
 		{
-			if (fCp[nCnt] > 0.0f)
+			if (fCp > 0.0f)
 				continue;
 			else
 				break;
 		}
 		else
-			if (fCp[nCnt] <= 0.0f)
+			if (fCp <= 0.0f)
 				return true;
 	}
 
@@ -513,9 +510,9 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 		m_Reticle_Pos = target;
 
 	// 拡大縮小の速度
-	float Size_Speed = 10;
+	float Size_Speed = 10.0f;
 	// アルファ値の加算減算の速度
-	float Alpha_Speed = 1 / ((RETICLE_TRANSPARENCY_SIZE - RETICLE_SIZE) / Size_Speed);
+	float Alpha_Speed = 1.0f / ((RETICLE_TRANSPARENCY_SIZE - RETICLE_SIZE) / Size_Speed);
 
 	// レティクルの生成
 	if (m_pReticle == nullptr && m_bReticle_Draw)
@@ -524,6 +521,7 @@ void CPlayer::Reticle(D3DXVECTOR3 target)
 		m_pReticle->SetTexture(CTexture::TEXTURE_RETICLE);
 	}
 
+	// レティクルが生成されている場合
 	if (m_pReticle != nullptr)
 	{
 		if (m_bReticle_Draw)

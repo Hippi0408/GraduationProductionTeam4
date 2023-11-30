@@ -74,7 +74,7 @@ void CFont::SetString(const char* letter, const D3DXCOLOR col)
 	// 日本語の場合
 	if (letter[0] <= -125 && letter[0] >= -127)
 	{
-		SetTexture(CTexture::TEXTURE_FONT_JAPANESE);		//テクスチャの設定
+		SetTexture(CTexture::TEXTURE_FONT_JAPANESE_VER2);		//テクスチャの設定
 		SetAnimDiv(Japanese_Font_Column, Japanese_Font_Line);
 
 		// アニメーションパターンの設定

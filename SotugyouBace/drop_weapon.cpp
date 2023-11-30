@@ -18,7 +18,7 @@
 #include"model.h"
 
 
-const float CDrop_Weapon::PARTS_COLLISION_RADIUS = 150.0f;	// 落ちてる武器の当たり判定の大きさ
+const float CDrop_Weapon::PARTS_COLLISION_RADIUS = 300.0f;	// 落ちてる武器の当たり判定の大きさ
 const float CDrop_Weapon::PARTS_FLOTIONG_POS = 100.0f;		// 落ちてる武器の浮遊位置
 
 //=============================================================================
@@ -105,10 +105,15 @@ HRESULT CDrop_Weapon::Init()
 	m_bPick_Up = false;
 	m_fMove = 0.0f;
 
-	D3DXVECTOR3 ModelPos = GetPos() + m_CenterPos;
+	D3DXVECTOR3 ModelPos = GetPos();
+
+	// ポインターUIの生成
+	m_pPointer = CObject3D::Create(GetPos(), { 200.0f,200.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+	m_pPointer->SetTexture(CTexture::TEXTURE_ITEM_POINTER);
 
 	// ピックアップUIの生成
-	m_pPick_Up = CObject3D::Create({ ModelPos.x, ModelPos.y + 200.0f, ModelPos.z }, { 70.0f,70.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+	m_pPick_Up = CObject3D::Create({ ModelPos.x, ModelPos.y + 120.0f, ModelPos.z }, { 70.0f,70.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+	m_pPick_Up->SetTexture(CTexture::TEXTURE_KEY_E);
 	m_pPick_Up->SetDrawFlag(false);
 
 	CObjectX::Init();
@@ -121,6 +126,12 @@ HRESULT CDrop_Weapon::Init()
 //=============================================================================
 void CDrop_Weapon::Uninit()
 {
+	if (m_pPointer != nullptr)
+	{
+		m_pPointer->Uninit();
+		m_pPointer = nullptr;
+	}
+
 	if (m_pPick_Up != nullptr)
 	{
 		m_pPick_Up->Uninit();
@@ -174,11 +185,12 @@ void CDrop_Weapon::Update()
 	// 距離の算出
 	float fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
 
-	// 距離7000以上
-	if (fDistance > DRAW_DROP_DISTANCE)
-		SetDrawFlag(false);
-	else
-		SetDrawFlag(true);
+	// 距離7000以下の場合に表示する
+	const bool bDisplay = fDistance <= DRAW_DROP_DISTANCE;
+
+	SetDrawFlag(bDisplay);
+	m_pPointer->SetDrawFlag(bDisplay);
+	ItemPointerMove();
 
 	// 武器を拾う
 	Pick_Up_Weapon();
@@ -196,6 +208,14 @@ void CDrop_Weapon::Draw()
 }
 
 //=============================================================================
+// アイテムポインターの移動処理
+//=============================================================================
+void CDrop_Weapon::ItemPointerMove()
+{
+	m_pPointer->SetPos(GetPos());
+}
+
+//=============================================================================
 // 武器を拾う
 //=============================================================================
 void CDrop_Weapon::Pick_Up_Weapon()
@@ -209,12 +229,12 @@ void CDrop_Weapon::Pick_Up_Weapon()
 		// ピックアップされている場合
 		if (m_bPick_Up)
 		{
-			D3DXVECTOR3 ModelPos = GetPos() + m_CenterPos;
+			D3DXVECTOR3 ModelPos = GetPos();
 
 			// 色の設定
 			m_pPick_Up->SetCol({ 1.0f,1.0f,1.0f,1.0f });
 
-			m_pPick_Up->SetPos({ ModelPos.x, ModelPos.y + 200.0f, ModelPos.z });
+			m_pPick_Up->SetPos({ ModelPos.x, ModelPos.y + 120.0f, ModelPos.z });
 		}
 		else
 		{

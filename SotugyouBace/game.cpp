@@ -308,10 +308,10 @@ void CGame::Update()
 				}
 			}
 
-			if (pInput->Trigger(DIK_1))
+			/*if (pInput->Trigger(DIK_O))
 			{
 				CLocus::Create(D3DXVECTOR3(0.0f,200.0f,0.0f),1000.0f,10);
-			}
+			}*/
 		}
 #endif
 	}
@@ -404,14 +404,14 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 		int nRandType = 0;
 
 		// タイプ
-		nRandType = rand() % CDrop_Weapon::DROP_PARTS_MAX;
+		nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
 
 		// 最大数 または 素手が読み込まれた場合やり直す処理
 		while (CDrop_Weapon::ARMS_MAX == nRandType || CDrop_Weapon::LEG_MAX == nRandType
 			|| CDrop_Weapon::WEAPON_NONE == nRandType || CDrop_Weapon::WEAPON_MAX == nRandType)
 		{
 			// タイプ
-			nRandType = rand() % CDrop_Weapon::DROP_PARTS_MAX;
+			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
 		}
 
 		// 生成

@@ -22,6 +22,7 @@ public:
 	void SetCamera(void);
 
 	void Matrix(D3DXVECTOR3 rot, D3DXVECTOR3 pos);
+	void DebugInput();						// “ü—Íˆ—
 	void Move();
 	void Perspective();					// ‹“_ˆ—
 

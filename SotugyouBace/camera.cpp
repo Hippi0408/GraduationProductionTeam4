@@ -75,6 +75,11 @@ void CCamera::Update(void)
 	{
 		Matrix(D3DXVECTOR3(-0.5f,0.0f,0.0f), D3DXVECTOR3(0.0f, 600.0f, 0.0f));
 	}
+
+#ifdef _DEBUG
+	// カメラの入力処理
+	DebugInput();
+#endif // !_DEBUG
 }
 
 //==============================================
@@ -136,6 +141,28 @@ void CCamera::Matrix(D3DXVECTOR3 rot, D3DXVECTOR3 pos)
 
 	D3DXVec3TransformCoord(&m_worldCameraPosV, &m_posV, &m_mtxWorld);
 	D3DXVec3TransformCoord(&m_worldCameraPosR, &m_posR, &m_mtxWorld);
+}
+
+//==============================================
+// カメラの入力処理
+//==============================================
+void CCamera::DebugInput()
+{
+	// 入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
+
+	// カメラ視点切り替え
+	if (pInput->Trigger(DIK_F1))
+	{
+		m_bPerspective = !m_bPerspective;
+	}
+
+	// カメラ視点を切り替えた場合
+	if (m_bPerspective == true)
+	{
+		// カメラの移動処理
+		Move();
+	}
 }
 
 //==============================================
