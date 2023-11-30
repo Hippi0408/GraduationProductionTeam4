@@ -91,9 +91,6 @@ void CConfirmation_Window::Uninit()
 //=============================================================================
 void CConfirmation_Window::Update()
 {
-	// 入力デバイスの情報
-	CInput* pInput = CInput::GetKey();
-
 	if (m_bScale == false)
 	{// 拡大されていない時
 
@@ -116,9 +113,6 @@ void CConfirmation_Window::Update()
 //=============================================================================
 void CConfirmation_Window::ConfirmatiomnMenuScale()
 {
-	// 入力デバイスの情報
-	CInput* pInput = CInput::GetKey();
-
 	if (m_pObject2D != nullptr)
 	{// nullチェック
 
