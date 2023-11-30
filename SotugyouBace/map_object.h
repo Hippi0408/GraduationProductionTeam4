@@ -9,14 +9,24 @@
 
 #include"move_object.h"
 
+class CObjectX;
+
 class CMap_Object : public CMove_Object
 {
 public:
 	CMap_Object(const PRIORITY priority);
 	~CMap_Object();
 
-private:
+	HRESULT Init() override;
+	void Uninit() override;
+	void Update() override;
+	void Draw() override;
+	void Hit(CMove_Object* pHit) override;
 
+	static CMap_Object *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, const PRIORITY priority = PRIORITY_MODEL);
+	
+private:
+	CObjectX *pMap_ObjectX;
 };
 
 #endif // !_MAP_OBJECT_H_

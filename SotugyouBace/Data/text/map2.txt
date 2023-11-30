@@ -1,0 +1,43 @@
+#==============================================================================
+#
+# 『Map』スクリプトファイル [Map.txt]
+# Author : 小綱啓仁
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# 読み込むモデル数
+#------------------------------------------------------------------------------
+NUM_MODEL = 15
+
+#------------------------------------------------------------------------------
+# 読み込むモデルファイル名
+#------------------------------------------------------------------------------
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/notinisakuzyo.x
+
+#------------------------------------------------------------------------------
+# 表示するモデルの配置情報
+#------------------------------------------------------------------------------
+
+MODELSET
+	TYPE = 0
+	POS = 0.0 0.0 1000.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+END_SCRIPT		# この行は絶対消さないこと！

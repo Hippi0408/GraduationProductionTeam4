@@ -52,6 +52,12 @@ HRESULT CBullet::Init()
 	// タグの設定
 	SetTag(TAG_BULLET);
 
+	// 当たり判定のタイプ
+	SetCollision_Type(CMove_Object::COLLISION_TYPE_SHERER);
+
+	// サイズの設定
+	CMove_Object::SetSize({ GetRadius(),GetRadius(),GetRadius() });
+
 	// オブジェクト3Dの初期化処理
 	CMove_Object::Init();
 
@@ -97,13 +103,15 @@ void CBullet::Update()
 	D3DXVECTOR3 move = GetMove();
 	D3DXVECTOR2 size = GetSize();
 
+	//前回の位置を保存
+	m_nPosOld = pos;
+
+	SetPosOld(m_nPosOld);
+
 	//弾の位置更新
 	pos.x += move.x * m_fSpeed_XZ;
 	pos.z += move.z * m_fSpeed_XZ;
 	pos.y += move.y * m_fSpeed_Y;
-
-	//前回の位置を保存
-	m_nPosOld = pos;
 
 	// 位置の設定
 	SetPos(pos);
