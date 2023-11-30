@@ -33,6 +33,7 @@
 #include"pause.h"
 #include "parts_file.h"
 #include "motion.h"
+#include "map.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -126,6 +127,9 @@ HRESULT CGame::Init()
 
 	m_nEndCounter = 0;
 	m_bInputFlag = false;
+
+	// マップ生成
+	CMap::ReadMap("Data/text/map.txt");
 
 	return S_OK;
 }
@@ -304,10 +308,10 @@ void CGame::Update()
 				}
 			}
 
-			if (pInput->Trigger(DIK_1))
+			/*if (pInput->Trigger(DIK_O))
 			{
 				CLocus::Create(D3DXVECTOR3(0.0f,200.0f,0.0f),1000.0f,10);
-			}
+			}*/
 		}
 #endif
 	}
@@ -387,12 +391,12 @@ void CGame::MenuWindow()
 //==============================================================================================
 // 武器、パーツのドロップ
 //==============================================================================================
-void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand)
+void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 {
 	for (int nCnt = 0; nCnt < num; nCnt++)
 	{
 		D3DXVECTOR3 Pos = pos;
-		if (rand)
+		if (random)
 			// ランダムな位置
 			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) };
 
@@ -402,6 +406,7 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool rand)
 		// タイプ
 		nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
 
+		// 最大数 または 素手が読み込まれた場合やり直す処理
 		while (CDrop_Weapon::ARMS_MAX == nRandType || CDrop_Weapon::LEG_MAX == nRandType
 			|| CDrop_Weapon::WEAPON_NONE == nRandType || CDrop_Weapon::WEAPON_MAX == nRandType)
 		{

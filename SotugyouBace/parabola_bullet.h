@@ -20,6 +20,8 @@ public:
 	void Update() override;		// XVˆ—
 	void Draw() override;		// •`‰æˆ—
 
+	void Destroy() override;	// ”j‰óˆ—
+
 	static CParabola_Bullet *Create(const D3DXVECTOR3 pos, D3DXVECTOR3 move, float hypotenuse, D3DXVECTOR3 rot, char *filename, const bool side, const CObject::PRIORITY priority);
 
 private:

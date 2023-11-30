@@ -100,7 +100,7 @@ void CPause::Pause()
 	if (pInput != nullptr)
 	{
 		// ポーズ中
-		if (pInput->Trigger(DIK_ESCAPE) && !m_bPause)
+		if (pInput->Trigger(DIK_P) && !m_bPause)
 		{
 			m_pPause->SetSize({ 400.0f,500.0f });
 			m_StringSize = { 30.0f,30.0f };
@@ -108,7 +108,7 @@ void CPause::Pause()
 			m_bPause = true;
 		}
 		// ポーズしてない
-		else if (pInput->Trigger(DIK_ESCAPE) && m_bPause || m_Select_Pause)
+		else if (pInput->Trigger(DIK_P) && m_bPause || m_Select_Pause)
 		{
 			m_pPause->SetSize({ 0.0f,0.0f });
 			m_StringSize = { 0.0f,0.0f };

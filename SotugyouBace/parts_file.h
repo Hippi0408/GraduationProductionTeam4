@@ -48,9 +48,11 @@ public:
 	// パラメーター
 	struct PARAMETERS
 	{
-		int m_nAttack;						// 攻撃力
-		int m_nDiffence;					// 防御力
-		int m_nGravity;						// 重量
+		int m_nLife;					// 耐久値
+		int m_nStamina;					// スタミナ容量
+		int m_nGravity;					// 重量
+		int m_nSpeed;					// 機動力
+
 											//Skill m_skill;					// スキルタイプ
 	};
 

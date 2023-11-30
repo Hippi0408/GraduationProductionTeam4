@@ -28,7 +28,9 @@ public: /* 定義 */
 		TEXTURE_FLOOR,				// 地面
 		TEXTURE_RETICLE,			// レティクル
 		TEXTURE_CIRCLE,				// 円
+		TEXTURE_ITEM_POINTER,		// アイテムポインター
 		TEXTURE_UI,					// UI
+		TEXTURE_KEY_E,				// Eキー
 
 		/* エフェクト群 */
 		TEXTURE_EFFECT_SMOKE,

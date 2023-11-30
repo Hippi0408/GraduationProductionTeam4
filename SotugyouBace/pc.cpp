@@ -239,7 +239,7 @@ void CPC::Input()
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
 	}
 	// ジャンプ処理
-	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A))
+	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_B))
 	{
 		// ジャンプ入力時間の加算
 		AddJump_PressCount(1);
@@ -305,7 +305,7 @@ void CPC::Input()
 				// ジャンプブースト
 				JumpBoost();
 
-			if ((pInput->Press(DIK_LSHIFT)) && bWalk)
+			if ((pInput->Press(DIK_LSHIFT) || pInput->Press(JOYPAD_A)) && bWalk)
 			{
 				// ブーストする
 				SetBoost(true);
@@ -321,7 +321,7 @@ void CPC::Input()
 	if (GetDropContact() == true)
 	{
 		// Eボタンで落とし物の取得
-		if(pInput->Trigger(DIK_E))
+		if(pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_Y))
 		{
 			SetDropGet(true);
 		}
@@ -366,17 +366,17 @@ void CPC::Perspective()
 		rotCamera.y += 0.015f;		//カメラの上方向の加算
 	}
 
-	// 視点切り替え
-	if (pInput->Trigger(DIK_P) && m_bFlag == false)
-	{
-		CApplication::GetCamera()->SetPerspective(true);
-		m_bFlag = true;
-	}
-	else if(pInput->Trigger(DIK_P) && m_bFlag == true)
-	{
-		CApplication::GetCamera()->SetPerspective(false);
-		m_bFlag = false;
-	}
+	//// 視点切り替え
+	//if (pInput->Trigger(DIK_P) && m_bFlag == false)
+	//{
+	//	CApplication::GetCamera()->SetPerspective(true);
+	//	m_bFlag = true;
+	//}
+	//else if(pInput->Trigger(DIK_P) && m_bFlag == true)
+	//{
+	//	CApplication::GetCamera()->SetPerspective(false);
+	//	m_bFlag = false;
+	//}
 
 	D3DXVECTOR3 MouseMove;
 	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);

@@ -26,14 +26,15 @@ CCollision_Manager::~CCollision_Manager()
 //==============================================================================================
 void CCollision_Manager::ReleaseAllCollision()
 {
-	// 全ての当たり判定のメモリを解放
-	for (auto pCollision : m_AllCollision)
+	// 全ての当たり判定の更新処理
+	for (auto it = m_AllCollision.begin(); it != m_AllCollision.end();)
 	{
-		pCollision->Uninit();
+		CCollision* pCollision = *it;
+
+		it = m_AllCollision.erase(it);
+		pCollision->GetParent()->CollisionDestroy();
 		delete pCollision;
 	}
-	// 全ての当たり判定の情報を解放
-	m_AllCollision.clear();
 }
 
 //==============================================================================================
@@ -49,14 +50,13 @@ void CCollision_Manager::UpdateAll()
 		// 親と子のどちらも、死亡フラグが建っていない場合
 		if (!pCollision->GetDeath() && !pCollision->GetParent()->GetDeathFlag())
 		{
-				pCollision->Update();
-				it++;
+			pCollision->Update();
+			it++;
 		}
 		else
 		{
 			it = m_AllCollision.erase(it);
 			delete pCollision;
 		}
-
 	}
 }

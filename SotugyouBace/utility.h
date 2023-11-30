@@ -42,6 +42,16 @@ namespace utility
 		return ((randomValue * (1.0f / 32767.0f)) * (max - min)) + min;
 	}
 
+	// 数値をランダムにする処理(int処理のみのテンプレートの特殊化)
+	template <>
+	inline int Random(int max, int min)
+	{
+		std::random_device seed_gen;
+		std::mt19937 gen(seed_gen());
+		std::uniform_int_distribution<> distribution(min, max - 1);
+		return distribution(gen);
+	}
+
 	// 要素をランダムに取得する処理
 	template<typename T>
 	inline T RandomElement(const std::vector<T>& element)
