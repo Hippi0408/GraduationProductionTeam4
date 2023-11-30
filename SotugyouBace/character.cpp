@@ -308,12 +308,4 @@ void CCharacter::SetParts(const int charaParts, const int partsIndex, CMotion::M
 	{
 		m_Parts[charaParts] = CParts::Create(GetPos(), partsIndex, motion, this);
 	}
-	//else
-	//{
-	//	// パーツ変更処理(index, filename)
-	//	for (auto pParts : m_Parts[index]->GetModelAll())
-	//	{
-
-	//	}
-	//}
 }

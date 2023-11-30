@@ -44,8 +44,8 @@ public:
 private:
 	CObject2D* m_pObject2D;
 
-	float SizeX;
-	float SizeY;
+	float m_SizeX;
+	float m_SizeY;
 
 	bool m_bMaxSize;
 	bool m_bScaleFlag;						// メニューウィンドウが

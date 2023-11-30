@@ -64,9 +64,6 @@ void CMotion::LoadFile(const char* Xfilename)
 	// ファイル名
 	FILE* pFile = fopen(Xfilename, "r");
 
-	// キャラクターセット用
-	char XFileName[0x20][0xff] = {};	// Xファイル名
-
 	int nNumMotion = 0;		// 現在のモーション
 
 	char m_aString[0xff];

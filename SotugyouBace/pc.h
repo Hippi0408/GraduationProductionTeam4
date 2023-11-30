@@ -36,8 +36,7 @@ public:
 
 private:
 	D3DXVECTOR3 m_rotDest;					//目的の向き
-	
-	bool m_bFlag;							// 視点切り替え用のフラグ
+
 };
 
 #endif// _PC_H_

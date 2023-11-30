@@ -41,7 +41,6 @@ CPC::~CPC()
 HRESULT CPC::Init()
 {
 	CPlayer::Init();
-	m_bFlag = false;
 
 	SetEnergyGauge(CEnergy_Gauge::Create({ 70,720.0f / 2,0.0f }, { 20.0f,500.0f }));
 	SetGaugeManager(CPlayer_Life_Gauge::Create({ 1210.0f,720.0f / 2,0.0f }, { 20.0f,500.0f }));
@@ -365,18 +364,6 @@ void CPC::Perspective()
 	{	//LEFTキーを押しているとき
 		rotCamera.y += 0.015f;		//カメラの上方向の加算
 	}
-
-	//// 視点切り替え
-	//if (pInput->Trigger(DIK_P) && m_bFlag == false)
-	//{
-	//	CApplication::GetCamera()->SetPerspective(true);
-	//	m_bFlag = true;
-	//}
-	//else if(pInput->Trigger(DIK_P) && m_bFlag == true)
-	//{
-	//	CApplication::GetCamera()->SetPerspective(false);
-	//	m_bFlag = false;
-	//}
 
 	D3DXVECTOR3 MouseMove;
 	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
