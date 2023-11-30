@@ -97,7 +97,7 @@ void CParts_File::LoadFile(const char* Xfilename, const int partsIndex)
 	int nPartsIndex = 0;			// パーツの番号
 	D3DXVECTOR3 PartsStartPos;		// 初期位置
 	D3DXVECTOR3 PartsStartRot;		// 初期角度
-	char XFileName[0xff][0xff] = {};	// Xファイル名
+	char XFileName[0x20][0xff] = {};	// Xファイル名
 
 	char m_aString[0xff];
 	memset(m_aString, 0, sizeof(m_aString));
