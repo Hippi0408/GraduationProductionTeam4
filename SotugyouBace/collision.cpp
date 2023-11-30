@@ -93,6 +93,8 @@ void CCollision::Collision()
 		D3DXVECTOR3 pos = m_pParent->GetCenterPos();
 		// 半径
 		float fRadius = m_pParent->GetRadius();
+		// サイズ
+		D3DXVECTOR3 Size = m_pParent->GetSize();
 
 		// 現在のモード
 		CApplication::MODE Mode = CApplication::GetModeType();
@@ -120,11 +122,27 @@ void CCollision::Collision()
 
 				// 相手の位置
 				D3DXVECTOR3 OtherPos = pMove_Object->GetCenterPos();
-				// 半径
-				float fOtherRadius = pMove_Object->GetRadius();
+				bool bHit = false;
 
-				// 円同士の当たり判定の計算
-				bool bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
+				if (pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_SHERER)
+				{
+					// 半径
+					float fOtherRadius = pMove_Object->GetRadius();
+
+					// 円同士の当たり判定の計算
+					bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
+				}
+				else
+				{
+					// 前回の位置
+					D3DXVECTOR3 PosOld = m_pParent->GetPosOld();
+
+					// サイズ
+					D3DXVECTOR3 OtherSize = pMove_Object->GetSize();
+
+					// 円同士の当たり判定の計算
+					bHit = Block_Collision(pos, PosOld, Size, OtherPos, OtherSize);
+				}
 
 				// ヒットした場合
 				if (bHit)
@@ -156,6 +174,51 @@ bool CCollision::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, con
 	if (Dis <= radius + otherRadius
 		&& DisY <= radius + otherRadius)
 		return true;
+
+	return false;
+}
+
+//=============================================================================
+// 矩形の当たり判定
+//=============================================================================
+bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold, const D3DXVECTOR3 size, const D3DXVECTOR3 otherpos, const D3DXVECTOR3 othersize)
+{
+	if (otherpos.x + othersize.x > pos.x - size.x
+		&& otherpos.x - othersize.x < pos.x + size.x)
+	{
+		// 奥から手前
+		if (otherpos.z + othersize.z > pos.z - size.z
+			&& otherpos.z + othersize.z <= posold.z - size.z)
+		{
+			// 押し出し
+
+			return true;
+		}
+
+		// 手前から奥
+		else if (otherpos.z - othersize.z < pos.z + size.z
+			&& otherpos.z - othersize.z >= posold.z + size.z)
+		{
+			return true;
+		}
+	}
+	else if (otherpos.z + othersize.z > pos.z - size.z
+		&& otherpos.z - othersize.z < pos.z + size.z)
+	{
+		// 右から左
+		if (otherpos.x + othersize.x > pos.x - size.x
+			&& otherpos.x + othersize.x <= posold.x - size.x)
+		{
+			return true;
+		}
+
+		// 左から右
+		else if (otherpos.x - othersize.x < pos.x + size.x
+			&& otherpos.x - othersize.x >= posold.x + size.x)
+		{
+			return true;
+		}
+	}
 
 	return false;
 }

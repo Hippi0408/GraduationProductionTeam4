@@ -58,6 +58,9 @@ HRESULT CEnemy::Init()
 	// “G‘¤‚Éİ’è
 	SetPlayerSide(false);
 
+	// ƒTƒCƒY‚Ìİ’è
+	SetSize({ GetRadius(),GetRadius(),GetRadius() });
+
 	// “–‚½‚è”»’è‚Ì¶¬
 	SetCollision();
 

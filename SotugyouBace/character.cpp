@@ -24,6 +24,9 @@ CCharacter::CCharacter(const CObject::PRIORITY priority) : CMove_Object(priority
 	// タグの設定
 	SetTag(TAG_CHARACTER);
 
+	// 当たり判定のタイプ
+	SetCollision_Type(CMove_Object::COLLISION_TYPE_SHERER);
+
 	m_fSpeed = CHARACTER_FIRST_MOVE_SPEED;
 	m_fRotSpeed = CHARACTER_ROT_SPEED;
 	m_bGround = false;
@@ -82,6 +85,8 @@ void CCharacter::Uninit()
 void CCharacter::Update()
 {
 	CMove_Object::Update();
+
+	SetPosOld(GetPos());
 
 	// 移動量の処理
 	Move();

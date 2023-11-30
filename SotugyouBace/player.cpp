@@ -66,6 +66,9 @@ HRESULT CPlayer::Init()
 	// プレイヤー側に設定
 	SetPlayerSide(true);
 
+	// サイズの設定
+	SetSize({ GetRadius(),GetRadius(),GetRadius() });
+
 	// 当たり判定の生成
 	SetCollision();
 

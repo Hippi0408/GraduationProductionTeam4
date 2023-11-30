@@ -5,7 +5,7 @@
 //
 //==============================================================================================
 #include"map.h"
-#include"objectX.h"
+#include"map_object.h"
 #include <stdio.h>
 #include "d3dx9.h"
 
@@ -102,7 +102,7 @@ void CMap::ReadMap(char *filename)
 						}
 
 						// ÉÇÉfÉãê∂ê¨
-						CObjectX::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
+						CMap_Object::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
 					}
 				}
 			}

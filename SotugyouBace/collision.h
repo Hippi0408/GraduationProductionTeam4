@@ -33,6 +33,7 @@ public:
 
 	void Collision();
 	bool Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius);	// ‰~‚Ì“–‚½‚è”»’è
+	bool Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold, const D3DXVECTOR3 size, const D3DXVECTOR3 otherpos, const D3DXVECTOR3 othersize);	// ‹éŒ`‚Ì“–‚½‚è”»’è
 
 	static CCollision* Create(CMove_Object* pParent);
 
