@@ -21,7 +21,7 @@ public: /* 定義 */
 	enum TEXTURE
 	{	
 		TEXTURE_FONT_JAPANESE,		// 日本語フォント
-		TEXTURE_FONT_JAPANESE_VER2,		// 日本語フォント
+		TEXTURE_FONT_JAPANESE_VER2,	// 日本語フォント
 		TEXTURE_FONT_ALPHABET,		// アルファベットフォント
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_BULLET,				// 弾

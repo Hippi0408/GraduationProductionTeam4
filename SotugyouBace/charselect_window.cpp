@@ -27,7 +27,7 @@
 // 静的メンバ変数宣言
 //=============================================================================
 const float CCharSelect_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
-const float CCharSelect_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
+const float CCharSelect_Window::MINI_ALPHA = 0.5f;		// 選択肢の最低透明値
 
 //=============================================================================
 // コンストラクタ
@@ -55,15 +55,13 @@ HRESULT CCharSelect_Window::Init()
 	m_SizeX = 0.0f;
 	m_SizeY = 0.0f;
 	m_bScale = false;
-	m_bMaxSize = false;
-	m_bUninitFlag = false;
+	m_bMaxSize = false; 
 	m_bSpawnWindow = false;
 	m_bDecition = false;
 	m_bDicisionCreateFlag = false;
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
-
-	m_s = false;
+	m_bWindowUse = false;
 
 	return S_OK;
 }
@@ -96,11 +94,10 @@ void CCharSelect_Window::Update()
 {
 	if (m_bScale == false)
 	{// 拡大されていない時 
-
 	 // ウィンドウの拡大処理
 		CharSelectMenuScale();
 	}
-	else if(m_bScale == true && m_s == false)
+	else if (m_bScale == true && m_bWindowUse == false)
 	{// 拡大した時
 
 	 // ウィンドウの縮小処理
@@ -116,67 +113,13 @@ void CCharSelect_Window::Update()
 		m_pCharDecision->Update();
 	}
 
-	// キャラごと
-	if (m_pCharDecision != nullptr && m_pCharDecision->GetMaxScale() == true)
-	{
-		std::string SkillName;
-
-		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
-		{
-			std::string Name = "ストライカー";
-
-			if (m_nSelectChoice == 0)
-			{
-				SkillName = "ラッシュ";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 1)
-			{
-				SkillName = "マーシャル";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 2)
-			{
-				SkillName = "イーグルアイ";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 3)
-			{
-				SkillName = "キャッスル";
-				CharName(Name, SkillName);
-			}
-		}
-		else
-		{
-			std::string Name = "コマンダー";
-
-			if (m_nSelectChoice == 0)
-			{
-				SkillName = "メカニック";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 1)
-			{
-				SkillName = "レイダー";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 2)
-			{
-				SkillName = "アークフィリア";
-				CharName(Name, SkillName);
-			}
-			if (m_nSelectChoice == 3)
-			{
-				SkillName = "コントロール";
-				CharName(Name, SkillName);
-			}
-		}
-	}
+	// 選択した番号によって出すウィンドウを変える処理
+	SetSelectChoice(m_nSelectChoice);
 
 	// キャラ決定ウィンドウが閉じた場合 
 	if (m_pCharDecision != nullptr && m_pCharDecision->GetSapawnWindow() == true)
 	{
-		m_s = false;
+		m_bWindowUse = false;
 		// キャラ決定画面の破棄
 		m_pCharDecision->Uninit();
 		delete m_pCharDecision;
@@ -207,6 +150,14 @@ void CCharSelect_Window::CharSelectMenuScale()
 		{// Yサイズの最大
 			m_SizeY = m_MaxSizeY;
 		}
+		//if (pInput->Trigger(DIK_RETURN) && m_bMaxSize == false)
+		//{
+		//	m_SizeX = m_MaxSizeX;
+		//	m_SizeY = m_MaxSizeY;
+		//	m_bMaxSize = true;
+		//	// サイズの設定
+		//	m_pObject2D->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		//}
 
 		// ウィンドウが最大値まで行ったら
 		if (m_SizeX >= m_MaxSizeX && m_SizeY >= m_MaxSizeY && m_bMaxSize == false)
@@ -226,9 +177,9 @@ void CCharSelect_Window::CharSelectMenuScale()
 				}
 
 				SetCharSelectChoice(CFontString::Create({ 200.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "ラッシュ"));
-				SetCharSelectChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "マーシャル"));
+				SetCharSelectChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "ヴァンガード"));
 				SetCharSelectChoice(CFontString::Create({ 625.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "イーグルアイ"));
-				SetCharSelectChoice(CFontString::Create({ 875.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "キャッスル"));
+				SetCharSelectChoice(CFontString::Create({ 875.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "マーシャル"));
 			}
 			else
 			{
@@ -301,16 +252,15 @@ bool CCharSelect_Window::CharSelectMenuScaleReduce()
 		{
 			// キャラ選択画面以外の時
 			if (!Mode == CApplication::MODE_CHAR_SELECT)
-			{			
+			{
 				m_bScale = false;
 				CGame::SetGameWindow(true);
 				Uninit();						// メニューウィンドウの削除
 			}
-			else if(Mode == CApplication::MODE_CHAR_SELECT && m_s == false)
+			else if (Mode == CApplication::MODE_CHAR_SELECT && m_bWindowUse == false)
 			{
-				m_s = true;
+				m_bWindowUse = true;
 				m_bMaxSize = false;
-				m_bUninitFlag = false;
 				m_bSpawnWindow = false;
 				m_bDecition = false;
 				m_bDicisionCreateFlag = false;
@@ -320,8 +270,9 @@ bool CCharSelect_Window::CharSelectMenuScaleReduce()
 			if (m_pCharDecision == nullptr && m_bDicisionCreateFlag == false)
 			{
 				m_pCharDecision = CCharDecision_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
-				m_bDicisionCreateFlag = true;
 			}
+
+			m_bDicisionCreateFlag = true;
 
 			return true;
 		}
@@ -335,13 +286,22 @@ bool CCharSelect_Window::CharSelectMenuScaleReduce()
 //=============================================================================
 // キャラクター説明処理
 //=============================================================================
-void CCharSelect_Window::CharName(const std::string name,const std::string skillname)
+void CCharSelect_Window::CharName(const std::string name, const std::string skillname)
 {
 	m_nLetter[0] = name;
 	m_nLetter[1] = skillname;
 
 	m_pCharDecision->SetFont(&m_nLetter[0]);
 	m_pCharDecision->SetFont(&m_nLetter[1]);
+}
+
+//=============================================================================
+// 選択肢の初期化処理
+//=============================================================================
+void CCharSelect_Window::InitSelect()
+{
+	// 選択肢の情報を初期化する
+	CharSelectChangeChoice(0);
 }
 
 //=============================================================================
@@ -425,6 +385,80 @@ void CCharSelect_Window::CharSelectChangeChoice(const int nextChoice)
 }
 
 //============================================================================
+// 選択した番号
+//============================================================================
+void CCharSelect_Window::SetSelectChoice(int index)
+{
+	m_nSelectChoice = index;
+
+	if (m_nSelectChoice == -1)
+	{
+		m_nSelectChoice = 3;
+	}
+	if (m_nSelectChoice == 4)
+	{
+		m_nSelectChoice = 0;
+	}
+
+	// キャラごと
+	if (m_pCharDecision != nullptr && m_pCharDecision->GetMaxScale() == true)
+	{
+		std::string SkillName;
+
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			std::string Name = "ストライカー";
+
+			if (m_nSelectChoice == 0)
+			{
+				SkillName = "ラッシュ";
+				CharName(Name, SkillName);
+			}
+			if (m_nSelectChoice == 1)
+			{
+				SkillName = "ヴァンガード";
+				CharName(Name, SkillName);
+			}
+			if (m_nSelectChoice == 2)
+			{
+				SkillName = "イーグルアイ";
+				CharName(Name, SkillName);
+			}
+			if (m_nSelectChoice == 3 || m_nSelectChoice == -1)
+			{
+				SkillName = "マーシャル";
+				CharName(Name, SkillName);
+			}
+		}
+		else
+		{
+			std::string Name = "コマンダー";
+
+			if (m_nSelectChoice == 0)
+			{
+				SkillName = "メカニック";
+				CharName(Name, SkillName);
+			}
+			if (m_nSelectChoice == 1)
+			{
+				SkillName = "レイダー";
+				CharName(Name, SkillName);
+			}
+			if (m_nSelectChoice == 2)
+			{
+				SkillName = "アークフィリア";
+				CharName(Name, SkillName);
+			}
+			if (m_nSelectChoice == 3 || m_nSelectChoice == -1)
+			{
+				SkillName = "コントロール";
+				CharName(Name, SkillName);
+			}
+		}
+	}
+}
+
+//============================================================================
 // 選択肢の表示判定を設定する
 //============================================================================
 void CCharSelect_Window::SetCharSelectDisplay(const bool display)
@@ -432,12 +466,12 @@ void CCharSelect_Window::SetCharSelectDisplay(const bool display)
 	m_bDisplay = display;
 	for (auto pChoice : GetChoiceAll()) { pChoice->SetFontDraw(display); }
 
-	// 表示を消す場合
-	if (m_bDisplay == false)
-	{
-		// 選択肢の情報を初期化する
-		CharSelectChangeChoice(0);
-	}
+	//// 表示を消す場合
+	//if (m_bDisplay == false)
+	//{
+	//	// 選択肢の情報を初期化する
+	//	CharSelectChangeChoice(0);
+	//}
 }
 
 //============================================================================
