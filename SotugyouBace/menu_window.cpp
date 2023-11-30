@@ -44,8 +44,8 @@ HRESULT CMenuWindow::Init()
 	//==================================================
 	// メンバ変数の初期化
 	//==================================================  
-	SizeX = 0.0f;
-	SizeY = 0.0f;
+	m_SizeX = 0.0f;
+	m_SizeY = 0.0f;
 	m_bScaleFlag = false;
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f),CObject::PRIORITY_FRONT);
 	m_pObject2D->SetCol(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
@@ -85,20 +85,20 @@ void CMenuWindow::MenuScale()
 	if (m_pObject2D != nullptr)
 	{// nullチェック
 		// サイズの拡大
-		SizeX += SizeXScaleSpeed;
-		SizeY += SizeYScaleSpeed;
+		m_SizeX += SizeXScaleSpeed;
+		m_SizeY += SizeYScaleSpeed;
 
-		if (SizeX >= SizeXScaleMax)
+		if (m_SizeX >= SizeXScaleMax)
 		{// Xサイズの最大
-			SizeX = SizeXScaleMax;
+			m_SizeX = SizeXScaleMax;
 		}
-		if (SizeY >= SizeYScaleMax)
+		if (m_SizeY >= SizeYScaleMax)
 		{// Yサイズの最大
-			SizeY = SizeYScaleMax;
+			m_SizeY = SizeYScaleMax;
 		}
 
 		// ウィンドウが最大値まで行ったら
-		if (SizeX >= SizeXScaleMax && SizeY >= SizeYScaleMax)
+		if (m_SizeX >= SizeXScaleMax && m_SizeY >= SizeYScaleMax)
 		{
 			CApplication::GetMenu()->SetDisplay(true);		// メニュー画面の表示
 			CTitle::SetWindow(true);						// ウィンドウを使用している状態にする
@@ -106,7 +106,7 @@ void CMenuWindow::MenuScale()
 		}
 
 		// サイズの設定
-		m_pObject2D->SetSize(D3DXVECTOR2(SizeX, SizeY));
+		m_pObject2D->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
 	}
 }
 
@@ -118,20 +118,20 @@ bool CMenuWindow::MenuScaleReduce()
 	if (m_pObject2D != nullptr)
 	{// nullチェック
 		// サイズの縮小
-		SizeX -= SizeXScaleSpeed;
-		SizeY -= SizeYScaleSpeed;
+		m_SizeX -= SizeXScaleSpeed;
+		m_SizeY -= SizeYScaleSpeed;
 
-		if (SizeX <= 0.0f)
+		if (m_SizeX <= 0.0f)
 		{// Xサイズの最小
-			SizeX = 0.0f;
+			m_SizeX = 0.0f;
 		}
-		if (SizeY <= 0.0f)
+		if (m_SizeY <= 0.0f)
 		{// Yサイズの最小
-			SizeY = 0.0f;
+			m_SizeY = 0.0f;
 		}
 
 		// ウィンドウが最小値まで行ったら
-		if (SizeX <= 0.0f && SizeY <= 0.0f)
+		if (m_SizeX <= 0.0f && m_SizeY <= 0.0f)
 		{
 			CTitleMenu::GetComfirmationWindow()->SetSapawnWindow(false);
 			if (CTitleMenu::GetComfirmationWindow()->GetSelectChoice() == true)
@@ -146,7 +146,7 @@ bool CMenuWindow::MenuScaleReduce()
 		}
 
 		// サイズの設定
-		m_pObject2D->SetSize(D3DXVECTOR2(SizeX, SizeY));
+		m_pObject2D->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
 	}
 	return false;
 }

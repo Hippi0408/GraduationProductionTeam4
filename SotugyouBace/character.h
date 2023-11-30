@@ -90,22 +90,22 @@ public:
 
 private:
 
-	D3DXMATRIX m_mtxWorld;					// ワールドマトリックス
-	D3DXVECTOR3 m_posOld;					// 過去の位置
-	D3DXVECTOR3 m_move;						// 移動量
-	D3DXVECTOR3 m_rot;						// 現在の角度
-	D3DXVECTOR3 m_rotDest;					// 目的の角度
+	D3DXMATRIX m_mtxWorld;				// ワールドマトリックス
+	D3DXVECTOR3 m_posOld;				// 過去の位置
+	D3DXVECTOR3 m_move;					// 移動量
+	D3DXVECTOR3 m_rot;					// 現在の角度
+	D3DXVECTOR3 m_rotDest;				// 目的の角度
 	D3DXVECTOR3 m_BulletRot;			// 弾を撃つ角度
 
-	D3DXCOLOR m_col;						// モデルの色
+	D3DXCOLOR m_col;					// モデルの色
 
-	bool m_bGround;							// 接地判定
+	bool m_bGround;						// 接地判定
 
-	int m_nLife;							// 体力
-	int m_nMaxLife;							// 最大体力
+	int m_nLife;						// 体力
+	int m_nMaxLife;						// 最大体力
 
-	float m_fSpeed;							// 移動速度
-	float m_fRotSpeed;						// 回転のスピード
+	float m_fSpeed;						// 移動速度
+	float m_fRotSpeed;					// 回転のスピード
 
 	bool m_bBoost;						// ブーストしているか
 	bool m_bJump_Boost;					// ジャンプブーストしているか
@@ -115,8 +115,8 @@ private:
 
 	bool m_bHit_Explosion;				// 爆発に当たったか
 
-	std::string m_name;						// 自身の名前
-	std::map<int, CParts*> m_Parts;			// パーツ情報のポインタ
+	std::string m_name;					// 自身の名前
+	std::map<int, CParts*> m_Parts;		// パーツ情報のポインタ
 
 	CGauge_Manager *m_pGaugeManager;	// ゲージマネージャー
 };

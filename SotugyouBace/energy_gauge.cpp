@@ -112,14 +112,14 @@ void CEnergy_Gauge::Fluctuation()
 {
 	if (m_bRecovery_Pause)
 	{
-		Pause_Count++;
+		m_Pause_Count++;
 
-		if (Pause_Count >= BasePause_Count)
+		if (m_Pause_Count >= m_BasePause_Count)
 		{
 			m_bRecovery_Pause = false;
 			m_bAllRecovery = true;		// 回復できない状態にする
 			m_bAllConsumption = false;	// エネルギーを全て消費した
-			Pause_Count = 0;
+			m_Pause_Count = 0;
 		}
 	}
 	else if (m_bAllConsumption && !m_bAllRecovery && !m_bRecovery_Pause)
@@ -246,13 +246,13 @@ void CEnergy_Gauge::GaugeColor()
 	if (!m_bAllRecovery && !m_bRecovery_Pause)
 	{
 		// 赤く点滅させる
-		Col_Count++;
-		float fRed = sinf(Col_Count * 0.07f);
+		m_Col_Count++;
+		float fRed = sinf(m_Col_Count * 0.07f);
 		m_BackGauge->SetCol({ fRed,0.0f,0.0f,1.0f });
 	}
 	else
 		// 点滅のリセット
-		Col_Count = 0;
+		m_Col_Count = 0;
 }
 
 //==============================================================================================
@@ -267,7 +267,7 @@ void CEnergy_Gauge::Recovery_Pause(int count)
 		m_bRecovery_Pause = true;	// 停止中
 
 		// 停止する時間
-		BasePause_Count = count;
+		m_BasePause_Count = count;
 	}
 }
 

@@ -21,18 +21,6 @@ class CBoss : public CEnemy
 	static const float BOSS_COLLISION_RADIUS;	// ボスの当たり判定の大きさ
 public:
 
-	// モデルの配置情報
-	enum Model
-	{
-		MODEL_BODY = 0,		// [0]体
-		MODEL_HEAD,			// [1]頭
-		MODEL_RIGHT_ARM,	// [2]右腕
-		MODEL_LEFT_ARM,		// [3]左腕
-		MODEL_RIGHT_LEG,	// [4]右脚
-		MODEL_LEFT_LEG,		// [5]左脚
-		MODEL_MAX,			// モデルの最大数
-	};
-
 	// パーツの種類
 	enum PARTS
 	{

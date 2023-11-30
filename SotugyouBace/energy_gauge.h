@@ -57,9 +57,9 @@ private:
 	bool m_bAllRecovery;			// 回復が出来る状態か
 	bool m_bAllConsumption;			// エネルギーを全て消費した
 	bool m_bRecovery_Pause;			// 回復の一時停止
-	int Col_Count;					// 点滅のカウント
-	int Pause_Count;				// 回復の一時停止中のカウント
-	int BasePause_Count;			// 回復の一時停止中のカウントのベース
+	int m_Col_Count;					// 点滅のカウント
+	int m_Pause_Count;				// 回復の一時停止中のカウント
+	int m_BasePause_Count;			// 回復の一時停止中のカウントのベース
 
 	CObject2D *m_BackGauge;		// ゲージの背景
 	CObject2D *m_FrontGauge;	// ゲージの前景
