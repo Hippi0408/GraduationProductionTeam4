@@ -33,9 +33,11 @@ public:
 
 	void Collision();
 	bool Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius);	// 円の当たり判定
+	bool Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold, const D3DXVECTOR3 size, const D3DXVECTOR3 otherpos, const D3DXVECTOR3 othersize);	// 矩形の当たり判定
 
 	static CCollision* Create(CMove_Object* pParent);
 
+	void SetNoneHit(const bool noneHit) { m_bNoneHit = noneHit; }
 	void SetParent(CMove_Object* parent) { m_pParent = parent; }
 
 	const bool GetDeath() { return m_bDeath; }		// 死亡フラグの取得
@@ -50,6 +52,7 @@ public:
 
 private:
 
+	bool m_bNoneHit;			// ヒット処理を読み込まない判定
 	bool m_bDeath;				// 死亡フラグ
 
 	CMove_Object* m_pParent;	// 親オブジェクト

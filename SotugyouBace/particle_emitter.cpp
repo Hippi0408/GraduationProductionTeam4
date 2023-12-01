@@ -144,9 +144,6 @@ void CParticleEmitter::Update()
 //
 void CParticleEmitter::CreateParticle(int index)
 {
-	float inclination = 0;
-	float azimuth = 0;
-
 	D3DXVECTOR3 velocity = m_particleInfo[m_particleIndex].velocity;
 	float radius = m_emitterInfo[index].radius;
 	float attenuation = m_particleInfo[m_particleIndex].moveAttenuation;

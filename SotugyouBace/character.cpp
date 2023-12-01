@@ -24,6 +24,9 @@ CCharacter::CCharacter(const CObject::PRIORITY priority) : CMove_Object(priority
 	// タグの設定
 	SetTag(TAG_CHARACTER);
 
+	// 当たり判定のタイプ
+	SetCollision_Type(CMove_Object::COLLISION_TYPE_SHERER);
+
 	m_fSpeed = CHARACTER_FIRST_MOVE_SPEED;
 	m_fRotSpeed = CHARACTER_ROT_SPEED;
 	m_bGround = false;
@@ -81,6 +84,10 @@ void CCharacter::Uninit()
 //============================================================================
 void CCharacter::Update()
 {
+	CMove_Object::Update();
+
+	SetPosOld(GetPos());
+
 	// 移動量の処理
 	Move();
 
@@ -306,12 +313,4 @@ void CCharacter::SetParts(const int charaParts, const int partsIndex, CMotion::M
 	{
 		m_Parts[charaParts] = CParts::Create(GetPos(), partsIndex, motion, this);
 	}
-	//else
-	//{
-	//	// パーツ変更処理(index, filename)
-	//	for (auto pParts : m_Parts[index]->GetModelAll())
-	//	{
-
-	//	}
-	//}
 }

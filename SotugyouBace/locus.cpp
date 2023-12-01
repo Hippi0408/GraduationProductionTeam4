@@ -149,21 +149,21 @@ void CLocus::Draw()
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// ƒJƒƒ‰‚Ì‹t—ñ‚ðÝ’è(ƒrƒ‹ƒ{[ƒh)
-	/*if (m_bBillboard)
+	if (m_bBillboard)
 	{
 		D3DXMATRIX mtxView;
 		pDevice->GetTransform(D3DTS_VIEW, &mtxView);
 
-		m_mtxWorld._11 = mtxView._11;
+		/*m_mtxWorld._11 = mtxView._11;
 		m_mtxWorld._12 = mtxView._21;
-		m_mtxWorld._13 = mtxView._31;
+		m_mtxWorld._13 = mtxView._31;*/
 		m_mtxWorld._21 = mtxView._12;
 		m_mtxWorld._22 = mtxView._22;
 		m_mtxWorld._23 = mtxView._32;
-		m_mtxWorld._31 = mtxView._13;
+		/*m_mtxWorld._31 = mtxView._13;
 		m_mtxWorld._32 = mtxView._23;
-		m_mtxWorld._33 = mtxView._33;
-	}*/
+		m_mtxWorld._33 = mtxView._33;*/
+	}
 
 	//Šp“x‚ð”½‰f
 	//D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.x, m_rot.y, m_rot.z);

@@ -15,21 +15,19 @@ public:
 	CExplosion(const PRIORITY priority);
 	~CExplosion();
 
-	HRESULT Init() override;
-	void Uninit() override;
-	void Update() override;
-	void Draw() override;
+	virtual HRESULT Init() override;
+	virtual void Uninit() override;
+	virtual void Update() override;
+	virtual void Draw() override;
 
 	void Hit(CMove_Object* pHit) override;
 
-	static CExplosion *Create(D3DXVECTOR3 pos, float radius, int power, const bool side, const CObject::PRIORITY priority);
-
+	void SetPower(const int power) { m_nPower = power; }
 	const int GetPower() override { return m_nPower; }		// �З͂̎擾
 
 private:
 	int m_nPower;
 	int m_nContinuation;
-	bool m_bHit;
 };
 
 #endif // !_EXPLOSION_H_

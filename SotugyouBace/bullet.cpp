@@ -17,7 +17,7 @@
 #include "objectX.h"
 #include "particle_emitter.h"
 #include "tutorial.h"
-#include "explosion.h"
+#include "normal_explosion.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -51,6 +51,12 @@ HRESULT CBullet::Init()
 {
 	// タグの設定
 	SetTag(TAG_BULLET);
+
+	// 当たり判定のタイプ
+	SetCollision_Type(CMove_Object::COLLISION_TYPE_SHERER);
+
+	// サイズの設定
+	CMove_Object::SetSize({ GetRadius(),GetRadius(),GetRadius() });
 
 	// オブジェクト3Dの初期化処理
 	CMove_Object::Init();
@@ -90,18 +96,22 @@ void CBullet::Uninit()
 //=============================================================================
 void CBullet::Update()
 {
+	CMove_Object::Update();
+
 	// 取得
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 move = GetMove();
 	D3DXVECTOR2 size = GetSize();
 
+	//前回の位置を保存
+	m_nPosOld = pos;
+
+	SetPosOld(m_nPosOld);
+
 	//弾の位置更新
 	pos.x += move.x * m_fSpeed_XZ;
 	pos.z += move.z * m_fSpeed_XZ;
 	pos.y += move.y * m_fSpeed_Y;
-
-	//前回の位置を保存
-	m_nPosOld = pos;
 
 	// 位置の設定
 	SetPos(pos);
@@ -127,7 +137,6 @@ void CBullet::Update()
 
 	// 床の当たり判定
 	FieldCollision();
-
 }
 
 //=============================================================================
@@ -163,12 +172,6 @@ void CBullet::FieldCollision()
 		{
 			//pMeshField->Ground_Broken(pos, 50.0f, 5);
 
-			if (m_bExplosion)
-			{
-				// 着弾時の爆発
-				CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
-			}
-
 			// 弾を破壊する
 			Destroy();
 		}
@@ -183,12 +186,6 @@ void CBullet::Hit(CMove_Object* pHit)
 	// 弾では無い場合 && 同じサイドではない場合
 	if (pHit->GetTag() == TAG_CHARACTER && GetPlayerSide() != pHit->GetPlayerSide())
 	{
-		if (m_bExplosion)
-		{
-			// 着弾時の爆発
-			CExplosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
-		}
-
 		Destroy();
 	}
 }
@@ -198,6 +195,12 @@ void CBullet::Hit(CMove_Object* pHit)
 //=============================================================================
 void CBullet::Destroy()
 {
+	if (m_bExplosion)
+	{
+		// 着弾時の爆発
+		CNormal_Explosion::Create(GetPos(), 500, 70, GetPlayerSide(), CObject::PRIORITY_BACK);
+	}
+
 	// 攻撃パーティクル
 	std::move(CParticleEmitter::Create("Attack", GetPos()));
 

@@ -27,7 +27,8 @@
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
-CObject2D* CCharDecision_Window::m_pObject2D[MAX_TEXTURE] = {};
+const float CCharDecision_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
+const float CCharDecision_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 
 //============================================================================
 // コンストラクタ
@@ -51,17 +52,22 @@ HRESULT CCharDecision_Window::Init()
 	//==================================================
 	// メンバ変数の初期化
 	//==================================================  
-	m_nSelectChoice = 0;
+	m_nSelectIndex = 0;
+	index = 0;
 	m_SizeX = 0.0f;
 	m_SizeY = 0.0f;
+	m_fMoveX = 50.0f;
 	m_bScale = false;
 	m_bMaxSize = false;
 	m_bUninitFlag = false;
 	m_bFontFlag = false;
-	m_bSpawnWindow = false;
 	m_bDecition = false;
-	m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
-	m_pObject2D[0]->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
+	m_bDisplay = false;
+	m_bStopFlag = false;
+	m_bPosDest = false;
+	m_bExplanationUninit = false;
+	m_pWindow = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
+	m_pWindow->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
 
 	return S_OK;
 }
@@ -72,13 +78,10 @@ HRESULT CCharDecision_Window::Init()
 void CCharDecision_Window::Uninit()
 {
 	//メンバ変数の初期化
-	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
+	if (m_pWindow != nullptr)
 	{
-		if (m_pObject2D[nCnt] != nullptr)
-		{
-			m_pObject2D[nCnt]->Uninit();
-			m_pObject2D[nCnt] = nullptr;
-		}
+		m_pWindow->Uninit();
+		m_pWindow = nullptr;
 	}
 }
 
@@ -97,24 +100,17 @@ void CCharDecision_Window::Update()
 		CharDecisionMenuScale();
 	}
 
-	if (pInput->Trigger(DIK_RETURN) && CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+	if (pInput->Trigger(DIK_RETURN)
+		&& m_bMaxSize == true
+		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
-		CFade::SetFade(CApplication::MODE_GAME, 0.05f);
+		UninitExplanation();				// フォントの削除
+		// 画面遷移
+		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
 	}
-	if (pInput->Trigger(DIK_SPACE))
-	{
-		UninitFont();
-		m_bUninitFlag = true;
-	}
-	if (m_bUninitFlag == true)
-	{
-		CharDecisionMenuScaleReduce();
-	}
-	if (m_bCreateFlag == true)
-	{
-		CChar_Select::GetConfimationWindow()->GetCharSelect()->SetScale(false);
-		m_bCreateFlag = false;
-	}
+
+	// キャラの変更処理
+	CharSelectChoice();
 }
 
 //============================================================================
@@ -141,6 +137,15 @@ void CCharDecision_Window::CharDecisionMenuScale()
 			m_SizeY = m_MaxSizeY;
 		}
 
+		//// 拡大スキップ
+		//if (pInput->Trigger(DIK_RETURN) && m_bMaxSize == false)
+		//{
+		//	m_SizeX = m_MaxSizeX;
+		//	m_SizeY = m_MaxSizeY;
+		//	// サイズの設定
+		//	m_pWindow->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		//}
+
 		// ウィンドウが最大値まで行ったら
 		if (m_SizeX >= m_MaxSizeX && m_SizeY >= m_MaxSizeY && m_bMaxSize == false)
 		{
@@ -151,15 +156,11 @@ void CCharDecision_Window::CharDecisionMenuScale()
 				pInput->SetKeyLock(100);
 			}
 
-			if (m_pObject2D[1] == nullptr)
+			if (m_bUninitFlag == false && m_bScale == true)
 			{
-				m_pObject2D[1] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(700.0f, 250.0f), CObject::PRIORITY_SCREEN);
-				m_pObject2D[1]->SetTexture(CTexture::TEXTURE_FONT_JAPANESE);
-			}
-			if (m_pObject2D[2] == nullptr)
-			{
-				m_pObject2D[2] = CObject2D::Create(D3DXVECTOR3(500.0f, 250.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
-				m_pObject2D[2]->SetTexture(CTexture::TEXTURE_FLOOR);
+				m_bMaxSize = true;
+				m_bFontFlag = false;
+				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(m_nSelectIndex);
 			}
 
 			m_bMaxSize = true;
@@ -168,43 +169,94 @@ void CCharDecision_Window::CharDecisionMenuScale()
 		}
 
 		// サイズの設定
-		m_pObject2D[0]->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		m_pWindow->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
 	}
 }
 
-//============================================================================
-// ウィンドウの縮小処理
-//============================================================================
-bool CCharDecision_Window::CharDecisionMenuScaleReduce()
+//=============================================================================
+// 選択肢の処理
+//=============================================================================
+void CCharDecision_Window::CharSelectChoice()
 {
-	if (m_pObject2D != nullptr)
-	{// nullチェック
+	// 入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
 
-	 // サイズの縮小
-		m_SizeX -= SizeXScaleSpeed;
-		m_SizeY -= SizeYScaleSpeed;
+	D3DXVECTOR3 pos = m_pWindow->GetPos();
 
-		if (m_SizeX <= 0.0f)
-		{// Xサイズの最小
-			m_SizeX = 0.0f;
-		}
-		if (m_SizeY <= 0.0f)
-		{// Yサイズの最小
-			m_SizeY = 0.0f;
-		}
-
-		// ウィンドウが最小値まで行ったら
-		if (m_SizeX <= 0.0f && m_SizeY <= 0.0f)
+	// フェード中では無い場合 && 表示中の場合
+	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+	{
+		// 左に移動する
+		if (pInput->Trigger(DIK_A) && m_bStopFlag == false || (pInput->Trigger(JOYPAD_UP, m_nMenuInitiative)) && m_bStopFlag == false)
 		{
-			m_bCreateFlag = true;
-			m_bSpawnWindow = true;
+			index = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
+			index--;
+			m_bUninitFlag = true;
+			m_bDecition = false;
+			m_bPosDest = false;
+			m_bStopFlag = true;
+			// 選択SE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 
-			return true;
 		}
-		// サイズの設定
-		m_pObject2D[0]->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		// 下に移動する
+		else if (pInput->Trigger(DIK_D) && m_bStopFlag == false || (pInput->Trigger(JOYPAD_DOWN, m_nMenuInitiative)) && m_bStopFlag == false)
+		{
+			index = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
+			index++;
+			m_bUninitFlag = true;
+			m_bDecition = true;
+			m_bPosDest = false;
+			m_bStopFlag = true;
+			// 選択SE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
+		}
 	}
-	return false;
+
+	if (m_bUninitFlag == true)
+	{
+		// 左移動
+		if (m_bDecition == false)
+		{
+			m_bExplanationUninit = true;
+			UninitExplanation();				// フォントの削除
+			pos.x -= m_fMoveX;
+			if (pos.x <= -SCREEN_WIDTH / 2 && m_bPosDest == false)
+			{
+				pos.x = 1920.0f;
+				m_bPosDest = true;
+			}
+			if (pos.x <= SCREEN_WIDTH / 2 && m_bPosDest == true)
+			{
+				pos.x = SCREEN_WIDTH / 2;
+				m_bFontFlag = false;
+				m_bStopFlag = false;
+				m_bExplanationUninit = false;
+				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(index);
+			}
+		}
+		// 右移動
+		else
+		{
+			m_bExplanationUninit = true;
+			UninitExplanation();				// フォントの削除
+			pos.x += m_fMoveX;
+			if (pos.x >= 1920.0f && m_bPosDest == false)
+			{
+				pos.x = -SCREEN_WIDTH / 2;
+				m_bPosDest = true;
+			}
+			if (pos.x >= SCREEN_WIDTH / 2 && m_bPosDest == true)
+			{
+				pos.x = SCREEN_WIDTH / 2;
+				m_bFontFlag = false;
+				m_bStopFlag = false;
+				m_bExplanationUninit = false;
+				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(index);
+			}
+		}
+		m_pWindow->SetPos(pos);
+	}
 }
 
 //============================================================================
@@ -224,21 +276,37 @@ void CCharDecision_Window::SetFont(const std::string lette[])
 }
 
 //============================================================================
-// フォントの破棄処理
+// テクスチャの設定処理
 //============================================================================
-void CCharDecision_Window::UninitFont()
+void CCharDecision_Window::SetTextue(CTexture::TEXTURE texture, CTexture::TEXTURE texture1)
 {
+	if (m_pObject2D[0] == nullptr)
+	{
+		m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(700.0f, 250.0f), CObject::PRIORITY_SCREEN);
+		m_pObject2D[0]->SetTexture(texture1);
+	}
+	if (m_pObject2D[1] == nullptr)
+	{
+		m_pObject2D[1] = CObject2D::Create(D3DXVECTOR3(500.0f, 250.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
+		m_pObject2D[1]->SetTexture(texture);
+	}
+}
 
+//============================================================================
+// 説明用テクスチャ、フォントの破棄処理
+//============================================================================
+void CCharDecision_Window::UninitExplanation()
+{
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
-		if (m_pFont != nullptr)
+		if (m_pFont[nCnt] != nullptr)
 		{
 			m_pFont[nCnt]->Uninit();
 			m_pFont[nCnt] = nullptr;
 		}
 	}
 
-	for (int nCnt = 1; nCnt < MAX_TEXTURE; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
 		if (m_pObject2D[nCnt] != nullptr)
 		{
