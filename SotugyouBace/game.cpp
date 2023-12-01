@@ -38,6 +38,7 @@
 //==============================================================================================
 // 静的メンバ変数宣言
 //==============================================================================================
+CPlayerUi* CGame::m_pPlayer_UI[CPlayerUi::UITYPE_MAX] = {};
 CConfirmation_Window* CGame::m_pConfirmationWindow = nullptr;
 CPlayerManager* CGame::m_pPlayerManager = nullptr;
 CEnemyManager* CGame::m_pEnemyManager = nullptr;
@@ -82,6 +83,11 @@ HRESULT CGame::Init()
 	// 全てのモデルパーツの読み込み
 	CApplication::GetMotion()->LoadAllFile();
 
+	// プレイヤーUIの生成
+	m_pPlayer_UI[CPlayerUi::UITYPE_SUPPORT] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_SUPPORT, CObject::PRIORITY_CENTER);
+	m_pPlayer_UI[CPlayerUi::UITYPE_ATTACK] = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_ATTACK, CObject::PRIORITY_CENTER);
+	m_pPlayer_UI[CPlayerUi::UITYPE_WEAPON] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_WEAPON, CObject::PRIORITY_CENTER);
+
 	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
@@ -116,11 +122,6 @@ HRESULT CGame::Init()
 
 	// メッシュフィールドの生成
 	m_pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
-
-	// プレイヤーUIの生成
-	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f),CPlayerUi::UITYPE_ONE,CObject::PRIORITY_CENTER);
-	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_TWO, CObject::PRIORITY_CENTER);
-	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_THREE, CObject::PRIORITY_CENTER);
 
 	// ポーズ画面
 	m_pPause = CPause::Create();
@@ -191,6 +192,16 @@ void CGame::Uninit()
 		m_pConfirmationWindow->Uninit();
 		delete m_pConfirmationWindow;
 		m_pConfirmationWindow = nullptr;
+	}
+
+	// プレイヤーUIの終了処理
+	for (int nCnt = 0; nCnt < CPlayerUi::UITYPE_MAX; nCnt++)
+	{
+		if (m_pPlayer_UI[nCnt] != nullptr)
+		{
+			m_pPlayer_UI[nCnt]->Uninit();
+			m_pPlayer_UI[nCnt] = nullptr;
+		}
 	}
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
@@ -386,6 +397,14 @@ void CGame::MenuWindow()
 		delete m_pConfirmationWindow;
 		m_pConfirmationWindow = nullptr;
 	}
+}
+
+//==============================================================================================
+// プレイヤーUIテクスチャの設定
+//==============================================================================================
+void CGame::SetPlayerUI(const int index, const int type)
+{
+	//m_pPlayer_UI[index]->SetTexture();
 }
 
 //==============================================================================================

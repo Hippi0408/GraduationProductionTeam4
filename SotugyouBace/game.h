@@ -9,6 +9,7 @@
 #define	_GAME_H_
 
 #include"mode.h"
+#include"player_ui.h"
 #include <vector>
 
 // 前方宣言
@@ -25,7 +26,6 @@ class CFontString;
 class CMenuWindow;
 class CConfirmation_Window;
 class CEnergy_Gauge;
-class CPlayerUi;
 class CPause;
 
 class CGame : public CMode
@@ -44,6 +44,7 @@ public:
 	void GameEnd();
 	void MenuWindow();
 
+	static void SetPlayerUI(const int index, const int type);
 	static void SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random = false);
 	static void SetGameEnd();
 
@@ -68,8 +69,8 @@ private:
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
-	CPlayerUi* m_pPlayerUI;
-	
+
+	static CPlayerUi* m_pPlayer_UI[CPlayerUi::UITYPE_MAX];
 	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;

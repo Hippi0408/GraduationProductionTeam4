@@ -77,7 +77,6 @@ public:
 	void DropGet(CDrop_Weapon* pDrop);		// —‚Æ‚µ•¨‚ğ“üè‚·‚éˆ—
 
 	void CollisionDropWeapon();			// —‚¿‚Ä‚é•Ší‚Ì“–‚½‚è”»’è
-	void ChangeWeapon(const int weapon);
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }

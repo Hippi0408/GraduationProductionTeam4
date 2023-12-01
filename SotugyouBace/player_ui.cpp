@@ -43,15 +43,15 @@ HRESULT CPlayerUi::Init()
 	// UIの種類
 	switch (m_Type)
 	{
-	case CPlayerUi::UITYPE_ONE:
+	case CPlayerUi::UITYPE_SUPPORT:
 		SetTexPos(0.0f, 1.0f, 0.33f, 0.0f);
 		SetData(1150.0f, 75.0f,100.0f,100.0f, CTexture::TEXTURE_BULLET);
 		break;
-	case CPlayerUi::UITYPE_TWO:
+	case CPlayerUi::UITYPE_ATTACK:
 		SetTexPos(0.0f, 1.0f, 0.66f, 0.33f);
 		SetData(150.0f, 75.0f, 100.0f, 100.0f, CTexture::TEXTURE_FLOOR);
 		break;
-	case CPlayerUi::UITYPE_THREE:
+	case CPlayerUi::UITYPE_WEAPON:
 		SetTexPos(0.0f, 1.0f, 1.0f, 0.66f);
 		SetData(1150.0f, 660.0f, 100.0f, 100.0f, CTexture::TEXTURE_NONE);
 		break;
@@ -112,12 +112,12 @@ void CPlayerUi::SetAlpha()
 	// インプットの取得
 	CInput* pInput = CInput::GetKey();
 
-	if (pInput->Trigger(DIK_E) && m_Type == CPlayerUi::UITYPE_ONE)
+	if (pInput->Trigger(DIK_E) && m_Type == CPlayerUi::UITYPE_SUPPORT)
 	{
 		m_bFlag = true;
 		m_bAlphaFlag = true;
 	}
-	if (pInput->Trigger(DIK_Q) && m_Type == CPlayerUi::UITYPE_TWO)
+	if (pInput->Trigger(DIK_Q) && m_Type == CPlayerUi::UITYPE_ATTACK)
 	{
 		m_bFlag = true;
 		m_bAlphaFlag = true;

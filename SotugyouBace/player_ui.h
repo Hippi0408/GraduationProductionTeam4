@@ -29,9 +29,9 @@ public:
 
 	enum UITYPE
 	{
-		UITYPE_ONE = 0,			// スキル1
-		UITYPE_TWO,				// スキル2
-		UITYPE_THREE,			// スキル3
+		UITYPE_SUPPORT = 0,		// サポートスキル
+		UITYPE_ATTACK,			// アタックスキル
+		UITYPE_WEAPON,			// 武器情報
 		UITYPE_MAX
 	};
 	CPlayerUi(const PRIORITY priority);
@@ -67,4 +67,4 @@ private:
 	bool m_bFlag;				// スキルが使用されたか
 };
 
-#endif // !_FONT_H
+#endif // !_PLAYER_UI_H

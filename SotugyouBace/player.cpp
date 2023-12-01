@@ -622,7 +622,7 @@ void CPlayer::DropGet(CDrop_Weapon* pDrop)
 	else
 	{
 		// 武器パーツの変更処理
-		ChangeWeapon(nWeapon - CDrop_Weapon::WEAPON_NONE);
+		SetWeapon(nWeapon - CDrop_Weapon::WEAPON_NONE);
 	}
 
 	// 落とし物の終了処理
@@ -700,25 +700,43 @@ void CPlayer::CollisionDropWeapon()
 }
 
 //============================================================================
-// 武器の変更
-//============================================================================
-void CPlayer::ChangeWeapon(const int weapon)
-{
-	// 右手(腕[3])に武器を変更
-	m_pRightWeapon->ChangeWeapon(weapon);
-
-	// 左手(腕[6])に素手を設定
-	m_pLeftWeapon->ChangeWeapon(CWeapon::WEAPON_NONE);
-}
-
-//============================================================================
 // 武器の設定
 //============================================================================
 void CPlayer::SetWeapon(const int weapon)
 {
-	// 右手(腕[3])に武器を設定
-	m_pRightWeapon = CWeapon::Create({0.0f, 0.0f, 0.0f}, (CWeapon::WEAPON_TYPE)weapon, GetParts(PARTS_ARMS)->GetModel(3));
+	// 右手が使用されていない場合
+	if (m_pRightWeapon == nullptr)
+	{
+		// 右手(腕[3])に武器を設定
+		m_pRightWeapon = CWeapon::Create({ 0.0f, 0.0f, 0.0f }, (CWeapon::WEAPON_TYPE)weapon, GetParts(PARTS_ARMS)->GetModel(3));
+	}
+	else
+	{	// 右手(腕[3])に武器を変更
+		m_pRightWeapon->ChangeWeapon(weapon);
+	}
 
-	// 左手(腕[6])に素手を設定
-	m_pLeftWeapon = CWeapon::Create({ 0.0f, 0.0f, 0.0f }, CWeapon::WEAPON_NONE, GetParts(PARTS_ARMS)->GetModel(6));
+	// 左手が使用されていない場合
+	if (m_pLeftWeapon == nullptr)
+	{
+		// 左手(腕[6])に素手を設定
+		m_pLeftWeapon = CWeapon::Create({ 0.0f, 0.0f, 0.0f }, CWeapon::WEAPON_NONE, GetParts(PARTS_ARMS)->GetModel(6));
+	}
+	else
+	{
+		// 左手(腕[6])に素手を設定
+		m_pLeftWeapon->ChangeWeapon(CWeapon::WEAPON_NONE);
+	}
+
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	/*if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		CTutorial::GetEnemyManager()->SetEnemy(this);
+	}
+	else*/ if (Mode == CApplication::MODE_GAME)
+	{
+		CGame::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);
+	}
 }

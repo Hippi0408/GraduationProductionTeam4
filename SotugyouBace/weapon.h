@@ -28,6 +28,17 @@ public:
 		WEAPON_MAX			// 最大値
 	};
 
+	// パラメーター
+	struct PARAMETERS
+	{
+		int m_nPower;					// 威力
+		int m_nGravity;					// 重量
+		float m_fInterval;				// 攻撃間隔
+
+										//Skill m_skill;					// スキルタイプ
+	};
+
+
 	CWeapon(const CObject::PRIORITY priority = CObject::PRIORITY_MODEL);
 	virtual ~CWeapon() override;
 
@@ -43,9 +54,10 @@ public:
 	void SetType(const int type) { m_nWeaponType = type; }
 
 private:
-	static const char* m_cWeaponFileName[WEAPON_MAX];	// ファイル名
+	static const char* m_cWeaponFileName[WEAPON_MAX];		// 武器のファイル名
+	static const PARAMETERS m_WeaponPaeameters[WEAPON_MAX];	// 武器のパラメーター情報
 
 	int m_nWeaponType;	// 武器の種類
 };
 
-#endif// _PARTS_H_
+#endif// _WEAPON_H_
