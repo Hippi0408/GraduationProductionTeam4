@@ -21,11 +21,13 @@ public:
 
 	enum WEAPON_TYPE
 	{
-		WEAPON_NONE = 0,	// 素手
-		WEAPON_KNIFE,		// ナイフ
-		WEAPON_HAMMER,		// ハンマー
-		WEAPON_SCYTHE,		// 鎌
-		WEAPON_MAX			// 最大値
+		WEAPON_KNUCKLE = 0,		// 素手
+
+		WEAPON_SLASH_KNIFE,		// ナイフ
+		WEAPON_SLASH_HAMMER,	// ハンマー
+		WEAPON_SLASH_SCYTHE,	// 鎌
+
+		WEAPON_MAX				// 最大値
 	};
 
 	// パラメーター

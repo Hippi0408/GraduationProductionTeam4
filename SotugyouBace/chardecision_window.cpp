@@ -107,6 +107,9 @@ void CCharDecision_Window::Update()
 		UninitExplanation();				// フォントの削除
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
+
+		// プレイヤーのジョブ番号の設定
+		CApplication::SetPlayerJobIndex(CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice());
 	}
 
 	// キャラの変更処理

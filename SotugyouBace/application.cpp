@@ -55,6 +55,7 @@ CParticleManager* CApplication::m_pParticleManager = nullptr;
 
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
+int CApplication::m_nPlayerJobIndex = 0;
 
 #ifdef _DEBUG
 CDebugProc *CApplication::m_pDebugProc = nullptr;

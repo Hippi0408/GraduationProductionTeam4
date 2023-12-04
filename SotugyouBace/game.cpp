@@ -34,6 +34,7 @@
 #include "parts_file.h"
 #include "motion.h"
 #include "map.h"
+#include "weapon.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -98,8 +99,11 @@ HRESULT CGame::Init()
 	pWeaponDummer->LoadAllFile();
 	pWeaponDummer->Uninit();
 
+	// プレイヤーのジョブ番号
+	int nJob_Index = CApplication::GetPlayerJobIndex() % 3;
+
 	// プレイヤーの生成(テスト)
-	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
@@ -253,22 +257,6 @@ void CGame::Update()
 			{
 				nKey = 3;
 			}
-
-			if (nKey >= 0)
-			{
-				CPlayer* pPlayer = m_pPlayerManager->GetPlayer(nKey);
-
-				if (pPlayer == nullptr)
-				{
-					// プレイヤーの生成
-					m_pPlayerManager->SetPlayer({ -300.0f + (200.0f * nKey), 0.0f, 0.0f }, CPlayerManager::TYPE_PC, nKey);
-				}
-				else
-				{
-					// 50ダメージ
-					pPlayer->Damage(10);
-				}
-			}
 		}
 		// LShiftキー無しの場合
 		else
@@ -404,7 +392,32 @@ void CGame::MenuWindow()
 //==============================================================================================
 void CGame::SetPlayerUI(const int index, const int type)
 {
-	//m_pPlayer_UI[index]->SetTexture();
+	// テクスチャ番号
+	int nTexNumber = 0;
+
+	if (index == CPlayerUi::UITYPE_SUPPORT)
+	{
+		// サポートスキルの最低値 + 自身の番号を設定
+		nTexNumber = CTexture::TEXTURE_SKILL_RUSH + type;
+	}
+	else
+	{
+		// 近接武器の最低値より大きい場合
+		if (type >= CWeapon::WEAPON_SLASH_KNIFE)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_ATTACK_SKILL_SLASH;
+		}
+		// 素手の最低値より大きい場合
+		else
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_KNUCKLE;
+		}
+	}
+
+	// スキル画像の設定
+	m_pPlayer_UI[index]->GetSkillUI()->SetTexture((CTexture::TEXTURE)nTexNumber);
 }
 
 //==============================================================================================

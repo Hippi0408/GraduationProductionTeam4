@@ -238,9 +238,6 @@
     <ClCompile Include="diffusion_bullet.cpp">
       <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="weapon_ui.cpp">
-      <Filter>04_Object\ObjectX</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -483,9 +480,6 @@
     </ClInclude>
     <ClInclude Include="diffusion_bullet.h">
       <Filter>04_Object\MoveObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="weapon_ui.h">
-      <Filter>04_Object\ObjectX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -165,7 +165,7 @@ void CPlayerUi::SetAlpha()
 		}
 
 		// “§–¾“x‚ÌÝ’è
-		m_pObject2D->SetAlpha(m_Alpha);
+		m_pSkill_UI->SetAlpha(m_Alpha);
 		CObject2D::SetAlpha(m_Alpha);
 	}
 }
@@ -190,7 +190,7 @@ void CPlayerUi::SetColor()
 	}
 
 	// F‚ÌÝ’è
-	m_pObject2D->SetCol(D3DXCOLOR(1.0f, m_Color, m_Color, 1.0f));
+	m_pSkill_UI->SetCol(D3DXCOLOR(1.0f, m_Color, m_Color, 1.0f));
 	CObject2D::SetCol(D3DXCOLOR(1.0f, m_Color, m_Color, 1.0f));
 }
 
@@ -199,8 +199,8 @@ void CPlayerUi::SetColor()
 //==============================================
 void CPlayerUi::SetData(float posX, float posY, float sizeX, float sizeY, CTexture::TEXTURE texture)
 {
-	m_pObject2D = CObject2D::Create(D3DXVECTOR3(posX, posY, 0.0f), D3DXVECTOR2(sizeX, sizeY), CObject::PRIORITY_BACK);
-	m_pObject2D->SetTexture(texture);
+	m_pSkill_UI = CObject2D::Create(D3DXVECTOR3(posX, posY, 0.0f), D3DXVECTOR2(sizeX, sizeY), CObject::PRIORITY_BACK);
+	m_pSkill_UI->SetTexture(texture);
 }
 
 //==============================================

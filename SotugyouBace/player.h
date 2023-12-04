@@ -56,6 +56,20 @@ public:
 		MOTION_MAX,
 	};
 
+	// ジョブの種種類
+	enum JOB
+	{
+		JOB_RUSH = 0,	// ラッシュ
+		JOB_VANGUARD,	// ヴァンガード
+		JOB_EAGLEEYE,	// イーグルアイ
+		JOB_MARSHALL,	// マーシャル
+		JOB_MECHANIC,	// メカニック
+		JOB_RAIDER,		// レイダー
+		JOB_ARKPHILIA,	// アークフィリア
+		JOB_CONTROL,	// コントロール
+		JOB_MAX
+	};
+
 	CPlayer();
 	virtual ~CPlayer() override;
 
@@ -81,7 +95,9 @@ public:
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
-	void SetWeapon(const int weapon);
+	void SetJobIndex(const int index) { m_Job = (JOB)index; }
+	void SetPlayerParts(const PARTS parts, const int weapon);
+	void SetPlayerWeapon(const int weapon);
 
 	const bool GetDropContact() { return m_bDrop_Contact; }
 	const int GetCharaIndex() { return m_nCharaIndex; }
@@ -110,7 +126,8 @@ private:
 	int m_nEnemy_Count;
 	float m_fEnemy_Speed;
 	float m_fAngle;
-	CEnemy *m_pEnemy;
+
+	JOB m_Job;		// プレイヤーのジョブ種類
 };
 
 #endif// _PLAYER_H_

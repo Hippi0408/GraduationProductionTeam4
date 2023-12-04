@@ -49,10 +49,12 @@ public:
 	UITYPE GetType() { return m_Type; }
 	void SetType(UITYPE type) { m_Type = type; }
 
+	CObject2D* GetSkillUI() { return m_pSkill_UI; }	// スキル画像のUIの取得
+
 	static CPlayerUi* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, UITYPE type, const PRIORITY priority);
 
 private:
-	CObject2D* m_pObject2D;		// object2Dのインスタンス
+	CObject2D* m_pSkill_UI;		// スキル画像のUI
 	UITYPE m_Type;				// スキルの種類
 
 	int m_AlphaCount;			// 半透明の時間
