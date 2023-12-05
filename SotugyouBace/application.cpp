@@ -29,6 +29,7 @@
 #include "tutorial.h"
 #include "confirmation_window.h"
 #include "parts_file.h"
+#include "connect.h"
 #include <time.h>
 
 #ifdef _DEBUG
@@ -52,7 +53,7 @@ CFade* CApplication::m_pFade = nullptr;
 CMenu* CApplication::m_pMenu = nullptr;
 CParts_File* CApplication::m_pPartsFile = nullptr;
 CParticleManager* CApplication::m_pParticleManager = nullptr;
-
+CClient*CApplication::m_pClient = nullptr;
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
 int CApplication::m_nPlayerJobIndex = 0;
@@ -90,7 +91,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	m_pLight = new CLight;							// ライトの生成
 	m_pCamera = new CCamera;						// カメラの生成
 	m_pPartsFile = new CParts_File;					// パーツファイルの生成
-
+	//m_pClient = new CClient;						// サーバーのコネクター
 	//入力処理
 	m_pInput = CInput::Create();
 	//入力処理の初期化処理
@@ -256,6 +257,13 @@ void CApplication::Uninit()
 		delete m_pParticleManager;
 		m_pParticleManager = nullptr;
 	}
+	//// サーバーの破棄
+	//if (m_pClient != nullptr)
+	//{
+	//	m_pClient->Uninit();
+	//	delete m_pClient;
+	//	m_pClient = nullptr;
+	//}
 }
 
 //==============================================================================================
