@@ -34,10 +34,13 @@
 #include "parts_file.h"
 #include "motion.h"
 #include "map.h"
+#include "weapon.h"
+#include "connect.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
 //==============================================================================================
+CPlayerUi* CGame::m_pPlayer_UI[CPlayerUi::UITYPE_MAX] = {};
 CConfirmation_Window* CGame::m_pConfirmationWindow = nullptr;
 CPlayerManager* CGame::m_pPlayerManager = nullptr;
 CEnemyManager* CGame::m_pEnemyManager = nullptr;
@@ -82,6 +85,11 @@ HRESULT CGame::Init()
 	// 全てのモデルパーツの読み込み
 	CApplication::GetMotion()->LoadAllFile();
 
+	// プレイヤーUIの生成
+	m_pPlayer_UI[CPlayerUi::UITYPE_SUPPORT] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_SUPPORT, CObject::PRIORITY_CENTER);
+	m_pPlayer_UI[CPlayerUi::UITYPE_ATTACK] = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_ATTACK, CObject::PRIORITY_CENTER);
+	m_pPlayer_UI[CPlayerUi::UITYPE_WEAPON] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_WEAPON, CObject::PRIORITY_CENTER);
+
 	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
@@ -92,8 +100,11 @@ HRESULT CGame::Init()
 	pWeaponDummer->LoadAllFile();
 	pWeaponDummer->Uninit();
 
+	// プレイヤーのジョブ番号
+	int nJob_Index = CApplication::GetPlayerJobIndex() % 3;
+
 	// プレイヤーの生成(テスト)
-	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
+	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
@@ -116,11 +127,6 @@ HRESULT CGame::Init()
 
 	// メッシュフィールドの生成
 	m_pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
-
-	// プレイヤーUIの生成
-	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f),CPlayerUi::UITYPE_ONE,CObject::PRIORITY_CENTER);
-	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_TWO, CObject::PRIORITY_CENTER);
-	m_pPlayerUI = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_THREE, CObject::PRIORITY_CENTER);
 
 	// ポーズ画面
 	m_pPause = CPause::Create();
@@ -193,6 +199,16 @@ void CGame::Uninit()
 		m_pConfirmationWindow = nullptr;
 	}
 
+	// プレイヤーUIの終了処理
+	for (int nCnt = 0; nCnt < CPlayerUi::UITYPE_MAX; nCnt++)
+	{
+		if (m_pPlayer_UI[nCnt] != nullptr)
+		{
+			m_pPlayer_UI[nCnt]->Uninit();
+			m_pPlayer_UI[nCnt] = nullptr;
+		}
+	}
+
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
 
@@ -241,22 +257,6 @@ void CGame::Update()
 			if (pInput->Trigger(DIK_4))
 			{
 				nKey = 3;
-			}
-
-			if (nKey >= 0)
-			{
-				CPlayer* pPlayer = m_pPlayerManager->GetPlayer(nKey);
-
-				if (pPlayer == nullptr)
-				{
-					// プレイヤーの生成
-					m_pPlayerManager->SetPlayer({ -300.0f + (200.0f * nKey), 0.0f, 0.0f }, CPlayerManager::TYPE_PC, nKey);
-				}
-				else
-				{
-					// 50ダメージ
-					pPlayer->Damage(10);
-				}
 			}
 		}
 		// LShiftキー無しの場合
@@ -314,6 +314,24 @@ void CGame::Update()
 			}*/
 		}
 #endif
+
+		////オンラインの送信
+		//if (CApplication::GetClient()->GetIsConnect())
+		//{
+		//	CModelData::SSendEnemy sendData;
+		//	sendData.m_pos = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
+		//	sendData.m_rot = D3DXVECTOR3(0.1f, 0.0f, 0.1f);
+		//	for (int j = 0; j < 5; j++)
+		//	{
+		//		sendData.m_haveAbnormal.abnormalData[j] = 0;
+		//		sendData.m_haveItem.itemData[j] = 0;
+		//	}
+		//	sendData.m_motion = 0;
+		//	sendData.m_log = 2;
+		//	sendData.m_pushBomComands = 0;
+
+		//	CApplication::GetClient()->SendPlayerData(sendData);
+		//}
 	}
 }
 
@@ -386,6 +404,39 @@ void CGame::MenuWindow()
 		delete m_pConfirmationWindow;
 		m_pConfirmationWindow = nullptr;
 	}
+}
+
+//==============================================================================================
+// プレイヤーUIテクスチャの設定
+//==============================================================================================
+void CGame::SetPlayerUI(const int index, const int type)
+{
+	// テクスチャ番号
+	int nTexNumber = 0;
+
+	if (index == CPlayerUi::UITYPE_SUPPORT)
+	{
+		// サポートスキルの最低値 + 自身の番号を設定
+		nTexNumber = CTexture::TEXTURE_SKILL_RUSH + type;
+	}
+	else
+	{
+		// 近接武器の最低値より大きい場合
+		if (type >= CWeapon::WEAPON_SLASH_KNIFE)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_ATTACK_SKILL_SLASH;
+		}
+		// 素手の最低値より大きい場合
+		else
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_KNUCKLE;
+		}
+	}
+
+	// スキル画像の設定
+	m_pPlayer_UI[index]->GetSkillUI()->SetTexture((CTexture::TEXTURE)nTexNumber);
 }
 
 //==============================================================================================

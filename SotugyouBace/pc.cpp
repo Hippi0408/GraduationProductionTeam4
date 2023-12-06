@@ -432,17 +432,14 @@ void CPC::Perspective()
 //============================================================================
 // ¶¬ˆ—
 //============================================================================
-CPC* CPC::Create(const D3DXVECTOR3 pos, const int index)
+CPC* CPC::Create(const D3DXVECTOR3 pos, const int index, const int job)
 {
 	CPC* pPC = new CPC;
 
-	if (FAILED(pPC->Init()))
-	{
-		return nullptr;
-	}
-
 	pPC->SetPos(pos);
 	pPC->SetCharaIndex(index);
+	pPC->SetJobIndex(job);
+	pPC->Init();
 
 	return pPC;
 }

@@ -238,6 +238,15 @@
     <ClCompile Include="diffusion_bullet.cpp">
       <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="connect.cpp">
+      <Filter>05_Server</Filter>
+    </ClCompile>
+    <ClCompile Include="model_data.cpp">
+      <Filter>05_Server</Filter>
+    </ClCompile>
+    <ClCompile Include="tcp_client.cpp">
+      <Filter>05_Server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -481,6 +490,15 @@
     <ClInclude Include="diffusion_bullet.h">
       <Filter>04_Object\MoveObject\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="connect.h">
+      <Filter>05_Server</Filter>
+    </ClInclude>
+    <ClInclude Include="model_data.h">
+      <Filter>05_Server</Filter>
+    </ClInclude>
+    <ClInclude Include="tcp_client.h">
+      <Filter>05_Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01_Input">
@@ -560,6 +578,9 @@
     </Filter>
     <Filter Include="04_Object\MoveObject\Explosion">
       <UniqueIdentifier>{f9a1ea85-006c-4cef-97a0-0af6586c1ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Server">
+      <UniqueIdentifier>{235dc510-cf36-4f6c-8b11-56f0aa91ba83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
