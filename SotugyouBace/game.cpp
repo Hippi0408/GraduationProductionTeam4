@@ -315,23 +315,23 @@ void CGame::Update()
 		}
 #endif
 
-		////オンラインの送信
-		//if (CApplication::GetClient()->GetIsConnect())
-		//{
-		//	CModelData::SSendEnemy sendData;
-		//	sendData.m_pos = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
-		//	sendData.m_rot = D3DXVECTOR3(0.1f, 0.0f, 0.1f);
-		//	for (int j = 0; j < 5; j++)
-		//	{
-		//		sendData.m_haveAbnormal.abnormalData[j] = 0;
-		//		sendData.m_haveItem.itemData[j] = 0;
-		//	}
-		//	sendData.m_motion = 0;
-		//	sendData.m_log = 2;
-		//	sendData.m_pushBomComands = 0;
+		//オンラインの送信
+		if (CApplication::GetClient()->GetIsConnect())
+		{
+			CModelData::SSendEnemy sendData;
+			sendData.m_pos = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
+			sendData.m_rot = D3DXVECTOR3(0.1f, 0.0f, 0.1f);
+			for (int j = 0; j < 5; j++)
+			{
+				sendData.m_haveAbnormal.abnormalData[j] = 0;
+				sendData.m_haveItem.itemData[j] = 0;
+			}
+			sendData.m_motion = 0;
+			sendData.m_log = 2;
+			sendData.m_pushBomComands = 0;
 
-		//	CApplication::GetClient()->SendPlayerData(sendData);
-		//}
+			CApplication::GetClient()->SendPlayerData(sendData);
+		}
 	}
 }
 

@@ -13,10 +13,13 @@
 class CHalfSphere;
 class CFontString;
 class CMenuWindow;
+class CObject2D;
 
 class CTitle : public CMode
 {
 public:
+	static const int TITLE_MAX = 5;
+
 	CTitle();
 	~CTitle();
 
@@ -39,6 +42,7 @@ private:
 	static bool m_bWindow;		// ウィンドウ使用状態
 	static bool m_bWindowUninit;
 	bool m_bKeyFlag;
+	CObject2D *m_pTitle[TITLE_MAX];
 };
 
 #endif // !_TITLE_H_
