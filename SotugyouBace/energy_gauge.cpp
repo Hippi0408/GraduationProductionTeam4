@@ -7,6 +7,10 @@
 #include"energy_gauge.h"
 #include"debugProc.h"
 #include "object2D.h"
+#include"player_manager.h"
+#include"application.h"
+#include "tutorial.h"
+#include "game.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -78,6 +82,8 @@ void CEnergy_Gauge::Update()
 	GaugeColor();
 
 	CGauge_Manager::Update();
+
+	CDebugProc::Print("プレイヤースタミナ：%f / %d\n", m_fFluctuation, m_nMax_Enerugy);
 }
 
 //==============================================================================================
@@ -110,6 +116,21 @@ CEnergy_Gauge* CEnergy_Gauge::Create(const D3DXVECTOR3 &pos, D3DXVECTOR2 size)
 //==============================================================================================
 void CEnergy_Gauge::Fluctuation()
 {
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CPlayer* pPlayer = nullptr;
+
+	// モード毎にプレイヤーを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pPlayer = CTutorial::GetPlayerManager()->GetPlayer(0);
+	}
+	else if (Mode == CApplication::MODE_GAME)
+	{
+		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+	}
+
 	if (m_bRecovery_Pause)
 	{
 		m_Pause_Count++;
@@ -125,14 +146,14 @@ void CEnergy_Gauge::Fluctuation()
 	else if (m_bAllConsumption && !m_bAllRecovery && !m_bRecovery_Pause)
 	{
 		// 最後まで減らす
-		m_fFluctuation = MAX_ENERGY;
+		m_fFluctuation = m_nMax_Enerugy;
 	}
 
 	// 現在のエネルギー残量
-	float fEnergy = MAX_ENERGY - m_fFluctuation;
+	float fEnergy = m_nMax_Enerugy - m_fFluctuation;
 
 	// 現在のエネルギー残量の割合
-	float fEnergy_Percent = fEnergy / MAX_ENERGY * 100;
+	float fEnergy_Percent = fEnergy / m_nMax_Enerugy * 100;
 
 	// ゲージサイズをエネルギーの割合に合わせる
 	float fGeuge_Size = GetGaugeSize().y * fEnergy_Percent / 100.0f;
@@ -154,7 +175,7 @@ void CEnergy_Gauge::Recovery_Gauge()
 			m_fFluctuation -= m_fRecovery_Speed;
 
 		// 現在のゲージ残量の割合
-		float Gauge_Percent = (MAX_ENERGY - m_fFluctuation) / MAX_ENERGY * 100;
+		float Gauge_Percent = (m_nMax_Enerugy - m_fFluctuation) / m_nMax_Enerugy * 100;
 
 		// 回復途中エネルギーを使えるようにするタイミング
 		if (Gauge_Percent >= m_fReuse_Percent)
@@ -186,7 +207,7 @@ void CEnergy_Gauge::Consumption_Gauge()
 	if (!m_bAllConsumption)
 	{
 		// 消費するエネルギー量
-		if (m_fFluctuation <= MAX_ENERGY)
+		if (m_fFluctuation <= m_nMax_Enerugy)
 		{
 			// 消費量の加算
 			m_fFluctuation += m_fConsumption_Speed;
@@ -212,7 +233,7 @@ void CEnergy_Gauge::Avoidance_Energy()
 		// 消費するエネルギー量
 		m_fFluctuation += m_fAvoidance;
 
-		if (m_fFluctuation < MAX_ENERGY)
+		if (m_fFluctuation < m_nMax_Enerugy)
 			// エネルギー消費中
 			m_bConsumption = true;
 		else
@@ -229,7 +250,7 @@ void CEnergy_Gauge::Avoidance_Energy()
 void CEnergy_Gauge::GaugeColor()
 {
 	// 現在のゲージ残量の割合
-	float Gauge_Percent = (MAX_ENERGY - m_fFluctuation) / MAX_ENERGY * 100;
+	float Gauge_Percent = (m_nMax_Enerugy - m_fFluctuation) / m_nMax_Enerugy * 100;
 
 	// 色の設定
 	if (Gauge_Percent <= 25.0f || m_bAllConsumption && !m_bRecovery_Pause)
@@ -269,6 +290,19 @@ void CEnergy_Gauge::Recovery_Pause(int count)
 		// 停止する時間
 		m_BasePause_Count = count;
 	}
+}
+
+//==============================================================================================
+// 最大エネルギーの設定
+//==============================================================================================
+void CEnergy_Gauge::SetMaxEnerugy(const int enerugy)
+{
+	// 現在のエネルギーが最大エネルギーより多い場合
+	if (m_fFluctuation > enerugy)
+	{
+		m_fFluctuation = enerugy;
+	}
+	m_nMax_Enerugy = enerugy;
 }
 
 //==============================================================================================
