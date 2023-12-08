@@ -27,6 +27,7 @@ class CMode;
 class CParticleManager;
 class CMenu_Window;
 class CParts_File;
+class CClient;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -82,6 +83,8 @@ public:
 	static const bool GetPauce() { return m_bPauce; }
 	static const int GetPlayerJobIndex() { return m_nPlayerJobIndex; }
 
+	static CClient* GetClient() { return m_pClient; }
+	static void SetClient(CClient* Client) { m_pClient = Client; }
 private:
 	static HWND Window;				// ウィンドウ
 
@@ -97,6 +100,7 @@ private:
 	static CMenu* m_pMenu;
 	static CParts_File* m_pPartsFile;
 	static CParticleManager* m_pParticleManager;
+	static CClient* m_pClient;
 	CInput* m_pInput;
 
 #ifdef _DEBUG
