@@ -40,10 +40,10 @@ CPC::~CPC()
 //============================================================================
 HRESULT CPC::Init()
 {
-	CPlayer::Init();
-
 	SetEnergyGauge(CEnergy_Gauge::Create({ 70,720.0f / 2,0.0f }, { 20.0f,500.0f }));
 	SetGaugeManager(CPlayer_Life_Gauge::Create({ 1210.0f,720.0f / 2,0.0f }, { 20.0f,500.0f }));
+
+	CPlayer::Init();
 
 	return S_OK;
 }
@@ -438,7 +438,7 @@ CPC* CPC::Create(const D3DXVECTOR3 pos, const int index, const int job)
 
 	pPC->SetPos(pos);
 	pPC->SetCharaIndex(index);
-	pPC->SetJobIndex(job);
+	pPC->SetAllJobIndex(job);
 	pPC->Init();
 
 	return pPC;

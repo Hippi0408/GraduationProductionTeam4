@@ -27,6 +27,7 @@ class CMenuWindow;
 class CConfirmation_Window;
 class CEnergy_Gauge;
 class CPause;
+class CPlayer_Parameter;
 
 class CGame : public CMode
 {
@@ -60,6 +61,7 @@ public:
 	static CMeshField *GetMeshField() { return m_pMeshField; }
 	static CConfirmation_Window* GetConfirmationWindow() { return m_pConfirmationWindow; }
 	static CPause *GetPause() { return m_pPause; }
+	static CPlayer_Parameter *GetPlayerParameter() { return m_pPlayer_Parameter; }
 
 private:
 
@@ -80,6 +82,7 @@ private:
 	static CEnergy_Gauge* m_pEnergy_Gauge;			// エネルギーゲージ
 	static CFontString* m_pFinishRogo;				// 終了ロゴ 
 	static CPause *m_pPause;
+	static CPlayer_Parameter *m_pPlayer_Parameter;	// プレイヤーパラメーター
 
 };
 

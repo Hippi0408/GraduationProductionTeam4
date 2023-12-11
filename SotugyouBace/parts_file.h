@@ -45,17 +45,6 @@ public:
 		PARTS_MAX
 	};
 
-	// パラメーター
-	struct PARAMETERS
-	{
-		int m_nLife;					// 耐久値
-		int m_nStamina;					// スタミナ容量
-		int m_nGravity;					// 重量
-		int m_nSpeed;					// 機動力
-
-											//Skill m_skill;					// スキルタイプ
-	};
-
 	// モデルセット
 	struct MODEL_SET
 	{
@@ -68,8 +57,7 @@ public:
 	// パーツセット
 	struct PARTS_SET
 	{
-		std::string Name;					// パーツ名
-		PARAMETERS Param;					// パラメーターの情報	
+		std::string Name;					// パーツ名	
 		std::vector<MODEL_SET> ModelSet;	// キャラクターのモデル情報
 	};
 

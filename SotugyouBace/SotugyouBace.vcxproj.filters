@@ -247,6 +247,9 @@
     <ClCompile Include="tcp_client.cpp">
       <Filter>05_Server</Filter>
     </ClCompile>
+    <ClCompile Include="player_parameter.cpp">
+      <Filter>02_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -498,6 +501,9 @@
     </ClInclude>
     <ClInclude Include="tcp_client.h">
       <Filter>05_Server</Filter>
+    </ClInclude>
+    <ClInclude Include="player_parameter.h">
+      <Filter>02_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

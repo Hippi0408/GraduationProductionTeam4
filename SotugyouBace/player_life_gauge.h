@@ -31,7 +31,6 @@ public:
 
 private:
 	float m_fLife_Percent;		// 体力の割合
-	int m_nPlayer_Base_Life;	// プレイヤーの元の体力
 
 	CObject2D *m_FrontGauge;	// ゲージの前景
 	CObject2D *m_BackGauge;		// ゲージの背景

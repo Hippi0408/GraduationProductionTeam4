@@ -106,8 +106,10 @@ void CCharDecision_Window::Update()
 		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
 		UninitExplanation();				// フォントの削除
-		//サーバーの接続
-		CApplication::GetClient()->Init("127.0.0.1", 15678);
+
+		////サーバーの接続
+		//CApplication::GetClient()->Init("127.0.0.1", 15678);
+
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
 

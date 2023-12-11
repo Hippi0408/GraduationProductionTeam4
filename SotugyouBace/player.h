@@ -92,12 +92,15 @@ public:
 
 	void CollisionDropWeapon();			// 落ちてる武器の当たり判定
 
+	void SettingParameter();			// パラメーターの設定処理
+
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
-	void SetJobIndex(const int index) { m_Job = (JOB)index; }
+	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Job[nCnt] = (JOB)index; } }
 	void SetPlayerParts(const PARTS parts, const int weapon);
 	void SetPlayerWeapon(const int weapon);
+
 
 	const bool GetDropContact() { return m_bDrop_Contact; }
 	const int GetCharaIndex() { return m_nCharaIndex; }
@@ -126,8 +129,10 @@ private:
 	int m_nEnemy_Count;
 	float m_fEnemy_Speed;
 	float m_fAngle;
+	int m_nStan_Tolerance;	// スタン許容値
+	int m_nGravity;			// 重量
 
-	JOB m_Job;		// プレイヤーのジョブ種類
+	JOB m_Job[PARTS_MAX];		// プレイヤーのパーツ毎のジョブ種類
 };
 
 #endif// _PLAYER_H_
