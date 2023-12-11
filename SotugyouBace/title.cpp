@@ -50,11 +50,11 @@ HRESULT CTitle::Init()
 	m_pTitle[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
 	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_00);
 
-	m_pTitle[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
-	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_01);
+	m_pTitle[1] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[1]->SetTexture(CTexture::TEXTURE_TITLE_01);
 
-	m_pTitle[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
-	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_02);
+	m_pTitle[2] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[2]->SetTexture(CTexture::TEXTURE_TITLE_02);
 
 	// ハーフスフィアの生成
 	m_pHalf = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(D3DXToRadian(0), D3DXToRadian(90), D3DXToRadian(0)), CHalfSphere::SPHERE_UP);

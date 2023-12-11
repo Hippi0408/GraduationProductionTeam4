@@ -40,7 +40,11 @@ bool CClient::Init(const char*plPAddress, int nPortNum)
 		printf("was　error");
 	}
 
-	m_tcpClient = new CTcp_client;
+	// クライアントが使用されていない場合のみ生成
+	if (m_tcpClient == NULL)
+	{
+		m_tcpClient = new CTcp_client;
+	}
 	m_tcpClient->Init(plPAddress, nPortNum);
 	m_myConnect.myConnect = false;
 	m_myConnect.enemyConnect = false;
