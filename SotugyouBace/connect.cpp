@@ -84,26 +84,26 @@ CClient::SConnectCheck CClient::ConnectTh(CTcp_client * tcp)
 	int Timer = 0;
 	bool myIs = false;
 	int ok = 4;
-	// つながるまでループ
-	while (!myIs)
-	{
+	//// つながるまでループ
+	//while (!myIs)
+	//{
 
-		myIs = tcp->Connect();
-		
-		Timer++;
-		if (Timer == 2)
-		{
-			break;
-		}
+	//	myIs = tcp->Connect();
+	//	
+	//	Timer++;
+	//	if (Timer == 2)
+	//	{
+	//		break;
+	//	}
 
-		if (myIs)
-		{
-			tcp->Send((const char*)&ok, sizeof(int));
-		}
-	
-	}
+	//	if (myIs)
+	//	{
+	//		tcp->Send((const char*)&ok, sizeof(int));
+	//	}
+	//
+	//}
 	// 敵がつながるまでループ
-	while (!Connect.enemyConnect)
+	/*while (!Connect.enemyConnect)
 	{
 		int isRecv = tcp->Recv(&aRecvData[0], sizeof(SConnectCheck));
 
@@ -112,7 +112,9 @@ CClient::SConnectCheck CClient::ConnectTh(CTcp_client * tcp)
 			memcpy(&Connect, &aRecvData[0], sizeof(SConnectCheck));
 		}
 		
-	}
+	}*/
+	Connect.myConnect = true;
+	Connect.enemyConnect = true;
 	return Connect;
 }
 
@@ -121,34 +123,34 @@ CClient::SConnectCheck CClient::ConnectTh(CTcp_client * tcp)
 //=============================================================================
 void CClient::Recv(CClient*data)
 {
-	// 繋がっている間はループ
-	while (1)
-	{
-		
-		if (CApplication::GetClient()->GetIsConnect())
-		{
+	//// 繋がっている間はループ
+	//while (1)
+	//{
+	//	
+	//	if (CApplication::GetClient()->GetIsConnect())
+	//	{
 
 
-			char aRecv[1024];	// 受信データ
+	//		char aRecv[1024];	// 受信データ
 
-			// 受信
-			int nRecvSize = data->m_tcpClient->Recv(&aRecv[0], sizeof(CDataPack::SSendPack));
+	//		// 受信
+	//		int nRecvSize = data->m_tcpClient->Recv(&aRecv[0], sizeof(CDataPack::SSendPack));
 
-			// 受信データが無かったら
-			if (nRecvSize < 0)
-			{
-				if (data->m_tcpClient != NULL)
-				{
-					data->m_tcpClient->Uninit();
+	//		// 受信データが無かったら
+	//		if (nRecvSize < 0)
+	//		{
+	//			if (data->m_tcpClient != NULL)
+	//			{
+	//				data->m_tcpClient->Uninit();
 
-					break;
-				}
-			}
-			CDataPack::SSendPack Data;
-			memcpy(&Data, &aRecv[0], (int)sizeof(CDataPack::SSendPack));
-			data->m_player.SetPlayer(Data);
-		}
-	}
+	//				break;
+	//			}
+	//		}
+	//		CDataPack::SSendPack Data;
+	//		memcpy(&Data, &aRecv[0], (int)sizeof(CDataPack::SSendPack));
+	//		data->m_player.SetPlayer(Data);
+	//	}
+	//}
 }
 
 //=============================================================================

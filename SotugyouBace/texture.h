@@ -32,6 +32,13 @@ public: /* 定義 */
 		TEXTURE_UI,					// UI
 		TEXTURE_KEY_E,				// Eキー
 
+		/* タイトルロゴ */
+		TEXTURE_TITLE_00,
+		TEXTURE_TITLE_01,
+		TEXTURE_TITLE_02,
+		TEXTURE_TITLE_03,
+		TEXTURE_TITLE_04,
+
 		/* エフェクト群 */
 		TEXTURE_EFFECT_SMOKE,
 		TEXTURE_EFFECT_FLARE,

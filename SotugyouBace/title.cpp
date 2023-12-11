@@ -16,6 +16,7 @@
 #include "title_menu.h"
 #include "menu_window.h"
 #include "confirmation_window.h"
+#include "object2D.h"
 
 bool CTitle::m_bWindow = false;
 bool CTitle::m_bWindowUninit = false;
@@ -46,12 +47,23 @@ HRESULT CTitle::Init()
 	pCamera->SetPosV({ 0.0f, 500.0f, -1000.0f });
 	pCamera->SetPosR({ 0.0f, 0.0f, 1000.0f });
 
-	// ハーフスフィアの生成
-	m_pHalf = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
-	m_pHalf->LoadTexture("Data/texture/sky000.jpg");
+	m_pTitle[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_00);
 
-	m_pFomntString[0] = CFontString::Create({ 490.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "タイトル",CObject::PRIORITY_FRONT);
-	m_pFomntString[1] = CFontString::Create({ 500.0f, 600.0f, 0.0f }, { 30.0f, 30.0f }, "ENTER");
+	m_pTitle[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_01);
+
+	m_pTitle[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_02);
+
+	// ハーフスフィアの生成
+	m_pHalf = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(D3DXToRadian(0), D3DXToRadian(90), D3DXToRadian(0)), CHalfSphere::SPHERE_UP);
+	m_pHalf->LoadTexture("Data/texture/bg.png");
+
+	
+
+	//m_pFomntString[] = CFontString::Create({ 490.0f, SCREEN_HEIGHT / 2, 0.0f }, { 50.0f, 50.0f }, "タイトル",CObject::PRIORITY_FRONT);
+	m_pFomntString[0] = CFontString::Create({ 500.0f, 600.0f, 0.0f }, { 30.0f, 30.0f }, "ENTER");
 
 	// 静的変数初期化
 	m_bWindowUninit = false;
