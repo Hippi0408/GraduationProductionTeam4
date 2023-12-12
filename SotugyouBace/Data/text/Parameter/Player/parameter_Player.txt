@@ -1,6 +1,6 @@
 #==============================================================================
 #
-# パラメータースクリプト
+# ジョブパラメータースクリプト
 # Author::Tanimoto Kosuke
 #
 #==============================================================================
@@ -15,6 +15,7 @@ ALL_PARAM_SET
 	# ジョブ：ラッシュ
 	#---------------------------------------
 	JOB_PARAM_SET
+	
 		#------------------
 		# 胴パーツ
 		#------------------
@@ -24,33 +25,14 @@ ALL_PARAM_SET
 			STAN_TOLERANCE = 50		# スタン許容値
 			GRAVITY = 4				# 重力
 		END_PARAM_SET
-		
-		#------------------
-		# 腕パーツ
-		#------------------
-		PARAM_SET
-			LIFE = 12000			# 体力
-			STAMINA = 70			# スタミナ
-			STAN_TOLERANCE = 50		# スタン許容値
-			GRAVITY = 4				# 重力
-		END_PARAM_SET
-		
-		#------------------
-		# 脚パーツ
-		#------------------	
-		PARAM_SET
-			LIFE = 9000				# 体力
-			STAMINA = 90			# スタミナ
-			STAN_TOLERANCE = 50		# スタン許容値
-			GRAVITY = 4				# 重力
-		END_PARAM_SET
-		
+
 	END_JOB_PARAM_SET
 		
 	#---------------------------------------
 	# ジョブ：ヴァンガード
 	#---------------------------------------
 	JOB_PARAM_SET
+	
 		#------------------
 		# 胴パーツ
 		#------------------
@@ -60,33 +42,14 @@ ALL_PARAM_SET
 			STAN_TOLERANCE = 35		# スタン許容値
 			GRAVITY = 2				# 重力
 		END_PARAM_SET
-		
-		#------------------
-		# 腕パーツ
-		#------------------
-		PARAM_SET
-			LIFE = 8000				# 体力
-			STAMINA = 70			# スタミナ
-			STAN_TOLERANCE = 35		# スタン許容値
-			GRAVITY = 2				# 重力
-		END_PARAM_SET
-		
-		#------------------
-		# 脚パーツ
-		#------------------	
-		PARAM_SET
-			LIFE = 6000				# 体力
-			STAMINA = 90			# スタミナ
-			STAN_TOLERANCE = 35		# スタン許容値
-			GRAVITY = 2				# 重力
-		END_PARAM_SET
-		
+
 	END_JOB_PARAM_SET
 	
 	#---------------------------------------
 	# ジョブ：イーグルアイ
 	#---------------------------------------
 	JOB_PARAM_SET
+	
 		#------------------
 		# 胴パーツ
 		#------------------
@@ -96,27 +59,7 @@ ALL_PARAM_SET
 			STAN_TOLERANCE = 75		# スタン許容値
 			GRAVITY = 4				# 重力
 		END_PARAM_SET
-		
-		#------------------
-		# 腕パーツ
-		#------------------
-		PARAM_SET
-			LIFE = 16000			# 体力
-			STAMINA = 50			# スタミナ
-			STAN_TOLERANCE = 75		# スタン許容値
-			GRAVITY = 4				# 重力
-		END_PARAM_SET
-		
-		#------------------
-		# 脚パーツ
-		#------------------	
-		PARAM_SET
-			LIFE = 14000			# 体力
-			STAMINA = 60			# スタミナ
-			STAN_TOLERANCE = 75		# スタン許容値
-			GRAVITY = 4				# 重力
-		END_PARAM_SET
-		
+
 	END_JOB_PARAM_SET
 
 END_ALL_PARAM_SET

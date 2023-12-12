@@ -116,6 +116,11 @@ HRESULT CDrop_Weapon::Init()
 	m_pPick_Up->SetTexture(CTexture::TEXTURE_KEY_E);
 	m_pPick_Up->SetDrawFlag(false);
 
+	const float nAddCol = -0.05f * m_nRarity;
+
+	AddColor({ nAddCol, nAddCol,nAddCol, 0.0f});
+
+
 	CObjectX::Init();
 
 	return S_OK;
@@ -297,7 +302,7 @@ void CDrop_Weapon::FieldCollision()
 //=============================================================================
 // ¶¬ˆ—
 //=============================================================================
-CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon)
+CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon, int rarity)
 {
 	CDrop_Weapon *pDrop_Weapon = nullptr;
 
@@ -307,6 +312,7 @@ CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon)
 	{
 		pDrop_Weapon->SetPos(pos);
 		pDrop_Weapon->SetModel(CApplication::GetModel()->ReadObject(s_Weapon_FileName[pDrop_Weapon->m_nWeapon_Type = weapon]));
+		pDrop_Weapon->m_nRarity = rarity;
 		pDrop_Weapon->Init();
 	}
 

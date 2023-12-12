@@ -62,11 +62,12 @@ public:
 
 	void SetPick_Up(const bool pick_Up) { m_bPick_Up = pick_Up; }
 
+	const int GetRarity() { return m_nRarity; }
 	const D3DXVECTOR3 GetCentePos() { return m_CenterPos; }
 	const int GetWeaponType() { return m_nWeapon_Type; }
 	CPlayer::PARTS GetPartsType() { return m_Parts; }
 
-	static CDrop_Weapon *Create(D3DXVECTOR3 pos, int weapon);
+	static CDrop_Weapon *Create(D3DXVECTOR3 pos, int weapon, int rarity);
 
 	static void LoadAllFile();			// 全てのドロップパーツの読み込み
 
@@ -74,6 +75,7 @@ private:
 
 	D3DXVECTOR3 m_CenterPos;	// 中心位置
 	int m_nWeapon_Type;			// 武器のタイプ
+	int m_nRarity;				// レアリティ
 	CObject3D *m_pPointer;		// アイテムポインターの表示
 	CObject3D *m_pPick_Up;		// 拾う時の表示
 	float m_fMove;				// 落下速度

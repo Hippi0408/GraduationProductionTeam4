@@ -166,6 +166,7 @@ void CPlayer::Update()
 	CCharacter::Update();
 
 	CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
+	CDebugProc::Print("腕パーツ：%d\n脚パーツ : %d\n", m_nRarity_Arms, m_nRarity_Leg);
 }
 
 //============================================================================
@@ -591,10 +592,13 @@ void CPlayer::DropGet(CDrop_Weapon* pDrop)
 	// 武器の情報
 	const int nWeapon = pDrop->GetWeaponType();
 
+	// レアリティの取得
+	const int nRarity = pDrop->GetRarity();
+
 	// 武器パーツではない場合
 	if (Parts != PARTS_WEAPON)
 	{
-		SetPlayerParts(Parts, nWeapon);
+		SetPlayerParts(Parts, nWeapon, nRarity);
 	}
 	// 武器パーツの場合
 	else
@@ -693,18 +697,34 @@ void CPlayer::SettingParameter()
 	int nStan_Tolerance = 0;	// スタン許容値
 	int nGravity = 0;			// 重量
 
+	CPlayer_Parameter* pParameter = nullptr;
+	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	/*if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pParameter = CTutorial::GetPlayerParameter();
+	}
+	else*/
+	if (Mode == CApplication::MODE_GAME)
+	{
+		pParameter = CGame::GetPlayerParameter();
+	}
 	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		// 生成時に自身のポインタを敵キャラマネージャーに設定
-		/*if (Mode == CApplication::MODE_TUTORIAL)
+		switch (nCnt)
 		{
-		Parameter = CTutorial::GetPlayerParameter()->GetParameter(m_Job[nCnt], nCnt);
+		case 0:
+			Parameter = pParameter->GetParameterJob(m_Job[nCnt]);
+			break;
+		case 1:
+			Parameter = pParameter->GetParameterArms(m_Job[nCnt], m_nRarity_Arms);
+			break;
+		case 2:
+			Parameter = pParameter->GetParameterLeg(m_Job[nCnt], m_nRarity_Leg);
+			break;
+		default:
+			break;
 		}
-		else*/
-		if (Mode == CApplication::MODE_GAME)
-		{
-			Parameter = CGame::GetPlayerParameter()->GetParameter(m_Job[nCnt], nCnt);
-		}
+
 		nLife += Parameter.nLife;
 		nStamina += Parameter.nStamina;
 		nStan_Tolerance += Parameter.nStan_Tolerance;
@@ -721,11 +741,14 @@ void CPlayer::SettingParameter()
 //============================================================================
 // パーツの設定
 //============================================================================
-void CPlayer::SetPlayerParts(const PARTS parts, const int weapon)
+void CPlayer::SetPlayerParts(const PARTS parts, const int weapon, const int rarity)
 {
 	int nPartsFileIndex = 0;	// パーツの番号
 
-								// パーツファイルの最低値を設定
+	// 現在のレアリティの色
+	float fRarity_Color = 0;
+
+	// パーツファイルの最低値を設定
 	switch (parts)
 	{
 	case CPlayer::PARTS_BODY:
@@ -733,9 +756,13 @@ void CPlayer::SetPlayerParts(const PARTS parts, const int weapon)
 		break;
 	case CPlayer::PARTS_ARMS:
 		nPartsFileIndex = CParts_File::PARTS_PLAYER_ARMS_1;
+		fRarity_Color = (float)m_nRarity_Arms;
+		m_nRarity_Arms = rarity;
 		break;
 	case CPlayer::PARTS_LEG:
 		nPartsFileIndex = CParts_File::PARTS_PLAYER_LEG_1;
+		fRarity_Color = (float)m_nRarity_Leg;
+		m_nRarity_Leg = rarity;
 		break;
 	default:
 		break;
@@ -768,6 +795,17 @@ void CPlayer::SetPlayerParts(const PARTS parts, const int weapon)
 
 	// 指定したパーツの、パーツ変更処理
 	GetParts(parts)->SetParts(nPartsIndex);
+
+	// 変更するレアリティの色
+	//const float nChange_Color = 0.1f * rarity;
+
+	// レアリティによる色の変化
+	const float fAddCol = -(rarity - fRarity_Color) * 0.05f;
+
+	for (auto pParts : GetParts(parts)->GetModelAll())
+	{
+		pParts->AddColor({ fAddCol, fAddCol,fAddCol, 0.0f });
+	}
 }
 
 //============================================================================

@@ -98,7 +98,7 @@ public:
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
 	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Job[nCnt] = (JOB)index; } }
-	void SetPlayerParts(const PARTS parts, const int weapon);
+	void SetPlayerParts(const PARTS parts, const int weapon, const int rarity);
 	void SetPlayerWeapon(const int weapon);
 
 
@@ -133,6 +133,8 @@ private:
 	int m_nGravity;			// 重量
 
 	JOB m_Job[PARTS_MAX];		// プレイヤーのパーツ毎のジョブ種類
+	int m_nRarity_Arms;			// 腕のレアリティ
+	int m_nRarity_Leg;			// 脚のレアリティ
 };
 
 #endif// _PLAYER_H_

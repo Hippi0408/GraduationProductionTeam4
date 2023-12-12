@@ -250,6 +250,9 @@
     <ClCompile Include="player_parameter.cpp">
       <Filter>02_Resource</Filter>
     </ClCompile>
+    <ClCompile Include="parts_parameter.cpp">
+      <Filter>02_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -503,6 +506,9 @@
       <Filter>05_Server</Filter>
     </ClInclude>
     <ClInclude Include="player_parameter.h">
+      <Filter>02_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="parts_parameter.h">
       <Filter>02_Resource</Filter>
     </ClInclude>
   </ItemGroup>
