@@ -57,6 +57,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="map_object.cpp" />
+    <ClCompile Include="map_object_manager.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="menu_window.cpp" />
     <ClCompile Include="meshfield.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="map_object.h" />
+    <ClInclude Include="map_object_manager.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="menu_window.h" />
     <ClInclude Include="meshfield.h" />

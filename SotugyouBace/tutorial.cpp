@@ -20,6 +20,7 @@
 #include"pause.h"
 #include "parts_file.h"
 #include "motion.h"
+#include "map_object_manager.h"
 
 CPlayerManager* CTutorial::m_pPlayerManager = nullptr;
 CEnemyManager* CTutorial::m_pEnemyManager = nullptr;
@@ -27,6 +28,7 @@ CDropManager* CTutorial::m_pDropManager = nullptr;
 CCollision_Manager* CTutorial::m_pCollision_Manager = nullptr;
 CMeshField *CTutorial::pMeshField = nullptr;			// メッシュフィールド
 CPause *CTutorial::m_pPause = nullptr;
+CMap_Object_Manager *CTutorial::m_pMap_Object_Manager = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -66,6 +68,7 @@ HRESULT CTutorial::Init()
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
 	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
+	m_pMap_Object_Manager = new CMap_Object_Manager;
 
 	// 全てのモデルパーツの読み込み
 	CDrop_Weapon* pWeaponDummer = new CDrop_Weapon;
@@ -122,6 +125,13 @@ void CTutorial::Uninit()
 		m_pCollision_Manager->ReleaseAllCollision();
 		delete m_pCollision_Manager;
 		m_pCollision_Manager = nullptr;
+	}
+	
+	//マップオブジェクトの破棄
+	if (m_pMap_Object_Manager != nullptr)
+	{
+		delete m_pMap_Object_Manager;
+		m_pMap_Object_Manager = nullptr;
 	}
 }
 
