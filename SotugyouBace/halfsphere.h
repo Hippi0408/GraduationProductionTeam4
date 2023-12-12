@@ -67,6 +67,9 @@ public:
 
 	static CHalfSphere* Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, SPHERE_TEX tex);		// 生成処理
 
+	void SetAnimation(D3DXVECTOR2 animationMove) { m_bAnimation = true; m_AnimationMove = animationMove; }
+	void SetRotMove(float fRotMove) { m_bRot = true; m_fRotMove = fRotMove; }
+
 	void BindTexture(LPDIRECT3DTEXTURE9	pTexture);		// テクスチャを代入
 	void LoadTexture(const char *aFileName);			// テクスチャの読み込み
 
@@ -89,6 +92,12 @@ private:
 	D3DXVECTOR3 m_size;						// サイズ
 	D3DXVECTOR3 m_rot;						// 向き
 	D3DXMATRIX m_mtxWorld;					// ワールドマトリックス
+	D3DXVECTOR2 m_AnimationMove;
+	D3DXVECTOR2 m_Animation;
+	bool m_bAnimation;
+	bool m_bRot;
+	float m_fRotMove;
+	float m_fRot;
 
 	SPHERE_TEX m_tex;						// テクスチャ
 };

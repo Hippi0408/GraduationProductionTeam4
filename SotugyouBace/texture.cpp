@@ -33,10 +33,10 @@ const char* CTexture::s_FileName[] =
     "Data/texture/Ekey.png",						// Eキーのテクスチャ
 	"Data/texture/Title/00_project.png",
 	"Data/texture/Title/01_machina.png",
-	"Data/texture/Title/02_colon.png",
-	"Data/texture/Title/03_j_point.png",
-	"Data/texture/Title/04_i_point.png",
-
+	"Data/texture/Title/02_colonUp.png",
+	"Data/texture/Title/03_colonDown.png",
+	"Data/texture/Title/04_j_point.png",
+	
     /* エフェクト群 */
     "Data/texture/particle/smoke.png",				// 煙
     "Data/texture/particle/flare.png",				// エフェクト1

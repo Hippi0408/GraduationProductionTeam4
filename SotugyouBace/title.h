@@ -14,11 +14,18 @@ class CHalfSphere;
 class CFontString;
 class CMenuWindow;
 class CObject2D;
+class CObjectX;
 
 class CTitle : public CMode
 {
 public:
-	static const int TITLE_MAX = 5;
+	static const int TITLE_MAX = 6;
+	static const int TITLE_GEAR_MAX = 3;
+	static const int GEAR_AFTERIMAGE = 3;
+	static const int GEAR_AFTERIMAGE_MAX = 60;
+	static const int GEAR_AFTERIMAGE_UPDATE = 1;
+
+	static const float GEAR_SPEED;
 
 	CTitle();
 	~CTitle();
@@ -38,11 +45,18 @@ private:
 	static CMenuWindow* m_pMenuWindow;
 	CHalfSphere* m_pHalf;
 	CFontString* m_pFomntString[2];
-	
+
 	static bool m_bWindow;		// ウィンドウ使用状態
 	static bool m_bWindowUninit;
 	bool m_bKeyFlag;
 	CObject2D *m_pTitle[TITLE_MAX];
+	CObjectX *m_pGear[TITLE_GEAR_MAX];
+	D3DXVECTOR3 m_GearRotAfterimage[TITLE_GEAR_MAX][GEAR_AFTERIMAGE_MAX];
+	CObjectX *m_pGearAfterimage[TITLE_GEAR_MAX][GEAR_AFTERIMAGE];
+	int m_nGearIndex[TITLE_GEAR_MAX];
+	int m_nGearAfterimageCnt;
+	CObjectX *m_pEarth;
+	CObjectX *m_pFlare;
 };
 
 #endif // !_TITLE_H_
