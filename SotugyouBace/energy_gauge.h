@@ -29,6 +29,7 @@ public:
 	void Avoidance_Energy();			// 回避時のエネルギー消費
 	void Recovery_Pause(int count);		// ゲージ回復を一時停止
 
+	void SetMaxEnerugy(const int enerugy);														// 最大エネルギーの設定
 	void SetRecovery_Speed(const float recovery) { m_fRecovery_Speed = recovery; }				// 回復速度の設定
 	void SetConsumption_Speed(const float consumption) { m_fConsumption_Speed = consumption; }	// 消費速度の設定
 	void SetAvoidance_amount(const float avoidance) { m_fAvoidance = avoidance; }				// 回避時の消費量
@@ -43,9 +44,7 @@ private:
 	void Recovery_Gauge();		// エネルギーの回復
 	void GaugeColor();			// ゲージの色
 
-	static const int MAX_ENERGY = 1000;		// ゲージの最大量
-
-	float m_fRemaining_Enerugy;		// ゲージ残量
+	int m_nMax_Enerugy;				// 最大エネルギー
 	float m_fRecovery_Speed;		// 回復速度
 	float m_fConsumption_Speed;		// 消費速度
 	float m_fAvoidance;				// 回避時の消費量

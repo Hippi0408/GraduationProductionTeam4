@@ -24,6 +24,7 @@
 #include"object3D.h"
 #include "drop_weapon.h"
 #include "weapon.h"
+#include "player_parameter.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
@@ -36,8 +37,8 @@ const float CPlayer::RETICLE_SIZE = 200.0f;
 CPlayer::CPlayer()
 {
 	// プレイヤーの初期値を設定
-	SetMaxLife(FIRST_MAX_LIFE);
-	SetLife(FIRST_MAX_LIFE);
+	//SetMaxLife(FIRST_MAX_LIFE);
+	//SetLife(FIRST_MAX_LIFE);
 	SetRadius(PLAYER_COLLISION_RADIUS);
 }
 
@@ -55,10 +56,13 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Job, CMotion::MOTION_PLAYER_BODY);
-	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1 + m_Job, CMotion::MOTION_PLAYER_ARMS);
-	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1 + m_Job, CMotion::MOTION_PLAYER_LEG);
+	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Job[PARTS_BODY], CMotion::MOTION_PLAYER_BODY);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1 + m_Job[PARTS_ARMS], CMotion::MOTION_PLAYER_ARMS);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1 + m_Job[PARTS_LEG], CMotion::MOTION_PLAYER_LEG);
 	SetPlayerWeapon(CWeapon::WEAPON_KNUCKLE);
+
+	// パラメータの設定
+	SettingParameter();
 
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
@@ -66,11 +70,11 @@ HRESULT CPlayer::Init()
 	// 生成時に自身のポインタを敵キャラマネージャーに設定
 	/*if (Mode == CApplication::MODE_TUTORIAL)
 	{
-	CTutorial::SetPlayerUI(CPlayerUi::UITYPE_SUPPORT, m_Job);
+	CTutorial::SetPlayerUI(CPlayerUi::UITYPE_SUPPORT, m_Job[PARTS_BODY]);
 	}
 	else*/ if (Mode == CApplication::MODE_GAME)
 	{
-		CGame::SetPlayerUI(CPlayerUi::UITYPE_SUPPORT, m_Job);
+		CGame::SetPlayerUI(CPlayerUi::UITYPE_SUPPORT, m_Job[PARTS_BODY]);
 	}
 
 	// タグの設定
@@ -160,6 +164,8 @@ void CPlayer::Update()
 
 	// キャラクターの更新
 	CCharacter::Update();
+
+	CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
 }
 
 //============================================================================
@@ -672,6 +678,47 @@ void CPlayer::CollisionDropWeapon()
 }
 
 //============================================================================
+// パラメーターの設定処理
+//============================================================================
+void CPlayer::SettingParameter()
+{
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	// パラメーターの情報
+	CPlayer_Parameter::PARAMETERS Parameter = {};
+
+	int nLife = 0;				// 耐久値
+	int nStamina = 0;			// スタミナ容量
+	int nStan_Tolerance = 0;	// スタン許容値
+	int nGravity = 0;			// 重量
+
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+	{
+		// 生成時に自身のポインタを敵キャラマネージャーに設定
+		/*if (Mode == CApplication::MODE_TUTORIAL)
+		{
+		Parameter = CTutorial::GetPlayerParameter()->GetParameter(m_Job[nCnt], nCnt);
+		}
+		else*/
+		if (Mode == CApplication::MODE_GAME)
+		{
+			Parameter = CGame::GetPlayerParameter()->GetParameter(m_Job[nCnt], nCnt);
+		}
+		nLife += Parameter.nLife;
+		nStamina += Parameter.nStamina;
+		nStan_Tolerance += Parameter.nStan_Tolerance;
+		nGravity += Parameter.nGravity;
+	}
+
+	// 各パラメータの設定
+	SetMaxLife(nLife);
+	m_pEnergy_Gauge->SetMaxEnerugy(nStamina);
+	m_nStan_Tolerance = nStan_Tolerance;
+	m_nGravity = nGravity;
+}
+
+//============================================================================
 // パーツの設定
 //============================================================================
 void CPlayer::SetPlayerParts(const PARTS parts, const int weapon)
@@ -709,6 +756,12 @@ void CPlayer::SetPlayerParts(const PARTS parts, const int weapon)
 	//{
 	//	nWeaponIndex = CParts_File::PARTS_PLAYER_BODY_1;
 	//}
+
+	// パーツのジョブ情報の更新
+	m_Job[parts] = (JOB)(weapon - nWeaponIndex);
+
+	// パラメータの更新
+	SettingParameter();
 
 	// パーツの番号(パーツファイルの番号 + パーツの番号(パーツそのままの番号 - パーツの最低値))
 	int nPartsIndex = nPartsFileIndex + (weapon - nWeaponIndex);

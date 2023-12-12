@@ -49,8 +49,8 @@ public:
 	virtual void Hit(CMove_Object* pHit) override = 0;
 
 	void SetGround(const bool ground) { m_bGround = ground; }
-	void SetLife(const int life) { m_nLife = life; }
-	void SetMaxLife(const int maxlife) { m_nMaxLife = maxlife; }
+	void SetLife(const int life);
+	void SetMaxLife(const int maxlife);
 	void SetSpeed(const float speed) { m_fSpeed = speed; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
@@ -73,6 +73,7 @@ public:
 
 	const bool GetGround() { return m_bGround; }
 	const int GetLife() { return m_nLife; }
+	const int GetMaxLife() { return m_nMaxLife; }
 	const float GetSpeed() { return m_fSpeed; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }

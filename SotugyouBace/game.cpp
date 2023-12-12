@@ -36,6 +36,7 @@
 #include "map.h"
 #include "weapon.h"
 #include "connect.h"
+#include "player_parameter.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -51,6 +52,7 @@ bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPause *CGame::m_pPause = nullptr;
+CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -84,6 +86,10 @@ HRESULT CGame::Init()
 
 	// 全てのモデルパーツの読み込み
 	CApplication::GetMotion()->LoadAllFile();
+
+	// プレイヤーパラメーターの生成
+	m_pPlayer_Parameter = new CPlayer_Parameter;
+	m_pPlayer_Parameter->Init();
 
 	// プレイヤーUIの生成
 	m_pPlayer_UI[CPlayerUi::UITYPE_SUPPORT] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_SUPPORT, CObject::PRIORITY_CENTER);
@@ -145,6 +151,14 @@ HRESULT CGame::Init()
 //==============================================================================================
 void CGame::Uninit()
 {
+	// プレイヤーパラメーターの破棄
+	if (m_pPlayer_Parameter != nullptr)
+	{
+		m_pPlayer_Parameter->Uninit();
+		delete m_pPlayer_Parameter;
+		m_pPlayer_Parameter = nullptr;
+	}
+
 	// プレイヤーマネージャーの破棄
 	if (m_pPlayerManager != nullptr)
 	{
