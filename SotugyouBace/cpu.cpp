@@ -63,17 +63,14 @@ void CCPU::Draw()
 //============================================================================
 // ¶¬ˆ—
 //============================================================================
-CCPU* CCPU::Create(const D3DXVECTOR3 pos, const int index)
+CCPU* CCPU::Create(const D3DXVECTOR3 pos, const int index, const int job)
 {
 	CCPU* pCPU = new CCPU;
 
-	if (FAILED(pCPU->Init()))
-	{
-		return nullptr;
-	}
-
 	pCPU->SetPos(pos);
 	pCPU->SetCharaIndex(index);
+	pCPU->SetAllJobIndex(job);
+	pCPU->Init();
 
 	return pCPU;
 }

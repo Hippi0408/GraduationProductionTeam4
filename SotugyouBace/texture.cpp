@@ -31,7 +31,12 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/ItemPointer.png",					// アイテムポインターのテクスチャ
 	"Data/texture/UI_00.png",						// UIのテクスチャ
 	"Data/texture/Ekey.png",						// Eキーのテクスチャ
-
+	"Data/texture/Title/00_project.png",
+	"Data/texture/Title/01_machina.png",
+	"Data/texture/Title/02_colonUp.png",
+	"Data/texture/Title/03_colonDown.png",
+	"Data/texture/Title/04_j_point.png",
+	
 	/* エフェクト群 */
 	"Data/texture/particle/smoke.png",				// 煙
 	"Data/texture/particle/flare.png",				// エフェクト1
@@ -44,6 +49,12 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/soul.png",				// 魂
 	"Data/texture/particle/up.png",					// 上矢印
 	"Data/texture/reticle.png",						// レティクル
+
+	"Data/texture/Weapon/Knuckle_icon.png",			// 素手アイコン
+	"Data/texture/Weapon/Slash_icon.png",			// スラッシュアイコン
+
+	"Data/texture/WeaponSkill/WeaponSkill_Knuckle.png",	// 素手のアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_Slash.png",	// スラッシュのアタックスキルアイコン
 
 	"Data/texture/job/job_Rush.png",				// ラッシュ
 	"Data/texture/job/job_Vanguard.png",			// ヴァンガード

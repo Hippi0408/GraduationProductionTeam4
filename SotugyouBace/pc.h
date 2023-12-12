@@ -32,7 +32,7 @@ public:
 	void Input();		// “ü—Íˆ—
 	void Perspective();	// ‹“_ˆÚ“®
 
-	static CPC* Create(const D3DXVECTOR3 pos, const int index);
+	static CPC* Create(const D3DXVECTOR3 pos, const int index, const int job);
 
 private:
 	D3DXVECTOR3 m_rotDest;					//–Ú“I‚ÌŒü‚«

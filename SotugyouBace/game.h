@@ -9,6 +9,7 @@
 #define	_GAME_H_
 
 #include"mode.h"
+#include"player_ui.h"
 #include <vector>
 
 // 前方宣言
@@ -25,8 +26,8 @@ class CFontString;
 class CMenuWindow;
 class CConfirmation_Window;
 class CEnergy_Gauge;
-class CPlayerUi;
 class CPause;
+class CPlayer_Parameter;
 class CMap_Object_Manager;
 
 class CGame : public CMode
@@ -45,6 +46,7 @@ public:
 	void GameEnd();
 	void MenuWindow();
 
+	static void SetPlayerUI(const int index, const int type);
 	static void SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random = false);
 	static void SetGameEnd();
 
@@ -60,6 +62,7 @@ public:
 	static CMeshField *GetMeshField() { return m_pMeshField; }
 	static CConfirmation_Window* GetConfirmationWindow() { return m_pConfirmationWindow; }
 	static CPause *GetPause() { return m_pPause; }
+	static CPlayer_Parameter *GetPlayerParameter() { return m_pPlayer_Parameter; }
 	static CMap_Object_Manager *GetMap_Object_Manager() { return m_pMap_Object_Manager; }
 
 private:
@@ -70,8 +73,8 @@ private:
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
-	CPlayerUi* m_pPlayerUI;
-	
+
+	static CPlayerUi* m_pPlayer_UI[CPlayerUi::UITYPE_MAX];
 	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;
@@ -81,6 +84,7 @@ private:
 	static CEnergy_Gauge* m_pEnergy_Gauge;			// エネルギーゲージ
 	static CFontString* m_pFinishRogo;				// 終了ロゴ 
 	static CPause *m_pPause;
+	static CPlayer_Parameter *m_pPlayer_Parameter;	// プレイヤーパラメーター
 	static CMap_Object_Manager *m_pMap_Object_Manager;
 
 };

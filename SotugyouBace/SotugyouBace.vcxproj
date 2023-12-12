@@ -31,6 +31,7 @@
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="collision_manager.cpp" />
     <ClCompile Include="confirmation_window.cpp" />
+    <ClCompile Include="connect.cpp" />
     <ClCompile Include="cpu.cpp" />
     <ClCompile Include="debugProc.cpp" />
     <ClCompile Include="diffusion_bullet.cpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="mob_life_gauge.cpp" />
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="model_data.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="move_object.cpp" />
     <ClCompile Include="normal_bullet.cpp" />
@@ -85,6 +87,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player_life_gauge.cpp" />
     <ClCompile Include="player_manager.cpp" />
+    <ClCompile Include="player_parameter.cpp" />
     <ClCompile Include="player_ui.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
@@ -92,6 +95,7 @@
     <ClCompile Include="smoke_explosion.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="stage_select.cpp" />
+    <ClCompile Include="tcp_client.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
@@ -113,6 +117,7 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="collision_manager.h" />
     <ClInclude Include="confirmation_window.h" />
+    <ClInclude Include="connect.h" />
     <ClInclude Include="cpu.h" />
     <ClInclude Include="debugProc.h" />
     <ClInclude Include="diffusion_bullet.h" />
@@ -148,6 +153,7 @@
     <ClInclude Include="mob_life_gauge.h" />
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="model_data.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="move_object.h" />
     <ClInclude Include="normal_bullet.h" />
@@ -168,6 +174,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="player_life_gauge.h" />
     <ClInclude Include="player_manager.h" />
+    <ClInclude Include="player_parameter.h" />
     <ClInclude Include="player_ui.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
@@ -175,6 +182,7 @@
     <ClInclude Include="smoke_explosion.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="stage_select.h" />
+    <ClInclude Include="tcp_client.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
@@ -259,7 +267,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>

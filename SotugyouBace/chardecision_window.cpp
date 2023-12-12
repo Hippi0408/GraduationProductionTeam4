@@ -23,6 +23,7 @@
 #include "confirmation_window.h"
 #include "charselect_window.h"
 #include "char_select.h"
+#include "connect.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -105,8 +106,15 @@ void CCharDecision_Window::Update()
 		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
 		UninitExplanation();				// フォントの削除
+
+		////サーバーの接続
+		//CApplication::GetClient()->Init("127.0.0.1", 15678);
+
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
+
+		// プレイヤーのジョブ番号の設定
+		CApplication::SetPlayerJobIndex(CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice());
 	}
 
 	// キャラの変更処理
