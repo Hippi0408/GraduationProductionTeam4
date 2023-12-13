@@ -164,7 +164,8 @@ void CPlayer::Update()
 
 	// キャラクターの更新
 	CCharacter::Update();
-	CDebugProc::Print("腕パーツ：%d\n脚パーツ : %d\n", m_nRarity_Arms, m_nRarity_Leg);
+	//CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
+	//CDebugProc::Print("腕パーツ：%d\n脚パーツ : %d\n", m_nRarity_Arms, m_nRarity_Leg);
 }
 
 //============================================================================

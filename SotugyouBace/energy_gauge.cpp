@@ -82,6 +82,9 @@ void CEnergy_Gauge::Update()
 	GaugeColor();
 
 	CGauge_Manager::Update();
+
+
+	//CDebugProc::Print("プレイヤースタミナ：%f / %d\n", m_fFluctuation, m_nMax_Enerugy);
 }
 
 //==============================================================================================
