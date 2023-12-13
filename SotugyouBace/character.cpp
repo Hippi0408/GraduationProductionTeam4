@@ -10,6 +10,7 @@
 #include "meshfield.h"
 #include "tutorial.h"
 #include "gauge_manager.h"
+#include "debugProc.h"
 
 const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
 const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
@@ -29,7 +30,7 @@ CCharacter::CCharacter(const CObject::PRIORITY priority) : CMove_Object(priority
 
 	m_fSpeed = CHARACTER_FIRST_MOVE_SPEED;
 	m_fRotSpeed = CHARACTER_ROT_SPEED;
-	m_bGround = false;
+	SetGround(false);
 	m_bBoost = false;
 }
 
@@ -46,6 +47,8 @@ CCharacter::~CCharacter()
 HRESULT CCharacter::Init()
 {
 	m_move = { 0.0f, 0.0f, 0.0f };
+
+	SetPosOld(GetPos());
 
 	CMove_Object::Init();
 
@@ -72,6 +75,15 @@ void CCharacter::Uninit()
 	{
 		m_pGaugeManager->Uninit();
 		m_pGaugeManager = nullptr;
+	}
+
+	if (GetLandObj())
+	{
+		for (int nCnt = 0; nCnt < GetOnObj(0)->GetOnObjCnt(); nCnt++)
+		{
+			GetOnObj(0)->SetOnObj(nullptr, nCnt);
+		}
+		GetOnObj(0)->SetOnObjCnt(0);
 	}
 
 	m_Parts.clear();
@@ -218,7 +230,7 @@ void CCharacter::Landing(const D3DXVECTOR3 pos)
 	SetPos(pos);
 
 	// 着地判定を真にする
-	m_bGround = true;
+	SetGround(true);
 }
 
 //============================================================================
@@ -244,7 +256,7 @@ void CCharacter::FieldCollision()
 			a = pMeshField->MeshCollision(pos);
 	}
 	// 接地している場合
-	if (GetGround() == true)
+	if (GetGround())
 	{
 		// プレイヤーの高さを設定
 		CCharacter::SetPos({ pos.x, a, pos.z });
@@ -253,15 +265,33 @@ void CCharacter::FieldCollision()
 	else
 	{
 		if (!m_bAvoidance)
-		// メッシュフィールドの上にいる場合は重力をかける
-		CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
-
-		// メッシュフィールドより下の位置にいる場合
-		if (a >= pos.y)
 		{
-			// 着地処理を読み込む
-			Landing({ pos.x, a, pos.z });
+			// メッシュフィールドの上にいる場合は重力をかける
+			CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+
+			// メッシュフィールドより下の位置にいる場合
+			if (a >= pos.y)
+			{
+				// 着地処理を読み込む
+				Landing({ pos.x, a, pos.z });
+			}
 		}
+	}
+
+	float y = GetObjY();
+
+	if (!GetGround() && GetObjXZ() && y > pos.y)
+	{
+		// 着地処理を読み込む
+		Landing({ pos.x,y,pos.z });
+	}
+	else if (GetLandObj())
+	{
+		// プレイヤーの高さを設定
+		CCharacter::SetPos({ pos.x, GetObjY(), pos.z });
+
+		// マップオブジェクトの上にいる場合は重力をかけない
+		CCharacter::SetMove({ 0.0f, 0.0f, 0.0f });
 	}
 }
 

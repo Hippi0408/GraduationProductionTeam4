@@ -120,6 +120,7 @@ private:
 	D3DXVECTOR3 m_Reticle_Pos;
 	D3DXVECTOR2 m_Reticle_Size;
 	D3DXVECTOR2 m_Reticle_Tran_Size;
+	CEnemy *m_pEnemy;
 	float m_fReticle_Alpha;
 	float m_fHypotenuse;
 	bool m_bReticle_Draw;

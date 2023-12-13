@@ -28,7 +28,7 @@
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
-const float CPlayer::VIEW_SCOPE_ANGLE = 44.5f;		// プレイヤーの視野角
+const float CPlayer::VIEW_SCOPE_ANGLE = 44.3f;		// プレイヤーの視野角
 const float CPlayer::RETICLE_TRANSPARENCY_SIZE = 300.0f;
 const float CPlayer::RETICLE_SIZE = 200.0f;
 //=====================================
@@ -164,8 +164,6 @@ void CPlayer::Update()
 
 	// キャラクターの更新
 	CCharacter::Update();
-
-	CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
 	CDebugProc::Print("腕パーツ：%d\n脚パーツ : %d\n", m_nRarity_Arms, m_nRarity_Leg);
 }
 
@@ -208,10 +206,10 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 
 	// 弾の生成
-	/*CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
-	CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
-	CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);*/
-	CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
+	CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
+	/*CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
+	CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);
+	CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);*/
 }
 
 //============================================================================
@@ -220,13 +218,15 @@ void CPlayer::PlayerAttack()
 void CPlayer::JumpStart()
 {
 	// 接地している場合のみ
-	if (GetGround() == true)
+	if (GetGround())
 	{
 		// ジャンプモーションを設定
 		GetParts(PARTS_LEG)->SetMotion(MOTION_JUMP);
 
 		// 離着状態にする
 		SetGround(false);
+		SetLandObj(false);
+		SetObjXZ(false);
 
 		// 上昇する
 		AddMove({ 0.0f, PLAYER_JUMP_POWER, 0.0f });
@@ -300,6 +300,8 @@ void CPlayer::Hit(CMove_Object* pHit)
 		case TAG_EXPLOSION:
 			// 爆発のダメージを返す
 			Damage(pHit->GetPower());
+		case TAG_MAP_OBJECT:
+			break;
 		default:
 			break;
 		}
@@ -370,6 +372,7 @@ void CPlayer::Target()
 					m_NearMob_Pos = Mob_Pos;
 					m_nEnemy_Count = nCnt;
 					m_fEnemy_Speed = pEnemy->GetSpeed();
+					m_pEnemy = pEnemy;
 
 					m_bTarget = true;
 

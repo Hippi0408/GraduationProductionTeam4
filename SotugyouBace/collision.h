@@ -33,7 +33,7 @@ public:
 
 	void Collision();
 	bool Sphere_Collision(const D3DXVECTOR3 pos, const float radius, const D3DXVECTOR3 otherPos, const float otherRadius);	// 円の当たり判定
-	bool Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold, const D3DXVECTOR3 size, const D3DXVECTOR3 otherpos, const D3DXVECTOR3 othersize);	// 矩形の当たり判定
+	bool Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold, const D3DXVECTOR3 size, const D3DXVECTOR3 otherpos, const D3DXVECTOR3 othersize, CMove_Object *objParent, CMove_Object *objOther);	// 矩形の当たり判定
 
 	static CCollision* Create(CMove_Object* pParent);
 
@@ -61,7 +61,6 @@ private:
 #ifdef _DEBUG
 	CObject3D* m_pDebugObj;		// デバッグオブジェクトのポインタ
 #endif // _DEBUG
-
 };
 
 #endif // !_COLLISION_H_
