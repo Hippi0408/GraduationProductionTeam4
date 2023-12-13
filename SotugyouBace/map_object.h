@@ -23,10 +23,11 @@ public:
 	void Draw() override;
 	void Hit(CMove_Object* pHit) override;
 
+	void Collision_Hit();
+
 	static CMap_Object *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, const PRIORITY priority = PRIORITY_MODEL);
 	
 private:
-	CObjectX *pMap_ObjectX;
 };
 
 #endif // !_MAP_OBJECT_H_

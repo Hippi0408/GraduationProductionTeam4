@@ -118,6 +118,8 @@ bool CTcp_client::Connect()
 		printf("接続出来ました。\n");
 		return true;
 	}
+
+	return false;
 }
 
 

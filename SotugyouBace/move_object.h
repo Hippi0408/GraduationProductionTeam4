@@ -10,6 +10,8 @@
 #include"object.h"
 #include"collision.h"
 
+class CObjectX;
+
 class CMove_Object : public CObject
 {
 public:
@@ -19,7 +21,8 @@ public:
 		TAG_NONE = 0,
 		TAG_CHARACTER,		// キャラクタータグ
 		TAG_BULLET,			// 弾タグ
-		TAG_EXPLOSION,	// 爆発タグ
+		TAG_EXPLOSION,		// 爆発タグ
+		TAG_MAP_OBJECT,		// マップオブジェクト
 		TAG_MAX,
 	};
 
@@ -55,6 +58,15 @@ public:
 	void SetDelayCollision() { m_bCollision_Delay = true; }				// 当たり判定を遅延して生成
 	void SetCollision_Type(COLLISION_TYPE type) { m_Collision_Type = type; }
 	void SetSize(D3DXVECTOR3 size) { m_Size = size; }
+	void SetGround(const bool ground) { m_bGround = ground; }
+	void SetLandObj(bool land) { m_bLand_Obj = land; }
+	void SetObjY(const float Y) { m_fObjY = Y; }
+	void SetObjXZ(const bool xz) { m_bInXZ = xz; }
+	void SetOnObj(CMove_Object *onobj, int index) { m_OnObject[index] = onobj; }
+	void SetIndex(D3DXVECTOR3 index, int cnt) { m_Index[cnt] = index; }
+	void AddOnObjCnt(int cnt) { m_nOnObjCnt += cnt; }
+	void SetOnObjCnt(int cnt) { m_nOnObjCnt = cnt; }
+	void SetObjectX(CObjectX *objectX) { m_pObjectX = objectX; }
 
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
 	const D3DXVECTOR3 GetPosOld() { return m_posOld; }
@@ -63,9 +75,18 @@ public:
 	const float GetRadius() { return m_fRadius; }						// 半径の取得
 	TAG GetTag() { return m_tag; }										// タグの取得
 	const bool GetPlayerSide() { return m_bPlayerSide; }				// プレイヤー側かどうかの取得
+	const bool GetCollisionNoneHit() { return m_bCollision_NoneHit; }
 	CCollision* GetCollision() { return m_pCollision; }					// 当たり判定の情報
 	const COLLISION_TYPE GetCollision_Type() { return m_Collision_Type; }
 	const D3DXVECTOR3 GetSize() { return m_Size; }
+	const bool GetGround() { return m_bGround; }
+	bool GetLandObj() { return m_bLand_Obj; }
+	const float GetObjY() { return m_fObjY; }
+	const bool GetObjXZ() { return m_bInXZ; }
+	CMove_Object *GetOnObj(int index) { return m_OnObject[index]; }
+	D3DXVECTOR3 GetIndex(int cnt) { return m_Index[cnt]; }
+	int GetOnObjCnt() { return m_nOnObjCnt; }
+	CObjectX *GetObjectX() { return m_pObjectX; }
 
 private:
 	D3DXVECTOR3 m_pos;			// 位置
@@ -79,6 +100,14 @@ private:
 	bool m_bCollision_NoneHit;	// 当たり判定のヒット処理を読み込まない判定
 	COLLISION_TYPE m_Collision_Type;		// 当たり判定のタイプ
 	D3DXVECTOR3 m_Size;			// サイズ
+	bool m_bGround;				// 接地判定
+	bool m_bLand_Obj;			// オブジェクトに着地
+	bool m_bInXZ;				// XZが重なってるか
+	float m_fObjY;				// オブジェクトのY座標
+	D3DXVECTOR3 m_Index[4];		// オブジェクトの4頂点
+	CMove_Object *m_OnObject[128];
+	int m_nOnObjCnt;
+	CObjectX *m_pObjectX;
 };
 
 #endif // !_MOVE_OBJECT_H_

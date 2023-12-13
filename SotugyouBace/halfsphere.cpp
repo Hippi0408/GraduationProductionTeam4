@@ -18,6 +18,12 @@ CHalfSphere::CHalfSphere() : CObject(PRIORITY_BACK_GROUND)
 {
 	m_pVtxBuff = nullptr;
 	m_pIdxBuff = nullptr;
+	m_bAnimation = false;
+	m_bRot = false;
+	m_AnimationMove = D3DXVECTOR2(0.0f, 0.0f);
+	m_Animation = D3DXVECTOR2(0.0f, 0.0f);
+	m_fRotMove = 0.0f;
+	m_fRot = 0.0f;
 }
 
 //==============================================
@@ -167,6 +173,63 @@ void CHalfSphere::Uninit(void)
 //==============================================
 void CHalfSphere::Update(void)
 {
+	if (!m_bAnimation && !m_bRot)
+	{
+		return;
+	}
+
+	//頂点座標へのポインタ
+	VERTEX_3D * pVtx = nullptr;
+
+	//頂点バッファをロックし、頂点情報へのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	for (int nCntZ = 0; nCntZ < HALFSPHEAR_Z_BLOCK + 1; nCntZ++)
+	{
+		for (int nCntX = 0; nCntX < HALFSPHEAR_X_BLOCK + 1; nCntX++)
+		{
+
+
+			float fRot = m_fRot + (D3DX_PI * 2) / HALFSPHEAR_X_BLOCK * nCntX;
+			float fHalfRot = (D3DX_PI / 2) / HALFSPHEAR_Z_BLOCK * nCntZ;
+
+			// 半径と、高さの計算
+			float Radius = cosf(fHalfRot) * m_size.x;
+			float Height = sinf(fHalfRot) * m_size.z;
+
+			//頂点座標の設定
+			pVtx[nCntX + (nCntZ * (HALFSPHEAR_X_BLOCK + 1))].pos.x = sinf(-fRot) * Radius;
+			pVtx[nCntX + (nCntZ * (HALFSPHEAR_X_BLOCK + 1))].pos.z = cosf(-fRot) * Radius;
+			pVtx[nCntX + (nCntZ * (HALFSPHEAR_X_BLOCK + 1))].pos.y = Height/* + 15.0f*/;
+
+			//各頂点の法線の設定(ベクトルの大きさは1にする必要がある)
+			pVtx[nCntX + (nCntZ *(HALFSPHEAR_X_BLOCK + 1))].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+
+
+			switch (m_tex)
+			{
+			case CHalfSphere::SPHERE_UP:
+				//テクスチャ座標の設定
+				pVtx[nCntX + (nCntZ *(HALFSPHEAR_X_BLOCK + 1))].tex = D3DXVECTOR2((1.0f / HALFSPHEAR_X_BLOCK) * -nCntX + m_Animation.x,
+					(1.0f / HALFSPHEAR_Z_BLOCK) * -nCntZ + m_Animation.y);
+				break;
+			case CHalfSphere::SPHERE_DOWN:
+				//テクスチャ座標の設定
+				pVtx[nCntX + (nCntZ *(HALFSPHEAR_X_BLOCK + 1))].tex = D3DXVECTOR2((1.0f / HALFSPHEAR_X_BLOCK) * nCntX + m_Animation.x,
+					(1.0f / HALFSPHEAR_Z_BLOCK) * nCntZ + m_Animation.y);
+				break;
+			case CHalfSphere::SPHERE_MAX:
+				break;
+			default:
+				break;
+			}
+
+		}
+	}
+
+	m_fRot += m_fRotMove;
+	m_Animation += m_AnimationMove;
+
 }
 
 //==============================================

@@ -15,6 +15,7 @@ class CDropManager;
 class CCollision_Manager;
 class CMeshField;
 class CPause;
+class CMap_Object_Manager;
 
 class CTutorial : public CMode
 {
@@ -34,6 +35,7 @@ public:
 	static CCollision_Manager* GetCollision_Manager() { return m_pCollision_Manager; }
 	static CMeshField *GetMeshField() { return pMeshField; }
 	static CPause *GetPause() { return m_pPause; }
+	static CMap_Object_Manager *GetMap_Object_Manager() { return m_pMap_Object_Manager; }
 
 private:
 	static CMeshField *pMeshField;			// メッシュフィールド
@@ -42,6 +44,7 @@ private:
 	static CEnemyManager* m_pEnemyManager;
 	static CDropManager* m_pDropManager;
 	static CCollision_Manager* m_pCollision_Manager;
+	static CMap_Object_Manager *m_pMap_Object_Manager;
 };
 
 #endif // !_TUTORIAL_H_

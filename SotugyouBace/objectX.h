@@ -41,10 +41,10 @@ public:
 	void SetModel(const int index);
 
 	// マテリアルの色情報を初期マテリアル色に戻す処理
-	void SetColor(const D3DXCOLOR col) { for (int nCntMat = 0; nCntMat < m_nNumMat; nCntMat++) { m_col[nCntMat] = col; } }
-	void AddColor(const D3DXCOLOR col) { for (int nCntMat = 0; nCntMat < m_nNumMat; nCntMat++) { m_col[nCntMat] += col; } }
-	void SetAlpha(const float alpha) { for (int nCntMat = 0; nCntMat < m_nNumMat; nCntMat++) { m_col[nCntMat].a = alpha; } }
-	void AddAlpha(const float alpha) { for (int nCntMat = 0; nCntMat < m_nNumMat; nCntMat++) { m_col[nCntMat].a += alpha; } }
+	void SetColor(const D3DXCOLOR col) { m_col = col; }
+	void AddColor(const D3DXCOLOR col) { m_col += col; }
+	void SetAlpha(const float alpha) { m_col.a = alpha; }
+	void AddAlpha(const float alpha) { m_col.a += alpha; }
 
 	const D3DXVECTOR3 GetPos() { return m_pos; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
@@ -61,7 +61,8 @@ private:
 	D3DXVECTOR3 m_vtxMinModel;	// 頂点の最小値
 	D3DXVECTOR3 m_vtxMaxModel;	// 頂点の最大値
 	D3DXMATRIX m_mtxWorld;		// ワールドマトリックス
-	std::vector <D3DXCOLOR> m_col;		// モデルの色
+	D3DXCOLOR m_col;				// モデルの色
+	std::vector <D3DXCOLOR> m_Original_col;		// モデルの元の色
 	CObjectX* m_pParent;			// 親モデルへのポインタ
 	int m_nIndex;				// Xファイルの番号
 	int m_nNumMat;				// 現在のモデルのマテリアル数

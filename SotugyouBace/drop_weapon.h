@@ -7,12 +7,12 @@
 #ifndef _DORP_WAPON_H_
 #define _DORP_WAPON_H_
 
-#include "objectX.h"
+#include "move_object.h"
 #include "player.h"
 
 class CObject3D;
 
-class CDrop_Weapon : public CObjectX
+class CDrop_Weapon : public CMove_Object
 {
 	static const float PARTS_FLOTIONG_POS;			// 落ちてる武器の浮遊位置
 public:
@@ -55,18 +55,21 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	void ItemPointerMove();		// アイテムポインターの移動処理
+	void ItemPointerMove();// アイテムポインターの移動処理
 	void Pick_Up_Weapon();		// 武器を拾う
 	void Parts_Type();			// パーツの部位の設定
 	void FieldCollision();		// 床との当たり判定
 
 	void SetPick_Up(const bool pick_Up) { m_bPick_Up = pick_Up; }
 
+	const int GetRarity() { return m_nRarity; }
 	const D3DXVECTOR3 GetCentePos() { return m_CenterPos; }
 	const int GetWeaponType() { return m_nWeapon_Type; }
 	CPlayer::PARTS GetPartsType() { return m_Parts; }
 
-	static CDrop_Weapon *Create(D3DXVECTOR3 pos, int weapon);
+	static CDrop_Weapon *Create(D3DXVECTOR3 pos, int weapon, int rarity);
+
+	void Hit(CMove_Object* pHit) override;
 
 	static void LoadAllFile();			// 全てのドロップパーツの読み込み
 
@@ -74,6 +77,7 @@ private:
 
 	D3DXVECTOR3 m_CenterPos;	// 中心位置
 	int m_nWeapon_Type;			// 武器のタイプ
+	int m_nRarity;				// レアリティ
 	CObject3D *m_pPointer;		// アイテムポインターの表示
 	CObject3D *m_pPick_Up;		// 拾う時の表示
 	float m_fMove;				// 落下速度

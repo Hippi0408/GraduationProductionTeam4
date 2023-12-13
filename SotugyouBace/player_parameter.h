@@ -20,6 +20,8 @@ class CPlayer_Parameter
 {
 
 public:
+	static const int PLAYER_PARTS_TYPE_MAX = 17;	// プレイヤーのパーツ種類の最大数
+	static const int PARTS_RARITY = 3;				// パーツのレアリティ
 
 	// パラメーター
 	struct PARAMETERS
@@ -38,14 +40,23 @@ public:
 	HRESULT Init();
 	void Uninit();
 
-	void LoadFile();		// パラメーターの読み込み
+	void LoadJobFile();		// ジョブの読み込み
+	void LoadPartsFile();	// パーツの読み込み
 
 	// プレイヤーパラメーターの取得
-	PARAMETERS GetParameter(const int job, const int parts) { return m_Parameter[job][parts]; }
+	PARAMETERS GetParameterJob(const int job) { return m_Parameter_Job[job]; }
+
+	// 腕パラメーターの取得
+	PARAMETERS GetParameterArms(const int type, const int rearity) { return m_Parameter_Arms[type][rearity]; }
+
+	// 脚パラメーターの取得
+	PARAMETERS GetParameterLeg(const int type, const int rearity) { return m_Parameter_Leg[type][rearity]; }
 
 private:
 
-	PARAMETERS m_Parameter[CPlayer::JOB_MAX][CPlayer::PARTS_MAX];	// ジョブ数分のパラメーター
+	PARAMETERS m_Parameter_Job[CPlayer::JOB_MAX];						// ジョブ数分のパラメーター
+	PARAMETERS m_Parameter_Arms[PLAYER_PARTS_TYPE_MAX][PARTS_RARITY];	// 腕のパラメーター
+	PARAMETERS m_Parameter_Leg[PLAYER_PARTS_TYPE_MAX][PARTS_RARITY];	// 脚のパラメーター
 };
 
 #endif// _PLAYER_PARAMETER_H_

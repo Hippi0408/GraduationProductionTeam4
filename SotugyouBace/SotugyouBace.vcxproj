@@ -58,6 +58,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="map_object.cpp" />
+    <ClCompile Include="map_object_manager.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="menu_window.cpp" />
     <ClCompile Include="meshfield.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="map_object.h" />
+    <ClInclude Include="map_object_manager.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="menu_window.h" />
     <ClInclude Include="meshfield.h" />
@@ -295,7 +297,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>

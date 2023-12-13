@@ -18,6 +18,7 @@
 #include "particle_emitter.h"
 #include "tutorial.h"
 #include "normal_explosion.h"
+#include "map_object_manager.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -137,6 +138,9 @@ void CBullet::Update()
 
 	// 床の当たり判定
 	FieldCollision();
+
+	// マップオブジェクトの当たり判定
+	Map_Object_Collision();
 }
 
 //=============================================================================
@@ -184,7 +188,8 @@ void CBullet::FieldCollision()
 void CBullet::Hit(CMove_Object* pHit)
 {
 	// 弾では無い場合 && 同じサイドではない場合
-	if (pHit->GetTag() == TAG_CHARACTER && GetPlayerSide() != pHit->GetPlayerSide())
+	if ((pHit->GetTag() == TAG_CHARACTER && GetPlayerSide() != pHit->GetPlayerSide())
+		|| pHit->GetTag() == TAG_MAP_OBJECT)
 	{
 		Destroy();
 	}
@@ -205,6 +210,53 @@ void CBullet::Destroy()
 	std::move(CParticleEmitter::Create("Attack", GetPos()));
 
 	Uninit();
+}
+
+//=============================================================================
+// マップオブジェクトとの当たり判定
+//=============================================================================
+void CBullet::Map_Object_Collision()
+{
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CMap_Object_Manager *pMap_Object_Manager = nullptr;
+
+	// モード毎にキャラを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+		pMap_Object_Manager = CTutorial::GetMap_Object_Manager();
+	else if (Mode == CApplication::MODE_GAME)
+		pMap_Object_Manager = CGame::GetMap_Object_Manager();
+
+	D3DXVECTOR3 MapObjec_Pos = {};
+	D3DXVECTOR3 ObjVec = {};
+
+	// マップオブジェクトの情報
+	for (auto pMap_Object : pMap_Object_Manager->GetAllMapObject())
+	{
+		if (pMap_Object->GetCollisionNoneHit())
+		{
+			// 弾の位置の取得
+			MapObjec_Pos = pMap_Object->GetCenterPos();
+
+			D3DXVECTOR3 Max = pMap_Object->GetObjectX()->GetMaxSize();
+			D3DXVECTOR3 Min = pMap_Object->GetObjectX()->GetMinSize();
+
+			// 弾からマップオブジェクトまでのベクトル
+			ObjVec = GetPos() - MapObjec_Pos;
+
+			// 弾からマップオブジェクトまでの距離
+			float Distance = sqrtf(ObjVec.x * ObjVec.x + ObjVec.z * ObjVec.z);
+
+			// 弾から近い
+			if (Distance < Max.x * 1.5f + GetRadius() || Distance < Max.z * 1.5f + GetRadius()
+				|| Distance < Min.x * 1.5f + GetRadius() || Distance < Min.z * 1.5f + GetRadius())
+				pMap_Object->SetCollisionNoneHit(false);
+			// 弾から遠い
+			else
+				pMap_Object->SetCollisionNoneHit(true);
+		}
+	}
 }
 
 //=============================================================================
@@ -241,4 +293,3 @@ CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECT
 
 	return pBullet;
 }
-
