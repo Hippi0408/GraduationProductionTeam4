@@ -28,7 +28,7 @@
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
-const float CPlayer::VIEW_SCOPE_ANGLE = 44.2f;		// プレイヤーの視野角
+const float CPlayer::VIEW_SCOPE_ANGLE = 44.3f;		// プレイヤーの視野角
 const float CPlayer::RETICLE_TRANSPARENCY_SIZE = 300.0f;
 const float CPlayer::RETICLE_SIZE = 200.0f;
 //=====================================
@@ -164,8 +164,6 @@ void CPlayer::Update()
 
 	// キャラクターの更新
 	CCharacter::Update();
-
-	CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
 }
 
 //============================================================================
@@ -373,6 +371,7 @@ void CPlayer::Target()
 					m_NearMob_Pos = Mob_Pos;
 					m_nEnemy_Count = nCnt;
 					m_fEnemy_Speed = pEnemy->GetSpeed();
+					m_pEnemy = pEnemy;
 
 					m_bTarget = true;
 

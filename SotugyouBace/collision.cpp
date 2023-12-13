@@ -219,10 +219,9 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 				nOnObj++;
 			}
 			
-			CDebugProc::Print("%d", nOnObj);
 			objOther->SetOnObjCnt(nOnObj);
 
-			//objOther->SetLandObj(true);		// Move_Object‚ªã‚Éæ‚Á‚Ä‚é‚©
+			objOther->SetLandObj(true);		// Move_Object‚ªã‚Éæ‚Á‚Ä‚é‚©
 			objOther->SetObjXZ(true);
 
 			objParent->SetOnObj(objOther, 0);
