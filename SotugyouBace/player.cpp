@@ -165,7 +165,7 @@ void CPlayer::Update()
 	// キャラクターの更新
 	CCharacter::Update();
 
-	CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
+	//CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
 }
 
 //============================================================================

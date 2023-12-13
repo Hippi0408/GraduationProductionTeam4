@@ -83,7 +83,7 @@ void CEnergy_Gauge::Update()
 
 	CGauge_Manager::Update();
 
-	CDebugProc::Print("プレイヤースタミナ：%f / %d\n", m_fFluctuation, m_nMax_Enerugy);
+	//CDebugProc::Print("プレイヤースタミナ：%f / %d\n", m_fFluctuation, m_nMax_Enerugy);
 }
 
 //==============================================================================================
