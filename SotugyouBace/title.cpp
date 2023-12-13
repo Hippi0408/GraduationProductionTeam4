@@ -119,10 +119,10 @@ void CTitle::Update()
 	m_pGear[0]->AddRot(D3DXVECTOR3(D3DXToRadian(GEAR_SPEED), D3DXToRadian(GEAR_SPEED), D3DXToRadian(GEAR_SPEED)));
 	m_pGear[1]->AddRot(D3DXVECTOR3(D3DXToRadian(GEAR_SPEED), D3DXToRadian(-GEAR_SPEED), D3DXToRadian(GEAR_SPEED)));
 	m_pGear[2]->AddRot(D3DXVECTOR3(D3DXToRadian(-GEAR_SPEED), D3DXToRadian(-GEAR_SPEED), D3DXToRadian(-GEAR_SPEED)));
-	m_pTitle[2]->AddRot(D3DXVECTOR2(D3DXToRadian(0), D3DXToRadian(1)));
-	m_pTitle[3]->AddRot(D3DXVECTOR2(D3DXToRadian(0), D3DXToRadian(-1)));
-	m_pTitle[4]->AddRot(D3DXVECTOR2(D3DXToRadian(0), D3DXToRadian(-2)));
-	m_pTitle[5]->AddRot(D3DXVECTOR2(D3DXToRadian(0), D3DXToRadian(1.5f)));
+	m_pTitle[2]->AddRot(D3DXVECTOR2(D3DXToRadian(1), D3DXToRadian(1)));
+	m_pTitle[3]->AddRot(D3DXVECTOR2(D3DXToRadian(-1), D3DXToRadian(-1)));
+	m_pTitle[4]->AddRot(D3DXVECTOR2(D3DXToRadian(-2), D3DXToRadian(-2)));
+	m_pTitle[5]->AddRot(D3DXVECTOR2(D3DXToRadian(1.5f), D3DXToRadian(1.5f)));
 
 	CInput* pInput = CInput::GetKey();
 

@@ -114,8 +114,6 @@ private:
 	bool m_bDrop_Get;		// 落とし物を入手する判定
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
-	CWeapon* m_pRightWeapon;			// 右手武器
-	CWeapon* m_pLeftWeapon;				// 左手武器
 
 	D3DXVECTOR3 m_NearMob_Pos;
 	CObject3D *m_pReticle;				// レティクル
@@ -129,12 +127,15 @@ private:
 	int m_nEnemy_Count;
 	float m_fEnemy_Speed;
 	float m_fAngle;
-	int m_nStan_Tolerance;	// スタン許容値
-	int m_nGravity;			// 重量
+	int m_nStan_Tolerance;				// スタン許容値
+	int m_nGravity;						// 重量
 
-	JOB m_Job[PARTS_MAX];		// プレイヤーのパーツ毎のジョブ種類
-	int m_nRarity_Arms;			// 腕のレアリティ
-	int m_nRarity_Leg;			// 脚のレアリティ
+	JOB m_Job[PARTS_MAX];				// プレイヤーのパーツ毎のジョブ種類
+	int m_nRarity_Arms;					// 腕のレアリティ
+	int m_nRarity_Leg;					// 脚のレアリティ
+	CWeapon* m_pRightWeapon;			// 右手武器
+	CWeapon* m_pLeftWeapon;				// 左手武器
+
 };
 
 #endif// _PLAYER_H_
