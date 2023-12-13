@@ -37,6 +37,7 @@
 #include "weapon.h"
 #include "connect.h"
 #include "player_parameter.h"
+#include "map_object_manager.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -53,6 +54,7 @@ bool CGame::m_bGameWindow = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPause *CGame::m_pPause = nullptr;
 CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
+CMap_Object_Manager *CGame::m_pMap_Object_Manager = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -100,6 +102,7 @@ HRESULT CGame::Init()
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
 	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
+	m_pMap_Object_Manager = new CMap_Object_Manager;
 
 	// 全てのモデルパーツの読み込み
 	CDrop_Weapon* pWeaponDummer = new CDrop_Weapon;
@@ -110,6 +113,7 @@ HRESULT CGame::Init()
 	int nJob_Index = CApplication::GetPlayerJobIndex() % 3;
 
 	// プレイヤーの生成(テスト)
+
 	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
@@ -117,7 +121,7 @@ HRESULT CGame::Init()
 		// モブキャラの生成
 		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
 	}
-
+	
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
 
@@ -221,6 +225,13 @@ void CGame::Uninit()
 			m_pPlayer_UI[nCnt]->Uninit();
 			m_pPlayer_UI[nCnt] = nullptr;
 		}
+	}
+
+	//マップオブジェクトの破棄
+	if (m_pMap_Object_Manager != nullptr)
+	{
+		delete m_pMap_Object_Manager;
+		m_pMap_Object_Manager = nullptr;
 	}
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする

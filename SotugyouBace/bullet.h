@@ -46,6 +46,7 @@ public:
 	void FieldCollision();					//°‚Ì“–‚½‚è”»’è
 	void Hit(CMove_Object* pHit) override;	// ”í’eˆ—
 	virtual void Destroy();							// ”j‰óˆ—
+	void Map_Object_Collision();
 
 	void SetLife(const int life) { m_nLife = life; }		// ’e‚Ìõ–½‚Ìİ’è
 	void SetSpeed_XZ(const float speed) { m_fSpeed_XZ = speed; }	// ’e‚Ì‘¬“x‚Ìİ’è

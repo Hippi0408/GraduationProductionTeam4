@@ -118,6 +118,8 @@ void CEnemy::Hit(CMove_Object* pHit)
 			// ”š”­‚Ìƒ_ƒ[ƒW‚ð•Ô‚·
 			Damage(pHit->GetPower());
 			break;
+		case TAG_MAP_OBJECT:
+			break;
 		default:
 			break;
 		}

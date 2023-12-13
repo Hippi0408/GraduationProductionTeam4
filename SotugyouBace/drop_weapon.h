@@ -7,12 +7,12 @@
 #ifndef _DORP_WAPON_H_
 #define _DORP_WAPON_H_
 
-#include "objectX.h"
+#include "move_object.h"
 #include "player.h"
 
 class CObject3D;
 
-class CDrop_Weapon : public CObjectX
+class CDrop_Weapon : public CMove_Object
 {
 	static const float PARTS_FLOTIONG_POS;			// 落ちてる武器の浮遊位置
 public:
@@ -55,7 +55,7 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	void ItemPointerMove();		// アイテムポインターの移動処理
+	void ItemPointerMove();// アイテムポインターの移動処理
 	void Pick_Up_Weapon();		// 武器を拾う
 	void Parts_Type();			// パーツの部位の設定
 	void FieldCollision();		// 床との当たり判定
@@ -67,6 +67,8 @@ public:
 	CPlayer::PARTS GetPartsType() { return m_Parts; }
 
 	static CDrop_Weapon *Create(D3DXVECTOR3 pos, int weapon);
+
+	void Hit(CMove_Object* pHit);
 
 	static void LoadAllFile();			// 全てのドロップパーツの読み込み
 
