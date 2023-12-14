@@ -40,10 +40,10 @@ CPC::~CPC()
 //============================================================================
 HRESULT CPC::Init()
 {
-	CPlayer::Init();
-
 	SetEnergyGauge(CEnergy_Gauge::Create({ 70,720.0f / 2,0.0f }, { 20.0f,500.0f }));
 	SetGaugeManager(CPlayer_Life_Gauge::Create({ 1210.0f,720.0f / 2,0.0f }, { 20.0f,500.0f }));
+
+	CPlayer::Init();
 
 	return S_OK;
 }
@@ -432,17 +432,14 @@ void CPC::Perspective()
 //============================================================================
 // ¶¬ˆ—
 //============================================================================
-CPC* CPC::Create(const D3DXVECTOR3 pos, const int index)
+CPC* CPC::Create(const D3DXVECTOR3 pos, const int index, const int job)
 {
 	CPC* pPC = new CPC;
 
-	if (FAILED(pPC->Init()))
-	{
-		return nullptr;
-	}
-
 	pPC->SetPos(pos);
 	pPC->SetCharaIndex(index);
+	pPC->SetAllJobIndex(job);
+	pPC->Init();
 
 	return pPC;
 }

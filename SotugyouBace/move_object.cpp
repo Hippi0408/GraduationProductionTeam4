@@ -58,6 +58,9 @@ void CMove_Object::Update()
 {
 	// “–‚½‚è”»’è‚ð’x‰„‚µ‚ÄÝ’è‚·‚éˆ—
 	DelayCollision();
+
+	if (m_pCollision != nullptr)
+		m_pCollision->SetNoneHit(m_bCollision_NoneHit);
 }
 
 //==============================================================================================

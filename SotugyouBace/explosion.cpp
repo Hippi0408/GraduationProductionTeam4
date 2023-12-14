@@ -32,6 +32,12 @@ HRESULT CExplosion::Init()
 	// タグの設定
 	SetTag(TAG_EXPLOSION);
 
+	// 当たり判定のタイプ
+	SetCollision_Type(CMove_Object::COLLISION_TYPE_SHERER);
+
+	// サイズの設定
+	SetSize({ GetRadius(),GetRadius(),GetRadius() });
+
 	return S_OK;
 }
 

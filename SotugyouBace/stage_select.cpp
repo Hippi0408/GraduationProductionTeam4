@@ -9,6 +9,7 @@
 #include"application.h"
 #include"fade.h"
 #include"fontString.h"
+#include"connect.h"
 
 int CStage_Select::m_nStage_Number = 0;
 

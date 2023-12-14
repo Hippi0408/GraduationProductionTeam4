@@ -48,9 +48,9 @@ public:
 	void NormalizeRot();							// 角度の正規化
 	virtual void Hit(CMove_Object* pHit) override = 0;
 
-	void SetGround(const bool ground) { m_bGround = ground; }
-	void SetLife(const int life) { m_nLife = life; }
-	void SetMaxLife(const int maxlife) { m_nMaxLife = maxlife; }
+	/*void SetGround(const bool ground) { m_bGround = ground; }*/
+	void SetLife(const int life);
+	void SetMaxLife(const int maxlife);
 	void SetSpeed(const float speed) { m_fSpeed = speed; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
@@ -71,8 +71,9 @@ public:
 	void SetHitExplosion(const bool hit) { m_bHit_Explosion = hit; }
 	void SetGaugeManager(CGauge_Manager *gauge) { m_pGaugeManager = gauge; }
 
-	const bool GetGround() { return m_bGround; }
+	/*const bool GetGround() { return m_bGround; }*/
 	const int GetLife() { return m_nLife; }
+	const int GetMaxLife() { return m_nMaxLife; }
 	const float GetSpeed() { return m_fSpeed; }
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
@@ -99,7 +100,7 @@ private:
 
 	D3DXCOLOR m_col;					// モデルの色
 
-	bool m_bGround;						// 接地判定
+	//bool m_bGround;						// 接地判定
 
 	int m_nLife;						// 体力
 	int m_nMaxLife;						// 最大体力

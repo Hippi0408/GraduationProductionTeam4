@@ -56,6 +56,20 @@ public:
 		MOTION_MAX,
 	};
 
+	// ジョブの種種類
+	enum JOB
+	{
+		JOB_RUSH = 0,	// ラッシュ
+		JOB_VANGUARD,	// ヴァンガード
+		JOB_EAGLEEYE,	// イーグルアイ
+		JOB_MARSHALL,	// マーシャル
+		JOB_MECHANIC,	// メカニック
+		JOB_RAIDER,		// レイダー
+		JOB_ARKPHILIA,	// アークフィリア
+		JOB_CONTROL,	// コントロール
+		JOB_MAX
+	};
+
 	CPlayer();
 	virtual ~CPlayer() override;
 
@@ -77,12 +91,16 @@ public:
 	void DropGet(CDrop_Weapon* pDrop);		// 落とし物を入手する処理
 
 	void CollisionDropWeapon();			// 落ちてる武器の当たり判定
-	void ChangeWeapon(const int weapon);
+
+	void SettingParameter();			// パラメーターの設定処理
 
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
-	void SetWeapon(const int weapon);
+	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Job[nCnt] = (JOB)index; } }
+	void SetPlayerParts(const PARTS parts, const int weapon, const int rarity);
+	void SetPlayerWeapon(const int weapon);
+
 
 	const bool GetDropContact() { return m_bDrop_Contact; }
 	const int GetCharaIndex() { return m_nCharaIndex; }
@@ -96,14 +114,13 @@ private:
 	bool m_bDrop_Get;		// 落とし物を入手する判定
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
-	CWeapon* m_pRightWeapon;			// 右手武器
-	CWeapon* m_pLeftWeapon;				// 左手武器
 
 	D3DXVECTOR3 m_NearMob_Pos;
 	CObject3D *m_pReticle;				// レティクル
 	D3DXVECTOR3 m_Reticle_Pos;
 	D3DXVECTOR2 m_Reticle_Size;
 	D3DXVECTOR2 m_Reticle_Tran_Size;
+	CEnemy *m_pEnemy;
 	float m_fReticle_Alpha;
 	float m_fHypotenuse;
 	bool m_bReticle_Draw;
@@ -111,7 +128,15 @@ private:
 	int m_nEnemy_Count;
 	float m_fEnemy_Speed;
 	float m_fAngle;
-	CEnemy *m_pEnemy;
+	int m_nStan_Tolerance;				// スタン許容値
+	int m_nGravity;						// 重量
+
+	JOB m_Job[PARTS_MAX];				// プレイヤーのパーツ毎のジョブ種類
+	int m_nRarity_Arms;					// 腕のレアリティ
+	int m_nRarity_Leg;					// 脚のレアリティ
+	CWeapon* m_pRightWeapon;			// 右手武器
+	CWeapon* m_pLeftWeapon;				// 左手武器
+
 };
 
 #endif// _PLAYER_H_

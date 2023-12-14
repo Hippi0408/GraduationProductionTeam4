@@ -68,7 +68,7 @@ void CMob::Update()
 	D3DXVECTOR3 Life_Gauge_Pos = GetPos();
 	Life_Gauge_Pos.y += 400.0f;
 
-	/*D3DXVECTOR3 Move_Vec = { 1.0f,0.0f,0.0f };
+	/*D3DXVECTOR3 Move_Vec = { 0.0f,-0.1f,-0.01f };
 	D3DXVec3Normalize(&Move_Vec, &Move_Vec);
 	SetSpeed(20);
 

@@ -43,15 +43,15 @@ HRESULT CPlayerUi::Init()
 	// UIの種類
 	switch (m_Type)
 	{
-	case CPlayerUi::UITYPE_ONE:
+	case CPlayerUi::UITYPE_SUPPORT:
 		SetTexPos(0.0f, 1.0f, 0.33f, 0.0f);
 		SetData(1150.0f, 75.0f,100.0f,100.0f, CTexture::TEXTURE_BULLET);
 		break;
-	case CPlayerUi::UITYPE_TWO:
+	case CPlayerUi::UITYPE_ATTACK:
 		SetTexPos(0.0f, 1.0f, 0.66f, 0.33f);
 		SetData(150.0f, 75.0f, 100.0f, 100.0f, CTexture::TEXTURE_FLOOR);
 		break;
-	case CPlayerUi::UITYPE_THREE:
+	case CPlayerUi::UITYPE_WEAPON:
 		SetTexPos(0.0f, 1.0f, 1.0f, 0.66f);
 		SetData(1150.0f, 660.0f, 100.0f, 100.0f, CTexture::TEXTURE_NONE);
 		break;
@@ -112,12 +112,12 @@ void CPlayerUi::SetAlpha()
 	// インプットの取得
 	CInput* pInput = CInput::GetKey();
 
-	if (pInput->Trigger(DIK_E) && m_Type == CPlayerUi::UITYPE_ONE)
+	if (pInput->Trigger(DIK_E) && m_Type == CPlayerUi::UITYPE_SUPPORT)
 	{
 		m_bFlag = true;
 		m_bAlphaFlag = true;
 	}
-	if (pInput->Trigger(DIK_Q) && m_Type == CPlayerUi::UITYPE_TWO)
+	if (pInput->Trigger(DIK_Q) && m_Type == CPlayerUi::UITYPE_ATTACK)
 	{
 		m_bFlag = true;
 		m_bAlphaFlag = true;
@@ -165,7 +165,7 @@ void CPlayerUi::SetAlpha()
 		}
 
 		// 透明度の設定
-		m_pObject2D->SetAlpha(m_Alpha);
+		m_pSkill_UI->SetAlpha(m_Alpha);
 		CObject2D::SetAlpha(m_Alpha);
 	}
 }
@@ -190,7 +190,7 @@ void CPlayerUi::SetColor()
 	}
 
 	// 色の設定
-	m_pObject2D->SetCol(D3DXCOLOR(1.0f, m_Color, m_Color, 1.0f));
+	m_pSkill_UI->SetCol(D3DXCOLOR(1.0f, m_Color, m_Color, 1.0f));
 	CObject2D::SetCol(D3DXCOLOR(1.0f, m_Color, m_Color, 1.0f));
 }
 
@@ -199,8 +199,8 @@ void CPlayerUi::SetColor()
 //==============================================
 void CPlayerUi::SetData(float posX, float posY, float sizeX, float sizeY, CTexture::TEXTURE texture)
 {
-	m_pObject2D = CObject2D::Create(D3DXVECTOR3(posX, posY, 0.0f), D3DXVECTOR2(sizeX, sizeY), CObject::PRIORITY_BACK);
-	m_pObject2D->SetTexture(texture);
+	m_pSkill_UI = CObject2D::Create(D3DXVECTOR3(posX, posY, 0.0f), D3DXVECTOR2(sizeX, sizeY), CObject::PRIORITY_BACK);
+	m_pSkill_UI->SetTexture(texture);
 }
 
 //==============================================

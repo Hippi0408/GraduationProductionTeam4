@@ -23,27 +23,38 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/Font/Font_Japanese002.png",		// 日本語フォント
 	"Data/texture/Font/Font_Japanese003.png",		// 日本語フォント
 	"Data/texture/Font/Font_Alphabet.png",			// アルファベットフォント
-    "Data/texture/number.png",						// ナンバーのテクスチャ
-    "Data/texture/bullet000.png",					// 弾のテクスチャ
-    "Data/texture/floor.png",						// 地面のテクスチャ
-    "Data/texture/reticle.png",						// レティクルのテクスチャ
-    "Data/texture/circle.png",						// 円のテクスチャ
-    "Data/texture/ItemPointer.png",					// アイテムポインターのテクスチャ
-    "Data/texture/UI_00.png",						// UIのテクスチャ
-    "Data/texture/Ekey.png",						// Eキーのテクスチャ
+	"Data/texture/number.png",						// ナンバーのテクスチャ
+	"Data/texture/bullet000.png",					// 弾のテクスチャ
+	"Data/texture/floor.png",						// 地面のテクスチャ
+	"Data/texture/reticle.png",						// レティクルのテクスチャ
+	"Data/texture/circle.png",						// 円のテクスチャ
+	"Data/texture/ItemPointer.png",					// アイテムポインターのテクスチャ
+	"Data/texture/UI_00.png",						// UIのテクスチャ
+	"Data/texture/Ekey.png",						// Eキーのテクスチャ
+	"Data/texture/Title/00_project.png",
+	"Data/texture/Title/01_machina.png",
+	"Data/texture/Title/02_colonUp.png",
+	"Data/texture/Title/03_colonDown.png",
+	"Data/texture/Title/04_j_point.png",
+	
+	/* エフェクト群 */
+	"Data/texture/particle/smoke.png",				// 煙
+	"Data/texture/particle/flare.png",				// エフェクト1
+	"Data/texture/particle/star.png",				// エフェクト2
+	"Data/texture/particle/bright.png",				// キラキラA
+	"Data/texture/particle/bright2.png",			// キラキラB
+	"Data/texture/particle/ray.png",				// レイ
+	"Data/texture/particle/coin.png",				// コイン
+	"Data/texture/particle/jewel.png",				// パーティクル用宝石
+	"Data/texture/particle/soul.png",				// 魂
+	"Data/texture/particle/up.png",					// 上矢印
+	"Data/texture/reticle.png",						// レティクル
 
-    /* エフェクト群 */
-    "Data/texture/particle/smoke.png",				// 煙
-    "Data/texture/particle/flare.png",				// エフェクト1
-    "Data/texture/particle/star.png",				// エフェクト2
-    "Data/texture/particle/bright.png",				// キラキラA
-    "Data/texture/particle/bright2.png",			// キラキラB
-    "Data/texture/particle/ray.png",				// レイ
-    "Data/texture/particle/coin.png",				// コイン
-    "Data/texture/particle/jewel.png",				// パーティクル用宝石
-    "Data/texture/particle/soul.png",				// 魂
-    "Data/texture/particle/up.png",					// 上矢印
-    "Data/texture/reticle.png",						// レティクル
+	"Data/texture/Weapon/Knuckle_icon.png",			// 素手アイコン
+	"Data/texture/Weapon/Slash_icon.png",			// スラッシュアイコン
+
+	"Data/texture/WeaponSkill/WeaponSkill_Knuckle.png",	// 素手のアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_Slash.png",	// スラッシュのアタックスキルアイコン
 
 	"Data/texture/job/job_Rush.png",				// ラッシュ
 	"Data/texture/job/job_Vanguard.png",			// ヴァンガード
@@ -62,9 +73,9 @@ static_assert(sizeof(CTexture::s_FileName) / sizeof(CTexture::s_FileName[0]) == 
 // デフォルトコンストラクタ
 //----------------------------------------------------------------------------------------------
 CTexture::CTexture() :
-    s_pTexture()
+	s_pTexture()
 {
-    memset(s_pTexture, 0, sizeof(s_pTexture));
+	memset(s_pTexture, 0, sizeof(s_pTexture));
 }
 
 //----------------------------------------------------------------------------------------------
@@ -79,21 +90,21 @@ CTexture::~CTexture()
 //----------------------------------------------------------------------------------------------
 void CTexture::LoadAll()
 {
-    // デバイスへのポインタの取得
-    LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+	// デバイスへのポインタの取得
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
 
-    for (int i = 0; i < TEXTURE_MAX; ++i)
-    {
-        if (s_pTexture[i] != nullptr)
-        {// テクスチャの読み込みがされている
-            continue;
-        }
+	for (int i = 0; i < TEXTURE_MAX; ++i)
+	{
+		if (s_pTexture[i] != nullptr)
+		{// テクスチャの読み込みがされている
+			continue;
+		}
 
-        // テクスチャの読み込み
-        D3DXCreateTextureFromFile(pDevice,
-            s_FileName[i],
-            &s_pTexture[i]);
-    }
+		// テクスチャの読み込み
+		D3DXCreateTextureFromFile(pDevice,
+			s_FileName[i],
+			&s_pTexture[i]);
+	}
 }
 
 //----------------------------------------------------------------------------------------------
@@ -101,14 +112,14 @@ void CTexture::LoadAll()
 //----------------------------------------------------------------------------------------------
 void CTexture::ReleaseAll(void)
 {
-    for (int i = 0; i < TEXTURE_MAX; ++i)
-    {
-        if (s_pTexture[i] != NULL)
-        {// テクスチャの解放
-            s_pTexture[i]->Release();
-            s_pTexture[i] = NULL;
-        }
-    }
+	for (int i = 0; i < TEXTURE_MAX; ++i)
+	{
+		if (s_pTexture[i] != NULL)
+		{// テクスチャの解放
+			s_pTexture[i]->Release();
+			s_pTexture[i] = NULL;
+		}
+	}
 }
 
 //----------------------------------------------------------------------------------------------
@@ -116,13 +127,13 @@ void CTexture::ReleaseAll(void)
 //----------------------------------------------------------------------------------------------
 void CTexture::Release(TEXTURE inTexture)
 {
-    assert(inTexture >= 0 && inTexture < TEXTURE_MAX);
+	assert(inTexture >= 0 && inTexture < TEXTURE_MAX);
 
-    if (s_pTexture[inTexture] != NULL)
-    {// テクスチャの解放
-        s_pTexture[inTexture]->Release();
-        s_pTexture[inTexture] = NULL;
-    }
+	if (s_pTexture[inTexture] != NULL)
+	{// テクスチャの解放
+		s_pTexture[inTexture]->Release();
+		s_pTexture[inTexture] = NULL;
+	}
 }
 
 //----------------------------------------------------------------------------------------------
@@ -130,12 +141,12 @@ void CTexture::Release(TEXTURE inTexture)
 //----------------------------------------------------------------------------------------------
 LPDIRECT3DTEXTURE9 CTexture::GetTexture(TEXTURE inTexture)
 {
-    if (inTexture == TEXTURE_NONE)
-    {// テクスチャを使用しない
-        return nullptr;
-    }
+	if (inTexture == TEXTURE_NONE)
+	{// テクスチャを使用しない
+		return nullptr;
+	}
 
-    assert(inTexture >= 0 && inTexture < TEXTURE_MAX);
+	assert(inTexture >= 0 && inTexture < TEXTURE_MAX);
 
-    return s_pTexture[inTexture];
+	return s_pTexture[inTexture];
 }

@@ -29,9 +29,9 @@ public:
 
 	enum UITYPE
 	{
-		UITYPE_ONE = 0,			// スキル1
-		UITYPE_TWO,				// スキル2
-		UITYPE_THREE,			// スキル3
+		UITYPE_SUPPORT = 0,		// サポートスキル
+		UITYPE_ATTACK,			// アタックスキル
+		UITYPE_WEAPON,			// 武器情報
 		UITYPE_MAX
 	};
 	CPlayerUi(const PRIORITY priority);
@@ -49,10 +49,12 @@ public:
 	UITYPE GetType() { return m_Type; }
 	void SetType(UITYPE type) { m_Type = type; }
 
+	CObject2D* GetSkillUI() { return m_pSkill_UI; }	// スキル画像のUIの取得
+
 	static CPlayerUi* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, UITYPE type, const PRIORITY priority);
 
 private:
-	CObject2D* m_pObject2D;		// object2Dのインスタンス
+	CObject2D* m_pSkill_UI;		// スキル画像のUI
 	UITYPE m_Type;				// スキルの種類
 
 	int m_AlphaCount;			// 半透明の時間
@@ -67,4 +69,4 @@ private:
 	bool m_bFlag;				// スキルが使用されたか
 };
 
-#endif // !_FONT_H
+#endif // !_PLAYER_UI_H

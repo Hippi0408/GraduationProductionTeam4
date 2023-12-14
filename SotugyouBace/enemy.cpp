@@ -58,6 +58,9 @@ HRESULT CEnemy::Init()
 	// 敵側に設定
 	SetPlayerSide(false);
 
+	// サイズの設定
+	SetSize({ GetRadius(),GetRadius(),GetRadius() });
+
 	// 当たり判定の生成
 	SetCollision();
 
@@ -114,6 +117,8 @@ void CEnemy::Hit(CMove_Object* pHit)
 		case TAG_EXPLOSION:
 			// 爆発のダメージを返す
 			Damage(pHit->GetPower());
+			break;
+		case TAG_MAP_OBJECT:
 			break;
 		default:
 			break;

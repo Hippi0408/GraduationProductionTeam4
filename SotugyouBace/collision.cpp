@@ -11,6 +11,9 @@
 #include "game.h"
 #include "move_object.h"
 #include "object3D.h"
+#include "meshfield.h"
+
+#include"debugProc.h"
 
 //=============================================================================
 // コンストラクタ
@@ -93,6 +96,8 @@ void CCollision::Collision()
 		D3DXVECTOR3 pos = m_pParent->GetCenterPos();
 		// 半径
 		float fRadius = m_pParent->GetRadius();
+		// サイズ
+		D3DXVECTOR3 Size = m_pParent->GetSize();
 
 		// 現在のモード
 		CApplication::MODE Mode = CApplication::GetModeType();
@@ -112,19 +117,40 @@ void CCollision::Collision()
 		// 全ての当たり判定を個別に判定
 		for (auto pCollision : pCollision_Manager->GetAllCollision())
 		{
-			// 当たり判定が存在する場合 && 当たり判定が自身ではない場合
-			if (!pCollision->GetParent()->GetDeathFlag() && !pCollision->GetDeath() && pCollision != this)
+			// 当たり判定が存在する場合 && 当たり判定が自身ではない場合 && ヒット判定がある場合
+			if (!pCollision->GetParent()->GetDeathFlag() && !pCollision->GetDeath() && pCollision != this && !pCollision->m_bNoneHit)
 			{
 				// 相手のmoveobjectの情報
 				CMove_Object* pMove_Object = pCollision->GetParent();
 
 				// 相手の位置
 				D3DXVECTOR3 OtherPos = pMove_Object->GetCenterPos();
-				// 半径
-				float fOtherRadius = pMove_Object->GetRadius();
+				bool bHit = false;
 
-				// 円同士の当たり判定の計算
-				bool bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
+				// 当たり判定のタイプ
+				if (pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_SHERER)
+				{
+					// 半径
+					float fOtherRadius = pMove_Object->GetRadius();
+
+					// 円同士の当たり判定の計算
+					bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
+				}
+				else if (pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_BLOCK
+					&& pMove_Object->GetCollision_Type() != m_pParent->GetCollision_Type())
+				{
+					D3DXVECTOR3 Pos = m_pParent->GetPos();
+					// 前回の位置
+					D3DXVECTOR3 PosOld = m_pParent->GetPosOld();
+
+					// 位置
+					D3DXVECTOR3 Otherpos = pMove_Object->GetPos();
+					// サイズ
+					D3DXVECTOR3 OtherSize = pMove_Object->GetSize();
+
+					// 矩形の当たり判定の計算
+					bHit = Block_Collision(Pos, PosOld, Size, Otherpos, OtherSize, m_pParent, pMove_Object);
+				}
 
 				// ヒットした場合
 				if (bHit)
@@ -158,6 +184,162 @@ bool CCollision::Sphere_Collision(const D3DXVECTOR3 pos, const float radius, con
 		return true;
 
 	return false;
+}
+
+//=============================================================================
+// 矩形の当たり判定
+//=============================================================================
+bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold, const D3DXVECTOR3 size, const D3DXVECTOR3 otherpos, const D3DXVECTOR3 othersize, CMove_Object *objParent, CMove_Object *objOther)
+{
+	D3DXVECTOR3 Pos = pos;
+	bool bHit = false;
+
+	if (otherpos.y + othersize.y > pos.y || objParent->GetLandObj())
+	{
+		// 上に乗る
+		if (otherpos.y + othersize.y <= posold.y
+			&& otherpos.x + othersize.x > pos.x - size.x
+			&& otherpos.x - othersize.x < pos.x + size.x
+			&& otherpos.z + othersize.z > pos.z - size.z
+			&& otherpos.z - othersize.z < pos.z + size.z)
+		{
+			// オブジェクトに乗ってる数
+			int nOnObj = objOther->GetOnObjCnt();
+			bool bOn = false;
+
+			for (int nCnt = 0; nCnt < nOnObj; nCnt++)
+			{
+				if (objOther->GetOnObj(nCnt) == objParent)
+					bOn = true;
+			}
+
+			if (!bOn)
+			{
+				objOther->SetOnObj(objParent, nOnObj);
+				nOnObj++;
+			}
+			
+			objOther->SetOnObjCnt(nOnObj);
+
+			objOther->SetLandObj(true);		// Move_Objectが上に乗ってるか
+			objOther->SetObjXZ(true);
+
+			objParent->SetOnObj(objOther, 0);
+			objParent->SetLandObj(true);									// オブジェクトの上に乗ってるか
+			objParent->SetObjXZ(true);										// オブジェクトとXZ軸が重なってるか
+			objParent->SetObjY(otherpos.y + othersize.y);					// オブジェクトの高さ
+			objParent->SetPos({ Pos.x,otherpos.y + othersize.y,Pos.z });	// 押し出し
+			bHit = true;
+		}
+		// 降りる
+		else
+		{
+			for (int nCnt = 0; nCnt < objOther->GetOnObjCnt(); nCnt++)
+			{
+				if (objOther->GetOnObj(nCnt) != nullptr
+					&& objOther->GetLandObj() && objOther->GetObjXZ()
+					&& objOther->GetOnObj(nCnt)->GetLandObj() && objOther->GetOnObj(nCnt)->GetObjXZ()
+					&& objOther->GetOnObj(nCnt) == objParent)
+				{
+					objOther->SetLandObj(false);
+					objOther->SetObjXZ(false);
+					
+					for (int nCnt2 = 0; nCnt2 < objOther->GetOnObjCnt(); nCnt2++)
+					{
+						objOther->SetOnObj(nullptr, nCnt2);
+					}
+					objOther->SetOnObjCnt(0);
+
+					objParent->SetLandObj(false);
+					objParent->SetGround(false);
+					objParent->SetObjXZ(false);
+					bHit = false;
+				}
+			}
+		}
+
+		if (!objParent->GetLandObj())
+		{
+			D3DXVECTOR3 Index[4] = {};				// オブジェクトの4頂点の位置
+			D3DXVECTOR3 Index_Vec[4] = {};			// 頂点から頂点までのベクトル
+			D3DXVECTOR3 Char_Vec[4] = {};			// 頂点からキャラまでのベクトル
+			D3DXVECTOR3 CharCenter_Vec[4] = {};		// 頂点からキャラの中心までのベクトル
+			float fCp[4] = {};						// 外積
+			float fCenter_Cp[4] = {};				// 外積
+			int nCp_Count = 0;						// キャラが内側にいるベクトルのカウント
+			int nHit_Index = 0;						// ヒットしたベクトルの番号
+
+			D3DXVECTOR3 Posplus[4] = {};
+			Posplus[0] = { pos.x + size.x,0.0f,pos.z };
+			Posplus[1] = { pos.x,0.0f,pos.z - size.z };
+			Posplus[2] = { pos.x - size.x,0.0f,pos.z };
+			Posplus[3] = { pos.x,0.0f,pos.z + size.z };
+
+			for (int nCnt = 0; nCnt < 4; nCnt++)
+			{
+				Index[nCnt] = otherpos + objOther->GetIndex(nCnt);
+			}
+			for (int nCnt = 0; nCnt < 4; nCnt++)
+			{
+				if (nCnt != 3)
+					Index_Vec[nCnt] = Index[nCnt + 1] - Index[nCnt];
+				else
+					Index_Vec[nCnt] = Index[0] - Index[nCnt];
+
+				Char_Vec[nCnt] = Posplus[nCnt] - Index[nCnt];
+				CharCenter_Vec[nCnt] = pos - Index[nCnt];
+
+				// プラスが外側
+				fCp[nCnt] = Index_Vec[nCnt].x * Char_Vec[nCnt].z - Index_Vec[nCnt].z * Char_Vec[nCnt].x;
+				fCenter_Cp[nCnt] = Index_Vec[nCnt].x * CharCenter_Vec[nCnt].z - Index_Vec[nCnt].z * CharCenter_Vec[nCnt].x;
+
+				if (fCp[nCnt] <= 0)
+					nCp_Count++;
+			}
+
+			// キャラがオブジェクトにヒットしている場合
+			if (nCp_Count == 4)
+			{
+				for (int nCnt = 0; nCnt < 4; nCnt++)
+				{
+					if (fCenter_Cp[nCnt] >= 0)
+					{
+						float fInner = D3DXVec3Dot(&Index_Vec[nCnt], &CharCenter_Vec[nCnt]);
+
+						if (fInner > 0.0f)
+						{
+							// 当たってる面
+							nHit_Index = nCnt;
+							bHit = true;
+
+							break;
+						}
+					}
+				}
+
+				// 押し出し
+				switch (nHit_Index)
+				{
+				case 0:
+					objParent->SetPos({ Index[nHit_Index].x - size.x,pos.y,pos.z });
+					break;
+				case 1:
+					objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z + size.z });
+					break;
+				case 2:
+					objParent->SetPos({ Index[nHit_Index].x + size.x,pos.y,pos.z });
+					break;
+				case 3:
+					objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z - size.z });
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+
+	return bHit;
 }
 
 // デバッグ用関数の処理

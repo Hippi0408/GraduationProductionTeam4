@@ -10,6 +10,7 @@
 #include "meshfield.h"
 #include "tutorial.h"
 #include "gauge_manager.h"
+#include "debugProc.h"
 
 const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
 const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
@@ -24,9 +25,12 @@ CCharacter::CCharacter(const CObject::PRIORITY priority) : CMove_Object(priority
 	// タグの設定
 	SetTag(TAG_CHARACTER);
 
+	// 当たり判定のタイプ
+	SetCollision_Type(CMove_Object::COLLISION_TYPE_SHERER);
+
 	m_fSpeed = CHARACTER_FIRST_MOVE_SPEED;
 	m_fRotSpeed = CHARACTER_ROT_SPEED;
-	m_bGround = false;
+	SetGround(false);
 	m_bBoost = false;
 }
 
@@ -43,6 +47,8 @@ CCharacter::~CCharacter()
 HRESULT CCharacter::Init()
 {
 	m_move = { 0.0f, 0.0f, 0.0f };
+
+	SetPosOld(GetPos());
 
 	CMove_Object::Init();
 
@@ -71,6 +77,15 @@ void CCharacter::Uninit()
 		m_pGaugeManager = nullptr;
 	}
 
+	if (GetLandObj())
+	{
+		for (int nCnt = 0; nCnt < GetOnObj(0)->GetOnObjCnt(); nCnt++)
+		{
+			GetOnObj(0)->SetOnObj(nullptr, nCnt);
+		}
+		GetOnObj(0)->SetOnObjCnt(0);
+	}
+
 	m_Parts.clear();
 
 	CMove_Object::Uninit();
@@ -82,6 +97,8 @@ void CCharacter::Uninit()
 void CCharacter::Update()
 {
 	CMove_Object::Update();
+
+	SetPosOld(GetPos());
 
 	// 移動量の処理
 	Move();
@@ -213,7 +230,7 @@ void CCharacter::Landing(const D3DXVECTOR3 pos)
 	SetPos(pos);
 
 	// 着地判定を真にする
-	m_bGround = true;
+	SetGround(true);
 }
 
 //============================================================================
@@ -239,7 +256,7 @@ void CCharacter::FieldCollision()
 			a = pMeshField->MeshCollision(pos);
 	}
 	// 接地している場合
-	if (GetGround() == true)
+	if (GetGround())
 	{
 		// プレイヤーの高さを設定
 		CCharacter::SetPos({ pos.x, a, pos.z });
@@ -248,15 +265,33 @@ void CCharacter::FieldCollision()
 	else
 	{
 		if (!m_bAvoidance)
-		// メッシュフィールドの上にいる場合は重力をかける
-		CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
-
-		// メッシュフィールドより下の位置にいる場合
-		if (a >= pos.y)
 		{
-			// 着地処理を読み込む
-			Landing({ pos.x, a, pos.z });
+			// メッシュフィールドの上にいる場合は重力をかける
+			CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+
+			// メッシュフィールドより下の位置にいる場合
+			if (a >= pos.y)
+			{
+				// 着地処理を読み込む
+				Landing({ pos.x, a, pos.z });
+			}
 		}
+	}
+
+	float y = GetObjY();
+
+	if (!GetGround() && GetObjXZ() && y > pos.y)
+	{
+		// 着地処理を読み込む
+		Landing({ pos.x,y,pos.z });
+	}
+	else if (GetLandObj())
+	{
+		// プレイヤーの高さを設定
+		CCharacter::SetPos({ pos.x, GetObjY(), pos.z });
+
+		// マップオブジェクトの上にいる場合は重力をかけない
+		CCharacter::SetMove({ 0.0f, 0.0f, 0.0f });
 	}
 }
 
@@ -296,6 +331,53 @@ void CCharacter::NormalizeRot()
 
 	m_rot.x = 0.0f;
 	m_rot.z = 0.0f;
+}
+
+//==============================================================================================
+// 最大体力の設定処理
+//==============================================================================================
+void CCharacter::SetLife(const int life)
+{
+	// 最大体力が設定される体力より少ない場合
+	if (m_nMaxLife < life)
+	{
+		// 現在の体力を上限までに設定する
+		m_nLife = m_nMaxLife;
+	}
+	// 最大体力以内の場合
+	else
+	{
+		// 体力の設定
+		m_nLife = life;
+	}
+}
+
+//==============================================================================================
+// 最大体力の設定処理
+//==============================================================================================
+void CCharacter::SetMaxLife(const int maxlife)
+{
+	// 体力が設定される最大体力より多い場合
+	if (m_nLife > maxlife)
+	{
+		// 現在の体力を下げる
+		m_nLife = maxlife;
+	}
+	// 最大体力の設定
+	m_nMaxLife = maxlife;
+
+	// 体力が設定されていない場合
+	if (m_nLife == 0)
+	{
+		m_nLife = m_nMaxLife;
+	}
+
+	// ゲージが使用中の場合
+	if (m_pGaugeManager != nullptr)
+	{
+		m_pGaugeManager->SetBeaseLife(m_nMaxLife);
+		m_pGaugeManager->Fluctuation();
+	}
 }
 
 //==============================================================================================

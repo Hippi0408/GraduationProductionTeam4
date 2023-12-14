@@ -49,7 +49,7 @@ const char* CDrop_Weapon::s_Weapon_FileName[] =
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CDrop_Weapon::CDrop_Weapon(const PRIORITY priority) : CObjectX(priority)
+CDrop_Weapon::CDrop_Weapon(const PRIORITY priority) : CMove_Object(priority)
 {
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
@@ -91,10 +91,16 @@ CDrop_Weapon::~CDrop_Weapon()
 //=============================================================================
 HRESULT CDrop_Weapon::Init()
 {
+	SetCollision();
+
+	SetRadius(PARTS_COLLISION_RADIUS);
+
 	m_CenterPos = { 0.0f,PARTS_FLOTIONG_POS,0.0f };
 
+	CObjectX* pObjectX = GetObjectX();
+
 	// 角度の設定
-	SetRot({ 0.4f,0.0f,0.0f });
+	pObjectX->SetRot({ 0.4f,0.0f,0.0f });
 
 	// 落ちてる武器の生成
 	//m_pDrop_Weapon->SetSize({ 3.0f,3.0f,3.0f });
@@ -102,7 +108,7 @@ HRESULT CDrop_Weapon::Init()
 	// パーツの部位の設定
 	Parts_Type();
 
-	m_bPick_Up = false;
+   	m_bPick_Up = false;
 	m_fMove = 0.0f;
 
 	D3DXVECTOR3 ModelPos = GetPos();
@@ -116,7 +122,12 @@ HRESULT CDrop_Weapon::Init()
 	m_pPick_Up->SetTexture(CTexture::TEXTURE_KEY_E);
 	m_pPick_Up->SetDrawFlag(false);
 
-	CObjectX::Init();
+	const float nAddCol = -0.05f * m_nRarity;
+
+	pObjectX->AddColor({ nAddCol, nAddCol,nAddCol, 0.0f});
+
+
+	CMove_Object::Init();
 
 	return S_OK;
 }
@@ -138,7 +149,19 @@ void CDrop_Weapon::Uninit()
 		m_pPick_Up = nullptr;
 	}
 
-	CObjectX::Uninit();
+	if (GetObjectX() != nullptr)
+		GetObjectX()->Uninit();
+
+	if (GetLandObj())
+	{
+		for (int nCnt = 0; nCnt < GetOnObj(0)->GetOnObjCnt(); nCnt++)
+		{
+			GetOnObj(0)->SetOnObj(nullptr, nCnt);
+		}
+		GetOnObj(0)->SetOnObjCnt(0);
+	}
+
+	CMove_Object::Uninit();
 }
 
 //=============================================================================
@@ -146,13 +169,13 @@ void CDrop_Weapon::Uninit()
 //=============================================================================
 void CDrop_Weapon::Update()
 {
-	CObjectX::Update();
+	CMove_Object::Update();
 
 	// 床との当たり判定
 	FieldCollision();
 
 	// 角度の加算
-	AddRot({ 0.0f,0.03f,0.0f });
+	GetObjectX()->AddRot({ 0.0f,0.03f,0.0f });
 
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
@@ -204,7 +227,7 @@ void CDrop_Weapon::Update()
 //=============================================================================
 void CDrop_Weapon::Draw()
 {
-	CObjectX::Draw();
+	//CMove_Object::Draw();
 }
 
 //=============================================================================
@@ -267,7 +290,8 @@ void CDrop_Weapon::FieldCollision()
 	if (pMesh != nullptr)
 	{
 		const D3DXVECTOR3 pos = GetPos();
-		const D3DXVECTOR3 rot = GetRot();
+		D3DXVECTOR3 Pos = {};
+		SetPosOld(pos);
 
 		// メッシュフィールドとの当たり判定
 		float MeshY = pMesh->MeshCollision(pos);
@@ -277,8 +301,10 @@ void CDrop_Weapon::FieldCollision()
 		{
 			m_fMove = 0.0f;
 			// 自身の位置
-			SetPos({ pos.x, MeshY, pos.z });
+			Pos = { pos.x, MeshY, pos.z };
 		}
+		else if (GetLandObj())
+			Pos = { pos.x, GetObjY(), pos.z };
 		else
 		{
 			// モデルの位置
@@ -289,15 +315,22 @@ void CDrop_Weapon::FieldCollision()
 			Weapon_Pos.y -= m_fMove;
 
 			// 当たり判定の位置
-			SetPos({ Weapon_Pos.x, Weapon_Pos.y, Weapon_Pos.z });
+			Pos = { Weapon_Pos.x, Weapon_Pos.y, Weapon_Pos.z };
 		}
+
+		SetPos(Pos);
+		GetObjectX()->SetPos(Pos);
 	}
+}
+
+void CDrop_Weapon::Hit(CMove_Object* /*pHit*/)
+{
 }
 
 //=============================================================================
 // 生成処理
 //=============================================================================
-CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon)
+CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon, int rarity)
 {
 	CDrop_Weapon *pDrop_Weapon = nullptr;
 
@@ -306,7 +339,9 @@ CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon)
 	if (pDrop_Weapon != nullptr)
 	{
 		pDrop_Weapon->SetPos(pos);
-		pDrop_Weapon->SetModel(CApplication::GetModel()->ReadObject(s_Weapon_FileName[pDrop_Weapon->m_nWeapon_Type = weapon]));
+		pDrop_Weapon->SetObjectX(CObjectX::Create(pos, { 0.0f,0.0f,0.0f }, nullptr, CApplication::GetModel()->ReadObject(s_Weapon_FileName[pDrop_Weapon->m_nWeapon_Type = weapon])));
+		//pDrop_Weapon->SetModel(CApplication::GetModel()->ReadObject(s_Weapon_FileName[pDrop_Weapon->m_nWeapon_Type = weapon]));
+		pDrop_Weapon->m_nRarity = rarity;
 		pDrop_Weapon->Init();
 	}
 

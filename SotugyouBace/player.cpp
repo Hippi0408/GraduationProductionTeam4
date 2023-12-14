@@ -24,10 +24,11 @@
 #include"object3D.h"
 #include "drop_weapon.h"
 #include "weapon.h"
+#include "player_parameter.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
-const float CPlayer::VIEW_SCOPE_ANGLE = 44.5f;		// プレイヤーの視野角
+const float CPlayer::VIEW_SCOPE_ANGLE = 44.3f;		// プレイヤーの視野角
 const float CPlayer::RETICLE_TRANSPARENCY_SIZE = 300.0f;
 const float CPlayer::RETICLE_SIZE = 200.0f;
 //=====================================
@@ -36,8 +37,8 @@ const float CPlayer::RETICLE_SIZE = 200.0f;
 CPlayer::CPlayer()
 {
 	// プレイヤーの初期値を設定
-	SetMaxLife(FIRST_MAX_LIFE);
-	SetLife(FIRST_MAX_LIFE);
+	//SetMaxLife(FIRST_MAX_LIFE);
+	//SetLife(FIRST_MAX_LIFE);
 	SetRadius(PLAYER_COLLISION_RADIUS);
 }
 
@@ -55,16 +56,35 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1, CMotion::MOTION_PLAYER_BODY);
-	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1, CMotion::MOTION_PLAYER_ARMS);
-	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1, CMotion::MOTION_PLAYER_LEG);
-	SetWeapon(CWeapon::WEAPON_NONE);
+	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Job[PARTS_BODY], CMotion::MOTION_PLAYER_BODY);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1 + m_Job[PARTS_ARMS], CMotion::MOTION_PLAYER_ARMS);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1 + m_Job[PARTS_LEG], CMotion::MOTION_PLAYER_LEG);
+	SetPlayerWeapon(CWeapon::WEAPON_KNUCKLE);
+
+	// パラメータの設定
+	SettingParameter();
+
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	/*if (Mode == CApplication::MODE_TUTORIAL)
+	{
+	CTutorial::SetPlayerUI(CPlayerUi::UITYPE_SUPPORT, m_Job[PARTS_BODY]);
+	}
+	else*/ if (Mode == CApplication::MODE_GAME)
+	{
+		CGame::SetPlayerUI(CPlayerUi::UITYPE_SUPPORT, m_Job[PARTS_BODY]);
+	}
 
 	// タグの設定
 	SetTag(TAG_CHARACTER);
 
 	// プレイヤー側に設定
 	SetPlayerSide(true);
+
+	// サイズの設定
+	SetSize({ GetRadius(),GetRadius(),GetRadius() });
 
 	// 当たり判定の生成
 	SetCollision();
@@ -144,6 +164,8 @@ void CPlayer::Update()
 
 	// キャラクターの更新
 	CCharacter::Update();
+	//CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
+	//CDebugProc::Print("腕パーツ：%d\n脚パーツ : %d\n", m_nRarity_Arms, m_nRarity_Leg);
 }
 
 //============================================================================
@@ -185,10 +207,10 @@ void CPlayer::PlayerAttack()
 	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 
 	// 弾の生成
-	/*CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
-	CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
-	CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);*/
-	CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
+	CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
+	/*CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
+	CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);
+	CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);*/
 }
 
 //============================================================================
@@ -197,13 +219,15 @@ void CPlayer::PlayerAttack()
 void CPlayer::JumpStart()
 {
 	// 接地している場合のみ
-	if (GetGround() == true)
+	if (GetGround())
 	{
 		// ジャンプモーションを設定
 		GetParts(PARTS_LEG)->SetMotion(MOTION_JUMP);
 
 		// 離着状態にする
 		SetGround(false);
+		SetLandObj(false);
+		SetObjXZ(false);
 
 		// 上昇する
 		AddMove({ 0.0f, PLAYER_JUMP_POWER, 0.0f });
@@ -277,6 +301,8 @@ void CPlayer::Hit(CMove_Object* pHit)
 		case TAG_EXPLOSION:
 			// 爆発のダメージを返す
 			Damage(pHit->GetPower());
+		case TAG_MAP_OBJECT:
+			break;
 		default:
 			break;
 		}
@@ -347,14 +373,12 @@ void CPlayer::Target()
 					m_NearMob_Pos = Mob_Pos;
 					m_nEnemy_Count = nCnt;
 					m_fEnemy_Speed = pEnemy->GetSpeed();
+					m_pEnemy = pEnemy;
 
 					m_bTarget = true;
 
 					// 画面に映っている時だけターゲットする
 					bScreen = Target_Scope(m_NearMob_Pos);
-
-					// 敵の情報
-					m_pEnemy = pEnemy;
 				}
 			}
 		}
@@ -572,54 +596,19 @@ void CPlayer::DropGet(CDrop_Weapon* pDrop)
 	// 武器の情報
 	const int nWeapon = pDrop->GetWeaponType();
 
+	// レアリティの取得
+	const int nRarity = pDrop->GetRarity();
+
 	// 武器パーツではない場合
 	if (Parts != PARTS_WEAPON)
 	{
-		int nPartsFileIndex = 0;	// パーツの番号
-
-		// パーツファイルの最低値を設定
-		switch (Parts)
-		{
-		case CPlayer::PARTS_BODY:
-			nPartsFileIndex = CParts_File::PARTS_PLAYER_BODY_1;
-			break;
-		case CPlayer::PARTS_ARMS:
-			nPartsFileIndex = CParts_File::PARTS_PLAYER_ARMS_1;
-			break;
-		case CPlayer::PARTS_LEG:
-			nPartsFileIndex = CParts_File::PARTS_PLAYER_LEG_1;
-			break;
-		default:
-			break;
-		}
-
-		int nWeaponIndex = 0;	// 武器の番号
-
-		// パーツの最低値を設定
-		if (nWeapon >= CDrop_Weapon::LEG_SG01)
-		{
-			nWeaponIndex = CDrop_Weapon::LEG_SG01;
-		}
-		else if (nWeapon >= CDrop_Weapon::ARMS_SG01)
-		{
-			nWeaponIndex = CDrop_Weapon::ARMS_SG01;
-		}
-		//else if (nWeapon >= CDrop_Weapon::BODY_SG01)
-		//{
-		//	nWeaponIndex = CParts_File::PARTS_PLAYER_BODY_1;
-		//}
-
-		// パーツの番号(パーツファイルの番号 + パーツの番号(パーツそのままの番号 - パーツの最低値))
-		int nPartsIndex = nPartsFileIndex + (nWeapon - nWeaponIndex);
-
-		// 指定したパーツの、パーツ変更処理
-		GetParts(Parts)->SetParts(nPartsIndex);
+		SetPlayerParts(Parts, nWeapon, nRarity);
 	}
 	// 武器パーツの場合
 	else
 	{
 		// 武器パーツの変更処理
-		ChangeWeapon(nWeapon - CDrop_Weapon::WEAPON_NONE);
+		SetPlayerWeapon(nWeapon - CDrop_Weapon::WEAPON_NONE);
 	}
 
 	// 落とし物の終了処理
@@ -697,25 +686,172 @@ void CPlayer::CollisionDropWeapon()
 }
 
 //============================================================================
-// 武器の変更
+// パラメーターの設定処理
 //============================================================================
-void CPlayer::ChangeWeapon(const int weapon)
+void CPlayer::SettingParameter()
 {
-	// 右手(腕[3])に武器を変更
-	m_pRightWeapon->ChangeWeapon(weapon);
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
 
-	// 左手(腕[6])に素手を設定
-	m_pLeftWeapon->ChangeWeapon(CWeapon::WEAPON_NONE);
+	// パラメーターの情報
+	CPlayer_Parameter::PARAMETERS Parameter = {};
+
+	int nLife = 0;				// 耐久値
+	int nStamina = 0;			// スタミナ容量
+	int nStan_Tolerance = 0;	// スタン許容値
+	int nGravity = 0;			// 重量
+
+	CPlayer_Parameter* pParameter = nullptr;
+	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	/*if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		pParameter = CTutorial::GetPlayerParameter();
+	}
+	else*/
+	if (Mode == CApplication::MODE_GAME)
+	{
+		pParameter = CGame::GetPlayerParameter();
+	}
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+	{
+		switch (nCnt)
+		{
+		case 0:
+			Parameter = pParameter->GetParameterJob(m_Job[nCnt]);
+			break;
+		case 1:
+			Parameter = pParameter->GetParameterArms(m_Job[nCnt], m_nRarity_Arms);
+			break;
+		case 2:
+			Parameter = pParameter->GetParameterLeg(m_Job[nCnt], m_nRarity_Leg);
+			break;
+		default:
+			break;
+		}
+
+		nLife += Parameter.nLife;
+		nStamina += Parameter.nStamina;
+		nStan_Tolerance += Parameter.nStan_Tolerance;
+		nGravity += Parameter.nGravity;
+	}
+
+	// 各パラメータの設定
+	SetMaxLife(nLife);
+	m_pEnergy_Gauge->SetMaxEnerugy(nStamina);
+	m_nStan_Tolerance = nStan_Tolerance;
+	m_nGravity = nGravity;
+}
+
+//============================================================================
+// パーツの設定
+//============================================================================
+void CPlayer::SetPlayerParts(const PARTS parts, const int weapon, const int rarity)
+{
+	int nPartsFileIndex = 0;	// パーツの番号
+
+	// 現在のレアリティの色
+	float fRarity_Color = 0;
+
+	// パーツファイルの最低値を設定
+	switch (parts)
+	{
+	case CPlayer::PARTS_BODY:
+		nPartsFileIndex = CParts_File::PARTS_PLAYER_BODY_1;
+		break;
+	case CPlayer::PARTS_ARMS:
+		nPartsFileIndex = CParts_File::PARTS_PLAYER_ARMS_1;
+		fRarity_Color = (float)m_nRarity_Arms;
+		m_nRarity_Arms = rarity;
+		break;
+	case CPlayer::PARTS_LEG:
+		nPartsFileIndex = CParts_File::PARTS_PLAYER_LEG_1;
+		fRarity_Color = (float)m_nRarity_Leg;
+		m_nRarity_Leg = rarity;
+		break;
+	default:
+		break;
+	}
+
+	int nWeaponIndex = 0;	// 武器の番号
+
+							// パーツの最低値を設定
+	if (weapon >= CDrop_Weapon::LEG_SG01)
+	{
+		nWeaponIndex = CDrop_Weapon::LEG_SG01;
+	}
+	else if (weapon >= CDrop_Weapon::ARMS_SG01)
+	{
+		nWeaponIndex = CDrop_Weapon::ARMS_SG01;
+	}
+	//else if (nWeapon >= CDrop_Weapon::BODY_SG01)
+	//{
+	//	nWeaponIndex = CParts_File::PARTS_PLAYER_BODY_1;
+	//}
+
+	// パーツのジョブ情報の更新
+	m_Job[parts] = (JOB)(weapon - nWeaponIndex);
+
+	// パラメータの更新
+	SettingParameter();
+
+	// パーツの番号(パーツファイルの番号 + パーツの番号(パーツそのままの番号 - パーツの最低値))
+	int nPartsIndex = nPartsFileIndex + (weapon - nWeaponIndex);
+
+	// 指定したパーツの、パーツ変更処理
+	GetParts(parts)->SetParts(nPartsIndex);
+
+	// 変更するレアリティの色
+	//const float nChange_Color = 0.1f * rarity;
+
+	// レアリティによる色の変化
+	const float fAddCol = -(rarity - fRarity_Color) * 0.05f;
+
+	for (auto pParts : GetParts(parts)->GetModelAll())
+	{
+		pParts->AddColor({ fAddCol, fAddCol,fAddCol, 0.0f });
+	}
 }
 
 //============================================================================
 // 武器の設定
 //============================================================================
-void CPlayer::SetWeapon(const int weapon)
+void CPlayer::SetPlayerWeapon(const int weapon)
 {
-	// 右手(腕[3])に武器を設定
-	m_pRightWeapon = CWeapon::Create({0.0f, 0.0f, 0.0f}, (CWeapon::WEAPON_TYPE)weapon, GetParts(PARTS_ARMS)->GetModel(3));
+	// 右手が使用されていない場合
+	if (m_pRightWeapon == nullptr)
+	{
+		// 右手(腕[3])に武器を設定
+		m_pRightWeapon = CWeapon::Create({ 0.0f, 0.0f, 0.0f }, (CWeapon::WEAPON_TYPE)weapon, GetParts(PARTS_ARMS)->GetModel(3));
+	}
+	else
+	{	// 右手(腕[3])に武器を変更
+		m_pRightWeapon->ChangeWeapon(weapon);
+	}
 
-	// 左手(腕[6])に素手を設定
-	m_pLeftWeapon = CWeapon::Create({ 0.0f, 0.0f, 0.0f }, CWeapon::WEAPON_NONE, GetParts(PARTS_ARMS)->GetModel(6));
+	// 左手が使用されていない場合
+	if (m_pLeftWeapon == nullptr)
+	{
+		// 左手(腕[6])に素手を設定
+		m_pLeftWeapon = CWeapon::Create({ 0.0f, 0.0f, 0.0f }, CWeapon::WEAPON_KNUCKLE, GetParts(PARTS_ARMS)->GetModel(6));
+	}
+	else
+	{
+		// 左手(腕[6])に素手を設定
+		m_pLeftWeapon->ChangeWeapon(CWeapon::WEAPON_KNUCKLE);
+	}
+
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	/*if (Mode == CApplication::MODE_TUTORIAL)
+	{
+		CTutorial::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);
+		CTutorial::SetPlayerUI(CPlayerUi::UITYPE_WEAPON, weapon);
+	}
+	else*/ if (Mode == CApplication::MODE_GAME)
+	{
+		CGame::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);
+		CGame::SetPlayerUI(CPlayerUi::UITYPE_WEAPON, weapon);
+	}
 }
