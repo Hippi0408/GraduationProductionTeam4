@@ -235,6 +235,9 @@
     <ClCompile Include="move_object.cpp">
       <Filter>04_Object\MoveObject</Filter>
     </ClCompile>
+    <ClCompile Include="fog.cpp">
+      <Filter>00_Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -474,6 +477,9 @@
     </ClInclude>
     <ClInclude Include="map_object.h">
       <Filter>04_Object\MoveObject</Filter>
+    </ClInclude>
+    <ClInclude Include="fog.h">
+      <Filter>00_Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -129,7 +129,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 #endif
 
 	// ゲームモード
-	m_modeType = MODE_TITLE;
+	m_modeType = MODE_GAME;
 
 	// モードの定設
 	SetMode(m_modeType);

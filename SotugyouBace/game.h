@@ -27,6 +27,7 @@ class CConfirmation_Window;
 class CEnergy_Gauge;
 class CPlayerUi;
 class CPause;
+class CFog;
 
 class CGame : public CMode
 {
@@ -64,11 +65,12 @@ private:
 
 	static bool m_bGameEnd;							// ゲーム終了判定
 	static bool m_bGameWindow;
-	bool m_bInputFlag;
+	static bool m_bInputFlag;
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
 	CPlayerUi* m_pPlayerUI;
+	CFog* m_pFog;
 	
 	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ
 	static CPlayerManager* m_pPlayerManager;

@@ -73,13 +73,13 @@ void CChar_Select::Update()
 			}
 		}
 
-		// キャラセレクト画面に戻る
-		if (pInput->Trigger(DIK_BACK, nCnt)
-			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
-		{
-			// 画面遷移
-			CFade::SetFade(CApplication::MODE_TITLE, 0.05f);
-		}
+		//// キャラセレクト画面に戻る
+		//if (pInput->Trigger(DIK_BACK, nCnt)
+		//	&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+		//{
+		//	// 画面遷移
+		//	CFade::SetFade(CApplication::MODE_TITLE, 0.05f);
+		//}
 	}
 
 	if (m_pConfirmation != nullptr)

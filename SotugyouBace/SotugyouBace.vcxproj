@@ -41,6 +41,7 @@
     <ClCompile Include="energy_gauge.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="fog.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="fontString.cpp" />
     <ClCompile Include="game.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="energy_gauge.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="fog.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="fontString.h" />
     <ClInclude Include="game.h" />

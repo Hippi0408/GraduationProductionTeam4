@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// confirmation_window.h (メニューウィンドウ.h)
+// confirmation_window.h (確認ウィンドウ.h)
 // Author : Saito Shian
 //
 //=============================================================================
@@ -20,6 +20,7 @@
 #include "menu_window.h"
 #include "title_menu.h"
 #include "charselect_window.h"
+#include "char_select.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -31,7 +32,7 @@ const float CConfirmation_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CConfirmation_Window::CConfirmation_Window() : m_bSelectChoice(1), m_fBlinkSpeed(BLINK_SPEED)
+CConfirmation_Window::CConfirmation_Window() : m_bConfimationSelectChoice(1), m_fConfimationBlinkSpeed(BLINK_SPEED)
 {
 
 }
@@ -50,15 +51,9 @@ HRESULT CConfirmation_Window::Init()
 {
 	//==================================================
 	// メンバ変数の初期化
-	//==================================================  
-	SizeX = 0.0f;
-	SizeY = 0.0f;
-	m_bScale = false;
-	m_bMaxSize = false;
-	m_bUninitFlag = false;
-	m_bSpawnWindow = false;
-	m_bSelectChoice = false;
-	m_bDecition = false;
+	//==================================================
+	VariableInit();
+	m_Size = D3DXVECTOR2(0.0f, 0.0f);
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
 
@@ -84,6 +79,13 @@ void CConfirmation_Window::Uninit()
 		delete m_pCharSelectWindow;
 		m_pCharSelectWindow = nullptr;
 	}
+
+	// フォントの削除
+	if (m_pFont != nullptr)
+	{
+		m_pFont->Uninit();
+		m_pFont = nullptr;
+	}
 }
 
 //=============================================================================
@@ -91,17 +93,27 @@ void CConfirmation_Window::Uninit()
 //=============================================================================
 void CConfirmation_Window::Update()
 {
-	if (m_bScale == false)
-	{// 拡大されていない時
+	if (m_bConfimationScale == false && m_bConfirmasionWindowUse == false)
+	{ // 拡大されていない時 && ウィンドウが使われていないとき
 
-		// ウィンドウの拡大処理
+		// 確認ウィンドウの拡大処理
 		ConfirmatiomnMenuScale();
 	}
-	else
-	{// 拡大した時
+	else if(m_bConfimationScale == true && m_bConfirmasionWindowUse == false)
+	{ // 拡大した時 && ウィンドウが使われていないとき
 
-		// ウィンドウの縮小処理
+		// 確認ウィンドウの縮小処理
 		ConfirmatiomnMenuScaleReduce();
+	}
+
+	if (CChar_Select::GetConfimationWindow()->GetCharSelect() != nullptr
+		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetPreviousWindow() == true
+		&& m_bConfirmasionWindowUse == true)
+	{ // キャラ選択ウィンドウが使われている時 && 前のウィンドウに戻る && このウィンドウが使われているとき
+
+		m_bConfimationBack = true;		// ウィンドウが戻ってきた
+		m_bConfimationMaxSize = false;	// 最大サイズのフラグの初期化
+		ConfirmatiomnMenuScale();		// 確認ウィンドウの拡大処理
 	}
 
 	// 選択肢処理
@@ -109,28 +121,28 @@ void CConfirmation_Window::Update()
 }
 
 //=============================================================================
-// メニューのサイズ拡大処理
+// 確認ウィンドウのサイズ拡大処理
 //=============================================================================
 void CConfirmation_Window::ConfirmatiomnMenuScale()
 {
 	if (m_pObject2D != nullptr)
-	{// nullチェック
+	{ // nullチェック
 
 		// サイズの拡大
-		SizeX += SizeXScaleSpeed;
-		SizeY += SizeYScaleSpeed;
+		m_Size.x += SizeXScaleSpeed;
+		m_Size.y += SizeYScaleSpeed;
 
-		if (SizeX >= MaxSizeX)
-		{// Xサイズの最大
-			SizeX = MaxSizeX;
+		if (m_Size.x >= m_MaxSize.x)
+		{ // Xサイズの最大
+			m_Size.x = m_MaxSize.x;
 		}
-		if (SizeY >= MaxSizeY)
-		{// Yサイズの最大
-			SizeY = MaxSizeY;
+		if (m_Size.y >= m_MaxSize.y)
+		{ // Yサイズの最大
+			m_Size.y = m_MaxSize.y;
 		}
 
 		// ウィンドウが最大値まで行ったら
-		if (SizeX >= MaxSizeX && SizeY >= MaxSizeY && m_bMaxSize == false)
+		if (m_Size.x >= m_MaxSize.x && m_Size.y >= m_MaxSize.y && m_bConfimationMaxSize == false)
 		{
 			// ゲームモードの取得
 			CApplication::MODE Mode = CApplication::GetModeType();
@@ -139,7 +151,7 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 			{ // タイトルかゲーム画面だったら
 				
 				// 文字の生成
-				if (m_pFont == nullptr)
+				if (m_pFont == nullptr)                     
 				{
 					m_pFont = CFontString::Create({ 420.0f, 350.0f, 0.0f }, { 30.0f, 30.0f }, "やめますか?");
 				}
@@ -164,42 +176,48 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 					pChoice->SetAlpha(MINI_ALPHA);
 				}
 				// 選択されている選択肢
-				m_vpListChoice[m_bSelectChoice]->SetBlink(BLINK_SPEED);
-				m_vpListChoice[m_bSelectChoice]->SetAlpha(1.0f);
+				m_vpListChoice[m_bConfimationSelectChoice]->SetBlink(BLINK_SPEED);
+				m_vpListChoice[m_bConfimationSelectChoice]->SetAlpha(1.0f);
 			}
 
-			SetDisplay(true);		// 選択肢の表示判定を使用
-			m_bMaxSize = true;		// 最大サイズに到達
+			if (m_bConfimationBack == true)
+			{ // ウィンドウが戻ってきたら
+				VariableInit();					// メンバ変数の初期化処理
+				UninitCharSelectWindow();		// キャラ選択ウィンドウの破棄処理
+			}
+
+			SetDisplay(true);					// 選択肢の表示判定を使用
+			m_bConfimationMaxSize = true;		// 最大サイズに到達
 			return;
 		}
 
 		// サイズの設定
-		m_pObject2D->SetSize(D3DXVECTOR2(SizeX, SizeY));
+		m_pObject2D->SetSize(D3DXVECTOR2(m_Size.x, m_Size.y));
 	}
 }
 
 //=============================================================================
-// メニューのサイズ縮小処理処理
+// 確認ウィンドウのサイズ縮小処理処理
 //=============================================================================
 bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 {
 	if (m_pObject2D != nullptr)
-	{// nullチェック
+	{ // nullチェック
 
-	 // 現在のモード
+		// 現在のモード
 		CApplication::MODE Mode = CApplication::GetModeType();
 
 		// サイズの縮小
-		SizeX -= SizeXScaleSpeed;
-		SizeY -= SizeYScaleSpeed;
+		m_Size.x -= SizeXScaleSpeed;
+		m_Size.y -= SizeYScaleSpeed;
 
-		if (SizeX <= 0.0f)
-		{// Xサイズの最小
-			SizeX = 0.0f;
+		if (m_Size.x <= 0.0f)
+		{ // Xサイズの最小
+			m_Size.x = 0.0f;
 		}
-		if (SizeY <= 0.0f)
-		{// Yサイズの最小
-			SizeY = 0.0f;
+		if (m_Size.y <= 0.0f)
+		{ // Yサイズの最小
+			m_Size.y = 0.0f;
 		}
 
 		// フォントの削除
@@ -210,33 +228,41 @@ bool CConfirmation_Window::ConfirmatiomnMenuScaleReduce()
 		}
 
 		// ウィンドウが最小値まで行ったら
-		if (SizeX <= 0.0f && SizeY <= 0.0f)
+		if (m_Size.x <= 0.0f && m_Size.y <= 0.0f)
 		{
 			// ゲーム終了
-			if (m_bSelectChoice == true && Mode == CApplication::MODE_GAME)
-			{
-				m_bUninitFlag = true;							// ゲーム内ウィンドウの破棄
-				m_bSpawnWindow = true;							// メニューウィンドウの破棄
+			if (m_bConfimationSelectChoice == true && Mode == CApplication::MODE_GAME)
+			{ // やめる選択肢を選んだ && モードがゲーム画面だったら
+
+				m_bConfimationUninitFlag = true;				// ゲーム内ウィンドウの破棄
+				m_bConfimationSpawnWindow = true;				// メニューウィンドウの破棄
 				DestroyWindow(CApplication::GetWindow());		// ウィンドウの破棄
 			}
-			else if (m_bSelectChoice == false && Mode == CApplication::MODE_GAME)
-			{
-				m_bUninitFlag = true;							// ゲーム内ウィンドウの破棄
-				m_bSpawnWindow = true;							// メニューウィンドウの破棄
-				m_bScale = false;								// 拡大縮小フラグを初期化			
+			else if (m_bConfimationSelectChoice == false && Mode == CApplication::MODE_GAME)
+			{ // やめない選択肢を選んだ && モードがゲーム画面だったら
+
+				m_bConfimationUninitFlag = true;				// ゲーム内ウィンドウの破棄
+				m_bConfimationSpawnWindow = true;				// メニューウィンドウの破棄
+				m_bConfimationScale = false;					// 拡大縮小フラグを初期化			
 				Uninit();										// メニューウィンドウの削除			
 			}
 			if (Mode == CApplication::MODE_TITLE)
-			{
-				m_bScale = false;								// 拡大縮小フラグを初期化	
-				m_bSpawnWindow = true;							// メニューウィンドウの破棄
+			{ // タイトル画面だったら
+
+				m_bConfimationScale = false;					// 拡大縮小フラグを初期化	
+				m_bConfimationSpawnWindow = true;				// メニューウィンドウの破棄
 				Uninit();										// メニューウィンドウの削除
+			}
+			if (Mode == CApplication::MODE_CHAR_SELECT && m_bConfirmasionWindowUse == false)
+			{ // キャラ選択画面だったら && このウィンドウが使われていなかったら
+
+				m_bConfirmasionWindowUse = true;	// 使用している様態にする
 			}
 			return true;
 		}
 
 		// サイズの設定
-		m_pObject2D->SetSize(D3DXVECTOR2(SizeX, SizeY));
+		m_pObject2D->SetSize(D3DXVECTOR2(m_Size.x, m_Size.y));
 	}
 	return false;
 }
@@ -250,7 +276,7 @@ void CConfirmation_Window::Choice()
 	CInput* pInput = CInput::GetKey();
 	
 	// フェード中では無い場合 && 表示中の場合
-	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE && m_bDisplay == true)
+	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE && m_bConfimationDisplay == true)
 	{
 		// 選択肢が使用されている場合
 		if (!m_vpListChoice.empty())
@@ -259,7 +285,7 @@ void CConfirmation_Window::Choice()
 			if (m_vpListChoice.size() >= 2)
 			{
 				// 上に移動する
-				if (pInput->Trigger(DIK_A) || (pInput->Trigger(JOYPAD_UP, m_nMenuInitiative)))
+				if (pInput->Trigger(DIK_A) || (pInput->Trigger(JOYPAD_UP)))
 				{
 					// 選択SE
 					CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
@@ -268,7 +294,7 @@ void CConfirmation_Window::Choice()
 					ChangeChoice(false);
 				}
 				// 下に移動する
-				else if (pInput->Trigger(DIK_D) || (pInput->Trigger(JOYPAD_DOWN, m_nMenuInitiative)))
+				else if (pInput->Trigger(DIK_D) || (pInput->Trigger(JOYPAD_DOWN)))
 				{
 					// 選択SE
 					CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
@@ -278,58 +304,49 @@ void CConfirmation_Window::Choice()
 				}
 			}
 
-			if (pInput->Trigger(DIK_RETURN) || (pInput->Trigger(JOYPAD_B, m_nMenuInitiative) || pInput->Trigger(JOYPAD_A, m_nMenuInitiative)))
+			if (pInput->Trigger(DIK_RETURN) || (pInput->Trigger(JOYPAD_B) || pInput->Trigger(JOYPAD_A)))
 			{
 				// 決定SE
 				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 
 				// 選択を決定する
-				m_bDecition = true;
+				m_bConfimationDecition = true;
 			}
 			// 決定された場合
-			if (m_bDecition == true)
+			if (m_bConfimationDecition == true)
 			{
 				// 左の選択肢の場合
-				if (m_bSelectChoice == false)
+				if (m_bConfimationSelectChoice == false)
 				{
-					CreateCharSelect();			// キャラ選択画面の生成
-					m_bScale = true;			// 拡大縮小フラグが使われている
-					SetDisplay(false);			// 選択肢の表示判定を使用していない状態にする
-					m_bSelectChoice = true;		// 左の選択肢を選んだ
+					CreateCharSelect();					// キャラ選択画面の生成
+					m_bConfimationScale = true;			// 拡大縮小フラグが使われている
+					SetDisplay(false);					// 選択肢の表示判定を使用していない状態にする
+					m_bConfimationSelectChoice = true;	// 左の選択肢を選んだ
 				}
 				// 右の選択肢の場合
 				else
 				{
-					CreateCharSelect();			// キャラ選択画面の生成
-					m_bScale = true;            // 拡大縮小フラグが使われている
-					SetDisplay(false);			// 選択肢の表示判定を使用していない状態にする
-					m_bSelectChoice = false;    // 左の選択肢を選んだ
+					CreateCharSelect();					// キャラ選択画面の生成
+					m_bConfimationScale = true;         // 拡大縮小フラグが使われている
+					SetDisplay(false);					// 選択肢の表示判定を使用していない状態にする
+					m_bConfimationSelectChoice = false; // 左の選択肢を選んだ
 				}
 			}
 		}
 	}
 
-	// nullチェック
 	if (m_pCharSelectWindow != nullptr)
-	{ 
+	{ //	キャラ選択ウィンドウが使われていたら
+
 		// キャラ選択ウィンドウの更新処理
 		m_pCharSelectWindow->Update();
 	}
 
-	// キャラ選択ウィンドウが閉じた場合 
-	if (m_pCharSelectWindow != nullptr && m_pCharSelectWindow->GetSapawnWindow() == true)
-	{
-		// キャラ選択画面の破棄
-		m_pCharSelectWindow->SetSapawnWindow(false);	// ウィンドウの生成フラグを初期化
-		delete m_pCharSelectWindow;
-		m_pCharSelectWindow = nullptr;
-	}
+	if (m_bConfimationSpawnWindow == true && CTitle::GetMenuWindow() != nullptr)
+	{ // メニューウィンドウが使われている時 &&  メニューウィンドウが使われている時
 
-	// メニューウィンドウが閉じた時
-	if (m_bSpawnWindow == true && CTitle::GetMenuWindow() != nullptr)
-	{
-		CApplication::GetMenu()->SetDisplay(false);		// 文字を消す
-		CTitle::GetMenuWindow()->MenuScaleReduce();		// ゲーム開閉時のウィンドウの縮小
+		CApplication::GetMenu()->SetDisplay(false);				// 文字を消す
+		CTitle::GetMenuWindow()->MenuWindowScaleReduce();		// ゲーム開閉時のウィンドウの縮小
 	}
 }
 
@@ -339,15 +356,45 @@ void CConfirmation_Window::Choice()
 void CConfirmation_Window::ChangeChoice(const bool nextChoice)
 {
 	// 現在の選択肢の処理
-	m_vpListChoice[m_bSelectChoice]->BlinkFinish();
-	m_vpListChoice[m_bSelectChoice]->SetAlpha(MINI_ALPHA);
+	m_vpListChoice[m_bConfimationSelectChoice]->BlinkFinish();
+	m_vpListChoice[m_bConfimationSelectChoice]->SetAlpha(MINI_ALPHA);
 
 	// 選択肢の変更
-	m_bSelectChoice = (int)nextChoice;
+	m_bConfimationSelectChoice = (int)nextChoice;
 
 	// 変更後の選択肢の処理
-	m_vpListChoice[m_bSelectChoice]->SetBlink(m_fBlinkSpeed);
-	m_vpListChoice[m_bSelectChoice]->SetAlpha(1.0f);
+	m_vpListChoice[m_bConfimationSelectChoice]->SetBlink(m_fConfimationBlinkSpeed);
+	m_vpListChoice[m_bConfimationSelectChoice]->SetAlpha(1.0f);
+}
+
+//============================================================================
+// メンバ変数の初期化
+//============================================================================
+void CConfirmation_Window::VariableInit()
+{
+	// メンバ変数の初期化
+	m_bConfimationScale = false;
+	m_bConfimationMaxSize = false;
+	m_bConfimationUninitFlag = false;
+	m_bConfimationSpawnWindow = false;
+	m_bConfimationSelectChoice = false;
+	m_bConfimationDecition = false;
+	m_bConfirmasionWindowUse = false;
+	m_bConfimationBack = false;
+}
+
+//============================================================================
+// キャラ選択ウィンドウの破棄処理
+//============================================================================
+void CConfirmation_Window::UninitCharSelectWindow()
+{	
+	// キャラ選択画面の破棄
+	if (m_pCharSelectWindow != nullptr)
+	{
+		m_pCharSelectWindow->Uninit();
+		delete m_pCharSelectWindow;
+		m_pCharSelectWindow = nullptr;
+	}
 }
 
 //============================================================================
@@ -355,7 +402,7 @@ void CConfirmation_Window::ChangeChoice(const bool nextChoice)
 //============================================================================
 void CConfirmation_Window::SetDisplay(const bool decition)
 {
-	m_bDisplay = decition;
+	m_bConfimationDisplay = decition;
 	for (auto pChoice : GetChoiceAll()) { pChoice->SetFontDraw(decition); }
 
 	// 表示を消す場合
@@ -400,8 +447,8 @@ CConfirmation_Window* CConfirmation_Window::Create(D3DXVECTOR3 pos, float xsize,
 		// 設定処理
 		pMenuWindow->m_pos = pos;
 		pMenuWindow->m_Color = col;
-		pMenuWindow->MaxSizeX = xsize;
-		pMenuWindow->MaxSizeY = ysize;
+		pMenuWindow->m_MaxSize.x = xsize;
+		pMenuWindow->m_MaxSize.y = ysize;
 		// 初期化処理
 		pMenuWindow->Init();
 	}

@@ -51,21 +51,20 @@ HRESULT CCharDecision_Window::Init()
 {
 	//==================================================
 	// メンバ変数の初期化
-	//==================================================  
+	//================================================== 
 	m_nSelectIndex = 0;
-	index = 0;
-	m_SizeX = 0.0f;
-	m_SizeY = 0.0f;
-	m_fMoveX = 50.0f;
-	m_bScale = false;
+	m_fMoveX = 175.0f;
 	m_bMaxSize = false;
-	m_bUninitFlag = false;
+	m_bSlideFlag = false;
 	m_bFontFlag = false;
-	m_bDecition = false;
-	m_bDisplay = false;
-	m_bStopFlag = false;
+	m_bLeftRight = false;
+	m_bStopFlag = true;
 	m_bPosDest = false;
 	m_bExplanationUninit = false;
+	m_bScale = false;
+	m_bDicision = false;
+	m_bUninitFlag = false;
+	m_bSpawnWindow = true;
 	m_pWindow = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pWindow->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
 
@@ -94,23 +93,30 @@ void CCharDecision_Window::Update()
 	CInput* pInput = CInput::GetKey();
 
 	if (m_bScale == false)
-	{// 拡大されていない時
-
-	 // ウィンドウの拡大処理
+	{// ウィンドウの拡大処理
 		CharDecisionMenuScale();
 	}
 
+	// ゲーム画面への遷移
 	if (pInput->Trigger(DIK_RETURN)
 		&& m_bMaxSize == true
 		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
-		UninitExplanation();				// フォントの削除
-		// 画面遷移
-		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
+		UninitExplanation();								// フォントの削除
+		CFade::SetFade(CApplication::MODE_GAME, 0.1f);		// 画面遷移
 	}
 
-	// キャラの変更処理
-	CharSelectChoice();
+	if (m_pWindow != nullptr)
+	{
+		// キャラの変更処理
+		CharSelectChoice();
+	}
+
+	// ウィンドウを戻す処理
+	if (m_bMaxSize == true)
+	{
+		BackWindow();
+	}
 }
 
 //============================================================================
@@ -118,59 +124,76 @@ void CCharDecision_Window::Update()
 //============================================================================
 void CCharDecision_Window::CharDecisionMenuScale()
 {
-	// 入力デバイスの情報
-	CInput* pInput = CInput::GetKey();
-
 	if (m_pObject2D != nullptr)
 	{// nullチェック
 
-	 // サイズの拡大
-		m_SizeX += SizeXScaleSpeed;
-		m_SizeY += SizeYScaleSpeed;
+		// サイズの拡大
+		m_size.x += SizeXScaleSpeed;
+		m_size.y += SizeYScaleSpeed;
 
-		if (m_SizeX >= m_MaxSizeX)
+		if (m_size.x >= m_MaxSize.x)
 		{// Xサイズの最大
-			m_SizeX = m_MaxSizeX;
+			m_size.x = m_MaxSize.x;
 		}
-		if (m_SizeY >= m_MaxSizeY)
+		if (m_size.y >= m_MaxSize.y)
 		{// Yサイズの最大
-			m_SizeY = m_MaxSizeY;
+			m_size.y = m_MaxSize.y;
 		}
-
-		//// 拡大スキップ
-		//if (pInput->Trigger(DIK_RETURN) && m_bMaxSize == false)
-		//{
-		//	m_SizeX = m_MaxSizeX;
-		//	m_SizeY = m_MaxSizeY;
-		//	// サイズの設定
-		//	m_pWindow->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
-		//}
 
 		// ウィンドウが最大値まで行ったら
-		if (m_SizeX >= m_MaxSizeX && m_SizeY >= m_MaxSizeY && m_bMaxSize == false)
+		if (m_size.x >= m_MaxSize.x && m_size.y >= m_MaxSize.y && m_bMaxSize == false)
 		{
-			CApplication::MODE Mode = CApplication::GetModeType();
-
-			if (Mode == CApplication::MODE_GAME)
-			{
-				pInput->SetKeyLock(100);
-			}
-
-			if (m_bUninitFlag == false && m_bScale == true)
-			{
-				m_bMaxSize = true;
-				m_bFontFlag = false;
-				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(m_nSelectIndex);
-			}
-
-			m_bMaxSize = true;
-			m_bScale = true;
+			m_bMaxSize = true;		// 最大サイズに到達
+			m_bScale = true;		// 拡大された
 			return;
 		}
 
 		// サイズの設定
-		m_pWindow->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		m_pWindow->SetSize(D3DXVECTOR2(m_size.x, m_size.y));
 	}
+}
+
+//=============================================================================
+// メニューのサイズ縮小処理
+//=============================================================================
+bool CCharDecision_Window::CharDecisionMenuScaleReduce()
+{
+	if (m_pObject2D != nullptr)
+	{// nullチェック
+
+		// サイズの縮小
+		m_size.x -= SizeXScaleSpeed;
+		m_size.y -= SizeYScaleSpeed;
+
+		if (m_size.x <= 0.0f)
+		{// Xサイズの最小
+			m_size.x = 0.0f;
+		}
+		if (m_size.y <= 0.0f)
+		{// Yサイズの最小
+			m_size.y = 0.0f;
+		}
+		m_bExplanationUninit = true;		// テクスチャとフォントの削除
+
+		// フォントとテクスチャの削除
+		UninitExplanation();
+
+		// ウィンドウが最小値まで行ったら
+		if (m_size.x <= 0.0f && m_size.y <= 0.0f)
+		{
+			m_bSpawnWindow = false;		// ウィンドウを生成されていない状態にする
+			m_bUninitFlag = true;		// 削除フラグをtrue
+
+			// 終了処理
+			Uninit();					
+
+			return true;
+		}
+
+		// サイズの設定
+		m_pWindow->SetSize(D3DXVECTOR2(m_size.x, m_size.y));
+	}
+	return false;
 }
 
 //=============================================================================
@@ -181,80 +204,122 @@ void CCharDecision_Window::CharSelectChoice()
 	// 入力デバイスの情報
 	CInput* pInput = CInput::GetKey();
 
-	D3DXVECTOR3 pos = m_pWindow->GetPos();
-
 	// フェード中では無い場合 && 表示中の場合
 	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
 		// 左に移動する
-		if (pInput->Trigger(DIK_A) && m_bStopFlag == false || (pInput->Trigger(JOYPAD_UP, m_nMenuInitiative)) && m_bStopFlag == false)
+		if (pInput->Trigger(DIK_A) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_UP)) && m_bStopFlag == false)
 		{
-			index = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
-			index--;
-			m_bUninitFlag = true;
-			m_bDecition = false;
-			m_bPosDest = false;
-			m_bStopFlag = true;
+			// 選択した番号の取得
+			m_nSelectIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
+			m_nSelectIndex--;		// 番号を1つ戻す
+			m_bSlideFlag = true;	// スライドさせる
+			m_bLeftRight = false;	// 左に移動
+			m_bPosDest = false;		// 目的の位置に到達していない
+			m_bStopFlag = false;	// 動いている状態
 			// 選択SE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 
 		}
 		// 下に移動する
-		else if (pInput->Trigger(DIK_D) && m_bStopFlag == false || (pInput->Trigger(JOYPAD_DOWN, m_nMenuInitiative)) && m_bStopFlag == false)
+		else if (pInput->Trigger(DIK_D) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_DOWN)) && m_bStopFlag == false)
 		{
-			index = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
-			index++;
-			m_bUninitFlag = true;
-			m_bDecition = true;
-			m_bPosDest = false;
-			m_bStopFlag = true;
+			// 選択した番号の取得
+			m_nSelectIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
+			m_nSelectIndex++;		// 番号を1つ進める
+			m_bSlideFlag = true;	// スライドさせる
+			m_bLeftRight = true;	// 右に移動
+			m_bPosDest = false;		// 目的の位置に到達していない
+			m_bStopFlag = false;	// 動いている状態
 			// 選択SE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 		}
 	}
+	
+	// ウィンドウスライド処理
+	SlideWindow();
+}
 
-	if (m_bUninitFlag == true)
+//============================================================================
+// ウィンドウを戻す処理
+//============================================================================
+void CCharDecision_Window::BackWindow()
+{
+	// 入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
+	
+	// 前のウィンドウに戻る
+	if (pInput->Trigger(DIK_BACK))
 	{
-		// 左移動
-		if (m_bDecition == false)
+		m_bDicision = true;
+		m_bScale = true;
+	}
+	if (m_bScale == true && m_bDicision == true)
+	{
+		CharDecisionMenuScaleReduce();
+	}
+}
+
+//============================================================================
+// ウィンドウをスライドさせる処理
+//============================================================================
+void CCharDecision_Window::SlideWindow()
+{
+	// 位置の取得
+	D3DXVECTOR3 pos = m_pWindow->GetPos();
+
+	if (m_bSlideFlag == true)
+	{// スライドされている時
+
+	 // 左移動
+		if (m_bLeftRight == false)
 		{
-			m_bExplanationUninit = true;
+			m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
-			pos.x -= m_fMoveX;
+			pos.x -= m_fMoveX;					// 移動量の減算
 			if (pos.x <= -SCREEN_WIDTH / 2 && m_bPosDest == false)
-			{
-				pos.x = 1920.0f;
-				m_bPosDest = true;
+			{// 位置が-640以下 && 目的の位置まで到達していなかったら
+
+				pos.x = 1920.0f;				// 位置の設定
+				m_bPosDest = true;				// 目的の位置まで到達した
 			}
 			if (pos.x <= SCREEN_WIDTH / 2 && m_bPosDest == true)
-			{
-				pos.x = SCREEN_WIDTH / 2;
-				m_bFontFlag = false;
-				m_bStopFlag = false;
-				m_bExplanationUninit = false;
-				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(index);
+			{// 位置が640以下 && 目的の位置まで到達した時
+
+				pos.x = SCREEN_WIDTH / 2;		// 位置の設定
+				m_bFontFlag = false;			// フォントを使用していない状態にする
+				m_bStopFlag = true;				// スライドを停止させる
+				m_bExplanationUninit = false;   // テクスチャとフォントの表示
+
+				// 選択した番号の保存
+				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(m_nSelectIndex);
 			}
 		}
 		// 右移動
 		else
 		{
-			m_bExplanationUninit = true;
+			m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
-			pos.x += m_fMoveX;
+			pos.x += m_fMoveX;					// 移動量の加算
 			if (pos.x >= 1920.0f && m_bPosDest == false)
-			{
-				pos.x = -SCREEN_WIDTH / 2;
-				m_bPosDest = true;
+			{// 位置が1920.0f以上 && 目的の位置まで到達していなかったら
+
+				pos.x = -SCREEN_WIDTH / 2;		// 位置の設定
+				m_bPosDest = true;				// 目的の位置まで到達した
 			}
 			if (pos.x >= SCREEN_WIDTH / 2 && m_bPosDest == true)
-			{
-				pos.x = SCREEN_WIDTH / 2;
-				m_bFontFlag = false;
-				m_bStopFlag = false;
-				m_bExplanationUninit = false;
-				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(index);
+			{// 位置が640以下 && 目的の位置まで到達した時
+
+				pos.x = SCREEN_WIDTH / 2;		// 位置の設定
+				m_bFontFlag = false;			// フォントを使用していない状態にする
+				m_bStopFlag = true;				// スライドを停止させる
+				m_bExplanationUninit = false;	// テクスチャとフォントの表示
+
+				// 選択した番号の保存
+				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(m_nSelectIndex);
 			}
 		}
+		// 位置の設定
 		m_pWindow->SetPos(pos);
 	}
 }
@@ -297,6 +362,7 @@ void CCharDecision_Window::SetTextue(CTexture::TEXTURE texture, CTexture::TEXTUR
 //============================================================================
 void CCharDecision_Window::UninitExplanation()
 {
+	// フォントの破棄
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
 		if (m_pFont[nCnt] != nullptr)
@@ -306,6 +372,7 @@ void CCharDecision_Window::UninitExplanation()
 		}
 	}
 
+	// テクスチャの破棄
 	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
 		if (m_pObject2D[nCnt] != nullptr)
@@ -322,17 +389,18 @@ void CCharDecision_Window::UninitExplanation()
 CCharDecision_Window * CCharDecision_Window::Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col)
 {
 	//クラスの生成
-	CCharDecision_Window* pCharDecision = new CCharDecision_Window;
+	CCharDecision_Window* pCharDecision = new CCharDecision_Window; 
 
 	//nullチェック
 	if (pCharDecision != nullptr)
 	{
+		// 設定処理
 		pCharDecision->m_pos = pos;
 		pCharDecision->m_Color = col;
-		pCharDecision->m_MaxSizeX = xsize;
-		pCharDecision->m_MaxSizeY = ysize;
-		//初期化処理
-		pCharDecision->Init();
+		pCharDecision->m_MaxSize.x = xsize;
+		pCharDecision->m_MaxSize.y = ysize;
+		// 初期化処理
+		pCharDecision->Init();         
 	}
 	else
 	{
