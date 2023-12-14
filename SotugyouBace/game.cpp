@@ -490,8 +490,10 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
 		}
 
+		int nRandRarity = utility::Random<int>(3, 0);
+
 		// ê∂ê¨
-		CDrop_Weapon::Create(Pos, nRandType);
+		CDrop_Weapon::Create(Pos, nRandType, nRandRarity);
 	}
 }
 
