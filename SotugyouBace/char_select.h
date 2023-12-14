@@ -13,6 +13,7 @@
 
 class CConfirmation_Window;
 class CFontString;
+class CHalfSphere;
 
 class CChar_Select : public CMode
 {
@@ -31,6 +32,7 @@ public:
 private:
 	static CConfirmation_Window* m_pConfirmation;
 	CFontString* m_pFont;
+	CHalfSphere* m_pHalfSphere;
 };
 
 #endif // !_CHAR_SELECT_H_

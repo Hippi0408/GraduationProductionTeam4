@@ -10,6 +10,8 @@
 #include"fade.h"
 #include"fontString.h"
 #include"confirmation_window.h"
+#include "camera.h"
+#include "halfsphere.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -36,6 +38,16 @@ CChar_Select::~CChar_Select()
 HRESULT CChar_Select::Init()
 {
 	m_pFont = CFontString::Create({ 280.0f, 200.0f, 0.0f }, { 50.0f, 50.0f }, "キャラクターセレクト");
+
+	// カメラのポインタ
+	CCamera* pCamera = CApplication::GetCamera();
+
+	pCamera->SetPosV({ 0.0f, 2000.0f, -1000.0f });
+	pCamera->SetPosR({ 0.0f, 2000.0f, 1000.0f });
+
+	// ハーフスフィアの生成
+	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f),  D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
+	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	return S_OK;
 }
