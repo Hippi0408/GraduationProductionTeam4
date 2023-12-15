@@ -39,6 +39,7 @@ public:
 	void SetSize(const D3DXVECTOR3 size) { m_size = size; }
 	void SetParent(CObjectX* pModel) { m_pParent = pModel; }
 	void SetModel(const int index);
+	void SetWireFrame(bool bwireFrame) { m_bWireFrame = bwireFrame; }
 
 	// マテリアルの色情報を初期マテリアル色に戻す処理
 	void SetColor(const D3DXCOLOR col) { m_col = col; }
@@ -68,6 +69,7 @@ private:
 	int m_nNumMat;				// 現在のモデルのマテリアル数
 	bool m_bShadow;				// 影の描画処理
 	bool m_bParts;				// パーツ用のモデルであるかどうか
+	bool m_bWireFrame;			// ワイヤーフレーム
 };
 
 #endif // !_MODEL_H_

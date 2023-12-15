@@ -18,6 +18,7 @@ CObjectX::CObjectX(const PRIORITY priority) : CObject(priority)
 	// デフォルト
 	m_bShadow = false;
 	m_bParts = false;
+	m_bWireFrame = false;
 
 	m_size = { 1.0f, 1.0f, 1.0f };
 	m_col = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -65,6 +66,11 @@ void CObjectX::Draw()
 		D3DXMATRIX mtxRot, mtxTrans, mtxScaling;	//計算用のマトリックス
 		D3DMATERIAL9 matDef;				//現在のマテリアルの保存用
 		D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
+
+		if (m_bWireFrame)
+		{
+			pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+		}
 
 		//ワールドマトリックスの初期化
 		D3DXMatrixIdentity(&m_mtxWorld);
@@ -145,6 +151,11 @@ void CObjectX::Draw()
 
 		// ステンシルバッファ=>無効
 		pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
+
+		if (m_bWireFrame)
+		{
+			pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_FORCE_DWORD);
+		}
 	}
 }
 

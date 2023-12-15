@@ -16,8 +16,8 @@
 //==============================================
 //マクロ定義
 //==============================================
-#define HALFSPHEAR_X_BLOCK	(15)	//X方向のブロック数
-#define HALFSPHEAR_Z_BLOCK	(15)	//Z方向のブロック数
+#define HALFSPHEAR_X_BLOCK	(25)	//X方向のブロック数
+#define HALFSPHEAR_Z_BLOCK	(25)	//Z方向のブロック数
 
 #define MAX_SPHERE	(2)
 
@@ -64,6 +64,9 @@ public:
 	const D3DXVECTOR2 GetSize(void);					// サイズの取得処理
 	const D3DXVECTOR3 GetPos(void);						// 位置の取得処理
 	const D3DXVECTOR3 GetRot(void);
+
+	void AddPos(D3DXVECTOR3 pos) { m_pos += pos; }
+	void AddRot(D3DXVECTOR3 rot) { m_rot += rot; }
 
 	static CHalfSphere* Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, SPHERE_TEX tex);		// 生成処理
 
