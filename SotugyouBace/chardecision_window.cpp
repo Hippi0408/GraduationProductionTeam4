@@ -108,7 +108,7 @@ void CCharDecision_Window::Update()
 		UninitExplanation();				// フォントの削除
 
 		////サーバーの接続
-		CApplication::GetClient()->Init("127.0.0.1", 15678);
+		//CApplication::GetClient()->Init("127.0.0.1", 15678);
 
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.1f);

@@ -153,7 +153,7 @@ void CObjectX::Draw()
 		pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 
 		
-		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_FORCE_DWORD);
+		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	
 	}
 }
