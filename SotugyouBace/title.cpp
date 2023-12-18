@@ -106,22 +106,22 @@ HRESULT CTitle::Init()
 	m_pTitle[4] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-290.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[4]->SetTexture(CTexture::TEXTURE_TITLE_03);
 
-	m_pTitle[5] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-170.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[5] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-175.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[5]->SetTexture(CTexture::TEXTURE_TITLE_04);
 
-	m_pTitle[6] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-90.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[6] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-100.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[6]->SetTexture(CTexture::TEXTURE_TITLE_05);
 
-	m_pTitle[7] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(0.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[7] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-10.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[7]->SetTexture(CTexture::TEXTURE_TITLE_06);
 
-	m_pTitle[8] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(80.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[8] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(70.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[8]->SetTexture(CTexture::TEXTURE_TITLE_07);
 
-	m_pTitle[9] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(195.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[9] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(150.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[9]->SetTexture(CTexture::TEXTURE_TITLE_08);
 
-	m_pTitle[10] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(295.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[10] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(240.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[10]->SetTexture(CTexture::TEXTURE_TITLE_04);
 
 	
