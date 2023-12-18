@@ -152,10 +152,9 @@ void CObjectX::Draw()
 		// ステンシルバッファ=>無効
 		pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 
-		if (m_bWireFrame)
-		{
-			pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_FORCE_DWORD);
-		}
+		
+		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_FORCE_DWORD);
+	
 	}
 }
 
