@@ -97,8 +97,10 @@ HRESULT CDrop_Weapon::Init()
 
 	m_CenterPos = { 0.0f,PARTS_FLOTIONG_POS,0.0f };
 
+	CObjectX* pObjectX = GetObjectX();
+
 	// Šp“x‚ÌÝ’è
-	GetObjectX()->SetRot({ 0.4f,0.0f,0.0f });
+	pObjectX->SetRot({ 0.4f,0.0f,0.0f });
 
 	// —Ž‚¿‚Ä‚é•Ší‚Ì¶¬
 	//m_pDrop_Weapon->SetSize({ 3.0f,3.0f,3.0f });
@@ -119,6 +121,11 @@ HRESULT CDrop_Weapon::Init()
 	m_pPick_Up = CObject3D::Create({ ModelPos.x, ModelPos.y + 120.0f, ModelPos.z }, { 70.0f,70.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
 	m_pPick_Up->SetTexture(CTexture::TEXTURE_KEY_E);
 	m_pPick_Up->SetDrawFlag(false);
+
+	const float nAddCol = -0.05f * m_nRarity;
+
+	pObjectX->AddColor({ nAddCol, nAddCol,nAddCol, 0.0f});
+
 
 	CMove_Object::Init();
 
@@ -316,14 +323,14 @@ void CDrop_Weapon::FieldCollision()
 	}
 }
 
-void CDrop_Weapon::Hit(CMove_Object* pHit)
+void CDrop_Weapon::Hit(CMove_Object* /*pHit*/)
 {
 }
 
 //=============================================================================
 // ¶¬ˆ—
 //=============================================================================
-CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon)
+CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon, int rarity)
 {
 	CDrop_Weapon *pDrop_Weapon = nullptr;
 
@@ -334,6 +341,7 @@ CDrop_Weapon *CDrop_Weapon::Create(D3DXVECTOR3 pos, int weapon)
 		pDrop_Weapon->SetPos(pos);
 		pDrop_Weapon->SetObjectX(CObjectX::Create(pos, { 0.0f,0.0f,0.0f }, nullptr, CApplication::GetModel()->ReadObject(s_Weapon_FileName[pDrop_Weapon->m_nWeapon_Type = weapon])));
 		//pDrop_Weapon->SetModel(CApplication::GetModel()->ReadObject(s_Weapon_FileName[pDrop_Weapon->m_nWeapon_Type = weapon]));
+		pDrop_Weapon->m_nRarity = rarity;
 		pDrop_Weapon->Init();
 	}
 

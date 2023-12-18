@@ -18,8 +18,10 @@ CObjectX::CObjectX(const PRIORITY priority) : CObject(priority)
 	// デフォルト
 	m_bShadow = false;
 	m_bParts = false;
+	m_bWireFrame = false;
 
 	m_size = { 1.0f, 1.0f, 1.0f };
+	m_col = { 0.0f, 0.0f, 0.0f, 0.0f };
 }
 
 //==============================================================================================
@@ -64,6 +66,11 @@ void CObjectX::Draw()
 		D3DXMATRIX mtxRot, mtxTrans, mtxScaling;	//計算用のマトリックス
 		D3DMATERIAL9 matDef;				//現在のマテリアルの保存用
 		D3DXMATERIAL *pMat;					//マテリアルデータへのポインタ
+
+		if (m_bWireFrame)
+		{
+			pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+		}
 
 		//ワールドマトリックスの初期化
 		D3DXMatrixIdentity(&m_mtxWorld);
@@ -121,8 +128,10 @@ void CObjectX::Draw()
 			// マテリアル情報の設定
 			D3DMATERIAL9 matD3D = pMat[nCntMat].MatD3D;
 
+			D3DXCOLOR matCol = m_Original_col[nCntMat] + m_col;
+
 			// マテリアルの色変更
-			matD3D.Diffuse = matD3D.Specular = matD3D.Emissive = m_col[nCntMat];
+			matD3D.Diffuse = matD3D.Specular = matD3D.Emissive = matCol;
 
 			// マテリアルの設定
 			pDevice->SetMaterial(&matD3D);
@@ -142,6 +151,11 @@ void CObjectX::Draw()
 
 		// ステンシルバッファ=>無効
 		pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
+
+		if (m_bWireFrame)
+		{
+			pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_FORCE_DWORD);
+		}
 	}
 }
 
@@ -256,16 +270,16 @@ void CObjectX::SetModel(const int index)
 	m_nNumMat = model.nNumMat;
 
 	// 使用中の色の初期化
-	if (!m_col.empty())
+	if (!m_Original_col.empty())
 	{
-		m_col.clear();
+		m_Original_col.clear();
 	}
 
 	// マテリアル色を初期化する
 	for (int i = 0; i < m_nNumMat; i++)
 	{
-		m_col.emplace_back();
-		m_col.back() = model.MatColor[i];
+		m_Original_col.emplace_back();
+		m_Original_col.back() = model.MatColor[i];
 	}
 
 	m_vtxMinModel = D3DXVECTOR3(1000.0f, 1000.0f, 1000.0f);

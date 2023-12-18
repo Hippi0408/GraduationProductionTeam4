@@ -147,11 +147,11 @@ void CEnergy_Gauge::Fluctuation()
 	else if (m_bAllConsumption && !m_bAllRecovery && !m_bRecovery_Pause)
 	{
 		// 最後まで減らす
-		m_fFluctuation = m_nMax_Enerugy;
+		m_fFluctuation = (float)m_nMax_Enerugy;
 	}
 
 	// 現在のエネルギー残量
-	float fEnergy = m_nMax_Enerugy - m_fFluctuation;
+	float fEnergy = (float)m_nMax_Enerugy - m_fFluctuation;
 
 	// 現在のエネルギー残量の割合
 	float fEnergy_Percent = fEnergy / m_nMax_Enerugy * 100;

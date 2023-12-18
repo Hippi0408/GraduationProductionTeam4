@@ -98,7 +98,7 @@ public:
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
 	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Job[nCnt] = (JOB)index; } }
-	void SetPlayerParts(const PARTS parts, const int weapon);
+	void SetPlayerParts(const PARTS parts, const int weapon, const int rarity);
 	void SetPlayerWeapon(const int weapon);
 
 
@@ -114,8 +114,6 @@ private:
 	bool m_bDrop_Get;		// 落とし物を入手する判定
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
-	CWeapon* m_pRightWeapon;			// 右手武器
-	CWeapon* m_pLeftWeapon;				// 左手武器
 
 	D3DXVECTOR3 m_NearMob_Pos;
 	CObject3D *m_pReticle;				// レティクル
@@ -130,10 +128,15 @@ private:
 	int m_nEnemy_Count;
 	float m_fEnemy_Speed;
 	float m_fAngle;
-	int m_nStan_Tolerance;	// スタン許容値
-	int m_nGravity;			// 重量
+	int m_nStan_Tolerance;				// スタン許容値
+	int m_nGravity;						// 重量
 
-	JOB m_Job[PARTS_MAX];		// プレイヤーのパーツ毎のジョブ種類
+	JOB m_Job[PARTS_MAX];				// プレイヤーのパーツ毎のジョブ種類
+	int m_nRarity_Arms;					// 腕のレアリティ
+	int m_nRarity_Leg;					// 脚のレアリティ
+	CWeapon* m_pRightWeapon;			// 右手武器
+	CWeapon* m_pLeftWeapon;				// 左手武器
+
 };
 
 #endif// _PLAYER_H_
