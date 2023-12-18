@@ -4,14 +4,15 @@
 // tutida ryousei
 //
 //==============================================================================================
-#include"char_select.h"
-#include"input.h"
-#include"application.h"
-#include"fade.h"
-#include"fontString.h"
-#include"confirmation_window.h"
+#include "char_select.h"
+#include "input.h"
+#include "application.h"
+#include "fade.h"
+#include "fontString.h"
+#include "confirmation_window.h"
 #include "camera.h"
 #include "halfsphere.h"
+#include "playerdata.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -42,8 +43,12 @@ HRESULT CChar_Select::Init()
 	// カメラのポインタ
 	CCamera* pCamera = CApplication::GetCamera();
 
+	m_pPlayerData = new CPlayerData;
+
 	pCamera->SetPosV({ 0.0f, 2000.0f, -1000.0f });
 	pCamera->SetPosR({ 0.0f, 2000.0f, 1000.0f });
+
+	m_pPlayerData->Init();
 
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f),  D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
@@ -63,6 +68,14 @@ void CChar_Select::Uninit()
 		m_pConfirmation->Uninit();
 		delete m_pConfirmation;
 		m_pConfirmation = nullptr;
+	}
+
+	// プレイヤーデータ
+	if (m_pPlayerData != nullptr)
+	{
+		m_pPlayerData->Uninit();
+		delete m_pPlayerData;
+		m_pPlayerData = nullptr;
 	}
 }
 
@@ -110,6 +123,11 @@ void CChar_Select::Update()
 		m_pConfirmation->SetSapawnWindow(false);
 		delete m_pConfirmation;
 		m_pConfirmation = nullptr;
+	}
+
+	if (m_pPlayerData != nullptr)
+	{
+		m_pPlayerData->Update();
 	}
 }
 

@@ -14,6 +14,7 @@
 class CConfirmation_Window;
 class CFontString;
 class CHalfSphere;
+class CPlayerData;
 
 class CChar_Select : public CMode
 {
@@ -33,6 +34,7 @@ private:
 	static CConfirmation_Window* m_pConfirmation;
 	CFontString* m_pFont;
 	CHalfSphere* m_pHalfSphere;
+	CPlayerData* m_pPlayerData;
 };
 
 #endif // !_CHAR_SELECT_H_

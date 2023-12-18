@@ -65,6 +65,7 @@ HRESULT CCharDecision_Window::Init()
 	m_bScale = false;
 	m_bDicision = false;
 	m_bUninitFlag = false;
+	m_bScaleReduce = false;
 	m_bSpawnWindow = true;
 	m_pWindow = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pWindow->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
@@ -101,18 +102,24 @@ void CCharDecision_Window::Update()
 	// ゲーム画面への遷移
 	if (pInput->Trigger(DIK_RETURN)
 		&& m_bMaxSize == true
+		&& m_bScaleReduce == false
 		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
 		UninitExplanation();				// フォントの削除
+		m_bScaleReduce = true;
 
 		////サーバーの接続
 		//CApplication::GetClient()->Init("127.0.0.1", 15678);
 
-		// 画面遷移
-		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
+		//// 画面遷移
+		//CFade::SetFade(CApplication::MODE_GAME, 0.1f);
 
 		// プレイヤーのジョブ番号の設定
 		CApplication::SetPlayerJobIndex(CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice());
+	}
+	if (m_bScaleReduce == true)
+	{
+		CharDecisionMenuScaleReduce();
 	}
 
 	if (m_pWindow != nullptr)

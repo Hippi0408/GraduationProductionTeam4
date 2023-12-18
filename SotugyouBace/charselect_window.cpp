@@ -126,6 +126,7 @@ void CCharSelect_Window::Update()
 
 	if (CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision() != nullptr
 		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetUninit() == true
+		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetScaleReduce() == false
 		&& m_bCharSelectWindowWindowUse == true)
 	{
 		// ウィンドウの拡大処理

@@ -55,6 +55,7 @@ public:
 	bool GetMaxScale() { return m_bMaxSize; }									// ウィンドウが最大サイズまで行ったのかを取得する処理
 	bool GetExplanationUninit() { return m_bExplanationUninit; }				// フォント、テクスチャが削除されたかの取得処理		
 	bool GetUninit() { return m_bUninitFlag; }									// 削除フラグの取得処理
+	bool GetScaleReduce() { return m_bScaleReduce; }
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }										// 選択肢ポインタの取得処理
 	static CCharDecision_Window* Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col);			// 生成処理
@@ -86,5 +87,6 @@ private:
 	bool    m_bScale;							// 拡大縮小フラグ
 	bool	m_bDicision;						// 決定されたか
 	bool    m_bUninitFlag;						// 削除フラグ
+	bool    m_bScaleReduce;						// 縮小
 };
 #endif
