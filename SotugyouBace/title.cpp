@@ -86,7 +86,7 @@ HRESULT CTitle::Init()
 	m_pGearLogo[6]->SetRot(D3DXVECTOR2(0.0f, D3DXToRadian(0)));
 
 	//ƒ^ƒCƒgƒ‹ƒƒS
-	m_pTitle[0] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(340.0f, 150.0f, 0.0f), D3DXVECTOR2(600.0f, 600.0f));
+	m_pTitle[0] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(270.0f, 130.0f, 0.0f), D3DXVECTOR2(350.0f, 350.0f));
 	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_ROBOT);
 
 
