@@ -71,20 +71,19 @@ HRESULT CTitle::Init()
 
 	m_pGearLogo[3] = CObject2D::Create(TITLE_LOGO_GEAR_POS + D3DXVECTOR3(-40.0f, 60.0f, 0.0f), D3DXVECTOR2(TITLE_LOGO_GEAR_SIZE, TITLE_LOGO_GEAR_SIZE));
 	m_pGearLogo[3]->SetTexture(CTexture::TEXTURE_TITLE_GEAR_03);
-	m_pGearLogo[3]->SetRot(D3DXVECTOR2(0.0f, D3DXToRadian(-10)));
+	m_pGearLogo[3]->SetRot({ D3DXToRadian(-10) , D3DXToRadian(-10) });
 
 	m_pGearLogo[4] = CObject2D::Create(TITLE_LOGO_GEAR_POS + D3DXVECTOR3(-40.0f, 60.0f, 0.0f), D3DXVECTOR2(TITLE_LOGO_GEAR_SIZE, TITLE_LOGO_GEAR_SIZE));
 	m_pGearLogo[4]->SetTexture(CTexture::TEXTURE_TITLE_GEAR_04);
-	m_pGearLogo[4]->SetRot(D3DXVECTOR2(0.0f, D3DXToRadian(-10)));
+	m_pGearLogo[4]->SetRot({ D3DXToRadian(-10) , D3DXToRadian(-10) });
 
 	m_pGearLogo[5] = CObject2D::Create(TITLE_LOGO_GEAR_POS + D3DXVECTOR3(10.0f, 15.0f, 0.0f), D3DXVECTOR2(TITLE_LOGO_GEAR_SIZE, TITLE_LOGO_GEAR_SIZE));
 	m_pGearLogo[5]->SetTexture(CTexture::TEXTURE_TITLE_GEAR_05);
-	m_pGearLogo[5]->SetRot(D3DXVECTOR2(0.0f, D3DXToRadian(22.5f)));
+	m_pGearLogo[5]->SetRot({ D3DXToRadian(22.5f) , D3DXToRadian(22.5f) });
 
 	m_pGearLogo[6] = CObject2D::Create(TITLE_LOGO_GEAR_POS + D3DXVECTOR3(85.0f, -60.0f, 0.0f), D3DXVECTOR2(TITLE_LOGO_GEAR_SIZE, TITLE_LOGO_GEAR_SIZE));
 	m_pGearLogo[6]->SetTexture(CTexture::TEXTURE_TITLE_GEAR_06);
-	m_pGearLogo[6]->SetRot(D3DXVECTOR2(0.0f, D3DXToRadian(0)));
-
+	
 	//ƒ^ƒCƒgƒ‹ƒƒS
 	m_pTitle[0] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(270.0f, 130.0f, 0.0f), D3DXVECTOR2(350.0f, 350.0f));
 	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_ROBOT);
@@ -104,14 +103,26 @@ HRESULT CTitle::Init()
 
 
 
-	m_pTitle[4] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-240.0f, 150.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[4] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-290.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[4]->SetTexture(CTexture::TEXTURE_TITLE_03);
 
-	m_pTitle[5] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(0.0f, 150.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[5] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-160.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[5]->SetTexture(CTexture::TEXTURE_TITLE_04);
 
-	m_pTitle[6] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(210.0f, 150.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[6] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-70.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[6]->SetTexture(CTexture::TEXTURE_TITLE_05);
+
+	m_pTitle[7] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(20.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[7]->SetTexture(CTexture::TEXTURE_TITLE_06);
+
+	m_pTitle[8] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(110.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[8]->SetTexture(CTexture::TEXTURE_TITLE_07);
+
+	m_pTitle[9] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(200.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[9]->SetTexture(CTexture::TEXTURE_TITLE_08);
+
+	m_pTitle[10] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(300.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[10]->SetTexture(CTexture::TEXTURE_TITLE_04);
 
 	
 
@@ -172,13 +183,13 @@ void CTitle::Update()
 	m_pGear[1]->AddRot(D3DXVECTOR3(D3DXToRadian(GEAR_SPEED), D3DXToRadian(-GEAR_SPEED), D3DXToRadian(GEAR_SPEED)));
 	m_pGear[2]->AddRot(D3DXVECTOR3(D3DXToRadian(-GEAR_SPEED), D3DXToRadian(-GEAR_SPEED), D3DXToRadian(-GEAR_SPEED)));
 	
-	m_pGearLogo[0]->AddRot(D3DXVECTOR2(0.0f, D3DXToRadian(1)));
-	m_pGearLogo[1]->AddRot(D3DXVECTOR2(0.0f, D3DXToRadian(1)));
-	m_pGearLogo[2]->AddRot(D3DXVECTOR2(0.0f, D3DXToRadian(1)));
-	m_pGearLogo[3]->AddRot(D3DXVECTOR2(0.0f, D3DXToRadian(-1)));
-	m_pGearLogo[4]->AddRot(D3DXVECTOR2(0.0f, D3DXToRadian(-1)));
-	m_pGearLogo[5]->AddRot(D3DXVECTOR2(0.0f, D3DXToRadian(1)));
-	m_pGearLogo[6]->AddRot(D3DXVECTOR2(0.0f, D3DXToRadian(-0.5f)));
+	m_pGearLogo[0]->AddRot({ D3DXToRadian(1),D3DXToRadian(1) });
+	m_pGearLogo[1]->AddRot({ D3DXToRadian(1) , D3DXToRadian(1) });
+	m_pGearLogo[2]->AddRot({D3DXToRadian(1) , D3DXToRadian(1) });
+	m_pGearLogo[3]->AddRot({D3DXToRadian(-1) , D3DXToRadian(-1) });
+	m_pGearLogo[4]->AddRot({D3DXToRadian(-1) , D3DXToRadian(-1) });
+	m_pGearLogo[5]->AddRot({D3DXToRadian(1) , D3DXToRadian(1) });
+	m_pGearLogo[6]->AddRot({D3DXToRadian(-0.5f) , D3DXToRadian(-0.5f) });
 
 	CInput* pInput = CInput::GetKey();
 

@@ -39,6 +39,9 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/Title/logo/title_03.png",
 	"Data/texture/Title/logo/title_04.png",
 	"Data/texture/Title/logo/title_05.png",
+	"Data/texture/Title/logo/title_06.png",
+	"Data/texture/Title/logo/title_07.png",
+	"Data/texture/Title/logo/title_08.png",
 	"Data/texture/Title/logo/title_robot.png",
 
 	/* タイトル歯車　*/
