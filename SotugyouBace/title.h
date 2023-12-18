@@ -19,12 +19,13 @@ class CObjectX;
 class CTitle : public CMode
 {
 public:
-	static const int TITLE_LOGO_MAX = 2;
+	static const int TITLE_LOGO_MAX = 8;
 	static const int TITLE_LOGO_GEAR_MAX = 7;
 	static const int TITLE_GEAR_MAX = 3;
 	static const int GEAR_AFTERIMAGE = 3;
 	static const int GEAR_AFTERIMAGE_MAX = 60;
 	static const int GEAR_AFTERIMAGE_UPDATE = 1;
+	static const D3DXVECTOR3 TITLE_LOGO_POS;
 	static const D3DXVECTOR3 TITLE_LOGO_GEAR_POS;
 	static const float TITLE_LOGO_GEAR_SIZE;
 

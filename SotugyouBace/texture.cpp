@@ -33,8 +33,13 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/Ekey.png",						// Eキーのテクスチャ
 
 	/* タイトルロゴ */
-	"Data/texture/Title/title_00.png",
-	"Data/texture/Title/title_01.png",
+	"Data/texture/Title/logo/title_00.png",
+	"Data/texture/Title/logo/title_01.png",
+	"Data/texture/Title/logo/title_02.png",
+	"Data/texture/Title/logo/title_03.png",
+	"Data/texture/Title/logo/title_04.png",
+	"Data/texture/Title/logo/title_05.png",
+	"Data/texture/Title/logo/title_robot.png",
 
 	/* タイトル歯車　*/
 	"Data/texture/Title/gear/gear_00.png",
