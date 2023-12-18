@@ -253,6 +253,9 @@
     <ClCompile Include="map_object_manager.cpp">
       <Filter>04_Object\MoveObject\Map_Object</Filter>
     </ClCompile>
+    <ClCompile Include="restraint_switch.cpp">
+      <Filter>04_Object\MoveObject\Restraint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
@@ -511,6 +514,9 @@
     <ClInclude Include="map_object_manager.h">
       <Filter>04_Object\MoveObject\Map_Object</Filter>
     </ClInclude>
+    <ClInclude Include="restraint_switch.h">
+      <Filter>04_Object\MoveObject\Restraint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01_Input">
@@ -596,6 +602,9 @@
     </Filter>
     <Filter Include="04_Object\MoveObject\Map_Object">
       <UniqueIdentifier>{5b4f6e03-894d-4ccf-9ed8-5d8a0f2e08e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\MoveObject\Restraint">
+      <UniqueIdentifier>{d58cac0f-4eaa-4aa0-9119-fe8095cfee55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

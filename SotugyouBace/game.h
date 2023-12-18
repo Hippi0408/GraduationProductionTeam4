@@ -29,6 +29,7 @@ class CEnergy_Gauge;
 class CPause;
 class CPlayer_Parameter;
 class CMap_Object_Manager;
+class CMap;
 
 class CGame : public CMode
 {
@@ -64,6 +65,7 @@ public:
 	static CPause *GetPause() { return m_pPause; }
 	static CPlayer_Parameter *GetPlayerParameter() { return m_pPlayer_Parameter; }
 	static CMap_Object_Manager *GetMap_Object_Manager() { return m_pMap_Object_Manager; }
+	static CMap *GetMap() { return m_pMap; }
 
 private:
 
@@ -86,6 +88,7 @@ private:
 	static CPause *m_pPause;
 	static CPlayer_Parameter *m_pPlayer_Parameter;	// プレイヤーパラメーター
 	static CMap_Object_Manager *m_pMap_Object_Manager;
+	static CMap *m_pMap;
 
 };
 

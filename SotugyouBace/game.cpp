@@ -55,6 +55,7 @@ CFontString* CGame::m_pFinishRogo = nullptr;
 CPause *CGame::m_pPause = nullptr;
 CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
 CMap_Object_Manager *CGame::m_pMap_Object_Manager = nullptr;
+CMap *CGame::m_pMap = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -103,6 +104,7 @@ HRESULT CGame::Init()
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
 	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
 	m_pMap_Object_Manager = new CMap_Object_Manager;
+	m_pMap = new CMap;
 
 	// 全てのモデルパーツの読み込み
 	CDrop_Weapon* pWeaponDummer = new CDrop_Weapon;
@@ -145,7 +147,7 @@ HRESULT CGame::Init()
 	m_bInputFlag = false;
 
 	// マップ生成
-	CMap::ReadMap("Data/text/map.txt");
+	m_pMap->ReadMap("Data/text/map.txt");
 
 	return S_OK;
 }
@@ -232,6 +234,13 @@ void CGame::Uninit()
 	{
 		delete m_pMap_Object_Manager;
 		m_pMap_Object_Manager = nullptr;
+	}
+
+	// マップ読み込みの破棄
+	if (m_pMap != nullptr)
+	{
+		delete m_pMap;
+		m_pMap = nullptr;
 	}
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする

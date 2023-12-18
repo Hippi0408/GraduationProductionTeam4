@@ -15,7 +15,7 @@ NUM_MODEL = 15
 # 読み込むモデルファイル名
 #------------------------------------------------------------------------------
 MODEL_FILENAME = Data/model/notinisakuzyo.x
-MODEL_FILENAME = Data/model/notinisakuzyo.x
+MODEL_FILENAME = Data/model/Boss/Num02/Hastur_Body.x
 MODEL_FILENAME = Data/model/notinisakuzyo.x
 MODEL_FILENAME = Data/model/notinisakuzyo.x
 MODEL_FILENAME = Data/model/notinisakuzyo.x
@@ -33,16 +33,53 @@ MODEL_FILENAME = Data/model/notinisakuzyo.x
 #------------------------------------------------------------------------------
 # 表示するモデルの配置情報
 #------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# 拘束スイッチ４つ
+#------------------------------------------------------------------------------
+MODELSET
+	TYPE = 1
+	POS = -750.0 0.0 1000.0
+	ROT = 0.0 0.0 0.0
+	SWITCH = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -250.0 0.0 1000.0
+	ROT = 0.0 0.0 0.0
+	SWITCH = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 250.0 0.0 1000.0
+	ROT = 0.0 0.0 0.0
+	SWITCH = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 750.0 0.0 1000.0
+	ROT = 0.0 0.0 0.0
+	SWITCH = 1
+END_MODELSET
+
+#------------------------------------------------------------------------------
+# 普通の障害物
+#------------------------------------------------------------------------------
 MODELSET
 	TYPE = 0
-	POS = 1000.0 0.0 1000.0
+	POS = 1000.0 0.0 2000.0
 	ROT = 0.0 0.0 0.0
+	SWITCH = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 0
-	POS = 0.0 0.0 1000.0
+	POS = 0.0 0.0 2000.0
 	ROT = 0.0 0.0 0.0
+	SWITCH = 0
 END_MODELSET
 
 
