@@ -702,7 +702,7 @@ void CPlayer::SettingParameter()
 	int nGravity = 0;			// 重量
 
 	CPlayer_Parameter* pParameter = nullptr;
-	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	//パラメータの取得
 	/*if (Mode == CApplication::MODE_TUTORIAL)
 	{
 		pParameter = CTutorial::GetPlayerParameter();

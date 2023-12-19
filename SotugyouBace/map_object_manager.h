@@ -16,7 +16,7 @@ public:
 	CMap_Object_Manager();
 	~CMap_Object_Manager();
 
-	void ReleaseAllMapObject() { for (auto pEnemy : m_AllMap_Object) pEnemy->Uninit(); }
+	void ReleaseAllMapObject() { for (auto pMapObj : m_AllMap_Object) pMapObj->Uninit(); }
 	void DestroyMapObject(CMap_Object* map_object) { m_AllMap_Object.erase(std::find(m_AllMap_Object.begin(), m_AllMap_Object.end(), map_object)); }
 	void SetMapObject(CMap_Object* map_object) { m_AllMap_Object.push_back(map_object); }
 
