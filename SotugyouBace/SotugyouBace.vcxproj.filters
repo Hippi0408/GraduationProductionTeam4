@@ -250,7 +250,9 @@
     <ClCompile Include="map_object.cpp">
       <Filter>04_Object\MoveObject\Map_Object</Filter>
     </ClCompile>
-    <ClCompile Include="map_object_manager.cpp" />
+    <ClCompile Include="map_object_manager.cpp">
+      <Filter>04_Object\MoveObject\Map_Object</Filter>
+    </ClCompile>
     <ClCompile Include="udp_client.cpp">
       <Filter>05_Server</Filter>
     </ClCompile>
@@ -259,9 +261,6 @@
     </ClCompile>
     <ClCompile Include="precompile.cpp">
       <Filter>precompile</Filter>
-    </ClCompile>
-  </ItemGroup>
-      <Filter>04_Object\MoveObject\Map_Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
