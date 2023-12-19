@@ -19,12 +19,17 @@ class CObjectX;
 class CTitle : public CMode
 {
 public:
-	static const int TITLE_MAX = 6;
+	static const int TITLE_LOGO_MAX = 11;
+	static const int TITLE_LOGO_GEAR_MAX = 7;
 	static const int TITLE_GEAR_MAX = 3;
 	static const int GEAR_AFTERIMAGE = 3;
 	static const int GEAR_AFTERIMAGE_MAX = 60;
 	static const int GEAR_AFTERIMAGE_UPDATE = 1;
+	static const D3DXVECTOR3 TITLE_LOGO_POS;
+	static const D3DXVECTOR3 TITLE_LOGO_GEAR_POS;
+	static const float TITLE_LOGO_GEAR_SIZE;
 
+	static const D3DXVECTOR3 TITLE_3D_MODEL_POS;
 	static const float GEAR_SPEED;
 
 	CTitle();
@@ -49,7 +54,8 @@ private:
 	static bool m_bWindow;		// ウィンドウ使用状態
 	static bool m_bWindowUninit;
 	bool m_bKeyFlag;
-	CObject2D *m_pTitle[TITLE_MAX];
+	CObject2D *m_pTitle[TITLE_LOGO_MAX];
+	CObject2D *m_pGearLogo[TITLE_LOGO_GEAR_MAX];
 	CObjectX *m_pGear[TITLE_GEAR_MAX];
 	D3DXVECTOR3 m_GearRotAfterimage[TITLE_GEAR_MAX][GEAR_AFTERIMAGE_MAX];
 	CObjectX *m_pGearAfterimage[TITLE_GEAR_MAX][GEAR_AFTERIMAGE];

@@ -250,7 +250,17 @@
     <ClCompile Include="map_object.cpp">
       <Filter>04_Object\MoveObject\Map_Object</Filter>
     </ClCompile>
-    <ClCompile Include="map_object_manager.cpp">
+    <ClCompile Include="map_object_manager.cpp" />
+    <ClCompile Include="udp_client.cpp">
+      <Filter>05_Server</Filter>
+    </ClCompile>
+    <ClCompile Include="client.cpp">
+      <Filter>05_Server</Filter>
+    </ClCompile>
+    <ClCompile Include="precompile.cpp">
+      <Filter>precompile</Filter>
+    </ClCompile>
+  </ItemGroup>
       <Filter>04_Object\MoveObject\Map_Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -511,6 +521,15 @@
     <ClInclude Include="map_object_manager.h">
       <Filter>04_Object\MoveObject\Map_Object</Filter>
     </ClInclude>
+    <ClInclude Include="udp_client.h">
+      <Filter>05_Server</Filter>
+    </ClInclude>
+    <ClInclude Include="client.h">
+      <Filter>05_Server</Filter>
+    </ClInclude>
+    <ClInclude Include="precompile.h">
+      <Filter>precompile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01_Input">
@@ -596,6 +615,9 @@
     </Filter>
     <Filter Include="04_Object\MoveObject\Map_Object">
       <UniqueIdentifier>{5b4f6e03-894d-4ccf-9ed8-5d8a0f2e08e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="precompile">
+      <UniqueIdentifier>{a301909a-ec38-496a-beb7-3b7ab494e72a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

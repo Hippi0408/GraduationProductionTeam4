@@ -31,11 +31,27 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/ItemPointer.png",					// アイテムポインターのテクスチャ
 	"Data/texture/UI_00.png",						// UIのテクスチャ
 	"Data/texture/Ekey.png",						// Eキーのテクスチャ
-	"Data/texture/Title/00_project.png",
-	"Data/texture/Title/01_machina.png",
-	"Data/texture/Title/02_colonUp.png",
-	"Data/texture/Title/03_colonDown.png",
-	"Data/texture/Title/04_j_point.png",
+
+	/* タイトルロゴ */
+	"Data/texture/Title/logo/title_00.png",
+	"Data/texture/Title/logo/title_01.png",
+	"Data/texture/Title/logo/title_02.png",
+	"Data/texture/Title/logo/title_03.png",
+	"Data/texture/Title/logo/title_04.png",
+	"Data/texture/Title/logo/title_05.png",
+	"Data/texture/Title/logo/title_06.png",
+	"Data/texture/Title/logo/title_07.png",
+	"Data/texture/Title/logo/title_08.png",
+	"Data/texture/Title/logo/title_robot.png",
+
+	/* タイトル歯車　*/
+	"Data/texture/Title/gear/gear_00.png",
+	"Data/texture/Title/gear/gear_01.png",
+	"Data/texture/Title/gear/gear_02.png",
+	"Data/texture/Title/gear/gear_03.png",
+	"Data/texture/Title/gear/gear_04.png",
+	"Data/texture/Title/gear/gear_05.png",
+	"Data/texture/Title/gear/gear_06.png",
 	
 	/* エフェクト群 */
 	"Data/texture/particle/smoke.png",				// 煙

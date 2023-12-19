@@ -272,8 +272,8 @@ void CStage_Select::Select_Arrow()
 		//m_pSelect_Arrow[nCnt]->SetTexture(CTexture::TEXTURE_SHOP_DIRECTION);
 	}
 
-	m_pSelect_Arrow[0]->SetRot({ D3DX_PI / 2,D3DX_PI / 2 });
-	m_pSelect_Arrow[1]->SetRot({ -D3DX_PI / 2,-D3DX_PI / 2 });
+	m_pSelect_Arrow[0]->SetRot({ D3DX_PI / 2 , D3DX_PI / 2 });
+	m_pSelect_Arrow[1]->SetRot({ -D3DX_PI / 2 , -D3DX_PI / 2 });
 }
 
 //==============================================================================================
