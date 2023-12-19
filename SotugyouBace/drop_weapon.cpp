@@ -214,7 +214,6 @@ void CDrop_Weapon::Update()
 	SetDrawFlag(bDisplay);
 	m_pPointer->SetDrawFlag(bDisplay);
 	ItemPointerMove();
-
 	// •Ší‚ğE‚¤
 	Pick_Up_Weapon();
 

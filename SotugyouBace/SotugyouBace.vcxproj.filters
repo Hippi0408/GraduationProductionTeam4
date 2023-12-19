@@ -250,9 +250,10 @@
     <ClCompile Include="map_object.cpp">
       <Filter>04_Object\MoveObject\Map_Object</Filter>
     </ClCompile>
-    <ClCompile Include="parts_parameter.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>  </ItemGroup>
+    <ClCompile Include="map_object_manager.cpp">
+      <Filter>04_Object\MoveObject\Map_Object</Filter>
+    </ClCompile>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utility.h" />
     <ClInclude Include="application.h">
@@ -509,9 +510,6 @@
     </ClInclude>
     <ClInclude Include="map_object_manager.h">
       <Filter>04_Object\MoveObject\Map_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="parts_parameter.h">
-      <Filter>02_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
