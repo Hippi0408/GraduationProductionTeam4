@@ -36,7 +36,7 @@ public:
 	void SetMove(const D3DXVECTOR3 move);											// 移動量の設定
 	void SetSize(const D3DXVECTOR2 size) { m_size = size; }							// サイズの設定
 	void SetSubSize(const D3DXVECTOR2 halfsize) { m_Subsize = halfsize; }			// 減少するサイズ
-	void SetRot(const D3DXVECTOR2 rot) { m_rot = rot; }								// 角度の設定
+	void SetRot(const D3DXVECTOR2 rot) { m_rot = rot; }							// 角度の設定
 	void AddRot(const D3DXVECTOR2 add) { m_rot += add; }							// 角度の設定
 	void SetTexPos(float top, float row, float right, float left);					// テクスチャ座標の設定
 	void AnimTexture(int nPattern, int nPatternMax);
