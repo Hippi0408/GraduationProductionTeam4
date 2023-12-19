@@ -24,6 +24,7 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="cannon.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="chardecision_window.cpp" />
     <ClCompile Include="charselect_window.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="cannon.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="chardecision_window.h" />
     <ClInclude Include="charselect_window.h" />

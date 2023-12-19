@@ -47,7 +47,7 @@ void CMap::ReadMap(char *filename)
 
 	for (int nCnt = 0; nCnt < 4; nCnt++)
 	{
-		Restraint_Switch[nCnt] = nullptr;
+		m_pRestraint_Switch[nCnt] = nullptr;
 	}
 
 	// ファイルが開いた場合
@@ -119,7 +119,7 @@ void CMap::ReadMap(char *filename)
 							CMap_Object::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
 						else
 						{
-							Restraint_Switch[nSwitch_Index] = CRestraint_Switch::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
+							m_pRestraint_Switch[nSwitch_Index] = CRestraint_Switch::Create(Pos, Rot, nullptr, &XFileName[nType][0], nSwitch_Index);
 							nSwitch_Index++;
 						}
 					}

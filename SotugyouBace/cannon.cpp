@@ -1,35 +1,36 @@
 //==============================================================================================
 //
-// 拘束スイッチ　　　restraint_switch.cpp
-// tutida ryousei
+// 砲台	　　cannon.cpp
+// Author : tutida ryousei
 //
 //==============================================================================================
-#include"restraint_switch.h"
-#include"objectX.h"
-#include"debugProc.h"
 #include"cannon.h"
-#include"map_object.h"
-
-int CRestraint_Switch::m_nCount_Switch = 0;
+#include"objectX.h"
+#include"restraint_switch.h"
+#include"map.h"
+#include"game.h"
+#include"tutorial.h"
+#include"enemy_manager.h"
+#include"application.h"
 
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
-CRestraint_Switch::CRestraint_Switch(const PRIORITY priority) : CMove_Object(priority)
+CCannon::CCannon(CObject::PRIORITY priority) : CMove_Object(priority)
 {
 }
 
 //==============================================================================================
 // デストラクタ
 //==============================================================================================
-CRestraint_Switch::~CRestraint_Switch()
+CCannon::~CCannon()
 {
 }
 
 //==============================================================================================
 // 初期化処理
 //==============================================================================================
-HRESULT CRestraint_Switch::Init()
+HRESULT CCannon::Init()
 {
 	CMove_Object::Init();
 
@@ -53,16 +54,13 @@ HRESULT CRestraint_Switch::Init()
 	SetCenterPos({ 0.0f,Max.y / 2,0.0f });
 	SetSize(GetObjectX()->GetMaxSize());
 
-	CMap_Object::Create({ GetPos().x,GetPos().y + 300.0f,GetPos().z }, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Down.x");
-	CCannon::Create({ GetPos().x,GetPos().y + 330.0f,GetPos().z }, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Up.x", m_nIndex);
-
 	return S_OK;
 }
 
 //==============================================================================================
 // 終了処理
 //==============================================================================================
-void CRestraint_Switch::Uninit()
+void CCannon::Uninit()
 {
 	CMove_Object::Uninit();
 }
@@ -70,43 +68,83 @@ void CRestraint_Switch::Uninit()
 //==============================================================================================
 // 更新処理
 //==============================================================================================
-void CRestraint_Switch::Update()
+void CCannon::Update()
 {
 	CMove_Object::Update();
 
-	m_bHit = false;
+	// 拘束スイッチの取得
+	CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(m_nIndex);
+
+	if (pRestraint->GetPush())
+		m_bTarget = true;
+
+	float fRotDest = 0.0f;
+	D3DXVECTOR3 Vec = { 0.0f,0.0f,0.0f };
+
+	if (m_bTarget)
+	{
+		// 現在のモード
+		CApplication::MODE Mode = CApplication::GetModeType();
+
+		CEnemyManager* pEnemyManager = nullptr;
+
+		// モード毎に敵キャラを読み込む
+		if (Mode == CApplication::MODE_TUTORIAL)
+		{
+			pEnemyManager = CTutorial::GetEnemyManager();
+		}
+		else if (Mode == CApplication::MODE_GAME)
+		{
+			pEnemyManager = CGame::GetEnemyManager();
+		}
+
+		// 敵の情報
+		for (auto pEnemy : pEnemyManager->GetAllEnemy())
+		{
+			if (pEnemy->GetEnemyType() == CEnemy::ENEMY_TYPE_BOSS)
+			{
+				Vec = GetPos() - pEnemy->GetPos();
+
+				fRotDest = atan2(Vec.x, Vec.z);
+
+				m_fRot += (fRotDest - m_fRot) * 0.05f;
+
+				// 砲台がボスの方を向く
+				GetObjectX()->SetRot({ 0.0f,m_fRot,0.0f });
+				break;
+			}
+		}
+	}
 }
 
 //==============================================================================================
 // 描画処理
 //==============================================================================================
-void CRestraint_Switch::Draw()
+void CCannon::Draw()
 {
 }
 
 //==============================================================================================
 // ヒット処理
 //==============================================================================================
-void CRestraint_Switch::Hit(CMove_Object* pHit)
+void CCannon::Hit(CMove_Object* pHit)
 {
-	if (!m_bPush && pHit->GetTag() == TAG_CHARACTER && pHit->GetPlayerSide())
-		m_bHit = true;
 }
 
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CRestraint_Switch *CRestraint_Switch::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, int index, const PRIORITY priority)
+CCannon *CCannon::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, int index, const PRIORITY priority)
 {
-	CRestraint_Switch *pRestraint = new	CRestraint_Switch(priority);
+	CCannon *pCannon = new	CCannon(priority);
 
-	if (pRestraint != nullptr)
+	if (pCannon != nullptr)
 	{
-		pRestraint->SetObjectX(CObjectX::Create(pos, rot, parent, Xfilename, priority));
-		pRestraint->SetPos(pos);
-		pRestraint->m_nIndex = index;
-		pRestraint->Init();
+		pCannon->SetObjectX(CObjectX::Create(pos, rot, parent, Xfilename, priority));
+		pCannon->SetPos(pos);
+		pCannon->m_nIndex = index;
+		pCannon->Init();
 	}
 
-	return pRestraint;
+	return pCannon;
 }

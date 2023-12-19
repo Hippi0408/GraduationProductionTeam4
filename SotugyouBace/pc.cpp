@@ -67,20 +67,6 @@ void CPC::Update()
 	Input();
 
 	CPlayer::Update();
-
-	//入力デバイスの情報
-	CInput* pInput = CInput::GetKey();
-
-	for (int nCnt = 0; nCnt < 4; nCnt++)
-	{
-		// 拘束スイッチの取得
-		CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);
-
-		if (pRestraint != nullptr && (pRestraint->GetHit()
-			&& pInput->Trigger(DIK_E)))
-			// ボタンを押した数のカウント
-			pRestraint->AddCountSwitch();
-	}
 }
 
 //============================================================================
@@ -340,6 +326,17 @@ void CPC::Input()
 		{
 			SetDropGet(true);
 		}
+	}
+
+	for (int nCnt = 0; nCnt < 4; nCnt++)
+	{
+		// 拘束スイッチの取得
+		CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);
+
+		if (pRestraint != nullptr && (pRestraint->GetHit()
+			&& pInput->Trigger(DIK_E)))
+			// ボタンを押した数のカウント
+			pRestraint->AddCountSwitch();
 	}
 }
 

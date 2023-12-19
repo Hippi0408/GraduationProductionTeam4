@@ -194,7 +194,8 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 	D3DXVECTOR3 Pos = pos;
 	bool bHit = false;
 
-	if (otherpos.y + othersize.y > pos.y || objParent->GetLandObj())
+	if ((otherpos.y + othersize.y > pos.y && otherpos.y < pos.y + size.y + othersize.y)
+		|| objParent->GetLandObj())
 	{
 		// 上に乗る
 		if (otherpos.y + othersize.y <= posold.y
@@ -218,7 +219,7 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 				objOther->SetOnObj(objParent, nOnObj);
 				nOnObj++;
 			}
-			
+
 			objOther->SetOnObjCnt(nOnObj);
 
 			objOther->SetLandObj(true);		// Move_Objectが上に乗ってるか
@@ -243,7 +244,7 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 				{
 					objOther->SetLandObj(false);
 					objOther->SetObjXZ(false);
-					
+
 					for (int nCnt2 = 0; nCnt2 < objOther->GetOnObjCnt(); nCnt2++)
 					{
 						objOther->SetOnObj(nullptr, nCnt2);
@@ -258,7 +259,16 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 			}
 		}
 
-		if (!objParent->GetLandObj())
+		// 下からぶつかる
+		if (otherpos.y > posold.y
+			&& otherpos.x + othersize.x > pos.x - size.x
+			&& otherpos.x - othersize.x < pos.x + size.x
+			&& otherpos.z + othersize.z > pos.z - size.z
+			&& otherpos.z - othersize.z < pos.z + size.z)
+		{
+			objParent->SetPos({ Pos.x,otherpos.y - size.y - othersize.y,Pos.z });	// 押し出し
+		}
+		else if (!objParent->GetLandObj())
 		{
 			D3DXVECTOR3 Index[4] = {};				// オブジェクトの4頂点の位置
 			D3DXVECTOR3 Index_Vec[4] = {};			// 頂点から頂点までのベクトル

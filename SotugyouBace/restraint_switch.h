@@ -21,9 +21,10 @@ public:
 	void Draw() override;
 	void Hit(CMove_Object* pHit) override;
 
-	static CRestraint_Switch *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, const PRIORITY priority = PRIORITY_MODEL);
+	static CRestraint_Switch *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, int index, const PRIORITY priority = PRIORITY_MODEL);
 
 	bool GetHit() { return m_bHit; }
+	bool GetPush() { return m_bPush; }
 	int GetCountSwitch() { return m_nCount_Switch; }
 
 	void SetHit(bool hit) { m_bHit = hit; }
@@ -31,6 +32,7 @@ public:
 
 private:
 	static int m_nCount_Switch;		// 押されたスイッチの数
+	int m_nIndex;
 	bool m_bPush;
 	bool m_bHit;
 };

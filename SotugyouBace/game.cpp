@@ -125,7 +125,7 @@ HRESULT CGame::Init()
 	}
 	
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
+	CBoss::Create({ 0.0f, 0.0f, 5000.0f });
 
 	// 武器、パーツのドロップ
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
@@ -147,7 +147,7 @@ HRESULT CGame::Init()
 	m_bInputFlag = false;
 
 	// マップ生成
-	m_pMap->ReadMap("Data/text/map.txt");
+	m_pMap->ReadMap("Data/text/map_test.txt");
 
 	return S_OK;
 }

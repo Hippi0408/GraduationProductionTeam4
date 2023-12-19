@@ -39,28 +39,28 @@ MODEL_FILENAME = Data/model/notinisakuzyo.x
 #------------------------------------------------------------------------------
 MODELSET
 	TYPE = 1
-	POS = -750.0 0.0 1000.0
+	POS = -750.0 0.0 2000.0
 	ROT = 0.0 0.0 0.0
 	SWITCH = 1
 END_MODELSET
 
 MODELSET
 	TYPE = 1
-	POS = -250.0 0.0 1000.0
+	POS = -750.0 0.0 7000.0
 	ROT = 0.0 0.0 0.0
 	SWITCH = 1
 END_MODELSET
 
 MODELSET
 	TYPE = 1
-	POS = 250.0 0.0 1000.0
+	POS = 750.0 0.0 7000.0
 	ROT = 0.0 0.0 0.0
 	SWITCH = 1
 END_MODELSET
 
 MODELSET
 	TYPE = 1
-	POS = 750.0 0.0 1000.0
+	POS = 750.0 0.0 2000.0
 	ROT = 0.0 0.0 0.0
 	SWITCH = 1
 END_MODELSET
@@ -70,14 +70,14 @@ END_MODELSET
 #------------------------------------------------------------------------------
 MODELSET
 	TYPE = 0
-	POS = 1000.0 0.0 2000.0
+	POS = 1000.0 300.0 2000.0
 	ROT = 0.0 0.0 0.0
 	SWITCH = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 0
-	POS = 0.0 0.0 2000.0
+	POS = 0.0 300.0 2000.0
 	ROT = 0.0 0.0 0.0
 	SWITCH = 0
 END_MODELSET
