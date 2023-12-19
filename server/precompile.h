@@ -1,6 +1,6 @@
 //==================================================
-// 
-// Author: hamada
+// meshfield.h
+// Author: Buriya Kota
 //==================================================
 #ifndef _PRECOMPILE_H_
 #define _PRECOMPILE_H_

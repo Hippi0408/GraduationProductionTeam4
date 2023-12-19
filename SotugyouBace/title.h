@@ -19,7 +19,7 @@ class CObjectX;
 class CTitle : public CMode
 {
 public:
-	static const int TITLE_LOGO_MAX = 8;
+	static const int TITLE_LOGO_MAX = 11;
 	static const int TITLE_LOGO_GEAR_MAX = 7;
 	static const int TITLE_GEAR_MAX = 3;
 	static const int GEAR_AFTERIMAGE = 3;

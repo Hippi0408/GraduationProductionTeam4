@@ -125,9 +125,11 @@ void CCollision::Collision()
 
 				// 相手の位置
 				D3DXVECTOR3 OtherPos = pMove_Object->GetCenterPos();
+
+				// 当たっているかどうか
 				bool bHit = false;
 
-				// 当たり判定のタイプ
+				// 当たり判定のタイプが円の場合
 				if (pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_SHERER)
 				{
 					// 半径
@@ -136,6 +138,7 @@ void CCollision::Collision()
 					// 円同士の当たり判定の計算
 					bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
 				}
+				// 当たり判定のタイプが矩形の場合
 				else if (pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_BLOCK
 					&& pMove_Object->GetCollision_Type() != m_pParent->GetCollision_Type())
 				{
@@ -155,8 +158,10 @@ void CCollision::Collision()
 				// ヒットした場合
 				if (bHit)
 				{
-					// 二回ヒットしてしまう
+					// 自身の接触判定
 					m_pParent->Hit(pMove_Object);
+
+					// 相手の接触判定
 					pMove_Object->Hit(m_pParent);
 				}
 			}
@@ -194,7 +199,7 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 	D3DXVECTOR3 Pos = pos;
 	bool bHit = false;
 
-	if ((otherpos.y + othersize.y > pos.y && otherpos.y < pos.y + size.y + othersize.y)
+	// 矩形の上に乗った場合 又は 設置している判定	if ((otherpos.y + othersize.y > pos.y && otherpos.y < pos.y + size.y + othersize.y)
 		|| objParent->GetLandObj())
 	{
 		// 上に乗る
@@ -258,7 +263,6 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 				}
 			}
 		}
-
 		// 下からぶつかる
 		if (otherpos.y > posold.y
 			&& otherpos.x + othersize.x > pos.x - size.x
@@ -268,6 +272,7 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 		{
 			objParent->SetPos({ Pos.x,otherpos.y - size.y - othersize.y,Pos.z });	// 押し出し
 		}
+// 着地している場合
 		else if (!objParent->GetLandObj())
 		{
 			D3DXVECTOR3 Index[4] = {};				// オブジェクトの4頂点の位置
