@@ -13,6 +13,8 @@
 #include "camera.h"
 #include "halfsphere.h"
 #include "playerdata.h"
+#include "model.h"
+#include "objectX.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -45,10 +47,11 @@ HRESULT CChar_Select::Init()
 
 	m_pPlayerData = new CPlayerData;
 
-	pCamera->SetPosV({ 0.0f, 2000.0f, -1000.0f });
-	pCamera->SetPosR({ 0.0f, 2000.0f, 1000.0f });
+	pCamera->SetPosV({ 0.0f, 100.0f, -100.0f });
+	pCamera->SetPosR({ 0.0f, 0.0f, 100.0f });
 
 	m_pPlayerData->Init();
+	CObjectX::Create(D3DXVECTOR3(-80.0f,600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
 
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f),  D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
