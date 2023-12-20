@@ -2,6 +2,7 @@
 //
 // drop_weapon.h
 // Author : tutida ryousei
+//			tanimoto kosuke
 //
 //=============================================================================
 #ifndef _DORP_WAPON_H_
@@ -28,7 +29,7 @@ public:
 		// [1]腕
 		ARMS_SG01 = 0,			// SG01の腕
 		ARMS_SG02,				// SG02の腕
-		ARMS_SG03,			// SG03の腕
+		ARMS_SG03,				// SG03の腕
 		ARMS_MAX,				// 腕の最大数
 
 		// [2]脚
@@ -54,6 +55,7 @@ public:
 	void Uninit() override;
 	void Update() override;
 	void Draw() override;
+	void Hit(CMove_Object* pHit) override;
 
 	void ItemPointerMove();// アイテムポインターの移動処理
 	void Pick_Up_Weapon();		// 武器を拾う
@@ -69,7 +71,6 @@ public:
 
 	static CDrop_Weapon *Create(D3DXVECTOR3 pos, int weapon, int rarity);
 
-	void Hit(CMove_Object* pHit) override;
 
 	static void LoadAllFile();			// 全てのドロップパーツの読み込み
 

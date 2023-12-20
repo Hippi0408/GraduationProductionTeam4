@@ -4,32 +4,33 @@
 // Author:hamada ryuuga
 //
 //============================
-#include "tcp_client.h"
+#include "client.h"
 #include "connect.h"
 #include "player_manager.h"
 #include "player.h"
+#include "tcp_client.h"
+#include "udp_client.h"
+
 #include <thread>
-#include "model_data.h"
-#include "application.h"
 
 //--------------------------
 //コンスト
 //--------------------------
-CClient::CClient()
+ConnectManager::ConnectManager()
 {
 
 }
 //--------------------------
 //デストラクト
 //--------------------------
-CClient::~CClient()
+ConnectManager::~ConnectManager()
 {
 }
 
 //--------------------------
 //初期化
 //--------------------------
-bool CClient::Init(const char*plPAddress, int nPortNum)
+bool ConnectManager::Init(const char*plPAddress, int nPortNum)
 {
 	WSADATA wasData;
 
@@ -39,128 +40,138 @@ bool CClient::Init(const char*plPAddress, int nPortNum)
 	{
 		printf("was　error");
 	}
+	m_client = new CClient;
 
-	// クライアントが使用されていない場合のみ生成
-	m_tcpClient = new CTcp_client;
+	if (!m_client->Init(plPAddress, nPortNum))
+	{
+		printf("error");
+	}
+	else
+	{
 
-	m_tcpClient->Init(plPAddress, nPortNum);
-	m_myConnect.myConnect = false;
-	m_myConnect.enemyConnect = false;
+	}
 
-	std::thread ConnectOn([&] {m_myConnect = ConnectTh(m_tcpClient);});
+
+	std::thread ConnectOn([&] {m_myConnect= ConnectTh(m_client);});
 
 	// スレッドをきりはなす
 	ConnectOn.detach();
 
-	std::thread ConnectRecv(Recv,this);
+	std::thread ConnectManagerRecv(RecvPlayerData,this);
 	// スレッドをきりはなす
-	ConnectRecv.detach();
+	ConnectManagerRecv.detach();
 	return true;
 }
 
 //--------------------------
 //破棄
 //--------------------------
-void CClient::Uninit()
+void ConnectManager::Uninit(void)
 {
-	if (m_tcpClient != NULL)
+
+	if (m_client != nullptr)
 	{
-		m_tcpClient->Uninit();
-		delete m_tcpClient;
-		m_tcpClient = NULL;
+		m_client->Uninit();
+		// メモリの解放
+		delete m_client;
+		m_client = nullptr;
 	}
 
+	
 	WSACleanup();
 }
 
 
 //=============================================================================
-// 通信スレッド
+// 通信接続スレッド
 //=============================================================================
-CClient::SConnectCheck CClient::ConnectTh(CTcp_client * tcp)
+ConnectManager::SConnectCheck ConnectManager::ConnectTh(CClient * Client)
 {
-	SConnectCheck Connect;
-	Connect.myConnect = false;
-	Connect.enemyConnect = false;
+	SConnectCheck ConnectManager;
+	ConnectManager.myConnect = false;
+	ConnectManager.enemyConnect = false;
 	char aRecvData[1024];	// 受信データ
 	int Timer = 0;
 	bool myIs = false;
 	int ok = 4;
-	//// つながるまでループ
-	//while (!myIs)
-	//{
-
-	//	myIs = tcp->Connect();
-	//	
-	//	Timer++;
-	//	if (Timer == 2)
-	//	{
-	//		break;
-	//	}
-
-	//	if (myIs)
-	//	{
-	//		tcp->Send((const char*)&ok, sizeof(int));
-	//	}
-	//
-	//}
-	// 敵がつながるまでループ
-	/*while (!Connect.enemyConnect)
+	// つながるまでループ
+	while (!myIs)
 	{
-		int isRecv = tcp->Recv(&aRecvData[0], sizeof(SConnectCheck));
 
+		myIs = Client->GetTcp()->Connect();
+		Client->GetUdp()->Connect();
+		if (myIs)
+		{
+			Client->Send((const char*)&ok, 4, CClient::TYPE_TUP);
+		}
+	
+	}
+	// 敵がつながるまでループ
+	while (!ConnectManager.enemyConnect)
+	{
+		int isRecv = Client->Recv(&aRecvData[0], sizeof(bool), CClient::TYPE_TUP);
 		if (isRecv == sizeof(SConnectCheck))
 		{
-			memcpy(&Connect, &aRecvData[0], sizeof(SConnectCheck));
+			memcpy(&ConnectManager, &aRecvData[0], sizeof(SConnectCheck));
 		}
 		
-	}*/
-	Connect.myConnect = true;
-	Connect.enemyConnect = true;
-	return Connect;
+	}
+	return ConnectManager;
 }
 
 //=============================================================================
 // レシーブスレッド
 //=============================================================================
-void CClient::Recv(CClient*data)
+void ConnectManager::RecvPlayerData(ConnectManager *list)
 {
-	//// 繋がっている間はループ
-	//while (1)
-	//{
-	//	
-	//	if (CApplication::GetClient()->GetIsConnect())
-	//	{
+	// 繋がっている間はループ
+	while (1)
+	{
+	
+		char aRecv[2048];	// 受信データ
+
+		// 受信
+		int nRecvSize = list->GetClient()->Recv(&aRecv[0], sizeof(CReceiveData::SReceiveList), CClient::TYPE_UDP);
 
 
-	//		char aRecv[1024];	// 受信データ
-
-	//		// 受信
-	//		int nRecvSize = data->m_tcpClient->Recv(&aRecv[0], sizeof(CDataPack::SSendPack));
-
-	//		// 受信データが無かったら
-	//		if (nRecvSize < 0)
-	//		{
-	//			if (data->m_tcpClient != NULL)
-	//			{
-	//				data->m_tcpClient->Uninit();
-
-	//				break;
-	//			}
-	//		}
-	//		CDataPack::SSendPack Data;
-	//		memcpy(&Data, &aRecv[0], (int)sizeof(CDataPack::SSendPack));
-	//		data->m_player.SetPlayer(Data);
-	//	}
-	//}
+		// 受信データが無かったら
+		if (nRecvSize < 0)
+		{
+			return;
+		}
+		CReceiveData::SReceiveList List;
+		memcpy(&list->m_player, &aRecv[0], (int)sizeof(CReceiveData::SReceiveList));
+		
+	}
 }
 
 //=============================================================================
-// コレデセンド
+// Send スレット
 //=============================================================================
-void  CClient::SendPlayerData(CModelData::SSendEnemy data)
+void  ConnectManager::SendPlayerData(CModelData::SSendPack data)
 {
-	CModelData::SSendEnemy sendData = data;
+	CModelData::SSendPack sendData = data;
 
-	m_tcpClient->Send((const char*)&sendData, sizeof(CModelData::SSendEnemy));
+	m_client->Send((const char*)&sendData, sizeof(CModelData::SSendPack), CClient::TYPE_UDP);
+}
+
+//=============================================================================
+// Send スレット
+//=============================================================================
+void  ConnectManager::CharSend(const char*send,int Size, CClient::CONNECT_TYPE Tipe)
+{
+	//CModelData::SSendPack sendData = data;
+
+	m_client->Send(send, Size, Tipe);
+}
+
+//=============================================================================
+// Recv スレット
+//=============================================================================
+int ConnectManager::CharRecv(char*Recv, int Size, CClient::CONNECT_TYPE Tipe)
+{
+	//CModelData::SSendPack sendData = data;
+
+	int RecvSize = m_client->Recv(Recv, Size, Tipe);
+	return RecvSize;
 }
