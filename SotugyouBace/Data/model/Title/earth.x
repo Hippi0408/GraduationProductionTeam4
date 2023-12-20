@@ -8049,7 +8049,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\GraduationProductionTeam4\\SotugyouBace\\Data\\texture\\earth.jpg";
+    "Data\\texture\\earth.jpg";
    }
   }
   Material {
