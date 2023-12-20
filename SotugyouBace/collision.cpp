@@ -199,7 +199,7 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 	D3DXVECTOR3 Pos = pos;
 	bool bHit = false;
 
-	// 矩形の上に乗った場合 又は 設置している判定	
+	// 矩形の上に乗った場合 又は 設置している判定
 	if ((otherpos.y + othersize.y > pos.y && otherpos.y < pos.y + size.y + othersize.y)
 		|| objParent->GetLandObj())
 	{
@@ -293,6 +293,7 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 
 			for (int nCnt = 0; nCnt < 4; nCnt++)
 			{
+				// オブジェクトの四頂点の位置
 				Index[nCnt] = otherpos + objOther->GetIndex(nCnt);
 			}
 			for (int nCnt = 0; nCnt < 4; nCnt++)

@@ -90,23 +90,23 @@ void CCannon::Update()
 
 		// モード毎に敵キャラを読み込む
 		if (Mode == CApplication::MODE_TUTORIAL)
-		{
 			pEnemyManager = CTutorial::GetEnemyManager();
-		}
 		else if (Mode == CApplication::MODE_GAME)
-		{
 			pEnemyManager = CGame::GetEnemyManager();
-		}
 
 		// 敵の情報
 		for (auto pEnemy : pEnemyManager->GetAllEnemy())
 		{
-			if (pEnemy->GetEnemyType() == CEnemy::ENEMY_TYPE_BOSS)
+			if (pEnemy->GetEnemyType() == CEnemy::ENEMY_TYPE_BOSS
+				&& pEnemy->GetLife() != 0)
 			{
+				// ボスまでのベクトル
 				Vec = GetPos() - pEnemy->GetPos();
 
+				// 目的の角度
 				fRotDest = atan2(Vec.x, Vec.z);
 
+				// 目的の角度にする
 				m_fRot += (fRotDest - m_fRot) * 0.05f;
 
 				// 砲台がボスの方を向く

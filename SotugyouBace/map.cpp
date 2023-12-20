@@ -119,6 +119,7 @@ void CMap::ReadMap(char *filename)
 							CMap_Object::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
 						else
 						{
+							// 拘束スイッチ
 							m_pRestraint_Switch[nSwitch_Index] = CRestraint_Switch::Create(Pos, Rot, nullptr, &XFileName[nType][0], nSwitch_Index);
 							nSwitch_Index++;
 						}
