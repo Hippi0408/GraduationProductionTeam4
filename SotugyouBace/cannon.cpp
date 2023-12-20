@@ -101,7 +101,7 @@ void CCannon::Update()
 				&& pEnemy->GetLife() != 0)
 			{
 				// ボスまでのベクトル
-				Vec = GetPos() - pEnemy->GetPos();
+				Vec = pEnemy->GetPos() - GetPos();
 
 				// 目的の角度
 				fRotDest = atan2(Vec.x, Vec.z);
