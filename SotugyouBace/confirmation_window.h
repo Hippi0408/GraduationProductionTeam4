@@ -82,7 +82,7 @@ private:
 	bool    m_bConfimationSpawnWindow;				// ウィンドウが生成されたか
 	bool    m_bConfirmasionWindowUse;				// このウィンドウが使われているか
 	bool    m_bConfimationBack;						// 前のウィンドウから戻ってきたか
-
+	
 	std::vector<CFontString*> m_vpListChoice;		// 選択肢ポインタの配列
 };
 #endif

@@ -21,6 +21,7 @@
 //=============================================================================
 class CObject2D;
 class CFontString;
+class CConfirmation_Window;
 
 //=============================================================================
 // キャラ決定ウィンドウクラス
@@ -51,6 +52,7 @@ public:
 	void SetFont(const std::string lette[]);									// フォントの設定処理
 	void SetTextue(CTexture::TEXTURE texture, CTexture::TEXTURE texture1);		// テクスチャの設定
 
+	int GetSelectIndex() { return m_nSelectIndex; }
 	bool GetSapawnWindow() { return m_bSpawnWindow; }							// ウィンドウが生成されたかの取得処理
 	bool GetMaxScale() { return m_bMaxSize; }									// ウィンドウが最大サイズまで行ったのかを取得する処理
 	bool GetExplanationUninit() { return m_bExplanationUninit; }				// フォント、テクスチャが削除されたかの取得処理		
@@ -61,6 +63,7 @@ public:
 	static CCharDecision_Window* Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col);			// 生成処理
 
 private:
+	static CConfirmation_Window* m_pConfirmation;
 	CObject2D* m_pWindow;						// ウィンドウ用オブジェクト2Dのインスタンス
 	CObject2D* m_pObject2D[MAX_TEXTURE];		// 説明用オブジェクト2Dのインスタンス
 	CFontString* m_pFont[2];					// フォント
@@ -88,5 +91,6 @@ private:
 	bool	m_bDicision;						// 決定されたか
 	bool    m_bUninitFlag;						// 削除フラグ
 	bool    m_bScaleReduce;						// 縮小
+	bool	m_bScaleExpansion;					// 拡大
 };
 #endif

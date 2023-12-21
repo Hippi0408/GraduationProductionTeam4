@@ -10,6 +10,7 @@
 #include "fade.h"
 #include "fontString.h"
 #include "confirmation_window.h"
+#include "charselect_window.h"
 #include "camera.h"
 #include "halfsphere.h"
 #include "playerdata.h"
@@ -40,6 +41,12 @@ CChar_Select::~CChar_Select()
 //==============================================================================================
 HRESULT CChar_Select::Init()
 {
+	//======================================
+	// メンバ変数の初期化処理
+	//======================================
+	m_nIndex = 0;
+	m_nPlayerIndex = 0;
+
 	m_pFont = CFontString::Create({ 280.0f, 200.0f, 0.0f }, { 50.0f, 50.0f }, "キャラクターセレクト");
 
 	// カメラのポインタ
@@ -51,7 +58,10 @@ HRESULT CChar_Select::Init()
 	pCamera->SetPosR({ 0.0f, 0.0f, 100.0f });
 
 	m_pPlayerData->Init();
-	CObjectX::Create(D3DXVECTOR3(-80.0f,600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
+	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
+	{
+		m_pObjectX[nCnt] = CObjectX::Create(D3DXVECTOR3(-80.0f + 55.0f * nCnt, 600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f + 0.25f * nCnt, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
+	}
 
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f),  D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
@@ -128,9 +138,95 @@ void CChar_Select::Update()
 		m_pConfirmation = nullptr;
 	}
 
+	// プレイヤーデータの更新処理
 	if (m_pPlayerData != nullptr)
 	{
 		m_pPlayerData->Update();
+	}
+
+	// キャラ切り替え処理
+	CharSwitching();
+}
+
+//==============================================================================================
+//	キャラ切り替え処理
+//==============================================================================================
+void CChar_Select::CharSwitching()
+{
+	m_nPlayerIndex = CApplication::GetPlayerJobIndex();
+	// 1プレイヤー
+	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
+	{
+		if (m_nPlayerIndex == 0)
+		{
+			// 現在の番号の取得
+			m_nIndex = m_pPlayerData->GetPlayerIndex();
+
+			if (CChar_Select::GetConfimationWindow() != nullptr
+				&& CChar_Select::GetConfimationWindow()->GetCharSelect() != nullptr)
+			{
+				m_nIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
+			}
+
+			if (m_nIndex <= -1)
+			{
+				m_nIndex = 3;
+			}
+			if (m_nIndex >= 4)
+			{
+				m_nIndex = 0;
+			}
+
+			// 現在の番号と前の番号が一致していなかったら
+			if (m_nIndex != m_nIndexKeep)
+			{
+				// オブジェクトXの削除
+				if (m_pObjectX[nCnt] != nullptr)
+				{
+					m_pObjectX[nCnt]->Uninit();
+					m_pObjectX[nCnt] = nullptr;
+				}
+			}
+
+			// 番号の保存
+			m_nIndexKeep = m_nIndex;
+
+			// モデルの設定
+			if (CChar_Select::GetConfimationWindow() != nullptr)
+			{
+				if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+				{
+					SetModel(0, "Data/model/SelectMode/view_Body_00.x");
+					SetModel(1, "Data/model/SelectMode/view_Body_01.x");
+					SetModel(2, "Data/model/SelectMode/view_Body_02.x");
+					SetModel(3, "Data/model/SelectMode/view_Body_03.x");
+				}
+				else
+				{
+					SetModel(0, "Data/model/SelectMode/view_Body_04.x");
+					SetModel(1, "Data/model/SelectMode/view_Body_05.x");
+					SetModel(2, "Data/model/SelectMode/view_Body_06.x");
+					SetModel(3, "Data/model/SelectMode/view_Body_07.x");
+				}
+			}
+		}
+	}
+}
+
+//==============================================================================================
+// モデルの設定処理
+//==============================================================================================
+void CChar_Select::SetModel(int index, const char * Xfilename)
+{
+	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
+	{
+		if (m_pObjectX[nCnt] == nullptr)
+		{
+			if (m_nIndex == index)
+			{
+				m_pObjectX[nCnt] = CObjectX::Create(D3DXVECTOR3(-80.0f + 55.0f * nCnt, 600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f, 0.0f), nullptr, Xfilename);
+			}
+		}
 	}
 }
 

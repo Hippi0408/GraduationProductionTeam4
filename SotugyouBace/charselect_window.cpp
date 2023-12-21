@@ -352,25 +352,55 @@ void CCharSelect_Window::SetSkillSelectChoice(const std::string type,const std::
 	{
 		SkillName = name;
 		SetSkillName(Name, SkillName);
-		CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RUSH, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RUSH, CTexture::TEXTURE_SKILLEXPLANATION_RUSH);
+		}
+		else
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MECHANIC, CTexture::TEXTURE_SKILLEXPLANATION_MECHANIC);
+		}
+	
 	}
 	if (m_nCharSelectWindowSelectChoice == 1)
 	{
 		SkillName = name1;
 		SetSkillName(Name, SkillName);
-		CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_VANGUARD, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_VANGUARD, CTexture::TEXTURE_SKILLEXPLANATION_VANGUARD);
+		}
+		else
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RAIDER, CTexture::TEXTURE_SKILLEXPLANATION_RAIDER);
+		}
+		
 	}
 	if (m_nCharSelectWindowSelectChoice == 2)
 	{
 		SkillName = name2;
 		SetSkillName(Name, SkillName);
-		CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_EAGLEEYE, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_EAGLEEYE, CTexture::TEXTURE_SKILLEXPLANATION_EAGLEEYE);
+		}
+		else
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_ARCPHILIA, CTexture::TEXTURE_SKILLEXPLANATION_ARCPHILIA);
+		}
 	}
 	if (m_nCharSelectWindowSelectChoice == 3 || m_nCharSelectWindowSelectChoice == -1)
 	{
 		SkillName = name3;
 		SetSkillName(Name, SkillName);
-		CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MARSHALL, CTexture::TEXTURE_FONT_JAPANESE_VER2);
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MARSHALL, CTexture::TEXTURE_SKILLEXPLANATION_MARSHALL);
+		}
+		else
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_CONTROL, CTexture::TEXTURE_SKILLEXPLANATION_CONTROL);
+		}
 	}
 }
 

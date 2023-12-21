@@ -33,8 +33,9 @@ public:
 	void Uninit();					// 終了処理
 	void Update();					// 更新処理
 
+	int GetPlayerIndex() { return m_nPlayerIndex; }
+
 private:
-	int PlayerIndex;						// プレイヤー番号
-	CPlayerManager* m_pPlayerManager;		// プレイヤーマネージャーのインスタンス
+	int m_nPlayerIndex;				// プレイヤー番号
 };
 #endif

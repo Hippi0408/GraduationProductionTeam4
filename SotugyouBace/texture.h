@@ -19,7 +19,7 @@ class CTexture
 {
 public: /* 定義 */
 	enum TEXTURE
-	{	
+	{
 		TEXTURE_FONT_JAPANESE,		// 日本語フォント
 		TEXTURE_FONT_JAPANESE_VER2,	// 日本語フォント
 		TEXTURE_FONT_ALPHABET,		// アルファベットフォント
@@ -83,6 +83,16 @@ public: /* 定義 */
 		TEXTURE_SKILL_RAIDER,			// レイダー
 		TEXTURE_SKILL_ARCPHILIA,		// アークフィリア
 		TEXTURE_SKILL_CONTROL,			// コントロール
+
+		/* サポートスキル説明 */
+		TEXTURE_SKILLEXPLANATION_RUSH,				// ラッシュ説明
+		TEXTURE_SKILLEXPLANATION_VANGUARD,			// ヴァンガード説明
+		TEXTURE_SKILLEXPLANATION_EAGLEEYE,			// イーグルアイ説明
+		TEXTURE_SKILLEXPLANATION_MARSHALL,			// マーシャル説明
+		TEXTURE_SKILLEXPLANATION_MECHANIC,			// メカニック説明
+		TEXTURE_SKILLEXPLANATION_RAIDER,			// レイダー説明
+		TEXTURE_SKILLEXPLANATION_ARCPHILIA,			// アークフィリア説明
+		TEXTURE_SKILLEXPLANATION_CONTROL,			// コントロール説明
 
 		TEXTURE_MAX,
 		TEXTURE_NONE

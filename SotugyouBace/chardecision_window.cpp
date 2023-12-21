@@ -28,6 +28,7 @@
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
+CConfirmation_Window* CCharDecision_Window::m_pConfirmation = nullptr;
 const float CCharDecision_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
 const float CCharDecision_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 
@@ -66,6 +67,7 @@ HRESULT CCharDecision_Window::Init()
 	m_bDicision = false;
 	m_bUninitFlag = false;
 	m_bScaleReduce = false;
+	m_bScaleExpansion = false;
 	m_bSpawnWindow = true;
 	m_pWindow = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pWindow->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
@@ -108,6 +110,16 @@ void CCharDecision_Window::Update()
 		UninitExplanation();				// フォントの削除
 		m_bScaleReduce = true;
 
+		
+		if (m_pConfirmation == nullptr)
+		{
+			m_pConfirmation = CConfirmation_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), 500.0f, 120.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
+		}
+		if (m_pConfirmation != nullptr)
+		{
+			m_bScaleExpansion = true;
+		}
+
 		////サーバーの接続
 		//CApplication::GetClient()->Init("127.0.0.1", 15678);
 
@@ -132,6 +144,12 @@ void CCharDecision_Window::Update()
 	if (m_bMaxSize == true)
 	{
 		BackWindow();
+	}
+
+	if (m_bScaleExpansion == true)
+	{
+		m_pConfirmation->ConfirmatiomnMenuScale();
+		m_pConfirmation->VariableInit();
 	}
 }
 

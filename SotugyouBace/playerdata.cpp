@@ -38,8 +38,7 @@ HRESULT CPlayerData::Init()
 	//==================================================
 	// メンバ変数の初期化
 	//================================================== 
-	PlayerIndex = 0;
-	m_pPlayerManager = CPlayerManager::Create();				// プレイヤーマネージャーの生成
+	m_nPlayerIndex = 0;
 
 	return S_OK;
 }
@@ -49,13 +48,7 @@ HRESULT CPlayerData::Init()
 //=============================================================================
 void CPlayerData::Uninit()
 {
-	// プレイヤーマネージャーの破棄
-	if (m_pPlayerManager != nullptr)
-	{
-		m_pPlayerManager->Uninit();
-		delete m_pPlayerManager;
-		m_pPlayerManager = nullptr;
-	}
+
 }
 
 //=============================================================================
@@ -65,12 +58,8 @@ void CPlayerData::Update()
 {
 	if (CChar_Select::GetConfimationWindow() != nullptr
 		&& CChar_Select::GetConfimationWindow()->GetCharSelect() != nullptr
-		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision() != nullptr
-		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetScaleReduce() == true)
-	{// 全ウィンドウのnullチェック && キャラ決定ウィンドウが閉じたら
-
-	 // プレイヤーのジョブ番号
-		int nJob_Index = CApplication::GetPlayerJobIndex() % 3;
-		m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
+		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision() != nullptr)
+	{
+		m_nPlayerIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetSelectIndex();
 	}
 }
