@@ -108,6 +108,7 @@
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="udp_client.cpp" />
     <ClCompile Include="weapon.cpp" />
+    <ClCompile Include="weapon_parameter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="udp_client.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="weapon.h" />
+    <ClInclude Include="weapon_parameter.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33988321-C2B8-45BE-9836-B21C2E84733F}</ProjectGuid>
