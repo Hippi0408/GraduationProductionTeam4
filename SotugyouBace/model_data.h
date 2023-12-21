@@ -103,8 +103,6 @@ public:
 				m_isPopGimmick[i].isMap = false;
 				m_isPopGimmick[i].isUse = false;
 			}
-
-
 		}
 		void SetList(std::string modelList)
 		{
