@@ -25,6 +25,7 @@
 #include "drop_weapon.h"
 #include "weapon.h"
 #include "player_parameter.h"
+#include "weapon_parameter.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
@@ -56,10 +57,10 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
-	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Job[PARTS_BODY], CMotion::MOTION_PLAYER_BODY);
-	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1 + m_Job[PARTS_ARMS], CMotion::MOTION_PLAYER_ARMS);
-	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1 + m_Job[PARTS_LEG], CMotion::MOTION_PLAYER_LEG);
-	SetPlayerWeapon(CWeapon::WEAPON_KNUCKLE);
+	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Parts_Job[PARTS_BODY], CMotion::MOTION_PLAYER_BODY);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1 + m_Parts_Job[PARTS_ARMS], CMotion::MOTION_PLAYER_ARMS);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1 + m_Parts_Job[PARTS_LEG], CMotion::MOTION_PLAYER_LEG);
+	SetPlayerWeapon(CWeapon::WEAPON_KNUCKLE, 0);
 
 	// パラメータの設定
 	SettingParameter();
@@ -74,7 +75,7 @@ HRESULT CPlayer::Init()
 	}
 	else*/ if (Mode == CApplication::MODE_GAME)
 	{
-		CGame::SetPlayerUI(CPlayerUi::UITYPE_SUPPORT, m_Job[PARTS_BODY]);
+		CGame::SetPlayerUI(CPlayerUi::UITYPE_SUPPORT, m_Parts_Job[PARTS_BODY]);
 	}
 
 	// タグの設定
@@ -188,7 +189,7 @@ void CPlayer::ChangeMotion()
 		CParts* pParts = GetParts(nCnt);
 
 		// 着地モーションが終了した場合
-		if (pParts->GetCurrentMotion() == MOTION_LANDING && pParts->GetMotionStop() == true)
+		if (pParts->GetMotionStop() == true)
 		{
 			pParts->SetMotion(MOTION_NEUTRAL);
 		}
@@ -608,7 +609,7 @@ void CPlayer::DropGet(CDrop_Weapon* pDrop)
 	else
 	{
 		// 武器パーツの変更処理
-		SetPlayerWeapon(nWeapon - CDrop_Weapon::WEAPON_NONE);
+		SetPlayerWeapon(nWeapon - CDrop_Weapon::WEAPON_NONE, nRarity);
 	}
 
 	// 落とし物の終了処理
@@ -717,13 +718,13 @@ void CPlayer::SettingParameter()
 		switch (nCnt)
 		{
 		case 0:
-			Parameter = pParameter->GetParameterJob(m_Job[nCnt]);
+			Parameter = pParameter->GetParameterJob(m_Parts_Job[nCnt]);
 			break;
 		case 1:
-			Parameter = pParameter->GetParameterArms(m_Job[nCnt], m_nRarity_Arms);
+			Parameter = pParameter->GetParameterArms(m_Parts_Job[nCnt], m_nArms_Rarity);
 			break;
 		case 2:
-			Parameter = pParameter->GetParameterLeg(m_Job[nCnt], m_nRarity_Leg);
+			Parameter = pParameter->GetParameterLeg(m_Parts_Job[nCnt], m_nLeg_Rarity);
 			break;
 		default:
 			break;
@@ -760,13 +761,13 @@ void CPlayer::SetPlayerParts(const PARTS parts, const int weapon, const int rari
 		break;
 	case CPlayer::PARTS_ARMS:
 		nPartsFileIndex = CParts_File::PARTS_PLAYER_ARMS_1;
-		fRarity_Color = (float)m_nRarity_Arms;
-		m_nRarity_Arms = rarity;
+		fRarity_Color = (float)m_nArms_Rarity;
+		m_nArms_Rarity = rarity;
 		break;
 	case CPlayer::PARTS_LEG:
 		nPartsFileIndex = CParts_File::PARTS_PLAYER_LEG_1;
-		fRarity_Color = (float)m_nRarity_Leg;
-		m_nRarity_Leg = rarity;
+		fRarity_Color = (float)m_nLeg_Rarity;
+		m_nLeg_Rarity = rarity;
 		break;
 	default:
 		break;
@@ -789,7 +790,7 @@ void CPlayer::SetPlayerParts(const PARTS parts, const int weapon, const int rari
 	//}
 
 	// パーツのジョブ情報の更新
-	m_Job[parts] = (JOB)(weapon - nWeaponIndex);
+	m_Parts_Job[parts] = (JOB)(weapon - nWeaponIndex);
 
 	// パラメータの更新
 	SettingParameter();
@@ -815,8 +816,11 @@ void CPlayer::SetPlayerParts(const PARTS parts, const int weapon, const int rari
 //============================================================================
 // 武器の設定
 //============================================================================
-void CPlayer::SetPlayerWeapon(const int weapon)
+void CPlayer::SetPlayerWeapon(const int weapon, const int rarity)
 {
+	m_nWeapon_type = weapon;
+	m_nWeapon_Rarity = rarity;
+
 	// 右手が使用されていない場合
 	if (m_pRightWeapon == nullptr)
 	{
