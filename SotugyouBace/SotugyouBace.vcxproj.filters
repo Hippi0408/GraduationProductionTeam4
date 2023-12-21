@@ -8,10 +8,10 @@
       <Filter>00_Main</Filter>
     </ClCompile>
     <ClCompile Include="bullet.cpp">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="boss.cpp">
-      <Filter>04_Object\MoveObject\Character\Enemy\Boss</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Enemy\Boss</Filter>
     </ClCompile>
     <ClCompile Include="char_select.cpp">
       <Filter>03_Mode</Filter>
@@ -20,10 +20,10 @@
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
     <ClCompile Include="cpu.cpp">
-      <Filter>04_Object\MoveObject\Character\Player</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="character.cpp">
-      <Filter>04_Object\MoveObject\Character</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character</Filter>
     </ClCompile>
     <ClCompile Include="debugProc.cpp">
       <Filter>00_Main</Filter>
@@ -32,10 +32,10 @@
       <Filter>01_Input</Filter>
     </ClCompile>
     <ClCompile Include="enemy.cpp">
-      <Filter>04_Object\MoveObject\Character\Enemy</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="enemy_manager.cpp">
-      <Filter>04_Object\MoveObject\Character\Enemy</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="fade.cpp">
       <Filter>03_Mode</Filter>
@@ -77,7 +77,7 @@
       <Filter>04_Object\Object3D</Filter>
     </ClCompile>
     <ClCompile Include="mob.cpp">
-      <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Enemy\Mob</Filter>
     </ClCompile>
     <ClCompile Include="mode.cpp">
       <Filter>03_Mode</Filter>
@@ -113,13 +113,13 @@
       <Filter>04_Object\Object3D\particle</Filter>
     </ClCompile>
     <ClCompile Include="pc.cpp">
-      <Filter>04_Object\MoveObject\Character\Player</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>04_Object\MoveObject\Character\Player</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="player_manager.cpp">
-      <Filter>04_Object\MoveObject\Character\Player</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="boss_life_gauge.cpp">
       <Filter>04_Object\Object2D\Gauge</Filter>
@@ -197,10 +197,10 @@
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClCompile>
     <ClCompile Include="normal_bullet.cpp">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="homing_bullet.cpp">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="parts.cpp">
       <Filter>04_Object\ObjectX\Parts</Filter>
@@ -215,25 +215,25 @@
       <Filter>04_Object\Collision</Filter>
     </ClCompile>
     <ClCompile Include="parabola_bullet.cpp">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="explosion.cpp">
-      <Filter>04_Object\MoveObject\Explosion</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
     </ClCompile>
     <ClCompile Include="normal_explosion.cpp">
-      <Filter>04_Object\MoveObject\Explosion</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
     </ClCompile>
     <ClCompile Include="smoke_explosion.cpp">
-      <Filter>04_Object\MoveObject\Explosion</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
     </ClCompile>
     <ClCompile Include="map.cpp">
       <Filter>02_Resource</Filter>
     </ClCompile>
     <ClCompile Include="move_object.cpp">
-      <Filter>04_Object\MoveObject</Filter>
+      <Filter>04_Object\Object2D\MoveObject</Filter>
     </ClCompile>
     <ClCompile Include="diffusion_bullet.cpp">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="connect.cpp">
       <Filter>05_Server</Filter>
@@ -248,10 +248,10 @@
       <Filter>02_Resource</Filter>
     </ClCompile>
     <ClCompile Include="map_object.cpp">
-      <Filter>04_Object\MoveObject\Map_Object</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Map_Object</Filter>
     </ClCompile>
     <ClCompile Include="map_object_manager.cpp">
-      <Filter>04_Object\MoveObject\Map_Object</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Map_Object</Filter>
     </ClCompile>
     <ClCompile Include="udp_client.cpp">
       <Filter>05_Server</Filter>
@@ -272,22 +272,22 @@
       <Filter>00_Main</Filter>
     </ClInclude>
     <ClInclude Include="boss.h">
-      <Filter>04_Object\MoveObject\Character\Enemy\Boss</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Enemy\Boss</Filter>
     </ClInclude>
     <ClInclude Include="char_select.h">
       <Filter>03_Mode</Filter>
     </ClInclude>
     <ClInclude Include="bullet.h">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="confirmation_window.h">
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
     <ClInclude Include="cpu.h">
-      <Filter>04_Object\MoveObject\Character\Player</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="character.h">
-      <Filter>04_Object\MoveObject\Character</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character</Filter>
     </ClInclude>
     <ClInclude Include="debugProc.h">
       <Filter>00_Main</Filter>
@@ -296,10 +296,10 @@
       <Filter>01_Input</Filter>
     </ClInclude>
     <ClInclude Include="enemy.h">
-      <Filter>04_Object\MoveObject\Character\Enemy</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="enemy_manager.h">
-      <Filter>04_Object\MoveObject\Character\Enemy</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="fade.h">
       <Filter>03_Mode</Filter>
@@ -353,7 +353,7 @@
       <Filter>02_Resource</Filter>
     </ClInclude>
     <ClInclude Include="move_object.h">
-      <Filter>04_Object\MoveObject</Filter>
+      <Filter>04_Object\Object2D\MoveObject</Filter>
     </ClInclude>
     <ClInclude Include="object.h">
       <Filter>04_Object</Filter>
@@ -383,13 +383,13 @@
       <Filter>04_Object\Object3D\particle</Filter>
     </ClInclude>
     <ClInclude Include="pc.h">
-      <Filter>04_Object\MoveObject\Character\Player</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>04_Object\MoveObject\Character\Player</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="player_manager.h">
-      <Filter>04_Object\MoveObject\Character\Player</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="boss_life_gauge.h">
       <Filter>04_Object\Object2D\Gauge</Filter>
@@ -449,7 +449,7 @@
       <Filter>03_Mode</Filter>
     </ClInclude>
     <ClInclude Include="mob.h">
-      <Filter>04_Object\MoveObject\Character\Enemy\Mob</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Character\Enemy\Mob</Filter>
     </ClInclude>
     <ClInclude Include="drop_weapon.h">
       <Filter>04_Object\ObjectX\drop</Filter>
@@ -470,10 +470,10 @@
       <Filter>04_Object\Object2D\Menu</Filter>
     </ClInclude>
     <ClInclude Include="normal_bullet.h">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="homing_bullet.h">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="parts.h">
       <Filter>04_Object\ObjectX\Parts</Filter>
@@ -485,22 +485,22 @@
       <Filter>04_Object\ObjectX\drop</Filter>
     </ClInclude>
     <ClInclude Include="parabola_bullet.h">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="explosion.h">
-      <Filter>04_Object\MoveObject\Explosion</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
     </ClInclude>
     <ClInclude Include="normal_explosion.h">
-      <Filter>04_Object\MoveObject\Explosion</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
     </ClInclude>
     <ClInclude Include="smoke_explosion.h">
-      <Filter>04_Object\MoveObject\Explosion</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
     </ClInclude>
     <ClInclude Include="map.h">
       <Filter>02_Resource</Filter>
     </ClInclude>
     <ClInclude Include="diffusion_bullet.h">
-      <Filter>04_Object\MoveObject\Bullet</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="connect.h">
       <Filter>05_Server</Filter>
@@ -515,10 +515,10 @@
       <Filter>02_Resource</Filter>
     </ClInclude>
     <ClInclude Include="map_object.h">
-      <Filter>04_Object\MoveObject\Map_Object</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Map_Object</Filter>
     </ClInclude>
     <ClInclude Include="map_object_manager.h">
-      <Filter>04_Object\MoveObject\Map_Object</Filter>
+      <Filter>04_Object\Object2D\MoveObject\Map_Object</Filter>
     </ClInclude>
     <ClInclude Include="udp_client.h">
       <Filter>05_Server</Filter>
@@ -542,27 +542,6 @@
     </Filter>
     <Filter Include="04_Object">
       <UniqueIdentifier>{5cc7a26a-1f24-4b04-b8d2-b7a8b3530ea7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\MoveObject">
-      <UniqueIdentifier>{4dd5e878-a8af-4a58-ac8b-f37eb8d141cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\MoveObject\Character">
-      <UniqueIdentifier>{bcf85021-4de0-4216-bf7d-a838659164b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\MoveObject\Character\Player">
-      <UniqueIdentifier>{550dbea7-748f-4a85-8dcd-680083f6d4d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\MoveObject\Character\Enemy">
-      <UniqueIdentifier>{0b849e22-3b51-47d0-bbfc-7fb50a8cf086}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\MoveObject\Character\Enemy\Mob">
-      <UniqueIdentifier>{705505d5-35fd-4b5b-8773-a96ab0c697d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\MoveObject\Character\Enemy\Boss">
-      <UniqueIdentifier>{c5126055-bd97-49a6-8a14-d2abf5836894}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\MoveObject\Bullet">
-      <UniqueIdentifier>{948313c3-9550-4acf-9e7d-b169056bebfc}</UniqueIdentifier>
     </Filter>
     <Filter Include="04_Object\Object2D">
       <UniqueIdentifier>{9c9cb68e-a46e-42e7-9757-98745bcb2240}</UniqueIdentifier>
@@ -606,17 +585,38 @@
     <Filter Include="04_Object\ObjectX\drop">
       <UniqueIdentifier>{0a9cf788-7d61-40d4-8c65-6b0c52f9f0c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04_Object\MoveObject\Explosion">
-      <UniqueIdentifier>{f9a1ea85-006c-4cef-97a0-0af6586c1ac5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Server">
       <UniqueIdentifier>{235dc510-cf36-4f6c-8b11-56f0aa91ba83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04_Object\MoveObject\Map_Object">
-      <UniqueIdentifier>{5b4f6e03-894d-4ccf-9ed8-5d8a0f2e08e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="precompile">
       <UniqueIdentifier>{a301909a-ec38-496a-beb7-3b7ab494e72a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject">
+      <UniqueIdentifier>{4dd5e878-a8af-4a58-ac8b-f37eb8d141cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject\Character">
+      <UniqueIdentifier>{bcf85021-4de0-4216-bf7d-a838659164b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject\Character\Player">
+      <UniqueIdentifier>{550dbea7-748f-4a85-8dcd-680083f6d4d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject\Character\Enemy">
+      <UniqueIdentifier>{0b849e22-3b51-47d0-bbfc-7fb50a8cf086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject\Character\Enemy\Mob">
+      <UniqueIdentifier>{705505d5-35fd-4b5b-8773-a96ab0c697d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject\Character\Enemy\Boss">
+      <UniqueIdentifier>{c5126055-bd97-49a6-8a14-d2abf5836894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject\Bullet">
+      <UniqueIdentifier>{948313c3-9550-4acf-9e7d-b169056bebfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject\Explosion">
+      <UniqueIdentifier>{f9a1ea85-006c-4cef-97a0-0af6586c1ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Object\Object2D\MoveObject\Map_Object">
+      <UniqueIdentifier>{5b4f6e03-894d-4ccf-9ed8-5d8a0f2e08e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
