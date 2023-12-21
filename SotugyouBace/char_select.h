@@ -43,6 +43,7 @@ private:
 	CHalfSphere* m_pHalfSphere;
 	CPlayerData* m_pPlayerData;
 	CObjectX* m_pObjectX[MAX_PLAYER];
+	CObjectX* m_pWareHouse;
 
 	int m_nPlayerIndex;				// プレイヤー番号
 	int m_nIndex;					// スキル現在の番号

@@ -62,10 +62,11 @@ HRESULT CChar_Select::Init()
 	{
 		m_pObjectX[nCnt] = CObjectX::Create(D3DXVECTOR3(-80.0f + 55.0f * nCnt, 600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f + 0.25f * nCnt, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
 	}
+	m_pWareHouse = CObjectX::Create(D3DXVECTOR3(0.0f ,0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0, 0.0f), nullptr, "Data/model/CharacterSelect/Warehouse.x");
 
 	// ハーフスフィアの生成
-	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f),  D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
-	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
+	//m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f),  D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
+	//m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	return S_OK;
 }
