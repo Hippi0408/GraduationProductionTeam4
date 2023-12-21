@@ -20,6 +20,7 @@ class CTitle : public CMode
 {
 public:
 	static const int TITLE_LOGO_MAX = 11;
+	static const int TITLE_PROJECT_LOGO_MAX = 3;
 	static const int TITLE_LOGO_GEAR_MAX = 7;
 	static const int TITLE_GEAR_MAX = 3;
 	static const int GEAR_AFTERIMAGE = 3;
@@ -28,6 +29,10 @@ public:
 	static const D3DXVECTOR3 TITLE_LOGO_POS;
 	static const D3DXVECTOR3 TITLE_LOGO_GEAR_POS;
 	static const float TITLE_LOGO_GEAR_SIZE;
+
+	static const float TITLE_PROJECT_LOGO_GEAR_INIT_ROT;
+	static const float TITLE_PROJ_LOGO_GEAR_INIT_ROT;
+	static const float TITLE_ECT_LOGO_GEAR_INIT_ROT;
 
 	static const D3DXVECTOR3 TITLE_3D_MODEL_POS;
 	static const float GEAR_SPEED;
@@ -56,6 +61,10 @@ private:
 	bool m_bKeyFlag;
 	CObject2D *m_pTitle[TITLE_LOGO_MAX];
 	CObject2D *m_pGearLogo[TITLE_LOGO_GEAR_MAX];
+	D3DXVECTOR3 m_ProjectLogoPos[TITLE_PROJECT_LOGO_MAX];
+	D3DXVECTOR2 m_ProjectLogoRot[TITLE_PROJECT_LOGO_MAX];
+	D3DXVECTOR2 m_ProjLogoRot;
+	D3DXVECTOR2 m_EctLogoRot;
 	CObjectX *m_pGear[TITLE_GEAR_MAX];
 	D3DXVECTOR3 m_GearRotAfterimage[TITLE_GEAR_MAX][GEAR_AFTERIMAGE_MAX];
 	CObjectX *m_pGearAfterimage[TITLE_GEAR_MAX][GEAR_AFTERIMAGE];

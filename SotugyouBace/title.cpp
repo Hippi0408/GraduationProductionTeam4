@@ -21,9 +21,13 @@
 #include "debugProc.h"
 
 const D3DXVECTOR3 CTitle::TITLE_LOGO_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - 50.0f, SCREEN_HEIGHT * 0.5f - 100.0f, 0.0f);
-const D3DXVECTOR3 CTitle::TITLE_LOGO_GEAR_POS = TITLE_LOGO_POS + D3DXVECTOR3(250.0f, 50.0f, 0.0f);
+const D3DXVECTOR3 CTitle::TITLE_LOGO_GEAR_POS = TITLE_LOGO_POS + D3DXVECTOR3(180.0f, 50.0f, 0.0f);
 const float CTitle::TITLE_LOGO_GEAR_SIZE = 200.0f;
 const float CTitle::GEAR_SPEED = 0.08f;
+
+const float CTitle::TITLE_PROJECT_LOGO_GEAR_INIT_ROT = -D3DXToRadian(360);
+const float CTitle::TITLE_PROJ_LOGO_GEAR_INIT_ROT = -D3DXToRadian(360) * 1.5f;
+const float CTitle::TITLE_ECT_LOGO_GEAR_INIT_ROT = D3DXToRadian(360) * 1.2f;
 
 const D3DXVECTOR3 CTitle::TITLE_3D_MODEL_POS = D3DXVECTOR3(0.0f, 780.0f, 930.0f);
 //const D3DXVECTOR3 CTitle::TITLE_3D_MODEL_POS = D3DXVECTOR3(-400.0f, 750.0f, -200.0f);
@@ -85,20 +89,55 @@ HRESULT CTitle::Init()
 	m_pGearLogo[6]->SetTexture(CTexture::TEXTURE_TITLE_GEAR_06);
 	
 	//タイトルロゴ
-	m_pTitle[0] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(270.0f, 130.0f, 0.0f), D3DXVECTOR2(350.0f, 350.0f));
+	m_pTitle[0] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(250.0f, 80.0f, 0.0f), D3DXVECTOR2(350.0f, 350.0f));
 	m_pTitle[0]->SetTexture(CTexture::TEXTURE_TITLE_ROBOT);
 
 
 
+	m_ProjectLogoPos[0] = D3DXVECTOR3(-165.0f, 25.0f, 0.0f);
+	m_ProjectLogoRot[0] = D3DXVECTOR2(TITLE_PROJECT_LOGO_GEAR_INIT_ROT, TITLE_PROJECT_LOGO_GEAR_INIT_ROT);
 
-	m_pTitle[1] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-165.0f, 25.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	//m_pTitle[1] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-165.0f, 25.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[1] = CObject2D::Create(TITLE_LOGO_POS + m_ProjectLogoPos[0], D3DXVECTOR2(500.0f, 500.0f));
 	m_pTitle[1]->SetTexture(CTexture::TEXTURE_TITLE_00);
+	m_pTitle[1]->SetRot(m_ProjectLogoRot[0]);
 
-	m_pTitle[2] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-240.0f, 25.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	
+	m_ProjectLogoRot[1] = D3DXVECTOR2(D3DXToRadian(90.0f), D3DXToRadian(90.0f)) + m_ProjectLogoRot[0];
+	m_ProjectLogoPos[1] = D3DXVECTOR3(70.0f, 0.0f, 0.0f);
+	float fAngle = atan2f(m_ProjectLogoPos[1].x, m_ProjectLogoPos[1].y);							// 角度(アークタンジェント)
+	float fLength = sqrtf((m_ProjectLogoPos[1].x * m_ProjectLogoPos[1].x) + (m_ProjectLogoPos[1].y * m_ProjectLogoPos[1].y));
+
+	// 頂点情報を設定
+	D3DXVECTOR3 pos;
+	pos.x = TITLE_LOGO_POS.x + m_ProjectLogoPos[0].x - sinf(m_ProjectLogoRot[1].x) * fLength;
+	pos.y = TITLE_LOGO_POS.y + m_ProjectLogoPos[0].y - cosf(m_ProjectLogoRot[1].y) * fLength;
+	pos.z = 0.0f;
+
+	//m_pTitle[2] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-240.0f, 25.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[2] = CObject2D::Create(pos, D3DXVECTOR2(500.0f, 500.0f));
 	m_pTitle[2]->SetTexture(CTexture::TEXTURE_TITLE_01);
+	m_ProjLogoRot = D3DXVECTOR2(TITLE_PROJ_LOGO_GEAR_INIT_ROT, TITLE_PROJ_LOGO_GEAR_INIT_ROT);
+	m_pTitle[2]->SetRot(m_ProjLogoRot);
 
-	m_pTitle[3] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-10.0f, 25.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+
+	m_ProjectLogoRot[2] = D3DXVECTOR2(D3DXToRadian(-90.0f), D3DXToRadian(-90.0f)) + m_ProjectLogoRot[0];
+
+	m_ProjectLogoPos[2] = D3DXVECTOR3(-155.0f, 0.0f, 0.0f);
+	fAngle = atan2f(m_ProjectLogoPos[2].x, m_ProjectLogoPos[2].y);							// 角度(アークタンジェント)
+	fLength = sqrtf((m_ProjectLogoPos[2].x * m_ProjectLogoPos[2].x) + (m_ProjectLogoPos[2].y * m_ProjectLogoPos[2].y));
+
+	// 頂点情報を設定
+	pos.x = TITLE_LOGO_POS.x + m_ProjectLogoPos[0].x - sinf(m_ProjectLogoRot[2].x) * fLength;
+	pos.y = TITLE_LOGO_POS.y + m_ProjectLogoPos[0].y - cosf(m_ProjectLogoRot[2].y) * fLength;
+	pos.z = 0.0f;
+
+	//m_pTitle[3] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-10.0f, 25.0f, 0.0f), D3DXVECTOR2(500.0f, 500.0f));
+	m_pTitle[3] = CObject2D::Create(pos, D3DXVECTOR2(500.0f, 500.0f));
 	m_pTitle[3]->SetTexture(CTexture::TEXTURE_TITLE_02);
+	m_EctLogoRot = D3DXVECTOR2(TITLE_ECT_LOGO_GEAR_INIT_ROT, TITLE_ECT_LOGO_GEAR_INIT_ROT);
+	m_pTitle[3]->SetRot(m_EctLogoRot);
+
 
 
 
@@ -106,22 +145,22 @@ HRESULT CTitle::Init()
 	m_pTitle[4] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-290.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[4]->SetTexture(CTexture::TEXTURE_TITLE_03);
 
-	m_pTitle[5] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-160.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[5] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-175.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[5]->SetTexture(CTexture::TEXTURE_TITLE_04);
 
-	m_pTitle[6] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-70.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[6] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-100.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[6]->SetTexture(CTexture::TEXTURE_TITLE_05);
 
-	m_pTitle[7] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(20.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[7] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(-10.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[7]->SetTexture(CTexture::TEXTURE_TITLE_06);
 
-	m_pTitle[8] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(110.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[8] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(70.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[8]->SetTexture(CTexture::TEXTURE_TITLE_07);
 
-	m_pTitle[9] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(200.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[9] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(150.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[9]->SetTexture(CTexture::TEXTURE_TITLE_08);
 
-	m_pTitle[10] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(300.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
+	m_pTitle[10] = CObject2D::Create(TITLE_LOGO_POS + D3DXVECTOR3(240.0f, 140.0f, 0.0f), D3DXVECTOR2(400.0f, 400.0f));
 	m_pTitle[10]->SetTexture(CTexture::TEXTURE_TITLE_04);
 
 	
@@ -190,6 +229,70 @@ void CTitle::Update()
 	m_pGearLogo[4]->AddRot({D3DXToRadian(-1) , D3DXToRadian(-1) });
 	m_pGearLogo[5]->AddRot({D3DXToRadian(1) , D3DXToRadian(1) });
 	m_pGearLogo[6]->AddRot({D3DXToRadian(-0.5f) , D3DXToRadian(-0.5f) });
+
+	//projectロゴ
+	{
+		//projectロゴの奥歯車
+		m_ProjectLogoRot[0] = m_ProjectLogoRot[0] + D3DXVECTOR2(D3DXToRadian(2), D3DXToRadian(2));
+		if (m_ProjectLogoRot[0].x >= 0.0f || m_ProjectLogoRot[0].y >= 0.0f)
+		{
+			m_ProjectLogoRot[0].x = 0.0f;
+			m_ProjectLogoRot[0].y = 0.0f;
+		}
+		m_pTitle[1]->SetRot(m_ProjectLogoRot[0]);
+
+		//prujロゴ歯車
+		m_ProjectLogoRot[1] = D3DXVECTOR2(D3DXToRadian(90.0f), D3DXToRadian(90.0f)) + m_ProjectLogoRot[0];
+
+		float fAngle = atan2f(m_ProjectLogoPos[1].x, m_ProjectLogoPos[1].y);							// 角度(アークタンジェント)
+		float fLength = sqrtf((m_ProjectLogoPos[1].x * m_ProjectLogoPos[1].x) + (m_ProjectLogoPos[1].y * m_ProjectLogoPos[1].y));
+
+		// 頂点情報を設定
+		D3DXVECTOR3 pos;
+		pos.x = TITLE_LOGO_POS.x + m_ProjectLogoPos[0].x - sinf(m_ProjectLogoRot[1].x) * fLength;
+		pos.y = TITLE_LOGO_POS.y + m_ProjectLogoPos[0].y - cosf(m_ProjectLogoRot[1].y) * fLength;
+		pos.z = 0.0f;
+
+		m_ProjLogoRot = m_ProjLogoRot + D3DXVECTOR2(D3DXToRadian(3), D3DXToRadian(3));
+		if (m_ProjLogoRot.x >= 0.0f || m_ProjLogoRot.y >= 0.0f)
+		{
+			m_ProjLogoRot.x = 0.0f;
+			m_ProjLogoRot.y = 0.0f;
+		}
+		m_pTitle[2]->SetPos(pos);
+		m_pTitle[2]->SetRot(m_ProjLogoRot);
+
+		//ectロゴ歯車
+		m_ProjectLogoRot[2] = D3DXVECTOR2(D3DXToRadian(-90.0f), D3DXToRadian(-90.0f)) + m_ProjectLogoRot[0];
+
+		fAngle = atan2f(m_ProjectLogoPos[2].x, m_ProjectLogoPos[2].y);							// 角度(アークタンジェント)
+		fLength = sqrtf((m_ProjectLogoPos[2].x * m_ProjectLogoPos[2].x) + (m_ProjectLogoPos[2].y * m_ProjectLogoPos[2].y));
+
+		// 頂点情報を設定
+		pos.x = TITLE_LOGO_POS.x + m_ProjectLogoPos[0].x - sinf(m_ProjectLogoRot[2].x) * fLength;
+		pos.y = TITLE_LOGO_POS.y + m_ProjectLogoPos[0].y - cosf(m_ProjectLogoRot[2].y) * fLength;
+		pos.z = 0.0f;
+
+
+		m_EctLogoRot = m_EctLogoRot + D3DXVECTOR2(D3DXToRadian(-3), D3DXToRadian(-3));
+		if (m_EctLogoRot.x <= 0.0f || m_EctLogoRot.y <= 0.0f)
+		{
+			m_EctLogoRot.x = 0.0f;
+			m_EctLogoRot.y = 0.0f;
+		}
+		m_pTitle[3]->SetPos(pos);
+		m_pTitle[3]->SetRot(m_EctLogoRot);
+	}
+
+	//machinaロゴ
+	/*m_pTitle[4]->AddRot({ D3DXToRadian(1) , D3DXToRadian(0) });
+	m_pTitle[5]->AddRot({ D3DXToRadian(1) , D3DXToRadian(0) });
+	m_pTitle[6]->AddRot({ D3DXToRadian(1) , D3DXToRadian(0) });
+	m_pTitle[7]->AddRot({ D3DXToRadian(1) , D3DXToRadian(0) });
+	m_pTitle[8]->AddRot({ D3DXToRadian(1) , D3DXToRadian(0) });
+	m_pTitle[9]->AddRot({ D3DXToRadian(1) , D3DXToRadian(0) });
+	m_pTitle[10]->AddRot({ D3DXToRadian(1) , D3DXToRadian(0) });*/
+
 
 	CInput* pInput = CInput::GetKey();
 
