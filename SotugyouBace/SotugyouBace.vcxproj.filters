@@ -349,6 +349,9 @@
     <ClCompile Include="precompile.cpp">
       <Filter>precompile</Filter>
     </ClCompile>
+    <ClCompile Include="weapon_parameter.cpp">
+      <Filter>02_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -700,6 +703,9 @@
     </ClInclude>
     <ClInclude Include="precompile.h">
       <Filter>precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="weapon_parameter.h">
+      <Filter>02_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

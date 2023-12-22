@@ -28,6 +28,7 @@ class CConfirmation_Window;
 class CEnergy_Gauge;
 class CPause;
 class CPlayer_Parameter;
+class CWeapon_Parameter;
 class CMap_Object_Manager;
 class CFog;
 
@@ -89,6 +90,7 @@ private:
 	static CFontString* m_pFinishRogo;				// 終了ロゴ 
 	static CPause *m_pPause;
 	static CPlayer_Parameter *m_pPlayer_Parameter;	// プレイヤーパラメーター
+	static CWeapon_Parameter *m_pWeapon_Parameter;	// 武器パラメーター
 	static CMap_Object_Manager *m_pMap_Object_Manager;
 
 };

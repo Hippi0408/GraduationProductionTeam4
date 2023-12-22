@@ -53,6 +53,13 @@ public:
 		MOTION_JUMP,		// ジャンプ
 		MOTION_LANDING,		// 着地
 		MOTION_BOOST_RUN,	// ブーストダッシュ
+		MOTION_SLASH_1,		// 斬撃モーション1
+		MOTION_SLASH_2,		// 斬撃モーション2
+		MOTION_SLASH_3,		// 斬撃モーション3
+		MOTION_SLASH_4,		// 斬撃モーション4
+		MOTION_SLASH_5,		// 斬撃モーション5
+		MOTION_SLASH_6,		// 斬撃モーション6
+
 		MOTION_MAX,
 	};
 
@@ -97,9 +104,9 @@ public:
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
-	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Job[nCnt] = (JOB)index; } }
+	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Parts_Job[nCnt] = (JOB)index; } }
 	void SetPlayerParts(const PARTS parts, const int weapon, const int rarity);
-	void SetPlayerWeapon(const int weapon);
+	void SetPlayerWeapon(const int weapon, const int rarity);
 
 
 	const bool GetDropContact() { return m_bDrop_Contact; }
@@ -131,9 +138,12 @@ private:
 	int m_nStan_Tolerance;				// スタン許容値
 	int m_nGravity;						// 重量
 
-	JOB m_Job[PARTS_MAX];				// プレイヤーのパーツ毎のジョブ種類
-	int m_nRarity_Arms;					// 腕のレアリティ
-	int m_nRarity_Leg;					// 脚のレアリティ
+	JOB m_Parts_Job[PARTS_MAX];				// プレイヤーのパーツ毎のジョブ種類
+	int m_nArms_Rarity;					// 腕のレアリティ
+	int m_nLeg_Rarity;					// 脚のレアリティ
+
+	int m_nWeapon_type;					// 武器の種類
+	int m_nWeapon_Rarity;				// 武器のレアリティ
 	CWeapon* m_pRightWeapon;			// 右手武器
 	CWeapon* m_pLeftWeapon;				// 左手武器
 

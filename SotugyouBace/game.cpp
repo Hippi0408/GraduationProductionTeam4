@@ -37,6 +37,7 @@
 #include "weapon.h"
 #include "connect.h"
 #include "player_parameter.h"
+#include "weapon_parameter.h"
 #include "map_object_manager.h"
 #include "fog.h"
 
@@ -56,6 +57,7 @@ bool CGame::m_bInputFlag = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPause *CGame::m_pPause = nullptr;
 CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
+CWeapon_Parameter *CGame::m_pWeapon_Parameter = nullptr;
 CMap_Object_Manager *CGame::m_pMap_Object_Manager = nullptr;
 
 //==============================================================================================
@@ -95,6 +97,10 @@ HRESULT CGame::Init()
 	m_pPlayer_Parameter = new CPlayer_Parameter;
 	m_pPlayer_Parameter->Init();
 
+	// 武器パラメーターの生成
+	m_pWeapon_Parameter = new CWeapon_Parameter;
+	m_pWeapon_Parameter->Init();
+
 	// プレイヤーUIの生成
 	m_pPlayer_UI[CPlayerUi::UITYPE_SUPPORT] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_SUPPORT, CObject::PRIORITY_CENTER);
 	m_pPlayer_UI[CPlayerUi::UITYPE_ATTACK] = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_ATTACK, CObject::PRIORITY_CENTER);
@@ -119,7 +125,6 @@ HRESULT CGame::Init()
 	int nJob_Index = CApplication::GetPlayerJobIndex() % 3;
 
 	// プレイヤーの生成(テスト)
-
 	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
@@ -167,6 +172,14 @@ void CGame::Uninit()
 		m_pPlayer_Parameter->Uninit();
 		delete m_pPlayer_Parameter;
 		m_pPlayer_Parameter = nullptr;
+	}
+
+	// 武器パラメーターの破棄
+	if (m_pWeapon_Parameter != nullptr)
+	{
+		m_pWeapon_Parameter->Uninit();
+		delete m_pWeapon_Parameter;
+		m_pWeapon_Parameter = nullptr;
 	}
 
 	// プレイヤーマネージャーの破棄

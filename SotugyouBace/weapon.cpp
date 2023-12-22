@@ -68,7 +68,7 @@ void CWeapon::Draw()
 //============================================================================
 void CWeapon::ChangeWeapon(const int type)
 {
-	SetModel(CApplication::GetModel()->ReadObject(m_cWeaponFileName[m_nWeaponType = type]));
+	SetModel(CApplication::GetModel()->ReadObject(m_cWeaponFileName[type]));
 }
 
 //============================================================================
@@ -84,7 +84,7 @@ CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, int type, CObjectX* parent)
 	}
 
 	pParts->SetPos(pos);
-	pParts->SetType(type);
+	pParts->ChangeWeapon(type);
 	pParts->SetParent(parent);
 
 	return pParts;
