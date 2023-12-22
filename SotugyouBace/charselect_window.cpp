@@ -52,17 +52,20 @@ HRESULT CCharSelect_Window::Init()
 	//==================================================
 	// メンバ変数の初期化
 	//==================================================  
-	m_nSelectChoice = 0;
-	m_SizeX = 0.0f;
-	m_SizeY = 0.0f;
-	m_bScale = false;
-	m_bMaxSize = false; 
-	m_bSpawnWindow = false;
-	m_bDecition = false;
+	m_CharSelectWindowSize = D3DXVECTOR2(0.0f, 0.0f);
+	m_nCharSelectWindowSelectChoice = 0;
+	m_bCharSelectWindowScale = false;
+	m_bCharSelectWindowMaxSize = false;
+	m_bCharSelectWindowDecition = false;
 	m_bDicisionCreateFlag = false;
+	m_bCharSelectWindowWindowUse = false;
+	m_bCharSelectWindowBackFlag = false;
+	m_bCharSelectWindowUninitFlag = false;
+	m_bPreviousWindowCreate = false;
+	m_bDicisionUse = false;
+
 	m_pObject2D = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pObject2D->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
-	m_bWindowUse = false;
 
 	return S_OK;
 }
@@ -93,14 +96,18 @@ void CCharSelect_Window::Uninit()
 //=============================================================================
 void CCharSelect_Window::Update()
 {
-	if (m_bScale == false)
+	// 入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
+
+	if (m_bCharSelectWindowScale == false && m_bCharSelectWindowWindowUse == false)
 	{// 拡大されていない時 
+
 	 // ウィンドウの拡大処理
 		CharSelectMenuScale();
 	}
-	else if (m_bScale == true && m_bWindowUse == false)
+	else if (m_bCharSelectWindowScale == true && m_bCharSelectWindowWindowUse == false)
 	{// 拡大した時
-
+		 
 	 // ウィンドウの縮小処理
 		CharSelectMenuScaleReduce();
 	}
@@ -115,16 +122,41 @@ void CCharSelect_Window::Update()
 	}
 
 	// 選択した番号によって出すウィンドウを変える処理
-	SetSelectChoice(m_nSelectChoice);
+	SetSelectChoice(m_nCharSelectWindowSelectChoice);
+
+	if (CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision() != nullptr
+		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetUninit() == true
+		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetScaleReduce() == false
+		&& m_bCharSelectWindowWindowUse == true)
+	{
+		// ウィンドウの拡大処理
+		CharSelectMenuScale();
+		m_bCharSelectWindowBackFlag = true;
+	}
 
 	// キャラ決定ウィンドウが閉じた場合 
-	if (m_pCharDecision != nullptr && m_pCharDecision->GetSapawnWindow() == true)
+	if (m_pCharDecision != nullptr && m_pCharDecision->GetSapawnWindow() == false)
 	{
-		m_bWindowUse = false;
-		// キャラ決定画面の破棄
-		m_pCharDecision->Uninit();
-		delete m_pCharDecision;
-		m_pCharDecision = nullptr;
+		m_bDicisionUse = false;
+	}
+
+	// ゲーム画面への遷移
+	if (pInput->Trigger(DIK_BACK)
+		&& m_bCharSelectWindowUninitFlag == false
+		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+	{ // キーが押された時 && キャラ選択ウィンドウが削除されてない時 && フェードしてない時
+
+		// フォントの削除処理
+		UninitFont();
+		SetCharSelectDisplay(false);			// 表示させない
+		m_bCharSelectWindowUninitFlag = true;	// ウィンドウ削除フラグをtrue
+		m_bCharSelectWindowScale = true;		// 拡大縮小フラグをtrue
+	}
+	if (m_bCharSelectWindowUninitFlag == true && m_bCharSelectWindowBackFlag == false)
+	{ // キャラ選択ウィンドウが削除された時 && 前のウィンドウから戻ってきた時
+
+		// 縮小処理
+		CharSelectMenuScaleReduce();
 	}
 }
 
@@ -133,42 +165,26 @@ void CCharSelect_Window::Update()
 //=============================================================================
 void CCharSelect_Window::CharSelectMenuScale()
 {
-	// 入力デバイスの情報
-	CInput* pInput = CInput::GetKey();
-
 	if (m_pObject2D != nullptr)
 	{// nullチェック
 
-	 // サイズの拡大
-		m_SizeX += SizeXScaleSpeed;
-		m_SizeY += SizeYScaleSpeed;
+		// サイズの拡大
+		m_CharSelectWindowSize.x += SizeXScaleSpeed;
+		m_CharSelectWindowSize.y += SizeYScaleSpeed;
 
-		if (m_SizeX >= m_MaxSizeX)
+		if (m_CharSelectWindowSize.x >= m_CharSelectWindowMaxSize.x)
 		{// Xサイズの最大
-			m_SizeX = m_MaxSizeX;
+			m_CharSelectWindowSize.x = m_CharSelectWindowMaxSize.x;
 		}
-		if (m_SizeY >= m_MaxSizeY)
+		if (m_CharSelectWindowSize.y >= m_CharSelectWindowMaxSize.y)
 		{// Yサイズの最大
-			m_SizeY = m_MaxSizeY;
+			m_CharSelectWindowSize.y = m_CharSelectWindowMaxSize.y;
 		}
-		//if (pInput->Trigger(DIK_RETURN) && m_bMaxSize == false)
-		//{
-		//	m_SizeX = m_MaxSizeX;
-		//	m_SizeY = m_MaxSizeY;
-		//	m_bMaxSize = true;
-		//	// サイズの設定
-		//	m_pObject2D->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
-		//}
 
 		// ウィンドウが最大値まで行ったら
-		if (m_SizeX >= m_MaxSizeX && m_SizeY >= m_MaxSizeY && m_bMaxSize == false)
+		if (m_CharSelectWindowSize.x >= m_CharSelectWindowMaxSize.x && m_CharSelectWindowSize.y >= m_CharSelectWindowMaxSize.y && m_bCharSelectWindowMaxSize == false)
 		{
 			CApplication::MODE Mode = CApplication::GetModeType();
-
-			if (Mode == CApplication::MODE_GAME)
-			{
-				pInput->SetKeyLock(100);
-			}
 
 			if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
 			{
@@ -203,17 +219,40 @@ void CCharSelect_Window::CharSelectMenuScale()
 					pChoice->SetAlpha(MINI_ALPHA);
 				}
 				// 選択されている選択肢
-				m_vpListChoice[m_nSelectChoice]->SetBlink(BLINK_SPEED);
-				m_vpListChoice[m_nSelectChoice]->SetAlpha(1.0f);
+				m_vpListChoice[m_nCharSelectWindowSelectChoice]->SetBlink(BLINK_SPEED);
+				m_vpListChoice[m_nCharSelectWindowSelectChoice]->SetAlpha(1.0f);
+			}
+
+			if (m_bCharSelectWindowBackFlag == true)
+			{
+				// メンバ変数初期化
+				m_bCharSelectWindowWindowUse = false;
+				m_bCharSelectWindowScale = false;
+				m_bCharSelectWindowDecition = false;
+				m_bDicisionCreateFlag = false;
+				m_bCharSelectWindowBackFlag = false;
+				m_bCharSelectWindowUninitFlag = false;
+
+				// 選択肢の初期化
+				InitSelect();
+				
+				if (m_pCharDecision != nullptr)
+				{
+					// キャラ決定画面の破棄
+					m_pCharDecision->Uninit();
+					delete m_pCharDecision;
+					m_pCharDecision = nullptr;
+				}
 			}
 
 			SetCharSelectDisplay(true);
-			m_bMaxSize = true;
+			m_bCharSelectWindowMaxSize = true;
+
 			return;
 		}
 
 		// サイズの設定
-		m_pObject2D->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		m_pObject2D->SetSize(D3DXVECTOR2(m_CharSelectWindowSize.x, m_CharSelectWindowSize.y));
 	}
 }
 
@@ -229,57 +268,62 @@ bool CCharSelect_Window::CharSelectMenuScaleReduce()
 		CApplication::MODE Mode = CApplication::GetModeType();
 
 		// サイズの縮小
-		m_SizeX -= SizeXScaleSpeed;
-		m_SizeY -= SizeYScaleSpeed;
+		m_CharSelectWindowSize.x -= SizeXScaleSpeed;
+		m_CharSelectWindowSize.y -= SizeYScaleSpeed;
 
-		if (m_SizeX <= 0.0f)
+		if (m_CharSelectWindowSize.x <= 0.0f)
 		{// Xサイズの最小
-			m_SizeX = 0.0f;
+			m_CharSelectWindowSize.x = 0.0f;
 		}
-		if (m_SizeY <= 0.0f)
+		if (m_CharSelectWindowSize.y <= 0.0f)
 		{// Yサイズの最小
-			m_SizeY = 0.0f;
+			m_CharSelectWindowSize.y = 0.0f;
 		}
 
-		// フォントの削除
-		if (m_pFont != nullptr)
-		{
-			m_pFont->Uninit();
-			m_pFont = nullptr;
-		}
+		// フォントの削除処理
+		UninitFont();
 
 		// ウィンドウが最小値まで行ったら
-		if (m_SizeX <= 0.0f && m_SizeY <= 0.0f)
+		if (m_CharSelectWindowSize.x <= 0.0f && m_CharSelectWindowSize.y <= 0.0f)
 		{
 			// キャラ選択画面以外の時
 			if (!Mode == CApplication::MODE_CHAR_SELECT)
 			{
-				m_bScale = false;
+				m_bCharSelectWindowScale = false;
 				CGame::SetGameWindow(true);
 				Uninit();						// メニューウィンドウの削除
 			}
-			else if (Mode == CApplication::MODE_CHAR_SELECT && m_bWindowUse == false)
+			else if (Mode == CApplication::MODE_CHAR_SELECT && m_bCharSelectWindowWindowUse == false)
 			{
-				m_bWindowUse = true;
-				m_bMaxSize = false;
-				m_bSpawnWindow = false;
-				m_bDecition = false;
+				m_bCharSelectWindowWindowUse = true;
+				m_bCharSelectWindowMaxSize = false;
+				m_bCharSelectWindowDecition = false;
 				m_bDicisionCreateFlag = false;
 			}
-
+			
 			// キャラ決定ウィンドウの生成
-			if (m_pCharDecision == nullptr && m_bDicisionCreateFlag == false)
+			if (m_pCharDecision == nullptr && m_bDicisionCreateFlag == false && m_bCharSelectWindowUninitFlag == false)
 			{
 				m_pCharDecision = CCharDecision_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
+				m_bDicisionUse = true;
+			}
+			if (m_bCharSelectWindowBackFlag == true && m_bDicisionUse == false)
+			{
+				m_bPreviousWindowCreate = true;
+			}
+			else if (m_bCharSelectWindowBackFlag == false && m_bDicisionUse == false)
+			{
+				m_bPreviousWindowCreate = true;
 			}
 
+			// 初期値に戻す
 			m_bDicisionCreateFlag = true;
-
+			m_bCharSelectWindowUninitFlag = false; 
 			return true;
 		}
 
 		// サイズの設定
-		m_pObject2D->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		m_pObject2D->SetSize(D3DXVECTOR2(m_CharSelectWindowSize.x, m_CharSelectWindowSize.y));
 	}
 	return false;
 }
@@ -287,13 +331,77 @@ bool CCharSelect_Window::CharSelectMenuScaleReduce()
 //=============================================================================
 // キャラクター説明処理
 //=============================================================================
-void CCharSelect_Window::CharName(const std::string name, const std::string skillname)
+void CCharSelect_Window::SetSkillName(const std::string name, const std::string skillname)
 {
 	m_nLetter[0] = name;
 	m_nLetter[1] = skillname;
 
 	m_pCharDecision->SetFont(&m_nLetter[0]);
 	m_pCharDecision->SetFont(&m_nLetter[1]);
+}
+
+//=============================================================================
+// 選択した番号によってスキルを変える処理
+//=============================================================================
+void CCharSelect_Window::SetSkillSelectChoice(const std::string type,const std::string name, const std::string name1, const std::string name2, const std::string name3)
+{
+	std::string SkillName;
+	std::string Name = type;
+
+	if (m_nCharSelectWindowSelectChoice == 0)
+	{
+		SkillName = name;
+		SetSkillName(Name, SkillName);
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RUSH, CTexture::TEXTURE_SKILLEXPLANATION_RUSH);
+		}
+		else
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MECHANIC, CTexture::TEXTURE_SKILLEXPLANATION_MECHANIC);
+		}
+	
+	}
+	if (m_nCharSelectWindowSelectChoice == 1)
+	{
+		SkillName = name1;
+		SetSkillName(Name, SkillName);
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_VANGUARD, CTexture::TEXTURE_SKILLEXPLANATION_VANGUARD);
+		}
+		else
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RAIDER, CTexture::TEXTURE_SKILLEXPLANATION_RAIDER);
+		}
+		
+	}
+	if (m_nCharSelectWindowSelectChoice == 2)
+	{
+		SkillName = name2;
+		SetSkillName(Name, SkillName);
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_EAGLEEYE, CTexture::TEXTURE_SKILLEXPLANATION_EAGLEEYE);
+		}
+		else
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_ARCPHILIA, CTexture::TEXTURE_SKILLEXPLANATION_ARCPHILIA);
+		}
+	}
+	if (m_nCharSelectWindowSelectChoice == 3 || m_nCharSelectWindowSelectChoice == -1)
+	{
+		SkillName = name3;
+		SetSkillName(Name, SkillName);
+		if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MARSHALL, CTexture::TEXTURE_SKILLEXPLANATION_MARSHALL);
+		}
+		else
+		{
+			CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_CONTROL, CTexture::TEXTURE_SKILLEXPLANATION_CONTROL);
+		}
+	}
 }
 
 //=============================================================================
@@ -306,6 +414,19 @@ void CCharSelect_Window::InitSelect()
 }
 
 //=============================================================================
+// フォントの削除処理
+//=============================================================================
+void CCharSelect_Window::UninitFont()
+{
+	// フォントの削除
+	if (m_pFont != nullptr)
+	{
+		m_pFont->Uninit();
+		m_pFont = nullptr;
+	}
+}
+
+//=============================================================================
 // 選択肢の処理
 //=============================================================================
 void CCharSelect_Window::CharSelectChoice()
@@ -314,7 +435,7 @@ void CCharSelect_Window::CharSelectChoice()
 	CInput* pInput = CInput::GetKey();
 
 	// フェード中では無い場合 && 表示中の場合
-	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE && m_bDisplay == true)
+	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE && m_bCharSelectWindowDisplay == true)
 	{
 		// 選択肢が使用されている場合
 		if (!m_vpListChoice.empty())
@@ -324,42 +445,42 @@ void CCharSelect_Window::CharSelectChoice()
 			if (m_vpListChoice.size() >= 2)
 			{
 				// 上に移動する
-				if (pInput->Trigger(DIK_A) || (pInput->Trigger(JOYPAD_UP, m_nMenuInitiative)))
+				if (pInput->Trigger(DIK_A) || (pInput->Trigger(JOYPAD_UP)))
 				{
 					// 選択SE
 					CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 
 					// 現在の番号が0以下である場合
-					CharSelectChangeChoice(m_nSelectChoice <= 0 ? m_vpListChoice.size() - 1 : m_nSelectChoice - 1);
+					CharSelectChangeChoice(m_nCharSelectWindowSelectChoice <= 0 ? m_vpListChoice.size() - 1 : m_nCharSelectWindowSelectChoice - 1);
 				}
 				// 下に移動する
-				else if (pInput->Trigger(DIK_D) || (pInput->Trigger(JOYPAD_DOWN, m_nMenuInitiative)))
+				else if (pInput->Trigger(DIK_D) || (pInput->Trigger(JOYPAD_DOWN)))
 				{
 					//m_bInputFlag = true;
 					// 選択SE
 					CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 
 					// 現在の番号が最大数以上の場合
-					CharSelectChangeChoice(m_nSelectChoice >= ((int)m_vpListChoice.size() - 1) ? 0 : m_nSelectChoice + 1);
+					CharSelectChangeChoice(m_nCharSelectWindowSelectChoice >= ((int)m_vpListChoice.size() - 1) ? 0 : m_nCharSelectWindowSelectChoice + 1);
 				}
 			}
 
-			if (pInput->Trigger(DIK_RETURN) || (pInput->Trigger(JOYPAD_B, m_nMenuInitiative) || pInput->Trigger(JOYPAD_A, m_nMenuInitiative)))
+			if (pInput->Trigger(DIK_RETURN) || (pInput->Trigger(JOYPAD_B) || pInput->Trigger(JOYPAD_A)))
 			{
 				// 決定SE
 				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 
 				// 選択を決定する
-				m_bDecition = true;
+				m_bCharSelectWindowDecition = true;
 			}
 			// 決定された場合
-			if (m_bDecition == true)
+			if (m_bCharSelectWindowDecition == true)
 			{
 				for (int nCnt = 0; nCnt < 4; nCnt++)
 				{
-					if (m_nSelectChoice == nCnt)
+					if (m_nCharSelectWindowSelectChoice == nCnt)
 					{
-						m_bScale = true;
+						m_bCharSelectWindowScale = true;
 						SetCharSelectDisplay(false);
 					}
 				}
@@ -374,15 +495,15 @@ void CCharSelect_Window::CharSelectChoice()
 void CCharSelect_Window::CharSelectChangeChoice(const int nextChoice)
 {
 	// 現在の選択肢の処理
-	m_vpListChoice[m_nSelectChoice]->BlinkFinish();
-	m_vpListChoice[m_nSelectChoice]->SetAlpha(MINI_ALPHA);
+	m_vpListChoice[m_nCharSelectWindowSelectChoice]->BlinkFinish();
+	m_vpListChoice[m_nCharSelectWindowSelectChoice]->SetAlpha(MINI_ALPHA);
 
 	// 選択肢の変更
-	m_nSelectChoice = (int)nextChoice;
+	m_nCharSelectWindowSelectChoice = (int)nextChoice;
 
 	// 変更後の選択肢の処理
-	m_vpListChoice[m_nSelectChoice]->SetBlink(m_fBlinkSpeed);
-	m_vpListChoice[m_nSelectChoice]->SetAlpha(1.0f);
+	m_vpListChoice[m_nCharSelectWindowSelectChoice]->SetBlink(m_fCharSelectWindowBlinkSpeed);
+	m_vpListChoice[m_nCharSelectWindowSelectChoice]->SetAlpha(1.0f);
 }
 
 //============================================================================
@@ -390,84 +511,37 @@ void CCharSelect_Window::CharSelectChangeChoice(const int nextChoice)
 //============================================================================
 void CCharSelect_Window::SetSelectChoice(int index)
 {
-	m_nSelectChoice = index;
+	// 選択した番号を保存する
+	m_nCharSelectWindowSelectChoice = index;
 
-	if (m_nSelectChoice == -1)
+	// 選択した番号が0以下だったら
+	if (m_nCharSelectWindowSelectChoice == -1)
 	{
-		m_nSelectChoice = 3;
+		// 番号を3にする
+		m_nCharSelectWindowSelectChoice = 3;
 	}
-	if (m_nSelectChoice == 4)
+	// 選択した番号が4以上だったら
+	if (m_nCharSelectWindowSelectChoice == 4)
 	{
-		m_nSelectChoice = 0;
+		// 番号を0にする
+		m_nCharSelectWindowSelectChoice = 0;
 	}
 
 	// キャラごと
 	if (m_pCharDecision != nullptr && m_pCharDecision->GetMaxScale() == true)
 	{
-		std::string SkillName;
-
 		if (CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetExplanationUninit() == false)
 		{
 			if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
 			{
-				std::string Name = "ストライカー";
-
-				if (m_nSelectChoice == 0)
-				{
-					SkillName = "ラッシュ";
-					CharName(Name, SkillName);
-					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RUSH, CTexture::TEXTURE_FONT_JAPANESE_VER2);
-				}
-				if (m_nSelectChoice == 1)
-				{
-					SkillName = "ヴァンガード";
-					CharName(Name, SkillName);
-					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_VANGUARD, CTexture::TEXTURE_FONT_JAPANESE_VER2);
-				}
-				if (m_nSelectChoice == 2)
-				{
-					SkillName = "イーグルアイ";
-					CharName(Name, SkillName);
-					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_EAGLEEYE, CTexture::TEXTURE_FONT_JAPANESE_VER2);
-				}
-				if (m_nSelectChoice == 3 || m_nSelectChoice == -1)
-				{
-					SkillName = "マーシャル";
-					CharName(Name, SkillName);
-					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MARSHALL, CTexture::TEXTURE_FONT_JAPANESE_VER2);
-				}
+				SetSkillSelectChoice("ストライカー", "ラッシュ", "ヴァンガード", "イーグルアイ", "マーシャル");
 			}
 		}
 		if (CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetExplanationUninit() == false)
 		{
 			if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == false)
 			{
-				std::string Name = "コマンダー";
-
-				if (m_nSelectChoice == 0)
-				{
-					SkillName = "メカニック";
-					CharName(Name, SkillName);
-					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_MECHANIC, CTexture::TEXTURE_FONT_JAPANESE_VER2);
-				}
-				if (m_nSelectChoice == 1)
-				{
-					SkillName = "レイダー";
-					CharName(Name, SkillName);
-					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_RAIDER, CTexture::TEXTURE_FONT_JAPANESE_VER2);
-				}
-				if (m_nSelectChoice == 2)
-				{
-					SkillName = "アークフィリア";
-					CharName(Name, SkillName);
-					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_ARCPHILIA, CTexture::TEXTURE_FONT_JAPANESE_VER2);
-				}
-				if (m_nSelectChoice == 3 || m_nSelectChoice == -1)
-				{
-					SkillName = "コントロール";
-					CharName(Name, SkillName);
-					CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->SetTextue(CTexture::TEXTURE_SKILL_CONTROL, CTexture::TEXTURE_FONT_JAPANESE_VER2);
-				}
+				SetSkillSelectChoice("コマンダー", "メカニック", "レイダー", "アークフィリア", "コントロール");
 			}
 		}
 	}
@@ -478,15 +552,8 @@ void CCharSelect_Window::SetSelectChoice(int index)
 //============================================================================
 void CCharSelect_Window::SetCharSelectDisplay(const bool display)
 {
-	m_bDisplay = display;
+	m_bCharSelectWindowDisplay = display;
 	for (auto pChoice : GetChoiceAll()) { pChoice->SetFontDraw(display); }
-
-	//// 表示を消す場合
-	//if (m_bDisplay == false)
-	//{
-	//	// 選択肢の情報を初期化する
-	//	CharSelectChangeChoice(0);
-	//}
 }
 
 //============================================================================
@@ -495,15 +562,15 @@ void CCharSelect_Window::SetCharSelectDisplay(const bool display)
 CCharSelect_Window * CCharSelect_Window::Create(D3DXVECTOR3 pos, float xsize, float ysize, D3DXCOLOR col)
 {
 	//クラスの生成
-	CCharSelect_Window* pCharSelect = new CCharSelect_Window;
+	CCharSelect_Window* pCharSelect = new CCharSelect_Window; 
 
 	//nullチェック
 	if (pCharSelect != nullptr)
 	{
 		pCharSelect->m_pos = pos;
 		pCharSelect->m_Color = col;
-		pCharSelect->m_MaxSizeX = xsize;
-		pCharSelect->m_MaxSizeY = ysize;
+		pCharSelect->m_CharSelectWindowMaxSize.x = xsize;
+		pCharSelect->m_CharSelectWindowMaxSize.y = ysize;
 		//初期化処理
 		pCharSelect->Init();
 	}

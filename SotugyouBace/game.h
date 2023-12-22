@@ -30,6 +30,7 @@ class CPause;
 class CPlayer_Parameter;
 class CWeapon_Parameter;
 class CMap_Object_Manager;
+class CFog;
 
 class CGame : public CMode
 {
@@ -70,12 +71,15 @@ private:
 
 	static bool m_bGameEnd;							// ゲーム終了判定
 	static bool m_bGameWindow;
-	bool m_bInputFlag;
+	static bool m_bInputFlag;
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
 
 	static CPlayerUi* m_pPlayer_UI[CPlayerUi::UITYPE_MAX];
+	CPlayerUi* m_pPlayerUI;
+	CFog* m_pFog;
+	
 	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ
 	static CPlayerManager* m_pPlayerManager;
 	static CEnemyManager* m_pEnemyManager;

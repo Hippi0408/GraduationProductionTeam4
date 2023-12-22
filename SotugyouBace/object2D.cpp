@@ -69,7 +69,7 @@ HRESULT CObject2D::Init()
 	pVtx[3].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	// rhwÇÃê›íË
-	pVtx[0].rhw = 1.0f;
+	pVtx[0].rhw = 1.0f; 
 	pVtx[1].rhw = 1.0f;
 	pVtx[2].rhw = 1.0f;
 	pVtx[3].rhw = 1.0f;
