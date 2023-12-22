@@ -44,6 +44,7 @@
     <ClCompile Include="energy_gauge.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="fog.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="fontString.cpp" />
     <ClCompile Include="game.cpp" />
@@ -86,6 +87,7 @@
     <ClCompile Include="parts_file.cpp" />
     <ClCompile Include="pc.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="playerdata.cpp" />
     <ClCompile Include="player_life_gauge.cpp" />
     <ClCompile Include="player_manager.cpp" />
     <ClCompile Include="player_parameter.cpp" />
@@ -137,6 +139,7 @@
     <ClInclude Include="energy_gauge.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="fog.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="fontString.h" />
     <ClInclude Include="game.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="parts_file.h" />
     <ClInclude Include="pc.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playerdata.h" />
     <ClInclude Include="player_life_gauge.h" />
     <ClInclude Include="player_manager.h" />
     <ClInclude Include="player_parameter.h" />

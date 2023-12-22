@@ -39,6 +39,7 @@
 #include "player_parameter.h"
 #include "weapon_parameter.h"
 #include "map_object_manager.h"
+#include "fog.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -52,6 +53,7 @@ CCollision_Manager* CGame::m_pCollision_Manager = nullptr;
 CMeshField *CGame::m_pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
+bool CGame::m_bInputFlag = false;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPause *CGame::m_pPause = nullptr;
 CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
@@ -108,6 +110,10 @@ HRESULT CGame::Init()
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
 	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
+	m_pPlayerManager = CPlayerManager::Create();				// プレイヤーマネージャーの生成
+	m_pEnemyManager = new CEnemyManager;						// 敵キャラマネージャーの生成
+	m_pDropManager = new CDropManager;							// 落とし物マネージャーの生成
+	m_pCollision_Manager = new CCollision_Manager;				// 当たり判定マネージャーの生成
 	m_pMap_Object_Manager = new CMap_Object_Manager;
 
 	// 全てのモデルパーツの読み込み
@@ -257,6 +263,9 @@ void CGame::Update()
 {
 	// メニューウィンドウ処理
 	MenuWindow();
+
+	// フォグの設定
+	CFog::SetFog(D3DXCOLOR(0.2f, 1.0f, 0.5f, 1.0f));
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
@@ -411,18 +420,19 @@ void CGame::MenuWindow()
 {
 	CInput* pInput = CInput::GetKey();
 	//// 現在のモード
-	//CApplication::MODE Mode = CApplication::GetModeType();
+	CApplication::MODE Mode = CApplication::GetModeType();
 
 	//if (Mode == CApplication::MODE_GAME)
 	//{
-	//	if (this != nullptr && m_bInputFlag == true)
+	//	if (this != nullptr && m_bInputFlag == false)
 	//	{
 	//		pInput->SetKeyLock(100);
+	//		m_bInputFlag = true;
 	//	}
-	//		else if (this != nullptr && m_bInputFlag == false)
+	///*	else if (this != nullptr && m_bInputFlag == true)
 	//	{
-	//	pInput->UnlockKey(100);
-	//	}
+	//		pInput->UnlockKey(100);
+	//	}*/
 	//}
 	if (m_pConfirmationWindow == nullptr)
 	{
