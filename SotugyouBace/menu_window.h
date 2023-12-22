@@ -1,34 +1,34 @@
-//==============================================
+//=============================================================================
 //
 // menu_window.h (メニューウィンドウ.h)
 // Author : Saito Shian
 //
-//==============================================
+//=============================================================================
 #ifndef  _MENU_WINDOW_H_				//このマクロ定義がされてなかったら
 #define  _MENU_WINDOW_H_				//二重インクルード防止のマクロ定義
 
-//==============================================
+//=============================================================================
 // インクルード
-//==============================================
+//=============================================================================
 #include "main.h"
 #include "object.h"
 
-//==============================================
+//=============================================================================
 // 前方宣言
-//==============================================
+//=============================================================================
 class CObject2D;
 
-//==============================================
+//=============================================================================
 // メニューウィンドウクラス
-//==============================================
+//=============================================================================
 class CMenuWindow
 {
-public:
-	const float SizeXScaleSpeed = 11.8f;
-	const float SizeYScaleSpeed = 7.5f;
-	const float SizeXScaleMax = 500.0f;
-	const float SizeYScaleMax = 220.0f;
+	const float SizeXScaleSpeed = 31.8f;	// Xサイズ拡大縮小のスピード
+	const float SizeYScaleSpeed = 27.5f;	// Yサイズ拡大縮小のスピード
+	const float SizeXScaleMax = 500.0f;		// Xサイズの最大サイズ
+	const float SizeYScaleMax = 220.0f;		// Yサイズの最大サイズ
 
+public:
 	CMenuWindow();							// メニューウィンドウのコンストラクタ
 	~CMenuWindow();							// メニューウィンドウのデストラクタ
 
@@ -36,19 +36,17 @@ public:
 	void Uninit();							// 終了処理
 	void Update();							// 更新処理
 
-	void MenuScale();						// メニューのサイズ処理
-	bool MenuScaleReduce();					// メニューのサイズ縮小処理
+	void MenuWindowScale();					// メニューのサイズ処理
+	bool MenuWindowScaleReduce();			// メニューのサイズ縮小処理
 
 	static CMenuWindow* Create();			// 生成
 
 private:
-	CObject2D* m_pObject2D;
+	CObject2D* m_pMenuWindow;				// メニューウィンドウ用object2Dのインスタンス
+	D3DXVECTOR2 m_MenuWindowSize;			// メニューウィンドウのサイズ
 
-	float m_SizeX;
-	float m_SizeY;
-
-	bool m_bMaxSize;
-	bool m_bScaleFlag;						// メニューウィンドウが
+	bool m_bMenuWindowMaxSize;				// 最大サイズまで行ったのか
+	bool m_bMenuWindowScaleFlag;			// 拡大縮小フラグ
 };
 #endif
 

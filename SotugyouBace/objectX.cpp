@@ -99,7 +99,7 @@ void CObjectX::Draw()
 		}
 		else if (m_bParts == true)
 		{// 現在のMatrix(PlayerのMatrix)を取得
-			pDevice->GetTransform(D3DTS_WORLD, &mtxParent);
+			pDevice->GetTransform(D3DTS_WORLD, &mtxParent); 
 
 			// 親のマトリックスとかける
 			D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);

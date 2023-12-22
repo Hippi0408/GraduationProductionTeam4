@@ -3,6 +3,7 @@
 // レンダリング処理　　　renderer.h
 // Author : tutida ryousei
 // Author : tanimoto kosuke
+// Autor : Saito Shian
 //
 //==============================================================================================
 #ifndef _RENDERER_H_
