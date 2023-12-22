@@ -18,10 +18,6 @@
 #include "confirmation_window.h"
 
 //=============================================================================
-// 静的メンバ変数宣言
-//=============================================================================
-
-//=============================================================================
 // コンストラクタ
 //=============================================================================
 CMenuWindow::CMenuWindow()
@@ -44,11 +40,10 @@ HRESULT CMenuWindow::Init()
 	//==================================================
 	// メンバ変数の初期化
 	//==================================================  
-	m_SizeX = 0.0f;
-	m_SizeY = 0.0f;
-	m_bScaleFlag = false;
-	m_pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f),CObject::PRIORITY_FRONT);
-	m_pObject2D->SetCol(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
+	m_MenuWindowSize = D3DXVECTOR2(0.0f, 0.0f);
+	m_bMenuWindowScaleFlag = false;
+	m_pMenuWindow = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f),CObject::PRIORITY_FRONT);
+	m_pMenuWindow->SetCol(D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f));
 
 	return S_OK;
 }
@@ -59,10 +54,10 @@ HRESULT CMenuWindow::Init()
 void CMenuWindow::Uninit()
 {
 	//メンバ変数の初期化
-	if (m_pObject2D != nullptr)
+	if (m_pMenuWindow != nullptr)
 	{
-		m_pObject2D->Uninit();
-		m_pObject2D = nullptr;
+		m_pMenuWindow->Uninit();
+		m_pMenuWindow = nullptr;
 	}
 }
 
@@ -71,82 +66,86 @@ void CMenuWindow::Uninit()
 //=============================================================================
 void CMenuWindow::Update()
 {
-	if (CTitle::GetUninitWindow() == false && m_bScaleFlag == false)
-	{ // メニューのサイズ拡大処理
-		MenuScale();
+	if (CTitle::GetUninitWindow() == false && m_bMenuWindowScaleFlag == false)
+	{ 
+		// メニューのサイズ拡大処理
+		MenuWindowScale();
 	}
 }
 
 //=============================================================================
 // メニューのサイズ拡大処理
 //=============================================================================
-void CMenuWindow::MenuScale()
+void CMenuWindow::MenuWindowScale()
 {
-	if (m_pObject2D != nullptr)
+	if (m_pMenuWindow != nullptr)
 	{// nullチェック
 		// サイズの拡大
-		m_SizeX += SizeXScaleSpeed;
-		m_SizeY += SizeYScaleSpeed;
+		m_MenuWindowSize.x += SizeXScaleSpeed;
+		m_MenuWindowSize.y += SizeYScaleSpeed;
 
-		if (m_SizeX >= SizeXScaleMax)
+		if (m_MenuWindowSize.x >= SizeXScaleMax)
 		{// Xサイズの最大
-			m_SizeX = SizeXScaleMax;
+			m_MenuWindowSize.x = SizeXScaleMax;
 		}
-		if (m_SizeY >= SizeYScaleMax)
+		if (m_MenuWindowSize.y >= SizeYScaleMax)
 		{// Yサイズの最大
-			m_SizeY = SizeYScaleMax;
+			m_MenuWindowSize.y = SizeYScaleMax;
 		}
 
 		// ウィンドウが最大値まで行ったら
-		if (m_SizeX >= SizeXScaleMax && m_SizeY >= SizeYScaleMax)
+		if (m_MenuWindowSize.x >= SizeXScaleMax && m_MenuWindowSize.y >= SizeYScaleMax)
 		{
 			CApplication::GetMenu()->SetDisplay(true);		// メニュー画面の表示
 			CTitle::SetWindow(true);						// ウィンドウを使用している状態にする
-			m_bScaleFlag = true;
+			m_bMenuWindowScaleFlag = true;					// 拡大された
 		}
 
 		// サイズの設定
-		m_pObject2D->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		m_pMenuWindow->SetSize(D3DXVECTOR2(m_MenuWindowSize.x, m_MenuWindowSize.y));
 	}
 }
 
 //=============================================================================
 // メニューのサイズ縮小処理処理
 //=============================================================================
-bool CMenuWindow::MenuScaleReduce()
+bool CMenuWindow::MenuWindowScaleReduce()
 {
-	if (m_pObject2D != nullptr)
+	if (m_pMenuWindow != nullptr)
 	{// nullチェック
 		// サイズの縮小
-		m_SizeX -= SizeXScaleSpeed;
-		m_SizeY -= SizeYScaleSpeed;
+		m_MenuWindowSize.x -= SizeXScaleSpeed;
+		m_MenuWindowSize.y -= SizeYScaleSpeed;
 
-		if (m_SizeX <= 0.0f)
+		if (m_MenuWindowSize.x <= 0.0f)
 		{// Xサイズの最小
-			m_SizeX = 0.0f;
+			m_MenuWindowSize.x = 0.0f;
 		}
-		if (m_SizeY <= 0.0f)
+		if (m_MenuWindowSize.y <= 0.0f)
 		{// Yサイズの最小
-			m_SizeY = 0.0f;
+			m_MenuWindowSize.y = 0.0f;
 		}
 
 		// ウィンドウが最小値まで行ったら
-		if (m_SizeX <= 0.0f && m_SizeY <= 0.0f)
+		if (m_MenuWindowSize.x <= 0.0f && m_MenuWindowSize.y <= 0.0f)
 		{
+			// ウィンドウ生成の設定処理
 			CTitleMenu::GetComfirmationWindow()->SetSapawnWindow(false);
+
 			if (CTitleMenu::GetComfirmationWindow()->GetSelectChoice() == true)
-			{
+			{// ゲームをやめたら
+
+				// ウィンドウの削除
 				DestroyWindow(CApplication::GetWindow());
 			}
-		
-			//Uninit();						// メニューウィンドウの削除
-			CTitle::UninitMenuWindow();
-			CTitleMenu::UninitComfirmationWindow();
+
+			CTitle::UninitMenuWindow();					// メニューウィンドウを破棄する処理		
+			CTitleMenu::UninitComfirmationWindow();		// 確認ウィンドウを破棄する処理
 			return true;
 		}
 
 		// サイズの設定
-		m_pObject2D->SetSize(D3DXVECTOR2(m_SizeX, m_SizeY));
+		m_pMenuWindow->SetSize(D3DXVECTOR2(m_MenuWindowSize.x, m_MenuWindowSize.y));
 	}
 	return false;
 }

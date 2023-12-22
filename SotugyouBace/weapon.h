@@ -53,13 +53,9 @@ public:
 
 	static CWeapon* Create(const D3DXVECTOR3 pos, const int type, CObjectX* parent = nullptr);
 
-	void SetType(const int type) { m_nWeaponType = type; }
-
 private:
 	static const char* m_cWeaponFileName[WEAPON_MAX];		// 武器のファイル名
 	static const PARAMETERS m_WeaponPaeameters[WEAPON_MAX];	// 武器のパラメーター情報
-
-	int m_nWeaponType;	// 武器の種類
 };
 
 #endif// _WEAPON_H_

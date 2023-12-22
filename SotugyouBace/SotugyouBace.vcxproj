@@ -47,6 +47,7 @@
     <ClCompile Include="energy_gauge.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="fog.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="fontString.cpp" />
     <ClCompile Include="game.cpp" />
@@ -89,12 +90,14 @@
     <ClCompile Include="parts_file.cpp" />
     <ClCompile Include="pc.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="playerdata.cpp" />
     <ClCompile Include="player_life_gauge.cpp" />
     <ClCompile Include="player_manager.cpp" />
     <ClCompile Include="player_parameter.cpp" />
     <ClCompile Include="player_ui.cpp" />
     <ClCompile Include="precompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="restraint_switch.cpp" />
@@ -112,6 +115,7 @@
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="udp_client.cpp" />
     <ClCompile Include="weapon.cpp" />
+    <ClCompile Include="weapon_parameter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -142,6 +146,7 @@
     <ClInclude Include="energy_gauge.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="fog.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="fontString.h" />
     <ClInclude Include="game.h" />
@@ -185,6 +190,7 @@
     <ClInclude Include="parts_file.h" />
     <ClInclude Include="pc.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playerdata.h" />
     <ClInclude Include="player_life_gauge.h" />
     <ClInclude Include="player_manager.h" />
     <ClInclude Include="player_parameter.h" />
@@ -207,6 +213,7 @@
     <ClInclude Include="udp_client.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="weapon.h" />
+    <ClInclude Include="weapon_parameter.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33988321-C2B8-45BE-9836-B21C2E84733F}</ProjectGuid>
@@ -309,13 +316,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <PrecompiledHeaderFile>precompile.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompile.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

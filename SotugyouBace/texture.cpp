@@ -82,6 +82,15 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/job/job_Arcphilia.png",			// アークフィリア
 	"Data/texture/job/job_Control.png",				// コントロール
 
+	"Data/texture/job/JobSelect_Rush.png",				// ラッシュ
+	"Data/texture/job/JobSelect_Vanguard.png",			// ヴァンガード
+	"Data/texture/job/JobSelect_Eagleeye.png",			// イーグルアイ
+	"Data/texture/job/JobSelect_Marshall.png",			// マーシャル
+	"Data/texture/job/JobSelect_Mechanic.png",			// メカニック
+	"Data/texture/job/JobSelect_Raider.png",			// レイダー
+	"Data/texture/job/JobSelect_Arcphilia.png",			// アークフィリア
+	"Data/texture/job/JobSelect_Control.png",			// コントロール
+
 };
 
 static_assert(sizeof(CTexture::s_FileName) / sizeof(CTexture::s_FileName[0]) == CTexture::TEXTURE_MAX, "aho");

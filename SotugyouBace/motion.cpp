@@ -10,7 +10,6 @@ const char* CMotion::m_cMotionFileName[] =
 {
 	"Data\\text\\Motion\\Player\\motion_Player_Body.txt",
 	"Data\\text\\Motion\\Player\\motion_Player_Arms.txt",
-
 	"Data\\text\\Motion\\Player\\motion_Player_Leg.txt",
 
 	"Data\\text\\Motion\\Mob\\motion_mob.txt",
