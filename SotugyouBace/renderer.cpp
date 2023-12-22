@@ -160,15 +160,19 @@ void CRenderer::Update()
 		// 現在のモード
 		CApplication::MODE Mode = CApplication::GetModeType();
 
+		CCollision_Manager* pCollisionManager = nullptr;
+
 		// 当たり判定の更新処理
 		if (Mode == CApplication::MODE_TUTORIAL)
 		{
-			CTutorial::GetCollision_Manager()->UpdateAll();
+			pCollisionManager = CTutorial::GetCollision_Manager();
 		}
 		else if (Mode == CApplication::MODE_GAME)
 		{
-			CGame::GetCollision_Manager()->UpdateAll();
+			pCollisionManager = CGame::GetCollision_Manager();
 		}
+		// 当たり判定マネージャーが生成されている場合
+		if (pCollisionManager != nullptr) pCollisionManager->UpdateAll();
 	}
 }
 
