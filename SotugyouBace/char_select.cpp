@@ -61,11 +61,8 @@ HRESULT CChar_Select::Init()
 
 	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
 	{
-		m_pObjectX[nCnt] = CObjectX::Create(D3DXVECTOR3(-80.0f + 55.0f * nCnt, 600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f + 0.5f * nCnt, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
+		m_pObjectX[nCnt] = CObjectX::Create(D3DXVECTOR3(-80.0f + 55.0f * nCnt, 600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f + 0.25f * nCnt, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
 	}
-	//m_pObjectX[1] = CObjectX::Create(D3DXVECTOR3(-25.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
-	//m_pObjectX[2] = CObjectX::Create(D3DXVECTOR3(30.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
-	//m_pObjectX[3] = CObjectX::Create(D3DXVECTOR3(85.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
 
 	m_pWareHouse = CObjectX::Create(D3DXVECTOR3(0.0f, 300.0f, 1000.0f), D3DXVECTOR3(0.0f, 0.0, 0.0f), nullptr, "Data/model/CharacterSelect/Warehouse.x");
 
@@ -151,7 +148,7 @@ void CChar_Select::Update()
 	}
 
 	// ƒLƒƒƒ‰Ø‚è‘Ö‚¦ˆ—
-	CharSwitching(2);
+	CharSwitching(0);
 }
 
 //==============================================================================================
