@@ -80,8 +80,9 @@ void CCannon::Update()
 
 	float fRotDest = 0.0f;
 	D3DXVECTOR3 Vec = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 Boss_Pos = { 0.0f,0.0f,0.0f };
 
-	if (m_bTarget)
+	if (!m_bTarget)
 	{
 		// 現在のモード
 		CApplication::MODE Mode = CApplication::GetModeType();
@@ -100,8 +101,10 @@ void CCannon::Update()
 			if (pEnemy->GetEnemyType() == CEnemy::ENEMY_TYPE_BOSS
 				&& pEnemy->GetLife() != 0)
 			{
+				Boss_Pos = pEnemy->GetCenterPos();
+
 				// ボスまでのベクトル
-				Vec = pEnemy->GetPos() - GetPos();
+				Vec = Boss_Pos - GetPos();
 
 				// 目的の角度
 				fRotDest = atan2(Vec.x, Vec.z);
@@ -111,6 +114,20 @@ void CCannon::Update()
 
 				// 砲台がボスの方を向く
 				GetObjectX()->SetRot({ 0.0f,m_fRot,0.0f });
+
+				// 距離
+				float Dis = sqrt(Vec.x * Vec.x + Vec.z * Vec.z);
+
+				if (pRestraint->GetCountSwitch() == 0
+					&& m_pChain_Manager == nullptr)
+				{
+					m_nChain_Count++;
+
+					if (m_nChain_Count >= 120)
+						// 鎖の発射
+						m_pChain_Manager = CChain_Manager::Create(GetPos(), Vec, Dis, fRotDest + D3DX_PI / 2, 300);
+				}
+
 				break;
 			}
 		}
@@ -127,7 +144,7 @@ void CCannon::Draw()
 //==============================================================================================
 // ヒット処理
 //==============================================================================================
-void CCannon::Hit(CMove_Object* pHit)
+void CCannon::Hit(CMove_Object* /*pHit*/)
 {
 }
 

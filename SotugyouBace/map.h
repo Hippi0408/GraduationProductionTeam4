@@ -7,7 +7,8 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
-class CRestraint_Switch;
+#include"restraint_switch.h"
+
 class CCannon;
 
 class CMap
@@ -21,7 +22,7 @@ public:
 	CRestraint_Switch *GetRestraint_Switch(int index) { return m_pRestraint_Switch[index]; }
 
 private:
-	CRestraint_Switch *m_pRestraint_Switch[4];
+	CRestraint_Switch *m_pRestraint_Switch[CRestraint_Switch::SWITHC_NUM];
 };
 
 #endif // !_MAP_H_

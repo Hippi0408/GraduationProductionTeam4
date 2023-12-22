@@ -125,7 +125,7 @@ HRESULT CGame::Init()
 	}
 	
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 5000.0f });
+	CBoss::Create({ 0.0f, 0.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
@@ -350,7 +350,7 @@ void CGame::Update()
 #endif
 
 		//オンラインの送信
-		if (CApplication::GetClient()->GetIsConnect())
+		/*if (CApplication::GetClient()->GetIsConnect())
 		{
 			CModelData::SSendEnemy sendData;
 			sendData.m_pos = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
@@ -365,7 +365,7 @@ void CGame::Update()
 			sendData.m_pushBomComands = 0;
 
 			CApplication::GetClient()->SendPlayerData(sendData);
-		}
+		}*/
 	}
 }
 

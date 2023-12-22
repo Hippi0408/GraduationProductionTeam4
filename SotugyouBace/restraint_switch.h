@@ -12,6 +12,9 @@
 class CRestraint_Switch : public CMove_Object
 {
 public:
+	// スイッチの数
+	static const int SWITHC_NUM = 4;
+
 	CRestraint_Switch(const PRIORITY priority);
 	~CRestraint_Switch();
 

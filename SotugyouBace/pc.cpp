@@ -328,7 +328,7 @@ void CPC::Input()
 		}
 	}
 
-	for (int nCnt = 0; nCnt < 4; nCnt++)
+	for (int nCnt = 0; nCnt < CRestraint_Switch::SWITHC_NUM; nCnt++)
 	{
 		// 拘束スイッチの取得
 		CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);

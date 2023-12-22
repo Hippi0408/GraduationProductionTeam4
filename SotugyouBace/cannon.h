@@ -8,6 +8,7 @@
 #define	_CANNON_H_
 
 #include"move_object.h"
+#include"chain_manager.h"
 
 class CCannon : public CMove_Object
 {
@@ -25,8 +26,10 @@ public:
 
 private:
 	int m_nIndex;
-	bool m_bTarget;
+	int m_nChain_Count;
 	float m_fRot;
+	bool m_bTarget;
+	CChain_Manager *m_pChain_Manager;
 };
 
 #endif // !_CANNON_H_
