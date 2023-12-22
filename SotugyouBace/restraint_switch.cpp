@@ -9,6 +9,7 @@
 #include"debugProc.h"
 #include"cannon.h"
 #include"map_object.h"
+#include"object3D.h"
 
 int CRestraint_Switch::m_nCount_Switch = 0;
 
@@ -56,6 +57,10 @@ HRESULT CRestraint_Switch::Init()
 	CMap_Object::Create({ GetPos().x,GetPos().y + 300.0f,GetPos().z }, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Down.x");
 	CCannon::Create({ GetPos().x,GetPos().y + 330.0f,GetPos().z }, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Up.x", m_nIndex);
 
+	m_pPick_Up = CObject3D::Create({ GetPos().x, GetPos().y + 120.0f, GetPos().z }, { 70.0f,70.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+	m_pPick_Up->SetTexture(CTexture::TEXTURE_KEY_E);
+	m_pPick_Up->SetDrawFlag(false);
+
 	return S_OK;
 }
 
@@ -73,6 +78,11 @@ void CRestraint_Switch::Uninit()
 void CRestraint_Switch::Update()
 {
 	CMove_Object::Update();
+
+	if (!m_bPush)
+		m_pPick_Up->SetDrawFlag(m_bHit);
+	else
+		m_pPick_Up->SetDrawFlag(false);
 
 	m_bHit = false;
 }

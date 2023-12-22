@@ -85,7 +85,9 @@ void CChain_Manager::Update()
 		m_pChain[1][nCnt]->SetPos(m_Pos + (float)nCnt * m_Vec);
 	}
 
+	// アンカーの位置
 	D3DXVECTOR3 Anchor_Pos = m_Pos + m_nNumChain * m_Vec;
+
 	// 鎖の先に付けるアンカーの移動
 	m_pAnchor->SetPos({ Anchor_Pos.x,Anchor_Pos.y - CHAIN_SIZE_Y / 4,Anchor_Pos.z });
 
@@ -120,7 +122,8 @@ CChain_Manager *CChain_Manager::Create(D3DXVECTOR3 pos, D3DXVECTOR3 vec, float D
 	if (pChain_Manager != nullptr)
 	{
 		pChain_Manager->m_Pos = { pos.x,pos.y + 50.0f,pos.z };
-		pChain_Manager->m_Vec = /*vec*/{ vec.x,0.0f,vec.z };
+		//pChain_Manager->m_Vec = vec;
+		pChain_Manager->m_Vec = { vec.x,0.0f,vec.z };
 		pChain_Manager->m_fDistance = Distance;
 		pChain_Manager->m_fRot = rot;
 		pChain_Manager->m_nRestraint_Break = breakcount;

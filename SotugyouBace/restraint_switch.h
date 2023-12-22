@@ -9,6 +9,8 @@
 
 #include"move_object.h"
 
+class CObject3D;
+
 class CRestraint_Switch : public CMove_Object
 {
 public:
@@ -38,6 +40,7 @@ private:
 	int m_nIndex;
 	bool m_bPush;
 	bool m_bHit;
+	CObject3D *m_pPick_Up;		// èEÇ§éûÇÃï\é¶
 };
 
 #endif // !_RESTRAINT_SWITCH_H_

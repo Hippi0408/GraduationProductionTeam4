@@ -82,7 +82,7 @@ void CCannon::Update()
 	D3DXVECTOR3 Vec = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 Boss_Pos = { 0.0f,0.0f,0.0f };
 
-	if (!m_bTarget)
+	if (m_bTarget)
 	{
 		// Œ»Ý‚Ìƒ‚[ƒh
 		CApplication::MODE Mode = CApplication::GetModeType();
@@ -118,7 +118,7 @@ void CCannon::Update()
 				// ‹——£
 				float Dis = sqrt(Vec.x * Vec.x + Vec.z * Vec.z);
 
-				if (pRestraint->GetCountSwitch() == 0
+				if (pRestraint->GetCountSwitch() == CRestraint_Switch::SWITHC_NUM
 					&& m_pChain_Manager == nullptr)
 				{
 					m_nChain_Count++;
