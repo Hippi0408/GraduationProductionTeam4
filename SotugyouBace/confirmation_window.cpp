@@ -381,6 +381,7 @@ void CConfirmation_Window::VariableInit()
 	m_bConfimationDecition = false;
 	m_bConfirmasionWindowUse = false;
 	m_bConfimationBack = false;
+	m_bConfimationDisplay = false;
 }
 
 //============================================================================

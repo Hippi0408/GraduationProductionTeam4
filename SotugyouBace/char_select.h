@@ -29,7 +29,7 @@ public:
 	void Uninit() override;
 	void Update() override;
 
-	void CharSwitching();
+	void CharSwitching(int PlayerIndex);
 	void SetModel(int index, const char* Xfilename);
 	void SetPlayerIndex(int index) { m_nPlayerIndex = index; }
 

@@ -110,21 +110,11 @@ void CCharDecision_Window::Update()
 		UninitExplanation();				// フォントの削除
 		m_bScaleReduce = true;
 
-		
-		if (m_pConfirmation == nullptr)
-		{
-			m_pConfirmation = CConfirmation_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), 500.0f, 120.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
-		}
-		if (m_pConfirmation != nullptr)
-		{
-			m_bScaleExpansion = true;
-		}
-
 		////サーバーの接続
 		//CApplication::GetClient()->Init("127.0.0.1", 15678);
 
-		//// 画面遷移
-		//CFade::SetFade(CApplication::MODE_GAME, 0.1f);
+		// 画面遷移
+		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
 
 		// プレイヤーのジョブ番号の設定
 		CApplication::SetPlayerJobIndex(CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice());

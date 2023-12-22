@@ -58,11 +58,16 @@ HRESULT CChar_Select::Init()
 	pCamera->SetPosR({ 0.0f, 0.0f, 100.0f });
 
 	m_pPlayerData->Init();
+
 	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
 	{
-		m_pObjectX[nCnt] = CObjectX::Create(D3DXVECTOR3(-80.0f + 55.0f * nCnt, 600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f + 0.25f * nCnt, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
+		m_pObjectX[nCnt] = CObjectX::Create(D3DXVECTOR3(-80.0f + 55.0f * nCnt, 600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f + 0.5f * nCnt, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
 	}
-	m_pWareHouse = CObjectX::Create(D3DXVECTOR3(0.0f ,0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0, 0.0f), nullptr, "Data/model/CharacterSelect/Warehouse.x");
+	//m_pObjectX[1] = CObjectX::Create(D3DXVECTOR3(-25.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
+	//m_pObjectX[2] = CObjectX::Create(D3DXVECTOR3(30.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
+	//m_pObjectX[3] = CObjectX::Create(D3DXVECTOR3(85.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
+
+	m_pWareHouse = CObjectX::Create(D3DXVECTOR3(0.0f, 300.0f, 1000.0f), D3DXVECTOR3(0.0f, 0.0, 0.0f), nullptr, "Data/model/CharacterSelect/Warehouse.x");
 
 	// ハーフスフィアの生成
 	//m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f),  D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
@@ -146,19 +151,17 @@ void CChar_Select::Update()
 	}
 
 	// キャラ切り替え処理
-	CharSwitching();
+	CharSwitching(2);
 }
 
 //==============================================================================================
 //	キャラ切り替え処理
 //==============================================================================================
-void CChar_Select::CharSwitching()
+void CChar_Select::CharSwitching(int PlayerIndex)
 {
-	m_nPlayerIndex = CApplication::GetPlayerJobIndex();
-	// 1プレイヤー
 	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
 	{
-		if (m_nPlayerIndex == 0)
+		if (nCnt == PlayerIndex)
 		{
 			// 現在の番号の取得
 			m_nIndex = m_pPlayerData->GetPlayerIndex();
