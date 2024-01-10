@@ -24,7 +24,7 @@ MODEL_FILENAME = Data/model/SG_02/SG02_LeftHand.x	# [8]左手
 #------------------------------------------------------------------------------
 NUM_MODEL = 9
 
-ALL_PARTSET
+ALL_PARTSSET
 	
 	PARTSSET
 		INDEX = 0					# ダミー
@@ -62,33 +62,33 @@ ALL_PARTSET
 	END_PARTSSET
 
 	PARTSSET
-		INDEX = 4					# 左上腕
+		INDEX = 5					# 左肩
 		PARENT = 0					# (親)体
 		POS = 11.0 10.0 0.0
 		ROT = 0.0 0.00 0.0
 	END_PARTSSET
 
 	PARTSSET
-		INDEX = 5					# 左前腕
-		PARENT = 4					# (親)左上腕
+		INDEX = 6					# 左前腕
+		PARENT = 5					# (親)左上腕
 		POS = 7.00 -13.00 0.0
 		ROT = 0.0 0.00 0.0
 	END_PARTSSET
 	
 	PARTSSET
-		INDEX = 6					# 左前腕
-		PARENT = 5					# (親)左上腕
+		INDEX = 7					# 左前腕
+		PARENT = 6					# (親)左上腕
 		POS = 0.0 0.00 0.0
 		ROT = 0.0 0.00 0.0
 	END_PARTSSET
 
 	PARTSSET
-		INDEX = 7					# 左手
-		PARENT = 6					# (親)左前腕
+		INDEX = 8					# 左手
+		PARENT = 7					# (親)左前腕
 		POS = 0.0 -18.00 0.0
 		ROT = 0.0 0.00 0.0
 	END_PARTSSET
 
-END_ALL_PARTSET
+END_ALL_PARTSSET
 
 END_SCRIPT		# この行は絶対消さないこと！

@@ -16,7 +16,7 @@ MODEL_FILENAME = Data/model/Mob/mob000.x			# [0]本体
 #------------------------------------------------------------------------------
 NUM_MODEL = 1
 
-ALL_PARTSET
+ALL_PARTSSET
 
 	PARTSSET						# [0]体
 		PARENT = -1					# (親)NULL
@@ -24,6 +24,6 @@ ALL_PARTSET
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 	
-END_ALL_PARTSET
+END_ALL_PARTSSET
 
 END_SCRIPT		# この行は絶対消さないこと！
