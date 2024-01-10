@@ -247,6 +247,10 @@ void CCharSelect_Window::CharSelectMenuScale()
 
 			SetCharSelectDisplay(true);
 			m_bCharSelectWindowMaxSize = true;
+		/*	if (CChar_Select::GetConfimationWindow() != nullptr)
+			{
+				CChar_Select::GetConfimationWindow()->Uninit();
+			}*/
 
 			return;
 		}

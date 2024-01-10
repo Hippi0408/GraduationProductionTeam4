@@ -57,6 +57,7 @@ public:
 	CCharDecision_Window* GetCharDecision() { return m_pCharDecision; }						// キャラ決定インスタンスの取得処理
 	int GetSelectChoice() { return 	m_nCharSelectWindowSelectChoice; }						// 選択肢の番号の取得処理
 	bool GetPreviousWindow() { return m_bPreviousWindowCreate; }							// 前のウィンドウに戻ったのかの取得処理
+	bool GetMaxSize() { return m_bCharSelectWindowMaxSize; }
 
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }						// 選択肢ポインタの取得処理
 	

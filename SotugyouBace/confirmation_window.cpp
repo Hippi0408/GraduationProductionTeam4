@@ -111,6 +111,8 @@ void CConfirmation_Window::Update()
 		&& m_bConfirmasionWindowUse == true)
 	{ // キャラ選択ウィンドウが使われている時 && 前のウィンドウに戻る && このウィンドウが使われているとき
 
+	  // 選択肢の情報を初期化する
+		ChangeChoice(0);
 		m_bConfimationBack = true;		// ウィンドウが戻ってきた
 		m_bConfimationMaxSize = false;	// 最大サイズのフラグの初期化
 		ConfirmatiomnMenuScale();		// 確認ウィンドウの拡大処理
@@ -183,6 +185,7 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 			if (m_bConfimationBack == true)
 			{ // ウィンドウが戻ってきたら
 				VariableInit();					// メンバ変数の初期化処理
+				ChangeChoice(0);				// 選択肢の情報を初期化する
 				UninitCharSelectWindow();		// キャラ選択ウィンドウの破棄処理
 			}
 

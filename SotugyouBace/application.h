@@ -28,6 +28,7 @@ class CParticleManager;
 class CMenu_Window;
 class CParts_File;
 class ConnectManager;
+class CChar_Select;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -76,6 +77,7 @@ public:
 	static CMenu* GetMenu() { return m_pMenu; }
 	static CParts_File* GetPartsFile() { return m_pPartsFile; }
 	static CParticleManager* GetParticleManager() { return m_pParticleManager; }
+	static CChar_Select* GetCharSelect() { return m_pCharSelect; }
 
 	static MODE GetModeType() { return m_modeType; }
 
@@ -101,6 +103,7 @@ private:
 	static CParts_File* m_pPartsFile;
 	static CParticleManager* m_pParticleManager;
 	static ConnectManager* m_pClient;
+	static CChar_Select* m_pCharSelect;
 	CInput* m_pInput;
 
 #ifdef _DEBUG

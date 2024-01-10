@@ -63,7 +63,6 @@ HRESULT CTitle::Init()
 	pCamera->SetPosR({ 0.0f, 200.0f, 0.0f });
 
 	
-
 	m_pGearLogo[0] = CObject2D::Create(TITLE_LOGO_GEAR_POS + D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR2(TITLE_LOGO_GEAR_SIZE, TITLE_LOGO_GEAR_SIZE));
 	m_pGearLogo[0]->SetTexture(CTexture::TEXTURE_TITLE_GEAR_00);
 

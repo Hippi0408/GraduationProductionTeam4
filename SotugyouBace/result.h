@@ -10,6 +10,8 @@
 
 #include"mode.h"
 
+class CHalfSphere;
+
 class CResult : public CMode
 {
 public:
@@ -24,6 +26,8 @@ public:
 	static CResult* Create();
 
 private:
+	CHalfSphere* m_pHalfSphere;
+	int m_Index;
 };
 
 #endif // !_GAME_H_

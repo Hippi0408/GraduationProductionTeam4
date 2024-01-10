@@ -33,6 +33,8 @@ public:
 	void SetModel(int index, const char* Xfilename);
 	void SetPlayerIndex(int index) { m_nPlayerIndex = index; }
 
+	int GetIndex() { return m_nIndex; }
+
 	static CConfirmation_Window* GetConfimationWindow() { return m_pConfirmation; }
 
 	static CChar_Select* Create();

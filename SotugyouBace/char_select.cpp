@@ -49,21 +49,22 @@ HRESULT CChar_Select::Init()
 
 	m_pFont = CFontString::Create({ 280.0f, 200.0f, 0.0f }, { 50.0f, 50.0f }, "キャラクターセレクト");
 
-	// カメラのポインタ
-	CCamera* pCamera = CApplication::GetCamera();
-
-	m_pPlayerData = new CPlayerData;
+	CCamera* pCamera = CApplication::GetCamera();	// カメラのポインタ
+	m_pPlayerData = new CPlayerData;				// プレイヤーデータのインスタンス
 
 	pCamera->SetPosV({ 0.0f, 100.0f, -100.0f });
 	pCamera->SetPosR({ 0.0f, 0.0f, 100.0f });
 
+	// プレイヤーデータの初期化処理
 	m_pPlayerData->Init();
 
+	// プレイヤーデータの生成処理
 	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
 	{
 		m_pObjectX[nCnt] = CObjectX::Create(D3DXVECTOR3(-80.0f + 55.0f * nCnt, 600.0f, 0.0f), D3DXVECTOR3(0.0f, -0.3f + 0.25f * nCnt, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
 	}
 
+	// 倉庫モデルの生成
 	m_pWareHouse = CObjectX::Create(D3DXVECTOR3(0.0f, 300.0f, 1000.0f), D3DXVECTOR3(0.0f, 0.0, 0.0f), nullptr, "Data/model/CharacterSelect/Warehouse.x");
 
 	// ハーフスフィアの生成
@@ -159,16 +160,20 @@ void CChar_Select::CharSwitching(int PlayerIndex)
 	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
 	{
 		if (nCnt == PlayerIndex)
-		{
+		{// 指定したプレイヤーとそのプレイやーと同じ番号だった時
+
 			// 現在の番号の取得
 			m_nIndex = m_pPlayerData->GetPlayerIndex();
 
+			// nullチェック
 			if (CChar_Select::GetConfimationWindow() != nullptr
 				&& CChar_Select::GetConfimationWindow()->GetCharSelect() != nullptr)
 			{
+				// 今選んでいる番号の取得
 				m_nIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
 			}
 
+			// 番号の変更
 			if (m_nIndex <= -1)
 			{
 				m_nIndex = 3;

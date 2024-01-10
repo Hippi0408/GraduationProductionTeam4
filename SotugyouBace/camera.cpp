@@ -72,7 +72,8 @@ void CCamera::Update(void)
 		Perspective();
 	}
 	else if (CApplication::GetModeType() == CApplication::MODE_TITLE
-		|| CApplication::GetModeType() == CApplication::MODE_CHAR_SELECT)
+		|| CApplication::GetModeType() == CApplication::MODE_CHAR_SELECT
+		|| CApplication::GetModeType() == CApplication::MODE_RESULT)
 	{
 		Matrix(D3DXVECTOR3(-0.5f,0.0f,0.0f), D3DXVECTOR3(0.0f, 600.0f, 0.0f));
 	}
