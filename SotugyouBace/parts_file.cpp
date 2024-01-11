@@ -128,9 +128,9 @@ void CParts_File::LoadFile(const char* Xfilename, const int partsIndex)
 						nIndex++;
 					}
 
-					if (strcmp(&m_aString[0], "ALL_PARTSET") == 0)
+					if (strcmp(&m_aString[0], "ALL_PARTSSET") == 0)
 					{
-						while (strcmp(&m_aString[0], "END_ALL_PARTSET") != 0)
+						while (strcmp(&m_aString[0], "END_ALL_PARTSSET") != 0)
 						{
 							fscanf(pFile, "%s", &m_aString[0]);
 

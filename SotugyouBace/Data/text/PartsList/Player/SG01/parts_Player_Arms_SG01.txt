@@ -24,7 +24,7 @@ MODEL_FILENAME = Data/model/SG_01/SG01_LiftHand.x	# [8]左手
 #------------------------------------------------------------------------------
 NUM_MODEL = 9
 
-ALL_PARTSET
+ALL_PARTSSET
 
 	PARTSSET
 		INDEX = 0					# [0]ダミー
@@ -89,6 +89,6 @@ ALL_PARTSET
 		ROT = 0.0 59.7 0.0
 	END_PARTSSET
 
-END_ALL_PARTSET
+END_ALL_PARTSSET
 
 END_SCRIPT		# この行は絶対消さないこと！

@@ -189,7 +189,7 @@ void CPlayer::ChangeMotion()
 		CParts* pParts = GetParts(nCnt);
 
 		// 着地モーションが終了した場合
-		if (pParts->GetMotionStop() == true)
+		if (pParts->GetCurrentMotion() == MOTION_LANDING && pParts->GetMotionStop() == true)
 		{
 			pParts->SetMotion(MOTION_NEUTRAL);
 		}
@@ -702,7 +702,7 @@ void CPlayer::SettingParameter()
 	int nStan_Tolerance = 0;	// スタン許容値
 	int nGravity = 0;			// 重量
 
-	CPlayer_Parameter* pParameter = nullptr;
+	CPlayer_Parameter* pPlayer_Parameter = nullptr;
 	//パラメータの取得
 	/*if (Mode == CApplication::MODE_TUTORIAL)
 	{
@@ -711,20 +711,22 @@ void CPlayer::SettingParameter()
 	else*/
 	if (Mode == CApplication::MODE_GAME)
 	{
-		pParameter = CGame::GetPlayerParameter();
+		pPlayer_Parameter = CGame::GetPlayerParameter();
 	}
+
+	// パーツ毎のパラメーター
 	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
 		switch (nCnt)
 		{
 		case 0:
-			Parameter = pParameter->GetParameterJob(m_Parts_Job[nCnt]);
+			Parameter = pPlayer_Parameter->GetParameterJob(m_Parts_Job[nCnt]);
 			break;
 		case 1:
-			Parameter = pParameter->GetParameterArms(m_Parts_Job[nCnt], m_nArms_Rarity);
+			Parameter = pPlayer_Parameter->GetParameterArms(m_Parts_Job[nCnt], m_nArms_Rarity);
 			break;
 		case 2:
-			Parameter = pParameter->GetParameterLeg(m_Parts_Job[nCnt], m_nLeg_Rarity);
+			Parameter = pPlayer_Parameter->GetParameterLeg(m_Parts_Job[nCnt], m_nLeg_Rarity);
 			break;
 		default:
 			break;

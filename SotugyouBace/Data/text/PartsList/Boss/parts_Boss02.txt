@@ -28,7 +28,7 @@ MODEL_FILENAME = Data/model/Boss/Num02/Hastur_Tentacle.x	# [12]触手
 #------------------------------------------------------------------------------
 NUM_MODEL = 13
 
-ALL_PARTSET
+ALL_PARTSSET
 
 	PARTSSET						# 胴体
 		PARENT = -1					# (親)NULL
@@ -108,6 +108,6 @@ ALL_PARTSET
 		ROT = 0.00 -1.90 0.00
 	END_PARTSSET
 	
-END_ALL_PARTSET
+END_ALL_PARTSSET
 
 END_SCRIPT		# この行は絶対消さないこと！

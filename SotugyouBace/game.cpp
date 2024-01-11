@@ -110,10 +110,6 @@ HRESULT CGame::Init()
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
 	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
-	m_pPlayerManager = CPlayerManager::Create();				// プレイヤーマネージャーの生成
-	m_pEnemyManager = new CEnemyManager;						// 敵キャラマネージャーの生成
-	m_pDropManager = new CDropManager;							// 落とし物マネージャーの生成
-	m_pCollision_Manager = new CCollision_Manager;				// 当たり判定マネージャーの生成
 	m_pMap_Object_Manager = new CMap_Object_Manager;
 
 	// 全てのモデルパーツの読み込み
@@ -244,6 +240,13 @@ void CGame::Uninit()
 			m_pPlayer_UI[nCnt]->Uninit();
 			m_pPlayer_UI[nCnt] = nullptr;
 		}
+	}
+
+	// ポーズの終了処理
+	if (m_pPause != nullptr)
+	{
+		m_pPause->Uninit();
+		m_pPause = nullptr;
 	}
 
 	//マップオブジェクトの破棄

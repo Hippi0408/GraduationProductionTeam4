@@ -112,7 +112,7 @@ void CPlayerUi::SetAlpha()
 	// インプットの取得
 	CInput* pInput = CInput::GetKey();
 
-	if (pInput->Trigger(DIK_E) && m_Type == CPlayerUi::UITYPE_SUPPORT)
+	if (pInput->Trigger(DIK_R) && m_Type == CPlayerUi::UITYPE_SUPPORT)
 	{
 		m_bFlag = true;
 		m_bAlphaFlag = true;
