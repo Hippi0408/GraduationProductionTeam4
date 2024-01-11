@@ -10,8 +10,11 @@
 #include "player.h"
 #include "tcp_client.h"
 #include "udp_client.h"
-
+#include "application.h"
 #include <thread>
+
+bool ConnectManager::m_bTutorialConnecter = false;
+bool ConnectManager::m_bMainConnecter = false;
 
 //--------------------------
 //コンスト
@@ -57,9 +60,7 @@ bool ConnectManager::Init(const char*plPAddress, int nPortNum)
 	// スレッドをきりはなす
 	ConnectOn.detach();
 
-	std::thread ConnectManagerRecv(RecvPlayerData,this);
-	// スレッドをきりはなす
-	ConnectManagerRecv.detach();
+	m_bRecvOk = false;
 	return true;
 }
 
@@ -81,12 +82,25 @@ void ConnectManager::Uninit(void)
 	WSACleanup();
 }
 
+void ConnectManager::Update()
+{
+	if (!m_bRecvOk&&m_myConnect.enemyConnect)
+	{
+
+		//m_bRecvOk = true;
+		//std::thread ConnectManagerRecv(RecvPlayerData, this);
+		//// スレッドをきりはなす
+		//ConnectManagerRecv.detach();
+	}
+}
+
 
 //=============================================================================
 // 通信接続スレッド
 //=============================================================================
 ConnectManager::SConnectCheck ConnectManager::ConnectTh(CClient * Client)
 {
+	m_bTutorialConnecter = true;
 	SConnectCheck ConnectManager;
 	ConnectManager.myConnect = false;
 	ConnectManager.enemyConnect = false;
@@ -98,24 +112,44 @@ ConnectManager::SConnectCheck ConnectManager::ConnectTh(CClient * Client)
 	while (!myIs)
 	{
 
+		m_bTutorialConnecter = true;
 		myIs = Client->GetTcp()->Connect();
 		Client->GetUdp()->Connect();
+		Timer++;
+		if (Timer >= 1)
+		{
+			m_bTutorialConnecter = false;
+			break;
+		}
 		if (myIs)
 		{
 			Client->Send((const char*)&ok, 4, CClient::TYPE_TUP);
 		}
-	
+
+		char sChar[64] = {};
+		int nCharRecvSize = CApplication::GetClient()->CharRecv(sChar, sizeof(int), CClient::TYPE_TUP);
+
+		memcpy(&nCharRecvSize, &sChar[0], (int)sizeof(int));
+		m_bTutorialConnecter = false;
 	}
 	// 敵がつながるまでループ
 	while (!ConnectManager.enemyConnect)
 	{
+		m_bTutorialConnecter = true;
 		int isRecv = Client->Recv(&aRecvData[0], sizeof(bool), CClient::TYPE_TUP);
 		if (isRecv == sizeof(SConnectCheck))
 		{
 			memcpy(&ConnectManager, &aRecvData[0], sizeof(SConnectCheck));
 		}
-		
+		else if(isRecv == -1)
+		{
+			m_bTutorialConnecter = false;
+			break;
+		}
+		m_bTutorialConnecter = false;
 	}
+	
+	m_bTutorialConnecter = false;
 	return ConnectManager;
 }
 
@@ -127,21 +161,27 @@ void ConnectManager::RecvPlayerData(ConnectManager *list)
 	// 繋がっている間はループ
 	while (1)
 	{
-	
-		char aRecv[2048];	// 受信データ
-
-		// 受信
-		int nRecvSize = list->GetClient()->Recv(&aRecv[0], sizeof(CReceiveData::SReceiveList), CClient::TYPE_UDP);
-
-
-		// 受信データが無かったら
-		if (nRecvSize < 0)
+		list->SetMainConnecter(true);
+		if (list->GetIsConnect())
 		{
-			return;
-		}
-		CReceiveData::SReceiveList List;
-		memcpy(&list->m_player, &aRecv[0], (int)sizeof(CReceiveData::SReceiveList));
+			
+
+			char aRecv[2048];	// 受信データ
+
+			// 受信
+			int nRecvSize = list->GetClient()->Recv(&aRecv[0], sizeof(CReceiveData::SReceiveList), CClient::TYPE_UDP);
+
+
+			// 受信データが無かったら
+			if (nRecvSize < 0)
+			{
+				return;
+			}
+			CReceiveData::SReceiveList List;
+			memcpy(&list->m_player, &aRecv[0], (int)sizeof(CReceiveData::SReceiveList));
 		
+		}
+		list->SetMainConnecter(false);
 	}
 }
 
