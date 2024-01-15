@@ -23,7 +23,7 @@ MODEL_FILENAME = Data/model/SG_03/SG03_Foot.x	# [7]左足
 #------------------------------------------------------------------------------
 NUM_MODEL = 8
 
-ALL_PARTSET
+ALL_PARTSSET
 
 	PARTSSET
 		INDEX = 0					# 胴
@@ -81,6 +81,6 @@ ALL_PARTSET
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 	
-END_ALL_PARTSET
+END_ALL_PARTSSET
 
 END_SCRIPT		# この行は絶対消さないこと！
