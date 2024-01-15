@@ -91,7 +91,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	m_pLight = new CLight;							// ライトの生成
 	m_pCamera = new CCamera;						// カメラの生成
 	m_pPartsFile = new CParts_File;					// パーツファイルの生成
-	//m_pClient = new ConnectManager;						// サーバーのコネクター
+	m_pClient = new ConnectManager;						// サーバーのコネクター
 	//入力処理
 	m_pInput = CInput::Create();
 	//入力処理の初期化処理

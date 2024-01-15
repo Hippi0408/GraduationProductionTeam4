@@ -87,10 +87,10 @@ void ConnectManager::Update()
 	if (!m_bRecvOk&&m_myConnect.enemyConnect)
 	{
 
-		//m_bRecvOk = true;
-		//std::thread ConnectManagerRecv(RecvPlayerData, this);
-		//// スレッドをきりはなす
-		//ConnectManagerRecv.detach();
+		m_bRecvOk = true;
+		std::thread ConnectManagerRecv(RecvPlayerData, this);
+		// スレッドをきりはなす
+		ConnectManagerRecv.detach();
 	}
 }
 
