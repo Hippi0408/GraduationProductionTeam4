@@ -30,6 +30,7 @@ HRESULT CChain_Manager::Init()
 {
 	// ½‚Ì–{”
 	m_nNumChain = m_fDistance / CHAIN_SIZE_X;
+	// lÌŒÜ“ü
 	m_nNumChain = round(m_nNumChain);
 
 	for (int nCnt = 0; nCnt < m_nNumChain; nCnt++)
@@ -96,7 +97,7 @@ void CChain_Manager::Update()
 	{
 		for (int nCnt = 0; nCnt < m_nNumChain; nCnt++)
 		{
-			// 5•bŒã‚ÉÁ‚¦‚é
+			// ”•bŒã‚ÉÁ‚¦‚é
 			m_pChain[0][nCnt]->Uninit();
 			m_pChain[1][nCnt]->Uninit();
 			m_pAnchor->Uninit();
@@ -122,7 +123,6 @@ CChain_Manager *CChain_Manager::Create(D3DXVECTOR3 pos, D3DXVECTOR3 vec, float D
 	if (pChain_Manager != nullptr)
 	{
 		pChain_Manager->m_Pos = { pos.x,pos.y + 50.0f,pos.z };
-		//pChain_Manager->m_Vec = vec;
 		pChain_Manager->m_Vec = { vec.x,0.0f,vec.z };
 		pChain_Manager->m_fDistance = Distance;
 		pChain_Manager->m_fRot = rot;

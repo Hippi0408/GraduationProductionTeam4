@@ -40,7 +40,7 @@ private:
 	int m_nIndex;
 	bool m_bPush;
 	bool m_bHit;
-	CObject3D *m_pPick_Up;		// 拾う時の表示
+	CObject3D *m_Display_Key;		// キーの表示
 };
 
 #endif // !_RESTRAINT_SWITCH_H_

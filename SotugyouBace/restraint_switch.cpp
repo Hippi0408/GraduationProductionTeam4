@@ -54,12 +54,16 @@ HRESULT CRestraint_Switch::Init()
 	SetCenterPos({ 0.0f,Max.y / 2,0.0f });
 	SetSize(GetObjectX()->GetMaxSize());
 
-	CMap_Object::Create({ GetPos().x,GetPos().y + 300.0f,GetPos().z }, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Down.x");
-	CCannon::Create({ GetPos().x,GetPos().y + 330.0f,GetPos().z }, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Up.x", m_nIndex);
+	// –C‘ä‚ÌˆÊ’u
+	D3DXVECTOR3 Cannon_Pos = { GetPos().x,GetPos().y + 300.0f,GetPos().z };
 
-	m_pPick_Up = CObject3D::Create({ GetPos().x, GetPos().y + 120.0f, GetPos().z }, { 70.0f,70.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
-	m_pPick_Up->SetTexture(CTexture::TEXTURE_KEY_E);
-	m_pPick_Up->SetDrawFlag(false);
+	// –C‘ä‚Ì¶¬
+	CMap_Object::Create(Cannon_Pos, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Down.x");
+	CCannon::Create({ Cannon_Pos.x,Cannon_Pos.y + 30.0f,Cannon_Pos.z }, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Up.x", m_nIndex);
+
+	m_Display_Key = CObject3D::Create({ GetPos().x, GetPos().y + 120.0f, GetPos().z }, { 70.0f,70.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);
+	m_Display_Key->SetTexture(CTexture::TEXTURE_KEY_E);
+	m_Display_Key->SetDrawFlag(false);
 
 	return S_OK;
 }
@@ -80,9 +84,9 @@ void CRestraint_Switch::Update()
 	CMove_Object::Update();
 
 	if (!m_bPush)
-		m_pPick_Up->SetDrawFlag(m_bHit);
+		m_Display_Key->SetDrawFlag(m_bHit);
 	else
-		m_pPick_Up->SetDrawFlag(false);
+		m_Display_Key->SetDrawFlag(false);
 
 	m_bHit = false;
 }

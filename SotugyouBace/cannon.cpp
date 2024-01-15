@@ -115,7 +115,7 @@ void CCannon::Update()
 				// –C‘ä‚ªƒ{ƒX‚Ì•û‚ğŒü‚­
 				GetObjectX()->SetRot({ 0.0f,m_fRot,0.0f });
 
-				// ‹——£
+				// –C‘ä‚©‚ç“G‚Ì‹——£
 				float Dis = sqrt(Vec.x * Vec.x + Vec.z * Vec.z);
 
 				if (pRestraint->GetCountSwitch() == CRestraint_Switch::SWITHC_NUM
@@ -125,7 +125,7 @@ void CCannon::Update()
 
 					if (m_nChain_Count >= 120)
 						// ½‚Ì”­Ë
-						m_pChain_Manager = CChain_Manager::Create(GetPos(), Vec, Dis, fRotDest + D3DX_PI / 2, 300);
+						m_pChain_Manager = CChain_Manager::Create(GetPos(), Vec, Dis, fRotDest + D3DX_PI / 2, 1000);
 				}
 
 				break;

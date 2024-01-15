@@ -189,7 +189,7 @@ void CPlayer::ChangeMotion()
 		CParts* pParts = GetParts(nCnt);
 
 		// 着地モーションが終了した場合
-		if (pParts->GetMotionStop() == true)
+		if (pParts->GetMotionStop() && !GetBoost())
 		{
 			pParts->SetMotion(MOTION_NEUTRAL);
 		}
