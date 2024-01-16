@@ -12,10 +12,10 @@
 static const int Max = 1024;
 static const int MaxModel = 20;
 
-static const int P1 = 1345;
-static const int P2 = 2333;
-static const int P3 = 3204;
-static const int P4 = 4650;
+static const int P1 = 0;
+static const int P2 = 1;
+static const int P3 = 2;
+static const int P4 = 3;
 
 
 class CModelData

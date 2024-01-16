@@ -114,6 +114,9 @@ void CBullet::Update()
 	pos.z += move.z * m_fSpeed_XZ;
 	pos.y += move.y * m_fSpeed_Y;
 
+	// 攻撃パーティクル
+	std::move(CParticleEmitter::Create("Locus", GetPos()));
+
 	// 位置の設定
 	SetPos(pos);
 

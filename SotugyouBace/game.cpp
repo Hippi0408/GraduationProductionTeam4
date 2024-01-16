@@ -59,6 +59,7 @@ CPause *CGame::m_pPause = nullptr;
 CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
 CWeapon_Parameter *CGame::m_pWeapon_Parameter = nullptr;
 CMap_Object_Manager *CGame::m_pMap_Object_Manager = nullptr;
+CMap *CGame::m_pMap = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -111,6 +112,7 @@ HRESULT CGame::Init()
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
 	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
 	m_pMap_Object_Manager = new CMap_Object_Manager;
+	m_pMap = new CMap;
 
 	// 全てのモデルパーツの読み込み
 	CDrop_Weapon* pWeaponDummer = new CDrop_Weapon;
@@ -126,14 +128,15 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
+		//CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
 	}
-	
+	CMob::Create({ -1000.0f,0.0f,1000.0f });
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
+	CBoss::Create({ 0.0f, 0.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
-	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
+	//SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
+	SetDrop_Parts(1, { 1000.0f,0.0f,1000.0f });
 
 	// タイムの生成
 	m_pTime = CTime::Create();
@@ -152,7 +155,7 @@ HRESULT CGame::Init()
 	m_bInputFlag = false;
 
 	// マップ生成
-	CMap::ReadMap("Data/text/map.txt");
+	m_pMap->ReadMap("Data/text/map_test.txt");
 
 	return S_OK;
 }
@@ -254,6 +257,13 @@ void CGame::Uninit()
 	{
 		delete m_pMap_Object_Manager;
 		m_pMap_Object_Manager = nullptr;
+	}
+
+	// マップ読み込みの破棄
+	if (m_pMap != nullptr)
+	{
+		delete m_pMap;
+		m_pMap = nullptr;
 	}
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
@@ -365,23 +375,23 @@ void CGame::Update()
 		}
 #endif
 
-		////オンラインの送信
-		//if (CApplication::GetClient()->GetIsConnect())
-		//{
-		//	CModelData::SSendPack sendData;
-		//	sendData.m_PlayData.m_pos = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
-		//	sendData.m_PlayData.m_rot = D3DXVECTOR3(0.1f, 0.0f, 0.1f);
-		//	for (int j = 0; j < 5; j++)
-		//	{
-		//		sendData.m_haveAbnormal.abnormalData[j] = 0;
-		//		sendData.m_haveItem.itemData[j] = 0;
-		//	}
-		//	sendData.m_PlayData.m_motion = 0;
-		//	sendData.m_log = 2;
-		//	sendData.m_PlayData.m_pushBomComands = 0;
+		//オンラインの送信
+		/*if (CApplication::GetClient()->GetIsConnect())
+		{
+			CModelData::SSendEnemy sendData;
+			sendData.m_pos = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
+			sendData.m_rot = D3DXVECTOR3(0.1f, 0.0f, 0.1f);
+			for (int j = 0; j < 5; j++)
+			{
+				sendData.m_haveAbnormal.abnormalData[j] = 0;
+				sendData.m_haveItem.itemData[j] = 0;
+			}
+			sendData.m_motion = 0;
+			sendData.m_log = 2;
+			sendData.m_pushBomComands = 0;
 
-		//	//CApplication::GetClient()->SendPlayerData(sendData);
-		//}
+			CApplication::GetClient()->SendPlayerData(sendData);
+		}*/
 	}
 }
 

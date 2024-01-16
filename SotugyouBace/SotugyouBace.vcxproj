@@ -25,10 +25,13 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="cannon.cpp" />
+    <ClCompile Include="chain.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="chardecision_window.cpp" />
     <ClCompile Include="charselect_window.cpp" />
     <ClCompile Include="char_select.cpp" />
+    <ClCompile Include="chain_manager.cpp" />
     <ClCompile Include="client.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="collision_manager.cpp" />
@@ -98,6 +101,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="restraint_switch.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="smoke_explosion.cpp" />
@@ -122,10 +126,13 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="cannon.h" />
+    <ClInclude Include="chain.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="chardecision_window.h" />
     <ClInclude Include="charselect_window.h" />
     <ClInclude Include="char_select.h" />
+    <ClInclude Include="chain_manager.h" />
     <ClInclude Include="client.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="collision_manager.h" />
@@ -193,6 +200,7 @@
     <ClInclude Include="player_ui.h" />
     <ClInclude Include="precompile.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="restraint_switch.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="smoke_explosion.h" />

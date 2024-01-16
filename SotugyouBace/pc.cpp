@@ -15,6 +15,8 @@
 #include "locus.h"
 #include "player_life_gauge.h"
 #include "pause.h"
+#include "map.h"
+#include "restraint_switch.h"
 
 #include"player_manager.h"
 #include"debugProc.h"
@@ -331,6 +333,17 @@ void CPC::Input()
 		{
 			SetDropGet(true);
 		}
+	}
+
+	for (int nCnt = 0; nCnt < CRestraint_Switch::SWITHC_NUM; nCnt++)
+	{
+		// 拘束スイッチの取得
+		CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);
+
+		if (pRestraint != nullptr && (pRestraint->GetHit()
+			&& pInput->Trigger(DIK_E)))
+			// ボタンを押した数のカウント
+			pRestraint->AddCountSwitch();
 	}
 }
 

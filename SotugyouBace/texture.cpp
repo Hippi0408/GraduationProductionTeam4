@@ -60,7 +60,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/bright.png",				// キラキラA
 	"Data/texture/particle/bright2.png",			// キラキラB
 	"Data/texture/particle/ray.png",				// レイ
-	"Data/texture/particle/coin.png",				// コイン
+	"Data/texture/particle/effect001.png",			// コイン
 	"Data/texture/particle/jewel.png",				// パーティクル用宝石
 	"Data/texture/particle/soul.png",				// 魂
 	"Data/texture/particle/up.png",					// 上矢印
