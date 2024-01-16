@@ -1637,7 +1637,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\Palm.png";
+    "Data\\texture\\Palm.png";
    }
   }
   Material {
@@ -1646,7 +1646,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\Palmndl.png";
+    "Data\\texture\\Palmndl.png";
    }
   }
   Material {

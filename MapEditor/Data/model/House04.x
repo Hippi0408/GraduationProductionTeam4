@@ -233,7 +233,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\House.png";
+    "Data\\texture\\House.png";
    }
   }
   Material {
@@ -242,7 +242,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\House.png";
+    "Data\\texture\\House.png";
    }
   }
   Material {
@@ -251,7 +251,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\House.png";
+    "Data\\texture\\House.png";
    }
   }
   Material {

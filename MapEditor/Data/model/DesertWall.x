@@ -377,7 +377,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\sandstonebricks.png";
+    "Data\\texture\\sandstonebricks.png";
    }
   }
   Material {
@@ -386,7 +386,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\sandstonebricks.png";
+    "Data\\texture\\sandstonebricks.png";
    }
   }
   Material {
@@ -395,7 +395,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\sandstone.png";
+    "Data\\texture\\sandstone.png";
    }
   }
  }
