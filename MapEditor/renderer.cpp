@@ -217,7 +217,7 @@ void CRenderer::DrawFPS(const int nFps)
 
 	sprintf(str, _T("FPS : %d\nPos : %f %f %f\nRos : %f %f %f\nModelNum : %d\n"
 		"倍率 : %f\nサイズ : %f\n\n設置　スペースキー\n一つ前に戻る　バックスペース\n移動　WASD\n上下移動　左シフトと左コントロールキー\n"
-		"向きの調整　X軸＝RT　Y軸＝FG　Z軸＝VB\nモデルの変更　上下矢印\n倍率調整 右シフトと右コントロールキー\nカメラの距離　OP\n"
+		"向きの調整　X軸＝RT　Y軸＝FG　Z軸＝VB\nモデルの変更　上下矢印\n倍率調整 右左矢印\nカメラの距離　OP\n"
 		"Posリセットは0+123(xyz)\nRotリセットは0+456(xyz)\n\n現在当たり判定が%s => YU\n現在オープニング後に%s => HJ\nこのモデルは%s => NM\n\n保存　F1\n")
 		, nFps, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, nModelNum, fMoveMagnification, fSize, sCollision, sOpeningLost, sSwitch);
 

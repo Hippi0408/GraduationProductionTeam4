@@ -391,11 +391,11 @@ void CPlayer::ChangeMagnification()
 	//入力デバイスの取得
 	CInput* pInput = CInput::GetKey();
 
-	if (pInput->Press(DIK_RSHIFT))
+	if (pInput->Press(DIK_LEFT))
 	{
 		m_MoveMagnification += MOVE_MAGNIFICATION;
 	}
-	else if (pInput->Press(DIK_RCONTROL))
+	else if (pInput->Press(DIK_RIGHT))
 	{
 		m_MoveMagnification -= MOVE_MAGNIFICATION;
 	}
