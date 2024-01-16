@@ -211,7 +211,7 @@ void CDrop_Weapon::Update()
 	// ‹——£7000ˆÈ‰º‚Ìê‡‚É•\¦‚·‚é
 	const bool bDisplay = fDistance <= DRAW_DROP_DISTANCE;
 
-	SetDrawFlag(bDisplay);
+	GetObjectX()->SetDrawFlag(bDisplay);
 	m_pPointer->SetDrawFlag(bDisplay);
 	ItemPointerMove();
 	// •Ší‚ğE‚¤

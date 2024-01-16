@@ -23,7 +23,7 @@ CMap_Object::CMap_Object(const PRIORITY priority) : CMove_Object(priority)
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
 
-	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	// 生成時に自身のポインタをマップオブジェクトマネージャーに設定
 	if (Mode == CApplication::MODE_TUTORIAL)
 		CTutorial::GetMap_Object_Manager()->SetMapObject(this);
 	else if (Mode == CApplication::MODE_GAME)
@@ -109,7 +109,7 @@ void CMap_Object::Draw()
 //==============================================================================================
 // ヒット処理
 //==============================================================================================
-void CMap_Object::Hit(CMove_Object* pHit)
+void CMap_Object::Hit(CMove_Object* /*pHit*/)
 {
 }
 

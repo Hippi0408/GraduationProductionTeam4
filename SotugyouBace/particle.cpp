@@ -8,7 +8,7 @@
 namespace
 {
 	// パーティクルファイルのテクスチャタグ用
-	const std::vector<std::string> strPath = { "STAR", "FLARE", "SMOKE", "BRIGHT", "BRIGHT2", "COIN", "JEWEL", "SOUL", "RAY",
+	const std::vector<std::string> strPath = { "STAR", "FLARE1", "SMOKE", "BRIGHT", "BRIGHT2", "SHOCK", "JEWEL", "SOUL", "RAY",
 	"UP"};
 }
 
@@ -301,7 +301,7 @@ void CParticle::processPath()
 		break;
 
 	case 5:
-		CObject3D::SetTexture(CTexture::TEXTURE_EFFECT_COIN);
+		CObject3D::SetTexture(CTexture::TEXTURE_EFFECT_SHOCK);
 		break;
 
 	case 6:

@@ -17,7 +17,7 @@ class CDrop_Weapon : public CMove_Object
 {
 	static const float PARTS_FLOTIONG_POS;			// 落ちてる武器の浮遊位置
 public:
-	static const int DRAW_DROP_DISTANCE = 7000;		// 武器、パーツを表示する距離
+	
 	static const float PARTS_COLLISION_RADIUS;		// 当たり判定の大きさ
 
 	CDrop_Weapon(const PRIORITY priority = PRIORITY_MODEL);

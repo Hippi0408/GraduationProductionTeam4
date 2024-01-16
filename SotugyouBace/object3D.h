@@ -55,12 +55,15 @@ public:
 	void AddAlpha(const float alpha) { m_col.a += alpha; }
 	void Setbillboard(const bool billboard) { m_bBillboard = billboard; }
 	void SetTexture(CTexture::TEXTURE texture) { m_texture = texture; }
+	void SetVtxPos(D3DXVECTOR3 pos, int index) { VERTEX_3D *pVtx; m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0); pVtx[index].pos = pos; m_pVtxBuff->Unlock(); }
 
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// ˆÊ’u‚ÌŽæ“¾
 	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR2 GetScale() { return m_size; }
 	const D3DXCOLOR GetCol() { return m_col; }
 	const D3DXMATRIX GetMtxWorld() { return m_mtxWorld; }
+	const D3DXVECTOR3 GetVtxPos(int index) { VERTEX_3D *pVtx; m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0); return pVtx[index].pos; }
+	void VtxBuffUnlock() { m_pVtxBuff->Unlock(); }
 
 private:
 
