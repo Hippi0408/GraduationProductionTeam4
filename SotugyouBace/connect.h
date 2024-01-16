@@ -29,7 +29,8 @@ public:
 	ConnectManager();
 	~ConnectManager();
 	bool Init(const char*plPAddress, int nPortNum);
-	void Uninit(void);
+	void Uninit();
+	void Update();
 	static SConnectCheck ConnectTh(CClient * Client);
 
 	static void RecvPlayerData(ConnectManager *list);
@@ -42,10 +43,21 @@ public:
 	bool GetIsConnect() { return m_myConnect.enemyConnect; }
 	CClient *GetClient() { return m_client; }
 
+	static bool GetTutorialConnecter() { return m_bTutorialConnecter; }
+	static bool GetMainConnecter() { return m_bMainConnecter; }
+
+	static void SetTutorialConnecter(bool bTutorialConnecter) { m_bTutorialConnecter = bTutorialConnecter; }
+	static void SetMainConnecter(bool bMainConnecter) { m_bMainConnecter = bMainConnecter; }
+
 private:
+	static bool m_bTutorialConnecter;
+	static bool m_bMainConnecter;
+	bool m_bRecvOk;
 	CClient *m_client;				//クライアント統合マネージャー
 	SConnectCheck m_myConnect;		//自分に接続する
 	CReceiveData::SReceiveList m_player;	//保存するプレイヤーデータの保存先
+	
+
 
 };
 
