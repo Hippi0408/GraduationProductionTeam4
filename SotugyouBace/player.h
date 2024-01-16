@@ -48,17 +48,39 @@ public:
 	// モーションのタイプ
 	enum MOTION_TYPE
 	{
-		MOTION_NEUTRAL = 0,	// ニュートラル
-		MOTION_WALK,		// 歩き
-		MOTION_JUMP,		// ジャンプ
-		MOTION_LANDING,		// 着地
-		MOTION_BOOST_RUN,	// ブーストダッシュ
-		MOTION_SLASH_1,		// 斬撃モーション1
-		MOTION_SLASH_2,		// 斬撃モーション2
-		MOTION_SLASH_3,		// 斬撃モーション3
-		MOTION_SLASH_4,		// 斬撃モーション4
-		MOTION_SLASH_5,		// 斬撃モーション5
-		MOTION_SLASH_6,		// 斬撃モーション6
+		MOTION_NEUTRAL = 0,			// ニュートラル
+		MOTION_WALK,				// 歩き
+		MOTION_JUMP,				// ジャンプ
+		MOTION_LANDING,				// 着地
+		MOTION_BOOST_RUN,			// ブーストダッシュ
+
+		MOTION_ASSAULT_RIFLE,		// アサルトライフル射撃
+		MOTION_SUB_MACHIN_GUN,		// サブマシンガン射撃
+		MOTION_DUAL_PISTOLS,		// 二丁拳銃(ハンドガン)
+		MOTION_MACHIN_GUN,			// マシンガン射撃
+		MOTION_SHOT_GUN,			// ショットガン射撃
+		MOTION_SNIPER_RIFLE,		// スナイパーライフル射撃
+
+		MOTION_FIST_1,				// 拳モーション1
+		MOTION_FIST_2,				// 拳モーション2
+		MOTION_FIST_3,				// 拳モーション3
+		MOTION_FIST_4,				// 拳モーション4
+		MOTION_FIST_5,				// 拳モーション5
+		//MOTION_FIST_6,				// 拳モーション6
+
+		MOTION_SLASH_1,				// 斬撃モーション1
+		MOTION_SLASH_2,				// 斬撃モーション2
+		MOTION_SLASH_3,				// 斬撃モーション3
+		MOTION_SLASH_4,				// 斬撃モーション4
+		MOTION_SLASH_5,				// 斬撃モーション5
+		MOTION_SLASH_6,				// 斬撃モーション6
+
+		MOTION_POKE_1,				// 刺突モーション1
+		MOTION_POKE_2,				// 刺突モーション2
+		MOTION_POKE_3,				// 刺突モーション3
+		MOTION_HEAVY_POKE_1,		// 重刺突モーション1
+		MOTION_HEAVY_POKE_2,		// 重刺突モーション2
+		MOTION_HEAVY_POKE_3,		// 重刺突モーション3
 
 		MOTION_MAX,
 	};

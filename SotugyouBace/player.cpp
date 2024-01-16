@@ -240,15 +240,44 @@ void CPlayer::PlayerAttack()
 //============================================================================
 void CPlayer::MeleeWeaponAttack()
 {
+	// 武器番号
+	int nWeaponNumber = 0;
+
+	// 近接武器の最低値より大きい場合
+	if (m_nWeapon_type >= CWeapon::MELEE_WEAPON_STABBING_LANCE)
+	{
+		// 武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_POKE_1;
+	}
+	// 近接武器の最低値より大きい場合
+	else if (m_nWeapon_type >= CWeapon::MELEE_WEAPON_SLASH_SAMURAI_SWORD)
+	{
+		// 武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_SLASH_1;
+	}
+	// 素手の最低値より大きい場合
+	else
+	{
+		// 武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_FIST_1;
+	}
+
+	// モーション番号
+	const int nMotion = nWeaponNumber + m_nAdditional_Attack;
+
+	// モーション情報
+	CMotion* pMotion = CApplication::GetMotion();
+
 	// 攻撃開始処理
 	if (m_nAttackRate_Counter == 0)
 	{
-		// モーション全体の秒数を設定
-		m_nAttackRate_Max_Counter = 18;
+		// (腕モーションの全フレーム数 - 1) を計測
+		CMotion::MotionPattern pMotionPattern = pMotion->GetMotionPattern(nMotion, CMotion::m_cMotionFileName[PARTS_ARMS]);
 
-		if (m_nAdditional_Attack == 2)
+		// モーション全体の秒数を設定
+		for (int nCnt = 0; nCnt < pMotionPattern.nMaxKey - 1; nCnt++)
 		{
-			m_nAttackRate_Max_Counter = 41;
+			m_nAttackRate_Max_Counter += pMotionPattern.aKeySet[nCnt].nFrame;
 		}
 
 		// 攻撃モーションを設定
@@ -258,11 +287,11 @@ void CPlayer::MeleeWeaponAttack()
 			CParts* pParts = GetParts(nCnt);
 
 			// 攻撃モーション + 追加攻撃の回数
-			pParts->SetMotion(MOTION_SLASH_1 + m_nAdditional_Attack);
+			pParts->SetMotion(nMotion);
 		}
 	}
-	// 指定のフレーム時に攻撃を行う
-	else if (m_nAttackRate_Counter == 5)
+	// 0番目の攻撃終了時に攻撃を行う
+	else if (m_nAttackRate_Counter == pMotion->GetMotionPattern(nMotion, CMotion::m_cMotionFileName[PARTS_ARMS]).aKeySet[0].nFrame)
 	{
 		// 現在のモード
 		CApplication::MODE Mode = CApplication::GetModeType();
@@ -301,7 +330,7 @@ void CPlayer::MeleeWeaponAttack()
 		CWeapon_Attack::Create(pos, radiusSize, true, Melee_Parameter.nPower, 20);
 	}
 
-	// 増加した時に終了した場合
+	// モーションが終了した場合
 	if (m_nAttackRate_Counter++ >= m_nAttackRate_Max_Counter)
 	{
 		// 攻撃処理中に攻撃コマンドが選択された場合に追加攻撃をする
@@ -315,6 +344,7 @@ void CPlayer::MeleeWeaponAttack()
 		{
 			m_nAdditional_Attack = 0;
 		}
+		// 初期化
 		m_bPlayer_Attack = false;
 		m_bAdditional_Attack = false;
 		m_nAttackRate_Counter = 0;
@@ -855,9 +885,6 @@ void CPlayer::SettingParameter()
 	// 武器パラメーター
 	Melee_Parameter = pWeapon_Parameter->GetParameterMeleeWeapon(m_nWeapon_type, m_nWeapon_Rarity);
 	m_nGravity += Melee_Parameter.nGravity;
-	//Melee_Parameter.nAttack_Rate;
-	//Melee_Parameter.nLength;
-	//Melee_Parameter.nPower;
 
 	// 各パラメータの設定
 	SetMaxLife(nLife);

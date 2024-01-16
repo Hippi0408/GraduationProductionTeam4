@@ -104,7 +104,7 @@ CDrop_Weapon::~CDrop_Weapon()
 //=============================================================================
 HRESULT CDrop_Weapon::Init()
 {
-	SetCollision();
+	SetDelayCollision();
 
 	SetRadius(PARTS_COLLISION_RADIUS);
 
