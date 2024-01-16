@@ -7,6 +7,7 @@
 #include"map.h"
 #include"map_object.h"
 #include"restraint_switch.h"
+#include"objectX.h"
 #include <stdio.h>
 #include "d3dx9.h"
 
@@ -44,6 +45,7 @@ void CMap::ReadMap(char *filename)
 	D3DXVECTOR3 Rot = { 0.0f,0.0f,0.0f };
 	int nRestraint_Switch = 0;
 	int nSwitch_Index = 0;
+	int nCollision = 0;
 
 	for (int nCnt = 0; nCnt < 4; nCnt++)
 	{
@@ -109,19 +111,33 @@ void CMap::ReadMap(char *filename)
 							}
 							if (strcmp(&m_aString[0], "SWITCH") == 0)
 							{
+								// 拘束用のスイッチ
 								fscanf(pFile, "%s", &m_aString[0]);
 								fscanf(pFile, "%d", &nRestraint_Switch);
 							}
+							if (strcmp(&m_aString[0], "COLLISION_OFF") == 0)
+							{
+								// 当たり判定の有無
+								fscanf(pFile, "%s", &m_aString[0]);
+								fscanf(pFile, "%d", &nCollision);
+							}
 						}
 
-						// モデル生成
-						if (nRestraint_Switch == 0)
-							CMap_Object::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
+						// 当たり判定無し
+						if (nCollision == 0)
+							CObjectX::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
+						// 当たり判定あり
 						else
 						{
-							// 拘束スイッチ
-							m_pRestraint_Switch[nSwitch_Index] = CRestraint_Switch::Create(Pos, Rot, nullptr, &XFileName[nType][0], nSwitch_Index);
-							nSwitch_Index++;
+							// モデル生成
+							if (nRestraint_Switch == 0)
+								CMap_Object::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
+							else
+							{
+								// 拘束スイッチ
+								m_pRestraint_Switch[nSwitch_Index] = CRestraint_Switch::Create(Pos, Rot, nullptr, &XFileName[nType][0], nSwitch_Index);
+								nSwitch_Index++;
+							}
 						}
 					}
 				}
