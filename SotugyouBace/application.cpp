@@ -257,13 +257,19 @@ void CApplication::Uninit()
 		delete m_pParticleManager;
 		m_pParticleManager = nullptr;
 	}
-	// サーバーの破棄
-	/*if (m_pClient != nullptr)
+
+	while (m_pClient != nullptr)
 	{
-		m_pClient->Uninit();
-		delete m_pClient;
-		m_pClient = nullptr;
+		
+		if (!m_pClient->GetMainConnecter() && !m_pClient->GetTutorialConnecter())
+		{
+			m_pClient->Uninit();
+			delete m_pClient;
+			m_pClient = nullptr;
+		}
+
 	}*/
+	
 }
 
 //==============================================================================================
@@ -271,6 +277,7 @@ void CApplication::Uninit()
 //==============================================================================================
 void CApplication::Update()
 {
+	m_pClient->Update();
 	//入力処理の更新処理
 	m_pInput->Update();
 

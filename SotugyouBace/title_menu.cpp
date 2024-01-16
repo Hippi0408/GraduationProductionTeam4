@@ -11,12 +11,13 @@
 // インクルード
 //=============================================================================
 #include "title_menu.h"
-#include "Application.h"
+#include "application.h"
 #include "input.h"
 #include "fade.h"
 #include "title.h"
 #include "confirmation_window.h"
 #include "menu_window.h"
+#include "connect.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -111,13 +112,18 @@ void CTitleMenu::Choice()
 		{
 			// ゲームスタート
 		case Choice_GameStart:
+		{
 			// 決定SE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 			// ゲームに飛ぶ
 			CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
 			CTitle::SetUninitWindow(false);
-			break;
+			//CApplication::GetClient()->Init("10.70.41.123", 15678);
 
+
+
+			break;
+		}
 			// ウィンドウを閉じる
 		case Choice_Window_Exit:
 			// 決定SE

@@ -124,7 +124,8 @@ void CMob::Draw()
 void CMob::Destroy()
 {
 	// 撃破パーティクル
-	std::move(CParticleEmitter::Create("Destroy", GetPos()));
+	//std::move(CParticleEmitter::Create("Destroy", GetPos()));
+	std::move(CParticleEmitter::Create("Dust", GetPos()));			//test
 
 	CEnemy::Destroy();
 
