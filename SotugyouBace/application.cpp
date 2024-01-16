@@ -53,7 +53,7 @@ CFade* CApplication::m_pFade = nullptr;
 CMenu* CApplication::m_pMenu = nullptr;
 CParts_File* CApplication::m_pPartsFile = nullptr;
 CParticleManager* CApplication::m_pParticleManager = nullptr;
-CClient*CApplication::m_pClient = nullptr;
+ConnectManager*CApplication::m_pClient = nullptr;
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
 int CApplication::m_nPlayerJobIndex = 0;
@@ -277,7 +277,6 @@ void CApplication::Uninit()
 //==============================================================================================
 void CApplication::Update()
 {
-	m_pClient->Update();
 	//“ü—Íˆ—‚ÌXVˆ—
 	m_pInput->Update();
 
