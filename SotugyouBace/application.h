@@ -83,8 +83,8 @@ public:
 	static const bool GetPauce() { return m_bPauce; }
 	static const int GetPlayerJobIndex() { return m_nPlayerJobIndex; }
 
-	/*static ConnectManager* GetClient() { return m_pClient; }
-	static void SetClient(ConnectManager* Client) { m_pClient = Client; }*/
+	static ConnectManager* GetClient() { return m_pClient; }
+	static void SetClient(ConnectManager* Client) { m_pClient = Client; }
 private:
 	static HWND Window;				// ウィンドウ
 
@@ -100,7 +100,7 @@ private:
 	static CMenu* m_pMenu;
 	static CParts_File* m_pPartsFile;
 	static CParticleManager* m_pParticleManager;
-	//static ConnectManager* m_pClient;
+	static ConnectManager* m_pClient;
 	CInput* m_pInput;
 
 #ifdef _DEBUG
