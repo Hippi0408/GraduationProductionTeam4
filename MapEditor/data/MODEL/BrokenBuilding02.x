@@ -731,7 +731,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data\\TEXTURE\\bill002.jpg";
+    "Data\\texture\\bill002.jpg";
    }
   }
   Material {
@@ -740,7 +740,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data\\TEXTURE\\bill002.jpg";
+    "Data\\texture\\bill002.jpg";
    }
   }
   Material {
@@ -749,7 +749,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data\\TEXTURE\\Concrete.png";
+    "Data\\texture\\Concrete.png";
    }
   }
   Material {
@@ -758,7 +758,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data\\TEXTURE\\Concrete.png";
+    "Data\\texture\\Concrete.png";
    }
   }
  }

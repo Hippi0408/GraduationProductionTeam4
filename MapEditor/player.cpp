@@ -34,6 +34,9 @@ CPlayer::CPlayer()
 	m_pModelIndex = nullptr;
 	m_p3DObject = nullptr;
 	m_nModelIndexMax = 0;
+	m_bCollision = true;
+	m_bOpeningLost = true;
+	m_bSwitch = false;
 }
 
 //*****************************************************************************
@@ -135,7 +138,32 @@ void CPlayer::Update()
 		SetBullast();
 	}
 
+	if (pInput->Trigger(DIK_Y))
+	{
+		m_bCollision = true;
+	}
+	else if (pInput->Trigger(DIK_U))
+	{
+		m_bCollision = false;
+	}
 
+	if (pInput->Trigger(DIK_H))
+	{
+		m_bOpeningLost = true;
+	}
+	else if (pInput->Trigger(DIK_J))
+	{
+		m_bOpeningLost = false;
+	}
+
+	if (pInput->Trigger(DIK_N))
+	{
+		m_bSwitch = true;
+	}
+	else if (pInput->Trigger(DIK_M))
+	{
+		m_bSwitch = false;
+	}
 
 	m_p3DObject->Update();
 
@@ -461,6 +489,15 @@ void CPlayer::SetBullast()
 	{
 		assert(false);
 	}
+
+	//当たり判定
+	p3DObject->SetCollision(m_bCollision);
+
+	//オープニングロスト
+	p3DObject->SetOpeningLost(m_bOpeningLost);
+
+	//砲台
+	p3DObject->SetSwitch(m_bSwitch);
 
 	//モデル番号のインデックス
 	p3DObject->SetModelNumIndex(m_nModelNum);
