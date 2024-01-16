@@ -41,6 +41,8 @@ private:
 	bool m_bPush;
 	bool m_bHit;
 	CObject3D *m_Display_Key;		// ÉLÅ[ÇÃï\é¶
+	/*CMap_Object *Cannon_Down;
+	CCannon *Cannon_Up;*/
 };
 
 #endif // !_RESTRAINT_SWITCH_H_

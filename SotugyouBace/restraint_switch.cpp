@@ -10,6 +10,11 @@
 #include"cannon.h"
 #include"map_object.h"
 #include"object3D.h"
+#include"application.h"
+#include"player.h"
+#include"player_manager.h"
+#include"game.h"
+#include"tutorial.h"
 
 int CRestraint_Switch::m_nCount_Switch = 0;
 
@@ -89,6 +94,37 @@ void CRestraint_Switch::Update()
 		m_Display_Key->SetDrawFlag(false);
 
 	m_bHit = false;
+
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CPlayer* pPlayer = nullptr;
+
+	// モード毎にプレイヤーを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+		pPlayer = CTutorial::GetPlayerManager()->GetPlayer(0);
+	else if (Mode == CApplication::MODE_GAME)
+		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+
+	D3DXVECTOR3 Player_Pos = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 Object_Pos = { 0.0f,0.0f,0.0f };
+
+	if (pPlayer != nullptr)
+	{
+		// 位置の取得
+		Player_Pos = pPlayer->GetPos();
+		Object_Pos = GetPos();
+	}
+
+	// プレイヤーから落ちてるパーツの距離
+	D3DXVECTOR3 Vec = Player_Pos - Object_Pos;
+
+	// 距離の算出
+	float fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
+
+	// 距離7000以下の場合に表示する
+	const bool bDisplay = fDistance <= DRAW_DROP_DISTANCE;
+	GetObjectX()->SetDrawFlag(bDisplay);
 }
 
 //==============================================================================================
