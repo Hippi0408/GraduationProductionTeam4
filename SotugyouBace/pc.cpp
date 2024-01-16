@@ -260,7 +260,14 @@ void CPC::Input()
 	if ((pInput->Trigger(DIK_B)) || pInput->Trigger(JOYPAD_R2) || pInput->Trigger(MOUSE_INPUT_LEFT))
 	{
 		// ƒvƒŒƒCƒ„[‚ÌUŒ‚ˆ—
-		PlayerAttack();
+		if (GetPlayerAttack())
+		{
+			SetAdditionalAttack(true);
+		}
+		else
+		{
+			SetPlayerAttack(true);
+		}
 	}
 
 	CPause *pPause = nullptr;

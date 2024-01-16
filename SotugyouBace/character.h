@@ -62,8 +62,7 @@ public:
 	void SetJump_Boost(const bool jumpboost) { m_bJump_Boost = jumpboost; }
 
 	void SetParts(const int charaParts, const int partsIndex, CMotion::MOTION motion);				// パーツの設定処理
-	//void ChangeParts(const int index, const char* Xfilename);			// パーツ変更処理
-	
+
 	void SetJump_PressCount(const int jumpcount) { m_nJump_PressCount = jumpcount; }
 	void AddJump_PressCount(const int jumpcount) { m_nJump_PressCount += jumpcount; }
 	void SetAvoidance(const bool avoidance) { m_bAvoidance = avoidance; }

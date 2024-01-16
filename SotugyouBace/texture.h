@@ -70,10 +70,12 @@ public: /* 定義 */
 		/* 武器 */
 		TEXTURE_WEAPON_KNUCKLE,			// 素手アイコン
 		TEXTURE_WEAPON_SLASH,			// スラッシュアイコン
+		TEXTURE_WEAPON_STTABING,		// スラッシュアイコン
 
 		/* アタックスキル */
 		TEXTURE_ATTACK_SKILL_KNUCKLE,	// 素手のアタックスキルアイコン
 		TEXTURE_ATTACK_SKILL_SLASH,		// スラッシュのアタックスキルアイコン
+		TEXTURE_ATTACK_SKILL_STTABING,	// 刺突のアタックスキルアイコン
 
 		/* サポートスキル */
 		TEXTURE_SKILL_RUSH,				// ラッシュ

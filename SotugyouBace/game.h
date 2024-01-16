@@ -65,6 +65,7 @@ public:
 	static CConfirmation_Window* GetConfirmationWindow() { return m_pConfirmationWindow; }
 	static CPause *GetPause() { return m_pPause; }
 	static CPlayer_Parameter *GetPlayerParameter() { return m_pPlayer_Parameter; }
+	static CWeapon_Parameter *GetWeaponParameter() { return m_pWeapon_Parameter; }
 	static CMap_Object_Manager *GetMap_Object_Manager() { return m_pMap_Object_Manager; }
 
 private:
@@ -77,7 +78,6 @@ private:
 	CHalfSphere* m_pHalfSphere;
 
 	static CPlayerUi* m_pPlayer_UI[CPlayerUi::UITYPE_MAX];
-	CPlayerUi* m_pPlayerUI;
 	CFog* m_pFog;
 	
 	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ

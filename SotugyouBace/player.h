@@ -89,6 +89,7 @@ public:
 	void Hit(CMove_Object* pHit) override;
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
+	void MeleeWeaponAttack();			// 近接武器の攻撃処理
 	void JumpStart();					// プレイヤーのジャンプ処理
 	void JumpBoost();					// プレイヤーのジャンプブースト処理
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
@@ -107,18 +108,22 @@ public:
 	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Parts_Job[nCnt] = (JOB)index; } }
 	void SetPlayerParts(const PARTS parts, const int weapon, const int rarity);
 	void SetPlayerWeapon(const int weapon, const int rarity);
+	void SetPlayerAttack(const bool attack) { m_bPlayer_Attack = attack; }
+	void SetAdditionalAttack(const bool attack) { m_bAdditional_Attack = attack; }
 
 
 	const bool GetDropContact() { return m_bDrop_Contact; }
 	const int GetCharaIndex() { return m_nCharaIndex; }
 	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
+	const bool GetPlayerAttack() { return m_bPlayer_Attack; }
 
 private:
-	int m_nCharaIndex;		// 自身の番号
-	float m_fTarget_Scope;	// ターゲットを狙う範囲
-	bool m_bTarget;			// ターゲットがいるか
-	bool m_bDrop_Contact;	// 落とし物との接触判定
-	bool m_bDrop_Get;		// 落とし物を入手する判定
+	int m_nCharaIndex;			// 自身の番号
+	float m_fTarget_Scope;		// ターゲットを狙う範囲
+	bool m_bTarget;				// ターゲットがいるか
+	bool m_bDrop_Contact;		// 落とし物との接触判定
+	bool m_bDrop_Get;			// 落とし物を入手する判定
+	bool m_bChange_Parameter;	// パラメーターの変動判定
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
 
@@ -137,6 +142,11 @@ private:
 	float m_fAngle;
 	int m_nStan_Tolerance;				// スタン許容値
 	int m_nGravity;						// 重量
+	bool m_bPlayer_Attack;				// プレイヤー判定の攻撃判定
+	bool m_bAdditional_Attack;			// 追加攻撃の判定
+	int m_nAdditional_Attack;			// 追加攻撃の回数
+	int m_nAttackRate_Counter;			// 攻撃間隔の経過時間
+	int m_nAttackRate_Max_Counter;		// 攻撃間隔の最大時間
 
 	JOB m_Parts_Job[PARTS_MAX];				// プレイヤーのパーツ毎のジョブ種類
 	int m_nArms_Rarity;					// 腕のレアリティ

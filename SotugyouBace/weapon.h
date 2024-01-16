@@ -23,21 +23,22 @@ public:
 	{
 		WEAPON_KNUCKLE = 0,		// 素手
 
-		WEAPON_SLASH_KNIFE,		// ナイフ
-		WEAPON_SLASH_HAMMER,	// ハンマー
-		WEAPON_SLASH_SCYTHE,	// 鎌
+		MELEE_WEAPON_FIST_KNUCKLE,			// ナックル
+		MELEE_WEAPON_FIST_BUNKER,			// パイルバンカー
+		MELEE_WEAPON_FIST_BRAND_MARKERS,	// ブランドマーカー
+		MELEE_WEAPON_FIST_STUN_BATON,		// スタンバトン
+
+		MELEE_WEAPON_SLASH_SAMURAI_SWORD,	// 太刀
+		MELEE_WEAPON_SLASH_HAMMER,			// ハンマー
+		MELEE_WEAPON_SLASH_BEAM_SABER,		// ビームサーベル
+		MELEE_WEAPON_SLASH_BASTARD_SWORD,	// バスターソード
+
+		MELEE_WEAPON_STABBING_LANCE,		// ランス
+		MELEE_WEAPON_STABBING_RAPIER,		// レイピア
+		MELEE_WEAPON_STABBING_PARTISAN,		// パルチザン
+		MELEE_WEAPON_STABBING_BEAM_JAVELIN,	// ビームジャベリン
 
 		WEAPON_MAX				// 最大値
-	};
-
-	// パラメーター
-	struct PARAMETERS
-	{
-		int m_nPower;					// 威力
-		int m_nGravity;					// 重量
-		float m_fInterval;				// 攻撃間隔
-
-										//Skill m_skill;					// スキルタイプ
 	};
 
 
@@ -51,11 +52,10 @@ public:
 
 	void ChangeWeapon(const int type);
 
-	static CWeapon* Create(const D3DXVECTOR3 pos, const int type, CObjectX* parent = nullptr);
+	static CWeapon* Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const int type, CObjectX* parent = nullptr);
 
 private:
 	static const char* m_cWeaponFileName[WEAPON_MAX];		// 武器のファイル名
-	static const PARAMETERS m_WeaponPaeameters[WEAPON_MAX];	// 武器のパラメーター情報
 };
 
 #endif// _WEAPON_H_
