@@ -23,7 +23,7 @@ CMap_Object::CMap_Object(const PRIORITY priority) : CMove_Object(priority)
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
 
-	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	// 生成時に自身のポインタをマップオブジェクトマネージャーに設定
 	if (Mode == CApplication::MODE_TUTORIAL)
 		CTutorial::GetMap_Object_Manager()->SetMapObject(this);
 	else if (Mode == CApplication::MODE_GAME)
@@ -97,6 +97,37 @@ void CMap_Object::Update()
 
 	//当たり判定の設定
 	Collision_Hit();
+
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CPlayer* pPlayer = nullptr;
+
+	// モード毎にプレイヤーを読み込む
+	if (Mode == CApplication::MODE_TUTORIAL)
+		pPlayer = CTutorial::GetPlayerManager()->GetPlayer(0);
+	else if (Mode == CApplication::MODE_GAME)
+		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+
+	D3DXVECTOR3 Player_Pos = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 Object_Pos = { 0.0f,0.0f,0.0f };
+
+	if (pPlayer != nullptr)
+	{
+		// 位置の取得
+		Player_Pos = pPlayer->GetPos();
+		Object_Pos = GetPos();
+	}
+
+	// プレイヤーから落ちてるパーツの距離
+	D3DXVECTOR3 Vec = Player_Pos - Object_Pos;
+
+	// 距離の算出
+	float fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
+
+	// 距離7000以下の場合に表示する
+	const bool bDisplay = fDistance <= DRAW_DROP_DISTANCE;
+	GetObjectX()->SetDrawFlag(bDisplay);
 }
 
 //==============================================================================================
@@ -109,7 +140,7 @@ void CMap_Object::Draw()
 //==============================================================================================
 // ヒット処理
 //==============================================================================================
-void CMap_Object::Hit(CMove_Object* pHit)
+void CMap_Object::Hit(CMove_Object* /*pHit*/)
 {
 }
 
