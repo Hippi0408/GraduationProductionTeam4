@@ -213,7 +213,7 @@ void CPC::Input()
 		}
 	}
 	// 前回モーションが歩きモーションだった場合
-	else if (pLeg->GetCurrentMotion() != MOTION_LANDING && GetGround())
+	else if (pLeg->GetCurrentMotion() == MOTION_WALK && GetGround())
 	{
 		// 歩きを終了させる
 		pLeg->SetMotion(MOTION_NEUTRAL);
