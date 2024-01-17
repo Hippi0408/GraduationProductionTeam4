@@ -110,6 +110,9 @@ void CParts::Motion()
 			// 現在モーションのモーション情報を取得(モーション番号, 自身の名前)
 			CMotion::MotionPattern MotionSet = CApplication::GetMotion()->GetMotionPattern(m_nCurrentMotion, m_sMotionName);
 
+			// ループ状態の取得
+			m_bLoop = MotionSet.bLoop;
+
 			// 全てのモデルを読み込む
 			for (int nCnt = 0; nCnt < (int)m_vpModel.size(); nCnt++)
 			{
