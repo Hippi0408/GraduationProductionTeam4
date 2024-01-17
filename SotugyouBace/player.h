@@ -48,17 +48,39 @@ public:
 	// モーションのタイプ
 	enum MOTION_TYPE
 	{
-		MOTION_NEUTRAL = 0,	// ニュートラル
-		MOTION_WALK,		// 歩き
-		MOTION_JUMP,		// ジャンプ
-		MOTION_LANDING,		// 着地
-		MOTION_BOOST_RUN,	// ブーストダッシュ
-		MOTION_SLASH_1,		// 斬撃モーション1
-		MOTION_SLASH_2,		// 斬撃モーション2
-		MOTION_SLASH_3,		// 斬撃モーション3
-		MOTION_SLASH_4,		// 斬撃モーション4
-		MOTION_SLASH_5,		// 斬撃モーション5
-		MOTION_SLASH_6,		// 斬撃モーション6
+		MOTION_NEUTRAL = 0,			// ニュートラル
+		MOTION_WALK,				// 歩き
+		MOTION_JUMP,				// ジャンプ
+		MOTION_LANDING,				// 着地
+		MOTION_BOOST_RUN,			// ブーストダッシュ
+
+		MOTION_ASSAULT_RIFLE,		// アサルトライフル射撃
+		MOTION_SUB_MACHIN_GUN,		// サブマシンガン射撃
+		MOTION_DUAL_PISTOLS,		// 二丁拳銃(ハンドガン)
+		MOTION_MACHIN_GUN,			// マシンガン射撃
+		MOTION_SHOT_GUN,			// ショットガン射撃
+		MOTION_SNIPER_RIFLE,		// スナイパーライフル射撃
+
+		MOTION_FIST_1,				// 拳モーション1
+		MOTION_FIST_2,				// 拳モーション2
+		MOTION_FIST_3,				// 拳モーション3
+		MOTION_FIST_4,				// 拳モーション4
+		MOTION_FIST_5,				// 拳モーション5
+		//MOTION_FIST_6,				// 拳モーション6
+
+		MOTION_SLASH_1,				// 斬撃モーション1
+		MOTION_SLASH_2,				// 斬撃モーション2
+		MOTION_SLASH_3,				// 斬撃モーション3
+		MOTION_SLASH_4,				// 斬撃モーション4
+		MOTION_SLASH_5,				// 斬撃モーション5
+		MOTION_SLASH_6,				// 斬撃モーション6
+
+		MOTION_POKE_1,				// 刺突モーション1
+		MOTION_POKE_2,				// 刺突モーション2
+		MOTION_POKE_3,				// 刺突モーション3
+		MOTION_HEAVY_POKE_1,		// 重刺突モーション1
+		MOTION_HEAVY_POKE_2,		// 重刺突モーション2
+		MOTION_HEAVY_POKE_3,		// 重刺突モーション3
 
 		MOTION_MAX,
 	};
@@ -89,6 +111,7 @@ public:
 	void Hit(CMove_Object* pHit) override;
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
+	void MeleeWeaponAttack();			// 近接武器の攻撃処理
 	void JumpStart();					// プレイヤーのジャンプ処理
 	void JumpBoost();					// プレイヤーのジャンプブースト処理
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
@@ -107,18 +130,22 @@ public:
 	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Parts_Job[nCnt] = (JOB)index; } }
 	void SetPlayerParts(const PARTS parts, const int weapon, const int rarity);
 	void SetPlayerWeapon(const int weapon, const int rarity);
+	void SetPlayerAttack(const bool attack) { m_bPlayer_Attack = attack; }
+	void SetAdditionalAttack(const bool attack) { m_bAdditional_Attack = attack; }
 
 
 	const bool GetDropContact() { return m_bDrop_Contact; }
 	const int GetCharaIndex() { return m_nCharaIndex; }
 	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
+	const bool GetPlayerAttack() { return m_bPlayer_Attack; }
 
 private:
-	int m_nCharaIndex;		// 自身の番号
-	float m_fTarget_Scope;	// ターゲットを狙う範囲
-	bool m_bTarget;			// ターゲットがいるか
-	bool m_bDrop_Contact;	// 落とし物との接触判定
-	bool m_bDrop_Get;		// 落とし物を入手する判定
+	int m_nCharaIndex;			// 自身の番号
+	float m_fTarget_Scope;		// ターゲットを狙う範囲
+	bool m_bTarget;				// ターゲットがいるか
+	bool m_bDrop_Contact;		// 落とし物との接触判定
+	bool m_bDrop_Get;			// 落とし物を入手する判定
+	bool m_bChange_Parameter;	// パラメーターの変動判定
 
 	CEnergy_Gauge* m_pEnergy_Gauge;		// エネルギーゲージ
 
@@ -137,6 +164,11 @@ private:
 	float m_fAngle;
 	int m_nStan_Tolerance;				// スタン許容値
 	int m_nGravity;						// 重量
+	bool m_bPlayer_Attack;				// プレイヤー判定の攻撃判定
+	bool m_bAdditional_Attack;			// 追加攻撃の判定
+	int m_nAdditional_Attack;			// 追加攻撃の回数
+	int m_nAttackRate_Counter;			// 攻撃間隔の経過時間
+	int m_nAttackRate_Max_Counter;		// 攻撃間隔の最大時間
 
 	JOB m_Parts_Job[PARTS_MAX];				// プレイヤーのパーツ毎のジョブ種類
 	int m_nArms_Rarity;					// 腕のレアリティ

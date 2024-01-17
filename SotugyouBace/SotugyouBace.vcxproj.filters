@@ -6,10 +6,15 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="cannon.cpp" />
+    <ClCompile Include="chain.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="chardecision_window.cpp" />
     <ClCompile Include="charselect_window.cpp" />
     <ClCompile Include="char_select.cpp" />
+    <ClCompile Include="client.cpp" />
+    <ClCompile Include="chain_manager.cpp" />
+    <ClCompile Include="client.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="collision_manager.cpp" />
     <ClCompile Include="confirmation_window.cpp" />
@@ -68,362 +73,13 @@
     <ClCompile Include="parts_file.cpp" />
     <ClCompile Include="pc.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="player_life_gauge.cpp" />
-    <ClCompile Include="player_manager.cpp" />
-    <ClCompile Include="player_parameter.cpp" />
-    <ClCompile Include="player_ui.cpp" />
-    <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="result.cpp" />
-    <ClCompile Include="score.cpp" />
-    <ClCompile Include="smoke_explosion.cpp" />
-    <ClCompile Include="sound.cpp" />
-    <ClCompile Include="stage_select.cpp" />
-    <ClCompile Include="tcp_client.cpp" />
-    <ClCompile Include="texture.cpp" />
-    <ClCompile Include="time.cpp" />
-    <ClCompile Include="title.cpp" />
-    <ClCompile Include="title_menu.cpp" />
-    <ClCompile Include="trail.cpp" />
-    <ClCompile Include="tutorial.cpp" />
-    <ClCompile Include="weapon.cpp" />
     <ClCompile Include="playerdata.cpp" />
-  </ItemGroup>
-    <ClCompile Include="application.cpp">
-      <Filter>00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="bullet.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="boss.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character\Enemy\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="char_select.cpp">
-      <Filter>03_Mode</Filter>
-    </ClCompile>
-    <ClCompile Include="confirmation_window.cpp">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="cpu.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="character.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="debugProc.cpp">
-      <Filter>00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectInput.cpp">
-      <Filter>01_Input</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy_manager.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="fade.cpp">
-      <Filter>03_Mode</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>03_Mode</Filter>
-    </ClCompile>
-    <ClCompile Include="halfsphere.cpp">
-      <Filter>04_Object\Object3D</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>01_Input</Filter>
-    </ClCompile>
-    <ClCompile Include="inputjoypad.cpp">
-      <Filter>01_Input</Filter>
-    </ClCompile>
-    <ClCompile Include="inputkeyboard.cpp">
-      <Filter>01_Input</Filter>
-    </ClCompile>
-    <ClCompile Include="inputmouse.cpp">
-      <Filter>01_Input</Filter>
-    </ClCompile>
-    <ClCompile Include="light.cpp">
-      <Filter>00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="locus.cpp">
-      <Filter>04_Object\Object3D</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="menu_window.cpp">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="meshfield.cpp">
-      <Filter>04_Object\Object3D</Filter>
-    </ClCompile>
-    <ClCompile Include="mob.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character\Enemy\Mob</Filter>
-    </ClCompile>
-    <ClCompile Include="mode.cpp">
-      <Filter>03_Mode</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="motion.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="object.cpp">
-      <Filter>04_Object</Filter>
-    </ClCompile>
-    <ClCompile Include="collision_manager.cpp">
-      <Filter>04_Object\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="object2D.cpp">
-      <Filter>04_Object\Object2D</Filter>
-    </ClCompile>
-    <ClCompile Include="object3D.cpp">
-      <Filter>04_Object\Object3D</Filter>
-    </ClCompile>
-    <ClCompile Include="objectX.cpp">
-      <Filter>04_Object\ObjectX</Filter>
-    </ClCompile>
-    <ClCompile Include="particle.cpp">
-      <Filter>04_Object\Object3D\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="particle_emitter.cpp">
-      <Filter>04_Object\Object3D\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="particle_manager.cpp">
-      <Filter>04_Object\Object3D\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="pc.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="player_manager.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="boss_life_gauge.cpp">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClCompile>
-    <ClCompile Include="energy_gauge.cpp">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClCompile>
-    <ClCompile Include="gauge_manager.cpp">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClCompile>
-    <ClCompile Include="mob_life_gauge.cpp">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClCompile>
-    <ClCompile Include="player_life_gauge.cpp">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClCompile>
-    <ClCompile Include="font.cpp">
-      <Filter>04_Object\Object2D\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="fontString.cpp">
-      <Filter>04_Object\Object2D\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="number.cpp">
-      <Filter>04_Object\Object2D\Number</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer.cpp">
-      <Filter>00_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="result.cpp">
-      <Filter>03_Mode</Filter>
-    </ClCompile>
-    <ClCompile Include="title.cpp">
-      <Filter>03_Mode</Filter>
-    </ClCompile>
-    <ClCompile Include="score.cpp">
-      <Filter>04_Object\Object2D\Number</Filter>
-    </ClCompile>
-    <ClCompile Include="sound.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="stage_select.cpp">
-      <Filter>03_Mode</Filter>
-    </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="time.cpp">
-      <Filter>04_Object\Object2D\Number</Filter>
-    </ClCompile>
-    <ClCompile Include="title_menu.cpp">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="trail.cpp">
-      <Filter>04_Object\Object3D</Filter>
-    </ClCompile>
-    <ClCompile Include="tutorial.cpp">
-      <Filter>03_Mode</Filter>
-    </ClCompile>
-    <ClCompile Include="drop_weapon.cpp">
-      <Filter>04_Object\ObjectX\drop</Filter>
-    </ClCompile>
-    <ClCompile Include="player_ui.cpp">
-      <Filter>04_Object\Object2D\PlayerUi</Filter>
-    </ClCompile>
-    <ClCompile Include="charselect_window.cpp">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="pause.cpp">
-      <Filter>04_Object\Object2D\Pause</Filter>
-    </ClCompile>
-    <ClCompile Include="parts_file.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="chardecision_window.cpp">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="normal_bullet.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="homing_bullet.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="parts.cpp">
-      <Filter>04_Object\ObjectX\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="weapon.cpp">
-      <Filter>04_Object\ObjectX\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="drop_manager.cpp">
-      <Filter>04_Object\ObjectX\drop</Filter>
-    </ClCompile>
-    <ClCompile Include="collision.cpp">
-      <Filter>04_Object\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="parabola_bullet.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="explosion.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
-    </ClCompile>
-    <ClCompile Include="normal_explosion.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
-    </ClCompile>
-    <ClCompile Include="smoke_explosion.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
-    </ClCompile>
-    <ClCompile Include="map.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="move_object.cpp">
-      <Filter>04_Object\Object2D\MoveObject</Filter>
-    </ClCompile>
-    <ClCompile Include="diffusion_bullet.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="connect.cpp">
-      <Filter>05_Server</Filter>
-    </ClCompile>
-    <ClCompile Include="model_data.cpp">
-      <Filter>05_Server</Filter>
-    </ClCompile>
-    <ClCompile Include="tcp_client.cpp">
-      <Filter>05_Server</Filter>
-    </ClCompile>
-    <ClCompile Include="player_parameter.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="map_object.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Map_Object</Filter>
-    </ClCompile>
-    <ClCompile Include="map_object_manager.cpp">
-      <Filter>04_Object\Object2D\MoveObject\Map_Object</Filter>
-    </ClCompile>
-    <ClCompile Include="udp_client.cpp">
-      <Filter>05_Server</Filter>
-    </ClCompile>
-    <ClCompile Include="client.cpp">
-      <Filter>05_Server</Filter>
-    </ClCompile>
-    <ClCompile Include="precompile.cpp">
-      <Filter>precompile</Filter>
-    </ClCompile>
-    <ClCompile Include="application.cpp" />
-    <ClCompile Include="boss_life_gauge.cpp" />
-    <ClCompile Include="bullet.cpp" />
-    <ClCompile Include="boss.cpp" />
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="cannon.cpp" />
-    <ClCompile Include="character.cpp" />
-    <ClCompile Include="chardecision_window.cpp" />
-    <ClCompile Include="charselect_window.cpp" />
-    <ClCompile Include="char_select.cpp" />
-    <ClCompile Include="client.cpp" />
-    <ClCompile Include="collision.cpp" />
-    <ClCompile Include="collision_manager.cpp" />
-    <ClCompile Include="confirmation_window.cpp" />
-    <ClCompile Include="connect.cpp" />
-    <ClCompile Include="cpu.cpp" />
-    <ClCompile Include="debugProc.cpp" />
-    <ClCompile Include="diffusion_bullet.cpp" />
-    <ClCompile Include="DirectInput.cpp" />
-    <ClCompile Include="drop_manager.cpp" />
-    <ClCompile Include="drop_weapon.cpp" />
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="enemy_manager.cpp" />
-    <ClCompile Include="energy_gauge.cpp" />
-    <ClCompile Include="explosion.cpp" />
-    <ClCompile Include="fade.cpp" />
-    <ClCompile Include="font.cpp" />
-    <ClCompile Include="fontString.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="gauge_manager.cpp" />
-    <ClCompile Include="halfsphere.cpp" />
-    <ClCompile Include="homing_bullet.cpp" />
-    <ClCompile Include="input.cpp" />
-    <ClCompile Include="inputjoypad.cpp" />
-    <ClCompile Include="inputkeyboard.cpp" />
-    <ClCompile Include="inputmouse.cpp" />
-    <ClCompile Include="light.cpp" />
-    <ClCompile Include="locus.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="map.cpp" />
-    <ClCompile Include="map_object.cpp" />
-    <ClCompile Include="map_object_manager.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="menu_window.cpp" />
-    <ClCompile Include="meshfield.cpp" />
-    <ClCompile Include="mob.cpp" />
-    <ClCompile Include="mob_life_gauge.cpp" />
-    <ClCompile Include="mode.cpp" />
-    <ClCompile Include="model.cpp" />
-    <ClCompile Include="model_data.cpp" />
-    <ClCompile Include="motion.cpp" />
-    <ClCompile Include="move_object.cpp" />
-    <ClCompile Include="normal_bullet.cpp" />
-    <ClCompile Include="normal_explosion.cpp" />
-    <ClCompile Include="number.cpp" />
-    <ClCompile Include="object.cpp" />
-    <ClCompile Include="object2D.cpp" />
-    <ClCompile Include="object3D.cpp" />
-    <ClCompile Include="objectX.cpp" />
-    <ClCompile Include="parabola_bullet.cpp" />
-    <ClCompile Include="particle.cpp" />
-    <ClCompile Include="particle_emitter.cpp" />
-    <ClCompile Include="particle_manager.cpp" />
-    <ClCompile Include="parts.cpp" />
-    <ClCompile Include="pause.cpp" />
-    <ClCompile Include="parts_file.cpp" />
-    <ClCompile Include="pc.cpp" />
-    <ClCompile Include="player.cpp" />
     <ClCompile Include="player_life_gauge.cpp" />
     <ClCompile Include="player_manager.cpp" />
     <ClCompile Include="player_parameter.cpp" />
     <ClCompile Include="player_ui.cpp" />
     <ClCompile Include="precompile.cpp" />
     <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="restraint_switch.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="smoke_explosion.cpp" />
@@ -438,11 +94,11 @@
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="udp_client.cpp" />
     <ClCompile Include="weapon.cpp" />
-    <ClCompile Include="chain.cpp" />
-    <ClCompile Include="chain_manager.cpp" />
-    <ClCompile Include="weapon_parameter.cpp">
-      <Filter>02_Resource</Filter>
-    </ClCompile>
+    <ClCompile Include="weapon_parameter.cpp" />
+    <ClCompile Include="weapon_attack.cpp" />
+    <ClCompile Include="attack_collision.cpp" />
+    <ClCompile Include="weapon_parameter.cpp" />
+    <ClCompile Include="restrictions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -454,6 +110,7 @@
     <ClInclude Include="chardecision_window.h" />
     <ClInclude Include="charselect_window.h" />
     <ClInclude Include="char_select.h" />
+    <ClInclude Include="client.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="collision_manager.h" />
     <ClInclude Include="confirmation_window.h" />
@@ -513,33 +170,18 @@
     <ClInclude Include="parts_file.h" />
     <ClInclude Include="pc.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playerdata.h" />
     <ClInclude Include="player_life_gauge.h" />
     <ClInclude Include="player_manager.h" />
     <ClInclude Include="player_parameter.h" />
     <ClInclude Include="player_ui.h" />
-    <ClInclude Include="renderer.h" />
-    <ClInclude Include="result.h" />
-    <ClInclude Include="score.h" />
-    <ClInclude Include="smoke_explosion.h" />
-    <ClInclude Include="sound.h" />
-    <ClInclude Include="stage_select.h" />
-    <ClInclude Include="tcp_client.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="time.h" />
-    <ClInclude Include="title.h" />
-    <ClInclude Include="title_menu.h" />
-    <ClInclude Include="trail.h" />
-    <ClInclude Include="tutorial.h" />
-    <ClInclude Include="application.h" />
-    <ClInclude Include="boss_life_gauge.h" />
-    <ClInclude Include="bullet.h" />
-    <ClInclude Include="boss.h" />
-    <ClInclude Include="camera.h" />
     <ClInclude Include="cannon.h" />
+    <ClInclude Include="chain.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="chardecision_window.h" />
     <ClInclude Include="charselect_window.h" />
     <ClInclude Include="char_select.h" />
+    <ClInclude Include="chain_manager.h" />
     <ClInclude Include="client.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="collision_manager.h" />
@@ -556,6 +198,7 @@
     <ClInclude Include="energy_gauge.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="fog.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="fontString.h" />
     <ClInclude Include="game.h" />
@@ -599,13 +242,13 @@
     <ClInclude Include="parts_file.h" />
     <ClInclude Include="pc.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playerdata.h" />
     <ClInclude Include="player_life_gauge.h" />
     <ClInclude Include="player_manager.h" />
     <ClInclude Include="player_parameter.h" />
     <ClInclude Include="player_ui.h" />
     <ClInclude Include="precompile.h" />
     <ClInclude Include="renderer.h" />
-    <ClInclude Include="restraint_switch.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="smoke_explosion.h" />
@@ -620,364 +263,11 @@
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="udp_client.h" />
     <ClInclude Include="utility.h" />
-    <ClInclude Include="application.h">
-      <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="boss.h">
-      <Filter>04_Object\Object2D\MoveObject\Character\Enemy\Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="char_select.h">
-      <Filter>03_Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="bullet.h">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="confirmation_window.h">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="cpu.h">
-      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="character.h">
-      <Filter>04_Object\Object2D\MoveObject\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="debugProc.h">
-      <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectInput.h">
-      <Filter>01_Input</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
-      <Filter>04_Object\Object2D\MoveObject\Character\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy_manager.h">
-      <Filter>04_Object\Object2D\MoveObject\Character\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="fade.h">
-      <Filter>03_Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>03_Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="halfsphere.h">
-      <Filter>04_Object\Object3D</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>01_Input</Filter>
-    </ClInclude>
-    <ClInclude Include="inputjoypad.h">
-      <Filter>01_Input</Filter>
-    </ClInclude>
-    <ClInclude Include="inputkeyboard.h">
-      <Filter>01_Input</Filter>
-    </ClInclude>
-    <ClInclude Include="inputkeydata.h">
-      <Filter>01_Input</Filter>
-    </ClInclude>
-    <ClInclude Include="inputmouse.h">
-      <Filter>01_Input</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
-      <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="locus.h">
-      <Filter>04_Object\Object3D</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
-      <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="menu_window.h">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="menu.h">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="meshfield.h">
-      <Filter>04_Object\Object3D</Filter>
-    </ClInclude>
-    <ClInclude Include="mode.h">
-      <Filter>03_Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>02_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="motion.h">
-      <Filter>02_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="move_object.h">
-      <Filter>04_Object\Object2D\MoveObject</Filter>
-    </ClInclude>
-    <ClInclude Include="object.h">
-      <Filter>04_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="collision.h">
-      <Filter>04_Object\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="collision_manager.h">
-      <Filter>04_Object\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="object2D.h">
-      <Filter>04_Object\Object2D</Filter>
-    </ClInclude>
-    <ClInclude Include="object3D.h">
-      <Filter>04_Object\Object3D</Filter>
-    </ClInclude>
-    <ClInclude Include="objectX.h">
-      <Filter>04_Object\ObjectX</Filter>
-    </ClInclude>
-    <ClInclude Include="particle.h">
-      <Filter>04_Object\Object3D\particle</Filter>
-    </ClInclude>
-    <ClInclude Include="particle_emitter.h">
-      <Filter>04_Object\Object3D\particle</Filter>
-    </ClInclude>
-    <ClInclude Include="particle_manager.h">
-      <Filter>04_Object\Object3D\particle</Filter>
-    </ClInclude>
-    <ClInclude Include="pc.h">
-      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="player_manager.h">
-      <Filter>04_Object\Object2D\MoveObject\Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="boss_life_gauge.h">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClInclude>
-    <ClInclude Include="energy_gauge.h">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClInclude>
-    <ClInclude Include="gauge_manager.h">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClInclude>
-    <ClInclude Include="mob_life_gauge.h">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClInclude>
-    <ClInclude Include="player_life_gauge.h">
-      <Filter>04_Object\Object2D\Gauge</Filter>
-    </ClInclude>
-    <ClInclude Include="font.h">
-      <Filter>04_Object\Object2D\Font</Filter>
-    </ClInclude>
-    <ClInclude Include="fontString.h">
-      <Filter>04_Object\Object2D\Font</Filter>
-    </ClInclude>
-    <ClInclude Include="number.h">
-      <Filter>04_Object\Object2D\Number</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>00_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="result.h">
-      <Filter>03_Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="title.h">
-      <Filter>03_Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="score.h">
-      <Filter>04_Object\Object2D\Number</Filter>
-    </ClInclude>
-    <ClInclude Include="sound.h">
-      <Filter>02_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="stage_select.h">
-      <Filter>03_Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
-      <Filter>02_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="time.h">
-      <Filter>04_Object\Object2D\Number</Filter>
-    </ClInclude>
-    <ClInclude Include="title_menu.h">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="trail.h">
-      <Filter>04_Object\Object3D</Filter>
-    </ClInclude>
-    <ClInclude Include="tutorial.h">
-      <Filter>03_Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="mob.h">
-      <Filter>04_Object\Object2D\MoveObject\Character\Enemy\Mob</Filter>
-    </ClInclude>
-    <ClInclude Include="drop_weapon.h">
-      <Filter>04_Object\ObjectX\drop</Filter>
-    </ClInclude>
-    <ClInclude Include="player_ui.h">
-      <Filter>04_Object\Object2D\PlayerUi</Filter>
-    </ClInclude>
-    <ClInclude Include="charselect_window.h">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="pause.h">
-      <Filter>04_Object\Object2D\Pause</Filter>
-    </ClInclude>
-    <ClInclude Include="parts_file.h">
-      <Filter>02_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="chardecision_window.h">
-      <Filter>04_Object\Object2D\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="normal_bullet.h">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="homing_bullet.h">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="parts.h">
-      <Filter>04_Object\ObjectX\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="weapon.h">
-      <Filter>04_Object\ObjectX\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="drop_manager.h">
-      <Filter>04_Object\ObjectX\drop</Filter>
-    </ClInclude>
-    <ClInclude Include="parabola_bullet.h">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="explosion.h">
-      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
-    </ClInclude>
-    <ClInclude Include="normal_explosion.h">
-      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
-    </ClInclude>
-    <ClInclude Include="smoke_explosion.h">
-      <Filter>04_Object\Object2D\MoveObject\Explosion</Filter>
-    </ClInclude>
-    <ClInclude Include="map.h">
-      <Filter>02_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="diffusion_bullet.h">
-      <Filter>04_Object\Object2D\MoveObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="connect.h">
-      <Filter>05_Server</Filter>
-    </ClInclude>
-    <ClInclude Include="model_data.h">
-      <Filter>05_Server</Filter>
-    </ClInclude>
-    <ClInclude Include="tcp_client.h">
-      <Filter>05_Server</Filter>
-    </ClInclude>
-    <ClInclude Include="player_parameter.h">
-      <Filter>02_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="map_object.h">
-      <Filter>04_Object\Object2D\MoveObject\Map_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="map_object_manager.h">
-      <Filter>04_Object\Object2D\MoveObject\Map_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="udp_client.h">
-      <Filter>05_Server</Filter>
-    </ClInclude>
-    <ClInclude Include="client.h">
-      <Filter>05_Server</Filter>
-    </ClInclude>
-    <ClInclude Include="precompile.h">
-      <Filter>precompile</Filter>
-    </ClInclude>
     <ClInclude Include="weapon.h" />
-    <ClInclude Include="chain.h" />
-    <ClInclude Include="chain_manager.h" />
-    <ClInclude Include="weapon_parameter.h">
-      <Filter>02_Resource</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="01_Input">
-      <UniqueIdentifier>{05ace54f-cecb-4150-a853-6740dfd61d8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00_Main">
-      <UniqueIdentifier>{9073f699-2559-4722-a26b-638993ff215e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Resource">
-      <UniqueIdentifier>{92cdfb6d-1609-4936-a287-72b1f6369632}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object">
-      <UniqueIdentifier>{5cc7a26a-1f24-4b04-b8d2-b7a8b3530ea7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D">
-      <UniqueIdentifier>{9c9cb68e-a46e-42e7-9757-98745bcb2240}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object3D">
-      <UniqueIdentifier>{49afd43e-bf2d-4e1e-acad-d2cbd5945d7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\ObjectX">
-      <UniqueIdentifier>{bdcf9e95-ba8b-4b33-b57e-8d50666c58bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03_Mode">
-      <UniqueIdentifier>{036e51fa-fba9-4cd4-8afc-a37f8ca47fdf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\Menu">
-      <UniqueIdentifier>{fbeec6b8-4a75-4bc9-bfb7-5779f4ba1c5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Collision">
-      <UniqueIdentifier>{56dcbfd6-8e44-4905-b9de-7c6e2dd4241e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object3D\particle">
-      <UniqueIdentifier>{8e7147a3-2ae4-40d8-a6f1-33df9464c5da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\Font">
-      <UniqueIdentifier>{b13c307e-86dd-4e23-b13b-b797dade3dec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\Number">
-      <UniqueIdentifier>{74e1f057-b736-4c8f-997c-2d4e43ed6b99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\PlayerUi">
-      <UniqueIdentifier>{2f8f74e8-3596-46d5-8e5c-f3b06d58c47f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\Pause">
-      <UniqueIdentifier>{e1a072b7-693e-4ebd-89c8-4d21776b55a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\Gauge">
-      <UniqueIdentifier>{acf97077-0ce9-4613-9250-9523643d88b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\ObjectX\Parts">
-      <UniqueIdentifier>{d6751d27-19da-4b74-a05c-4d36f47a2749}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\ObjectX\drop">
-      <UniqueIdentifier>{0a9cf788-7d61-40d4-8c65-6b0c52f9f0c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Server">
-      <UniqueIdentifier>{235dc510-cf36-4f6c-8b11-56f0aa91ba83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="precompile">
-      <UniqueIdentifier>{a301909a-ec38-496a-beb7-3b7ab494e72a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject">
-      <UniqueIdentifier>{4dd5e878-a8af-4a58-ac8b-f37eb8d141cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject\Character">
-      <UniqueIdentifier>{bcf85021-4de0-4216-bf7d-a838659164b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject\Character\Player">
-      <UniqueIdentifier>{550dbea7-748f-4a85-8dcd-680083f6d4d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject\Character\Enemy">
-      <UniqueIdentifier>{0b849e22-3b51-47d0-bbfc-7fb50a8cf086}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject\Character\Enemy\Mob">
-      <UniqueIdentifier>{705505d5-35fd-4b5b-8773-a96ab0c697d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject\Character\Enemy\Boss">
-      <UniqueIdentifier>{c5126055-bd97-49a6-8a14-d2abf5836894}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject\Bullet">
-      <UniqueIdentifier>{948313c3-9550-4acf-9e7d-b169056bebfc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject\Explosion">
-      <UniqueIdentifier>{f9a1ea85-006c-4cef-97a0-0af6586c1ac5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Object\Object2D\MoveObject\Map_Object">
-      <UniqueIdentifier>{5b4f6e03-894d-4ccf-9ed8-5d8a0f2e08e6}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="weapon_parameter.h" />
+    <ClInclude Include="weapon_attack.h" />
+    <ClInclude Include="attack_collision.h" />
+    <ClInclude Include="weapon_parameter.h" />
+    <ClInclude Include="restrictions.h" />
   </ItemGroup>
 </Project>

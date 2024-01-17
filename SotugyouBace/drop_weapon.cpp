@@ -39,10 +39,23 @@ const char* CDrop_Weapon::s_Weapon_FileName[] =
 	nullptr,
 
 	// 武器
-	"Data/model/SG_01/DummyParent.x",
-	"Data/model/Weapon/knife.x",
-	"Data/model/Weapon/hammer.x",
-	"Data/model/Weapon/scythe.x",
+	"Data/model/SG_01/DummyParent.x",	// 素手
+
+	"Data/model/Weapon/knuckle.x",		// ナックル
+	"Data/model/Weapon/pilebunker.x",	// パイルバンカー
+	"Data/model/Weapon/brandmarkers.x",	// ブランドマーカー
+	"Data/model/Weapon/stunbaton.x",	// スタンバトン
+
+	"Data/model/Weapon/samuraiSword.x",	// 太刀
+	"Data/model/Weapon/hammer.x",		// ハンマー
+	"Data/model/Weapon/beamSword.x",	// ビームサーベル
+	"Data/model/Weapon/basterSword.x",	// バスターソード
+
+	"Data/model/Weapon/lance.x",		// ランス
+	"Data/model/Weapon/rapier.x",		// レイピア
+	"Data/model/Weapon/partisan.x",		// パルチザン
+	"Data/model/Weapon/beamjavelin.x",	// ビームジャベリン
+
 	nullptr,
 };
 
@@ -91,7 +104,7 @@ CDrop_Weapon::~CDrop_Weapon()
 //=============================================================================
 HRESULT CDrop_Weapon::Init()
 {
-	SetCollision();
+	SetDelayCollision();
 
 	SetRadius(PARTS_COLLISION_RADIUS);
 
@@ -103,7 +116,7 @@ HRESULT CDrop_Weapon::Init()
 	pObjectX->SetRot({ 0.4f,0.0f,0.0f });
 
 	// 落ちてる武器の生成
-	//m_pDrop_Weapon->SetSize({ 3.0f,3.0f,3.0f });
+	//pObjectX->SetSize({ 3.0f,3.0f,3.0f });
 
 	// パーツの部位の設定
 	Parts_Type();
@@ -275,7 +288,7 @@ void CDrop_Weapon::Parts_Type()
 	m_Parts = CPlayer::PARTS_ARMS;
 	else if(LEG_MAX > m_nWeapon_Type)
 	m_Parts = CPlayer::PARTS_LEG;
-	else if (WEAPON_MAX > m_nWeapon_Type)
+	else if (MELEE_WEAPON_MAX > m_nWeapon_Type)
 	m_Parts = CPlayer::PARTS_WEAPON;
 }
 

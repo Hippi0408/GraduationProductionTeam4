@@ -34,7 +34,7 @@ enum Object_Type_List;
 class C3DObject : public CObject
 {
 public:
-	static const int MODEL_MAX_TEXTURE = 30;
+	static const int MODEL_MAX_TEXTURE = 256;
 	static const int MODEL_PATTERN_MAX = 120;
 
 	//モデルパターン構造体
