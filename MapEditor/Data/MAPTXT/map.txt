@@ -10,6 +10,20 @@ SCRIPT			# この行は絶対消さないこと！
 # 読み込むテクスチャファイル名
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/map.png		# [0]地面テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/bill000.jpg
+TEXTURE_FILENAME = data/TEXTURE/bill001.jpg
+TEXTURE_FILENAME = data/TEXTURE/bill002.jpg
+TEXTURE_FILENAME = data/TEXTURE/camouflage.png
+TEXTURE_FILENAME = data/TEXTURE/Cedar.png
+TEXTURE_FILENAME = data/TEXTURE/Concrete.png
+TEXTURE_FILENAME = data/TEXTURE/ConvenienceStoreWall.png
+TEXTURE_FILENAME = data/TEXTURE/House.png
+TEXTURE_FILENAME = data/TEXTURE/Palm.png
+TEXTURE_FILENAME = data/TEXTURE/Palmndl.png
+TEXTURE_FILENAME = data/TEXTURE/sandstone.png
+TEXTURE_FILENAME = data/TEXTURE/sandstonebricks.png
+TEXTURE_FILENAME = data/TEXTURE/snow.jpg
+TEXTURE_FILENAME = data/TEXTURE/stainedglass.jpeg
 
 #------------------------------------------------------------------------------
 # 読み込むモデル数
@@ -19,8 +33,40 @@ NUM_MODEL = 0
 #------------------------------------------------------------------------------
 # 読み込むモデルファイル名
 #------------------------------------------------------------------------------
-
-
+MODEL_FILENAME = Data/model/md.x
+MODEL_FILENAME = Data/model/bill00.x
+MODEL_FILENAME = Data/model/bill01.x
+MODEL_FILENAME = Data/model/bill02.x
+MODEL_FILENAME = Data/model/ArmyTent.x
+MODEL_FILENAME = Data/model/ArmyTent2.x
+MODEL_FILENAME = Data/model/artillerybattery.x
+MODEL_FILENAME = Data/model/BuildingOnTheConvenienceStore.x
+MODEL_FILENAME = Data/model/Cedar.x
+MODEL_FILENAME = Data/model/chapel.x
+MODEL_FILENAME = Data/model/ConvenienceStore.x
+MODEL_FILENAME = Data/model/DesertHouse.x
+MODEL_FILENAME = Data/model/DesertHouse2.x
+MODEL_FILENAME = Data/model/DesertWall.x
+MODEL_FILENAME = Data/model/DesertWall2.x
+MODEL_FILENAME = Data/model/Drywood.x
+MODEL_FILENAME = Data/model/House01.x
+MODEL_FILENAME = Data/model/House02.x
+MODEL_FILENAME = Data/model/House03.x
+MODEL_FILENAME = Data/model/House04.x
+MODEL_FILENAME = Data/model/JungleHouse.x
+MODEL_FILENAME = Data/model/JungleIvy.x
+MODEL_FILENAME = Data/model/JungleLeaf.x
+MODEL_FILENAME = Data/model/JungleWood.x
+MODEL_FILENAME = Data/model/JungleWoodL.x
+MODEL_FILENAME = Data/model/JungleWoodS.x
+MODEL_FILENAME = Data/model/MetalContainer.x
+MODEL_FILENAME = Data/model/PalmTree.x
+MODEL_FILENAME = Data/model/Pyramid.x
+MODEL_FILENAME = Data/model/SnowMen.x
+MODEL_FILENAME = Data/model/SnowWood.x
+MODEL_FILENAME = Data/model/SnowyHouse.x
+MODEL_FILENAME = Data/model/Sphinx.x
+MODEL_FILENAME = Data/model/XmasTree.x
 #------------------------------------------------------------------------------
 # 表示する地面の配置情報
 #------------------------------------------------------------------------------
