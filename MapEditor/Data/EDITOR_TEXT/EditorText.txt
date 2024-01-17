@@ -1,0 +1,54 @@
+#==============================================================================
+#
+# 『EditorText』スクリプトファイル [EditorText.txt]
+# Author : 小綱啓仁
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# 読み込むモデル数
+#------------------------------------------------------------------------------
+NUM_MODEL = 34
+
+#------------------------------------------------------------------------------
+# 読み込むモデルファイル名
+#------------------------------------------------------------------------------
+
+MODEL_FILENAME = Data/model/md.x
+MODEL_FILENAME = Data/model/bill00.x
+MODEL_FILENAME = Data/model/bill01.x
+MODEL_FILENAME = Data/model/bill02.x
+MODEL_FILENAME = Data/model/ArmyTent.x
+MODEL_FILENAME = Data/model/ArmyTent2.x
+MODEL_FILENAME = Data/model/artillerybattery.x
+MODEL_FILENAME = Data/model/BuildingOnTheConvenienceStore.x
+MODEL_FILENAME = Data/model/Cedar.x
+MODEL_FILENAME = Data/model/chapel.x
+MODEL_FILENAME = Data/model/ConvenienceStore.x
+MODEL_FILENAME = Data/model/DesertHouse.x
+MODEL_FILENAME = Data/model/DesertHouse2.x
+MODEL_FILENAME = Data/model/DesertWall.x
+MODEL_FILENAME = Data/model/DesertWall2.x
+MODEL_FILENAME = Data/model/Drywood.x
+MODEL_FILENAME = Data/model/House01.x
+MODEL_FILENAME = Data/model/House02.x
+MODEL_FILENAME = Data/model/House03.x
+MODEL_FILENAME = Data/model/House04.x
+MODEL_FILENAME = Data/model/JungleHouse.x
+MODEL_FILENAME = Data/model/JungleIvy.x
+MODEL_FILENAME = Data/model/JungleLeaf.x
+MODEL_FILENAME = Data/model/JungleWood.x
+MODEL_FILENAME = Data/model/JungleWoodL.x
+MODEL_FILENAME = Data/model/JungleWoodS.x
+MODEL_FILENAME = Data/model/MetalContainer.x
+MODEL_FILENAME = Data/model/PalmTree.x
+MODEL_FILENAME = Data/model/Pyramid.x
+MODEL_FILENAME = Data/model/SnowMen.x
+MODEL_FILENAME = Data/model/SnowWood.x
+MODEL_FILENAME = Data/model/SnowyHouse.x
+MODEL_FILENAME = Data/model/Sphinx.x
+MODEL_FILENAME = Data/model/XmasTree.x
+
+
+END_SCRIPT		# この行は絶対消さないこと！

@@ -213,7 +213,7 @@ void CPC::Input()
 		}
 	}
 	// 前回モーションが歩きモーションだった場合
-	else if (pLeg->GetCurrentMotion() != MOTION_LANDING && GetGround())
+	else if (pLeg->GetCurrentMotion() == MOTION_WALK && GetGround())
 	{
 		// 歩きを終了させる
 		pLeg->SetMotion(MOTION_NEUTRAL);
@@ -259,10 +259,17 @@ void CPC::Input()
 		SetJump_PressCount(0);
 
 	// 攻撃処理
-	if ((pInput->Trigger(DIK_B)) || pInput->Trigger(JOYPAD_R2) || pInput->Trigger(MOUSE_INPUT_LEFT))
+	if ((pInput->Press(DIK_B)) || pInput->Press(JOYPAD_R2) || pInput->Press(MOUSE_INPUT_LEFT))
 	{
 		// プレイヤーの攻撃処理
-		PlayerAttack();
+		if (GetPlayerAttack())
+		{
+			SetAdditionalAttack(true);
+		}
+		else
+		{
+			SetPlayerAttack(true);
+		}
 	}
 
 	CPause *pPause = nullptr;
