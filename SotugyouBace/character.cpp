@@ -161,31 +161,35 @@ void CCharacter::Move()
 //==============================================================================================
 void CCharacter::Damage(const int value)
 {
-	// ベースの体力の設定
-	if (m_pGaugeManager != nullptr
-		&& m_pGaugeManager->GetBeaseLife() == 0)
+	// 体力が残っている場合
+	if (m_nLife > 0)
 	{
-		m_pGaugeManager->SetBeaseLife(m_nLife);
-	}
+		// ベースの体力の設定
+		if (m_pGaugeManager != nullptr
+			&& m_pGaugeManager->GetBeaseLife() == 0)
+		{
+			m_pGaugeManager->SetBeaseLife(m_nLife);
+		}
 
-	// 体力 - 与ダメージ
-	m_nLife -= value;
+		// 体力 - 与ダメージ
+		m_nLife -= value;
 
-	// 体力ゲージの増減
-	if (m_pGaugeManager != nullptr)
-	{
-		m_pGaugeManager->SetLife(m_nLife);
-		m_pGaugeManager->Fluctuation();
-	}
+		// 体力ゲージの増減
+		if (m_pGaugeManager != nullptr)
+		{
+			m_pGaugeManager->SetLife(m_nLife);
+			m_pGaugeManager->Fluctuation();
+		}
 
-	// 体力チェック
-	if (m_nLife <= 0)
-	{
-		// 体力を0にする
-		m_nLife = 0;
+		// 体力チェック
+		if (m_nLife <= 0)
+		{
+			// 体力を0にする
+			m_nLife = 0;
 
-		// 自身を破壊する処理
-		Destroy();
+			// 自身を破壊する処理
+			Destroy();
+		}
 	}
 }
 

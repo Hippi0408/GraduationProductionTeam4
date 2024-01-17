@@ -15,6 +15,8 @@ class CObjectX;
 class CMove_Object : public CObject
 {
 public:
+	static const int DRAW_DROP_DISTANCE = 7000;		// 武器、パーツを表示する距離
+
 	// 移動オブジェクトのタグ
 	enum TAG
 	{

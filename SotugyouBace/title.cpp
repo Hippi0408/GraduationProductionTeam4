@@ -186,7 +186,6 @@ HRESULT CTitle::Init()
 	
 	m_pFlare = CObjectX::Create(TITLE_3D_MODEL_POS, D3DXVECTOR3(0.0f, 0.0f, D3DXToRadian(20)), nullptr, "Data/model/Title/flare.x");
 	m_pEarth = CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, D3DXToRadian(0)), m_pFlare, "Data/model/Title/earth.x");
-	//m_pEarth->SetWireFrame(true);
 
 	m_pFomntString[0] = CFontString::Create({ 500.0f, 600.0f, 0.0f }, { 30.0f, 30.0f }, "ENTER");
 

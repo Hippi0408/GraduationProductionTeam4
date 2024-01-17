@@ -40,6 +40,7 @@
 #include "weapon_parameter.h"
 #include "map_object_manager.h"
 #include "fog.h"
+#include "restrictions.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -59,6 +60,7 @@ CPause *CGame::m_pPause = nullptr;
 CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
 CWeapon_Parameter *CGame::m_pWeapon_Parameter = nullptr;
 CMap_Object_Manager *CGame::m_pMap_Object_Manager = nullptr;
+CMap *CGame::m_pMap = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -111,6 +113,7 @@ HRESULT CGame::Init()
 	m_pDropManager = new CDropManager;				// 落とし物マネージャーの生成
 	m_pCollision_Manager = new CCollision_Manager;	// 当たり判定マネージャーの生成
 	m_pMap_Object_Manager = new CMap_Object_Manager;
+	m_pMap = new CMap;
 
 	// 全てのモデルパーツの読み込み
 	CDrop_Weapon* pWeaponDummer = new CDrop_Weapon;
@@ -126,11 +129,11 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
+
+		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
-	
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 10000.0f });
+	CBoss::Create({ 0.0f, 0.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
@@ -155,7 +158,10 @@ HRESULT CGame::Init()
 	m_bInputFlag = false;
 
 	// マップ生成
-	CMap::ReadMap("Data/text/map.txt");
+	m_pMap->ReadMap("Data/text/map_test.txt");
+
+	// 移動制限
+	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 13000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });
 
 	return S_OK;
 }
@@ -257,6 +263,13 @@ void CGame::Uninit()
 	{
 		delete m_pMap_Object_Manager;
 		m_pMap_Object_Manager = nullptr;
+	}
+
+	// マップ読み込みの破棄
+	if (m_pMap != nullptr)
+	{
+		delete m_pMap;
+		m_pMap = nullptr;
 	}
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
@@ -365,23 +378,23 @@ void CGame::Update()
 		}
 #endif
 
-		////オンラインの送信
-		//if (CApplication::GetClient()->GetIsConnect())
-		//{
-		//	CModelData::SSendPack sendData;
-		//	sendData.m_PlayData.m_pos = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
-		//	sendData.m_PlayData.m_rot = D3DXVECTOR3(0.1f, 0.0f, 0.1f);
-		//	for (int j = 0; j < 5; j++)
-		//	{
-		//		sendData.m_haveAbnormal.abnormalData[j] = 0;
-		//		sendData.m_haveItem.itemData[j] = 0;
-		//	}
-		//	sendData.m_PlayData.m_motion = 0;
-		//	sendData.m_log = 2;
-		//	sendData.m_PlayData.m_pushBomComands = 0;
+		//オンラインの送信
+		/*if (CApplication::GetClient()->GetIsConnect())
+		{
+			CModelData::SSendEnemy sendData;
+			sendData.m_pos = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
+			sendData.m_rot = D3DXVECTOR3(0.1f, 0.0f, 0.1f);
+			for (int j = 0; j < 5; j++)
+			{
+				sendData.m_haveAbnormal.abnormalData[j] = 0;
+				sendData.m_haveItem.itemData[j] = 0;
+			}
+			sendData.m_motion = 0;
+			sendData.m_log = 2;
+			sendData.m_pushBomComands = 0;
 
-		//	//CApplication::GetClient()->SendPlayerData(sendData);
-		//}
+			CApplication::GetClient()->SendPlayerData(sendData);
+		}*/
 	}
 }
 
@@ -473,16 +486,28 @@ void CGame::SetPlayerUI(const int index, const int type)
 	else
 	{
 		// 近接武器の最低値より大きい場合
-		if (type >= CWeapon::WEAPON_SLASH_KNIFE)
+		if (type >= CWeapon::MELEE_WEAPON_STABBING_LANCE)
 		{
 			// 武器の最低値を初期値に設定
-			nTexNumber = CTexture::TEXTURE_ATTACK_SKILL_SLASH;
+			nTexNumber = CTexture::TEXTURE_WEAPON_STTABING;
+		}
+		// 近接武器の最低値より大きい場合
+		else if (type >= CWeapon::MELEE_WEAPON_SLASH_SAMURAI_SWORD)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_SLASH;
 		}
 		// 素手の最低値より大きい場合
 		else
 		{
 			// 武器の最低値を初期値に設定
 			nTexNumber = CTexture::TEXTURE_WEAPON_KNUCKLE;
+		}
+
+		if (index == CPlayerUi::UITYPE_ATTACK)
+		{
+			// サポートスキルの最低値 + 自身の番号を設定
+			nTexNumber += (CTexture::TEXTURE_ATTACK_SKILL_KNUCKLE - CTexture::TEXTURE_WEAPON_KNUCKLE);
 		}
 	}
 
@@ -500,7 +525,7 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 		D3DXVECTOR3 Pos = pos;
 		if (random)
 			// ランダムな位置
-			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) };
+			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) };
 
 		// タイプの設定
 		int nRandType = 0;
@@ -510,7 +535,7 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 
 		// 最大数 または 素手が読み込まれた場合やり直す処理
 		while (CDrop_Weapon::ARMS_MAX == nRandType || CDrop_Weapon::LEG_MAX == nRandType
-			|| CDrop_Weapon::WEAPON_NONE == nRandType || CDrop_Weapon::WEAPON_MAX == nRandType)
+			|| CDrop_Weapon::MELEE_WEAPON_NONE == nRandType || CDrop_Weapon::MELEE_WEAPON_MAX == nRandType)
 		{
 			// タイプ
 			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);

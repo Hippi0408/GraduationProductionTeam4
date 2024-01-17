@@ -301,7 +301,7 @@ void CEnergy_Gauge::SetMaxEnerugy(const int enerugy)
 	// 現在のエネルギーが最大エネルギーより多い場合
 	if (m_fFluctuation > enerugy)
 	{
-		m_fFluctuation = enerugy;
+		m_fFluctuation = (float)enerugy;
 	}
 	m_nMax_Enerugy = enerugy;
 }

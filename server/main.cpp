@@ -40,7 +40,10 @@ void ThreadA(CClient*pClient)
 
 	pClient->Recv(&aRecvData[0], sizeof(int), CClient::TYPE_TUP);
 
+
 	memcpy(&m_hostPlayer, &aRecvData[0], (int)sizeof(int));
+	int p1 = P1;
+	pClient->Send((const char*)&p1, sizeof(int), CClient::TYPE_TUP);
 
 	CClient*pClient2;
 	CClient*pClient3;
@@ -51,6 +54,9 @@ void ThreadA(CClient*pClient)
 	pClient2->Recv(&aRecvData2[0], sizeof(int), CClient::TYPE_TUP);
 
 	memcpy(&Data2, &aRecvData2[0], (int)sizeof(int));
+
+	int p2 = P2;
+	pClient->Send((const char*)&p2, sizeof(int), CClient::TYPE_TUP);
 	
 
 	pClient3 = pListenr->Accept();
@@ -59,11 +65,18 @@ void ThreadA(CClient*pClient)
 
 	memcpy(&Data2, &aRecvData3[0], (int)sizeof(int));
 
+	int p3 = P3;
+	pClient->Send((const char*)&p3, sizeof(int), CClient::TYPE_TUP);
+
 	pClient4 = pListenr->Accept();
 
 	pClient4->Recv(&aRecvData4[0], sizeof(int), CClient::TYPE_TUP);
 
 	memcpy(&Data2, &aRecvData4[0], (int)sizeof(int));
+
+	int p4 = P4;
+	pClient->Send((const char*)&p4, sizeof(int), CClient::TYPE_TUP);
+
 	printf("“ñ‚Â‚Â‚È‚ª‚Á‚½\n");
 
 	// ƒXƒŒƒbƒh¶¬

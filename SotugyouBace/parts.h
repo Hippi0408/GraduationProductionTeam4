@@ -50,10 +50,13 @@ public:
 	void SetParent(CCharacter* parent) { m_pParent = parent; }
 	void SetModelParent(CObjectX* parts, const bool parent = false);
 	void SetMotionName(const std::string name) { m_sMotionName = name; }
+	void SetMotionSpeed(const float speed) { m_fMotion_Speed = speed; }
 
+	const bool GetMotionLoop() { return m_bLoop; }			// 現在モーションのループ判定
 	const bool GetMotionStop() { return m_bMotionStop; }	// 現在モーションの終了判定を読み込む
 	const int GetMotion() { return m_nMotion; }
 	const int GetCurrentMotion() { return m_nCurrentMotion; }
+
 	const D3DXVECTOR3 GetPos() { return m_pos; }						// 位置の取得
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXVECTOR3 GetRotDest() { return m_rotDest; }
@@ -73,11 +76,13 @@ private:
 
 	D3DXCOLOR m_col;					// モデルの色
 
+	bool m_bLoop;						// ループ判定
 	bool m_bMotionStop;					// 現在のモーションが止まったか
 	int m_nMotion;						// モーション
 	int m_nCurrentMotion;				// 現在のモーション番号
 	int m_nCountMotion;					// モーションカウンター
 	int m_nCurrentKey;					// 現在のキー番号
+	float m_fMotion_Speed;				// モーションスピード
 
 	float m_fRotSpeed;					// 回転のスピード
 

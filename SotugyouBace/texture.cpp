@@ -60,18 +60,21 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/bright.png",				// キラキラA
 	"Data/texture/particle/bright2.png",			// キラキラB
 	"Data/texture/particle/ray.png",				// レイ
-	"Data/texture/particle/coin.png",				// コイン
+	"Data/texture/particle/effect001.png",			// コイン
 	"Data/texture/particle/jewel.png",				// パーティクル用宝石
 	"Data/texture/particle/soul.png",				// 魂
 	"Data/texture/particle/up.png",					// 上矢印
 	"Data/texture/reticle.png",						// レティクル
 	"Data/texture/chain.png",						// チェーン
+	"Data/texture/NotEnter.png",					// 移動制限
 
 	"Data/texture/Weapon/Knuckle_icon.png",			// 素手アイコン
 	"Data/texture/Weapon/Slash_icon.png",			// スラッシュアイコン
+	"Data/texture/Weapon/stabbing_icon.png",			// 刺突アイコン
 
 	"Data/texture/WeaponSkill/WeaponSkill_Knuckle.png",	// 素手のアタックスキルアイコン
 	"Data/texture/WeaponSkill/WeaponSkill_Slash.png",	// スラッシュのアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_stabbing.png",// 刺突のアタックスキルアイコン
 
 	"Data/texture/job/job_Rush.png",				// ラッシュ
 	"Data/texture/job/job_Vanguard.png",			// ヴァンガード

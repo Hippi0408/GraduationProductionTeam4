@@ -31,6 +31,7 @@ class CPlayer_Parameter;
 class CWeapon_Parameter;
 class CMap_Object_Manager;
 class CFog;
+class CMap;
 
 class CGame : public CMode
 {
@@ -65,7 +66,9 @@ public:
 	static CConfirmation_Window* GetConfirmationWindow() { return m_pConfirmationWindow; }
 	static CPause *GetPause() { return m_pPause; }
 	static CPlayer_Parameter *GetPlayerParameter() { return m_pPlayer_Parameter; }
+	static CWeapon_Parameter *GetWeaponParameter() { return m_pWeapon_Parameter; }
 	static CMap_Object_Manager *GetMap_Object_Manager() { return m_pMap_Object_Manager; }
+	static CMap *GetMap() { return m_pMap; }
 
 private:
 
@@ -77,7 +80,6 @@ private:
 	CHalfSphere* m_pHalfSphere;
 
 	static CPlayerUi* m_pPlayer_UI[CPlayerUi::UITYPE_MAX];
-	CPlayerUi* m_pPlayerUI;
 	CFog* m_pFog;
 	
 	static CConfirmation_Window* m_pConfirmationWindow;		// メニューウィンドウ
@@ -92,6 +94,7 @@ private:
 	static CPlayer_Parameter *m_pPlayer_Parameter;	// プレイヤーパラメーター
 	static CWeapon_Parameter *m_pWeapon_Parameter;	// 武器パラメーター
 	static CMap_Object_Manager *m_pMap_Object_Manager;
+	static CMap *m_pMap;
 
 
 };
