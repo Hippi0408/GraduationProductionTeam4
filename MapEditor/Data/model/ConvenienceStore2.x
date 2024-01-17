@@ -403,7 +403,7 @@ Mesh {
   9,
   3;;
   Material {
-   0.000000;0.520800;0.800000;1.000000;;
+   0.800000;0.452000;0.135200;1.000000;;
    5.000000;
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
@@ -432,7 +432,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\ConvenienceStoreWall.png";
+    "Data\\texture\\ConvenienceStoreWall.png";
    }
   }
   Material {
@@ -441,7 +441,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\ConvenienceStoreWall.png";
+    "Data\\texture\\ConvenienceStoreWall.png";
    }
   }
   Material {
@@ -450,7 +450,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\ConvenienceStoreWall.png";
+    "Data\\texture\\ConvenienceStoreWall.png";
    }
   }
   Material {
@@ -459,7 +459,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\ConvenienceStoreWall.png";
+    "Data\\texture\\ConvenienceStoreWall.png";
    }
   }
   Material {
@@ -468,7 +468,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "texture\\ConvenienceStoreWall.png";
+    "Data\\texture\\ConvenienceStoreWall.png";
    }
   }
   Material {

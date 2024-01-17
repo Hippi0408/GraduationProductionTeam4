@@ -177,7 +177,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "Data\\texture\\bill003.jpg";
+    "Data\\texture\\bill001.jpg";
    }
   }
   Material {
