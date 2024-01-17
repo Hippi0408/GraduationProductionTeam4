@@ -101,6 +101,7 @@
     </ClCompile>
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="restraint_switch.cpp" />
+    <ClCompile Include="restrictions.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="smoke_explosion.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="precompile.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="restraint_switch.h" />
+    <ClInclude Include="restrictions.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="smoke_explosion.h" />

@@ -40,6 +40,7 @@
 #include "weapon_parameter.h"
 #include "map_object_manager.h"
 #include "fog.h"
+#include "restrictions.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -128,15 +129,13 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-		//CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
+		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
-	CMob::Create({ -1000.0f,0.0f,1000.0f });
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 0.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
-	//SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
-	SetDrop_Parts(1, { 1000.0f,0.0f,1000.0f });
+	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
 
 	// タイムの生成
 	m_pTime = CTime::Create();
@@ -156,6 +155,9 @@ HRESULT CGame::Init()
 
 	// マップ生成
 	m_pMap->ReadMap("Data/text/map_test.txt");
+
+	// 移動制限
+	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 13000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });
 
 	return S_OK;
 }
@@ -510,7 +512,7 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 		D3DXVECTOR3 Pos = pos;
 		if (random)
 			// ランダムな位置
-			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) };
+			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) };
 
 		// タイプの設定
 		int nRandType = 0;
