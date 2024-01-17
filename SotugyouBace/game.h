@@ -93,6 +93,7 @@ private:
 	static CWeapon_Parameter *m_pWeapon_Parameter;	// 武器パラメーター
 	static CMap_Object_Manager *m_pMap_Object_Manager;
 
+
 };
 
 #endif // !_GAME_H_

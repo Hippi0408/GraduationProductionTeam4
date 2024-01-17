@@ -121,7 +121,7 @@ HRESULT CGame::Init()
 	int nJob_Index = CApplication::GetPlayerJobIndex() % 3;
 
 	// プレイヤーの生成(テスト)
-	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
+	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, 2);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
@@ -147,6 +147,9 @@ HRESULT CGame::Init()
 
 	// ポーズ画面
 	m_pPause = CPause::Create();
+
+	// フォグの設定
+	CFog::SetFog(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	m_nEndCounter = 0;
 	m_bInputFlag = false;
@@ -266,9 +269,6 @@ void CGame::Update()
 {
 	// メニューウィンドウ処理
 	MenuWindow();
-
-	// フォグの設定
-	CFog::SetFog(D3DXCOLOR(0.2f, 1.0f, 0.5f, 1.0f));
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)

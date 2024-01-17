@@ -19,7 +19,6 @@
 #include "title.h"
 #include "menu_window.h"
 #include "title_menu.h"
-#include "charselect_window.h"
 #include "char_select.h"
 
 //=============================================================================
@@ -28,11 +27,12 @@
 CCharSelect_Window* CConfirmation_Window::m_pCharSelectWindow = nullptr;
 const float CConfirmation_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
 const float CConfirmation_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
+bool CConfirmation_Window::m_bConfimationSelectChoice = 0;
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CConfirmation_Window::CConfirmation_Window() : m_bConfimationSelectChoice(1), m_fConfimationBlinkSpeed(BLINK_SPEED)
+CConfirmation_Window::CConfirmation_Window() : m_fConfimationBlinkSpeed(BLINK_SPEED)
 {
 
 }
@@ -72,13 +72,13 @@ void CConfirmation_Window::Uninit()
 		m_pObject2D = nullptr;
 	}
 
-	// キャラ選択画面の破棄
-	if (m_pCharSelectWindow != nullptr)
-	{
-		m_pCharSelectWindow->Uninit();
-		delete m_pCharSelectWindow;
-		m_pCharSelectWindow = nullptr;
-	}
+	//// キャラ選択画面の破棄
+	//if (m_pCharSelectWindow != nullptr)
+	//{
+	//	m_pCharSelectWindow->Uninit();
+	//	delete m_pCharSelectWindow;
+	//	m_pCharSelectWindow = nullptr;
+	//}
 
 	// フォントの削除
 	if (m_pFont != nullptr)
@@ -105,19 +105,6 @@ void CConfirmation_Window::Update()
 		// 確認ウィンドウの縮小処理
 		ConfirmatiomnMenuScaleReduce();
 	}
-
-	if (CChar_Select::GetConfimationWindow()->GetCharSelect() != nullptr
-		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetPreviousWindow() == true
-		&& m_bConfirmasionWindowUse == true)
-	{ // キャラ選択ウィンドウが使われている時 && 前のウィンドウに戻る && このウィンドウが使われているとき
-
-	  // 選択肢の情報を初期化する
-		ChangeChoice(0);
-		m_bConfimationBack = true;		// ウィンドウが戻ってきた
-		m_bConfimationMaxSize = false;	// 最大サイズのフラグの初期化
-		ConfirmatiomnMenuScale();		// 確認ウィンドウの拡大処理
-	}
-
 	// 選択肢処理
 	Choice();
 }
@@ -161,13 +148,6 @@ void CConfirmation_Window::ConfirmatiomnMenuScale()
 				// 選択肢の生成
 				SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "はい"));
 				SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "いいえ"));
-			}
-			else if(Mode == CApplication::MODE_CHAR_SELECT)
-			{ // キャラ選択画面だったら
-
-				// 選択肢の生成
-				SetChoice(CFontString::Create({ 400.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "ストライカー"));
-				SetChoice(CFontString::Create({ 700.0f, 450.0f, 0.0f }, { 25.0f, 25.0f }, "コマンダー"));
 			}
 
 			// 選択肢が使用されている場合
@@ -338,12 +318,12 @@ void CConfirmation_Window::Choice()
 		}
 	}
 
-	if (m_pCharSelectWindow != nullptr)
-	{ //	キャラ選択ウィンドウが使われていたら
+	//if (m_pCharSelectWindow != nullptr)
+	//{ //	キャラ選択ウィンドウが使われていたら
 
-		// キャラ選択ウィンドウの更新処理
-		m_pCharSelectWindow->Update();
-	}
+	//	 キャラ選択ウィンドウの更新処理
+	//	m_pCharSelectWindow->Update();
+	//}
 
 	if (m_bConfimationSpawnWindow == true && CTitle::GetMenuWindow() != nullptr)
 	{ // メニューウィンドウが使われている時 &&  メニューウィンドウが使われている時
@@ -392,13 +372,13 @@ void CConfirmation_Window::VariableInit()
 //============================================================================
 void CConfirmation_Window::UninitCharSelectWindow()
 {	
-	// キャラ選択画面の破棄
-	if (m_pCharSelectWindow != nullptr)
-	{
-		m_pCharSelectWindow->Uninit();
-		delete m_pCharSelectWindow;
-		m_pCharSelectWindow = nullptr;
-	}
+	//// キャラ選択画面の破棄
+	//if (m_pCharSelectWindow != nullptr)
+	//{
+	//	m_pCharSelectWindow->Uninit();
+	//	delete m_pCharSelectWindow;
+	//	m_pCharSelectWindow = nullptr;
+	//}
 }
 
 //============================================================================
@@ -422,19 +402,19 @@ void CConfirmation_Window::SetDisplay(const bool decition)
 //=============================================================================
 void CConfirmation_Window::CreateCharSelect()
 {
-	// 現在のモード
-	CApplication::MODE Mode = CApplication::GetModeType();		
+	//// 現在のモード
+	//CApplication::MODE Mode = CApplication::GetModeType();		
 
-	if (Mode == CApplication::MODE_CHAR_SELECT)
-	{ // キャラ選択宅画面だったら
+	//if (Mode == CApplication::MODE_CHAR_SELECT)
+	//{ // キャラ選択宅画面だったら
 
-		// nullチェック
-		if (m_pCharSelectWindow == nullptr)
-		{
-			// キャラ選択ウィンドウの生成
-			m_pCharSelectWindow = CCharSelect_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
-		}
-	}
+	//	// nullチェック
+	//	if (m_pCharSelectWindow == nullptr)
+	//	{
+	//		// キャラ選択ウィンドウの生成
+	//		m_pCharSelectWindow = CCharSelect_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
+	//	}
+	//}
 }
 
 //=============================================================================

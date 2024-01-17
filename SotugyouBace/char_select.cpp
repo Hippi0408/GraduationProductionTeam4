@@ -9,8 +9,8 @@
 #include "application.h"
 #include "fade.h"
 #include "fontString.h"
+#include "chardecision_window.h"
 #include "confirmation_window.h"
-#include "charselect_window.h"
 #include "camera.h"
 #include "halfsphere.h"
 #include "playerdata.h"
@@ -20,7 +20,7 @@
 //==============================================================================================
 // 静的メンバ変数宣言
 //==============================================================================================
-CConfirmation_Window* CChar_Select::m_pConfirmation = nullptr;
+CCharDecision_Window* CChar_Select::m_pCharDecisionWindow = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -67,10 +67,6 @@ HRESULT CChar_Select::Init()
 	// 倉庫モデルの生成
 	m_pWareHouse = CObjectX::Create(D3DXVECTOR3(0.0f, 300.0f, 1000.0f), D3DXVECTOR3(0.0f, 0.0, 0.0f), nullptr, "Data/model/CharacterSelect/Warehouse.x");
 
-	// ハーフスフィアの生成
-	//m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f),  D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
-	//m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
-
 	return S_OK;
 }
 
@@ -80,11 +76,11 @@ HRESULT CChar_Select::Init()
 void CChar_Select::Uninit()
 {
 	// メニューウィンドウの終了処理
-	if (m_pConfirmation != nullptr)
+	if (m_pCharDecisionWindow != nullptr)
 	{
-		m_pConfirmation->Uninit();
-		delete m_pConfirmation;
-		m_pConfirmation = nullptr;
+		m_pCharDecisionWindow->Uninit();
+		delete m_pCharDecisionWindow;
+		m_pCharDecisionWindow = nullptr;
 	}
 
 	// プレイヤーデータ
@@ -109,37 +105,16 @@ void CChar_Select::Update()
 			|| pInput->Trigger(JOYPAD_START, nCnt))
 			&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 		{
-			if (m_pConfirmation == nullptr)
+			if (m_pCharDecisionWindow == nullptr)
 			{
-				m_pConfirmation = CConfirmation_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), 500.0f, 120.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
+				m_pCharDecisionWindow = CCharDecision_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
 			}
 		}
-
-		//// キャラセレクト画面に戻る
-		//if (pInput->Trigger(DIK_BACK, nCnt)
-		//	&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
-		//{
-		//	// 画面遷移
-		//	CFade::SetFade(CApplication::MODE_TITLE, 0.05f);
-		//}
 	}
 
-	if (m_pConfirmation != nullptr)
+	if (m_pCharDecisionWindow != nullptr)
 	{
-		m_pConfirmation->Update();
-
-		/*if (m_pConfirmation->GetSelectChoice() == true)
-		{
-			CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
-		}*/
-	}
-
-	// ウィンドウが閉じた場合 
-	if (m_pConfirmation != nullptr && m_pConfirmation->GetSapawnWindow() == true)
-	{
-		m_pConfirmation->SetSapawnWindow(false);
-		delete m_pConfirmation;
-		m_pConfirmation = nullptr;
+		m_pCharDecisionWindow->Update();
 	}
 
 	// プレイヤーデータの更新処理
@@ -166,11 +141,10 @@ void CChar_Select::CharSwitching(int PlayerIndex)
 			m_nIndex = m_pPlayerData->GetPlayerIndex();
 
 			// nullチェック
-			if (CChar_Select::GetConfimationWindow() != nullptr
-				&& CChar_Select::GetConfimationWindow()->GetCharSelect() != nullptr)
+			if (m_pCharDecisionWindow != nullptr)
 			{
 				// 今選んでいる番号の取得
-				m_nIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
+				m_nIndex = m_pCharDecisionWindow->GetSelectIndex();
 			}
 
 			// 番号の変更
@@ -198,22 +172,12 @@ void CChar_Select::CharSwitching(int PlayerIndex)
 			m_nIndexKeep = m_nIndex;
 
 			// モデルの設定
-			if (CChar_Select::GetConfimationWindow() != nullptr)
+			if (CChar_Select::GetCharDecisionWindow() != nullptr)
 			{
-				if (CChar_Select::GetConfimationWindow()->GetSelectChoice() == true)
-				{
-					SetModel(0, "Data/model/SelectMode/view_Body_00.x");
-					SetModel(1, "Data/model/SelectMode/view_Body_01.x");
-					SetModel(2, "Data/model/SelectMode/view_Body_02.x");
-					SetModel(3, "Data/model/SelectMode/view_Body_03.x");
-				}
-				else
-				{
-					SetModel(0, "Data/model/SelectMode/view_Body_04.x");
-					SetModel(1, "Data/model/SelectMode/view_Body_05.x");
-					SetModel(2, "Data/model/SelectMode/view_Body_06.x");
-					SetModel(3, "Data/model/SelectMode/view_Body_07.x");
-				}
+				SetModel(0, "Data/model/SelectMode/view_Body_00.x");
+				SetModel(1, "Data/model/SelectMode/view_Body_01.x");
+				SetModel(2, "Data/model/SelectMode/view_Body_02.x");
+				SetModel(3, "Data/model/SelectMode/view_Body_03.x");
 			}
 		}
 	}
