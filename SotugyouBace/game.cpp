@@ -146,7 +146,7 @@ HRESULT CGame::Init()
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
 	// メッシュフィールドの生成
-	m_pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 4000.0f);
+	m_pMeshField = CMeshField::Create({ 0.0f, 0.0f, 0.0f }, 10, 10, 1000.0f);
 
 	// ポーズ画面
 	m_pPause = CPause::Create();

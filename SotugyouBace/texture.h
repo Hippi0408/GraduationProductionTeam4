@@ -26,6 +26,7 @@ public: /* 定義 */
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_BULLET,				// 弾
 		TEXTURE_FLOOR,				// 地面
+		TEXTURE_MAP,				// 地面
 		TEXTURE_RETICLE,			// レティクル
 		TEXTURE_CIRCLE,				// 円
 		TEXTURE_ITEM_POINTER,		// アイテムポインター
