@@ -124,13 +124,12 @@ HRESULT CGame::Init()
 	int nJob_Index = CApplication::GetPlayerJobIndex() % 3;
 
 	// プレイヤーの生成(テスト)
-	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, 2);
+	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-
-		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) });
+		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 0.0f, 6000.0f });

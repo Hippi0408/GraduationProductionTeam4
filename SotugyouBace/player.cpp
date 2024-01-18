@@ -326,7 +326,7 @@ void CPlayer::MeleeWeaponAttack()
 		D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 
 		// “–‚½‚è”»’è‚Ì‘å‚«‚³
-		float radiusSize = 80.0f * (Melee_Parameter.nLength + 2);
+		float radiusSize = 80.0f * (Melee_Parameter.nLength + 3);
 
 		// ŽË’ö‚Ì‰ÁŽZ
 		pos += pos_vec * radiusSize / 2.0f;
