@@ -397,12 +397,17 @@ void CPlayer::JumpBoost()
 //============================================================================
 void CPlayer::Landing(const D3DXVECTOR3 pos)
 {
-	// 着地モーションを設定
+		// 着地モーションを設定
 	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		GetParts(nCnt)->SetMotion(MOTION_LANDING);
-	}
+		CParts* pParts = GetParts(nCnt);
 
+		// 通常モーションの場合
+		if (pParts->GetMotion() == MOTION_NEUTRAL || pParts->GetMotion() == MOTION_JUMP)
+		{
+			pParts->SetMotion(MOTION_LANDING);
+		}
+	}
 	// キャラクターの着地処理
 	CCharacter::Landing(pos);
 }

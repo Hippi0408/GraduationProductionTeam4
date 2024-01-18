@@ -433,7 +433,7 @@ void CGame::MenuWindow()
 {
 	CInput* pInput = CInput::GetKey();
 	//// åªç›ÇÃÉÇÅ[Éh
-	CApplication::MODE Mode = CApplication::GetModeType();
+	//CApplication::MODE Mode = CApplication::GetModeType();
 
 	//if (Mode == CApplication::MODE_GAME)
 	//{

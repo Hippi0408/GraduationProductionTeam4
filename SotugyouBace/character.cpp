@@ -108,6 +108,9 @@ void CCharacter::Update()
 
 	// 床の当たり判定
 	FieldCollision();
+
+	// 透明状態
+	Invincible();
 }
 
 //============================================================================
@@ -180,6 +183,9 @@ void CCharacter::Damage(const int value)
 			m_pGaugeManager->SetLife(m_nLife);
 			m_pGaugeManager->Fluctuation();
 		}
+
+		// 無敵状態を付与する
+		SetCollisionNoneHit(true);
 
 		// 体力チェック
 		if (m_nLife <= 0)
@@ -296,6 +302,31 @@ void CCharacter::FieldCollision()
 
 		// マップオブジェクトの上にいる場合は重力をかけない
 		CCharacter::SetMove({ 0.0f, 0.0f, 0.0f });
+	}
+}
+
+//============================================================================
+// 透明状態
+//============================================================================
+void CCharacter::Invincible()
+{
+	// 無敵状態の場合
+	if (GetCollisionNoneHit() == true)
+	{
+		// 全パーツを点滅させる処理
+		for (auto pAllParts : GetAllParts()) for (auto pParts : pAllParts.second->GetModelAll())
+			pParts->SetDrawFlag(m_nInvincible_Counter % CHARACTER_INVINCIBLE_SPEED * 2 < CHARACTER_INVINCIBLE_SPEED);
+		
+		// 最大時間に達した場合
+		if (++m_nInvincible_Counter > CHARACTER_INVINCIBLE_TIMER)
+		{
+			SetCollisionNoneHit(false);
+			m_nInvincible_Counter = 0;
+
+			// 全パーツをの描画を元に戻す処理
+			for (auto pAllParts : GetAllParts()) for (auto pParts : pAllParts.second->GetModelAll())
+				pParts->SetDrawFlag(true);
+		}
 	}
 }
 
