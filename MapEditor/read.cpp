@@ -288,14 +288,14 @@ CMeshfield *CRead::ReadMap(char * sFilePath)
 					//このオブジェクトがメッシュのどこに居るかを調べる用
 					int nPosLocationm = 0;
 
-					//引く数のPosがどのマスに居るかを返す
-					nPosLocationm = pMeshfield->CheckPosLocation(Data.pos);
+					////引く数のPosがどのマスに居るかを返す
+					//nPosLocationm = pMeshfield->CheckPosLocation(Data.pos);
 
-					//エラー検知用
-					if (nPosLocationm < 0)
-					{
-						assert(false);
-					}
+					////エラー検知用
+					//if (nPosLocationm < 0)
+					//{
+					//	assert(false);
+					//}
 
 					//瓦礫マネージャーがNULLだったら
 					if (pBallast_Manager == nullptr)

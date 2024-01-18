@@ -27,6 +27,7 @@
 #include "player_parameter.h"
 #include "weapon_parameter.h"
 #include "weapon_attack.h"
+#include "result.h"
 
 const float CPlayer::PLAYER_COLLISION_RADIUS = 30.0f;	// プレイヤーの当たり判定の大きさ
 const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
@@ -135,6 +136,10 @@ void CPlayer::Uninit()
 	else if (Mode == CApplication::MODE_GAME)
 	{
 		pPlayerManager = CGame::GetPlayerManager();
+	}
+	else if (Mode == CApplication::MODE_RESULT)
+	{
+		pPlayerManager = CResult::GetPlayerManager();
 	}
 	if (pPlayerManager != nullptr)
 	{
@@ -486,95 +491,98 @@ void CPlayer::Target()
 		pEnemyManager = CGame::GetEnemyManager();
 	}
 
-	while (true)
+	if (Mode == CApplication::MODE_GAME)
 	{
-		// 雑魚敵の情報
-		for (auto pEnemy : pEnemyManager->GetAllEnemy())
+		while (true)
 		{
-			nCnt++;
-
-			if (pEnemy->GetLife() > 0)
+			// 雑魚敵の情報
+			for (auto pEnemy : pEnemyManager->GetAllEnemy())
 			{
-				// 敵の位置の取得
-				Mob_Pos = pEnemy->GetCenterPos();
+				nCnt++;
 
-				// プレイヤーから敵の距離
-				BulletVec = Mob_Pos - Player_Pos;
-
-				// 距離の算出
-				DistanceXZ = sqrtf(BulletVec.x * BulletVec.x
-					+ BulletVec.z * BulletVec.z);
-
-				// 距離3000以上
-				if (DistanceXZ > m_fTarget_Scope)
-					continue;
-
-				// 距離を比べる
-				if (NearDistance >= DistanceXZ && NextNearDistance < DistanceXZ)
+				if (pEnemy->GetLife() > 0)
 				{
-					// 短い方の距離と位置を代入
-					NearDistance = DistanceXZ;
-					m_NearMob_Pos = Mob_Pos;
-					m_nEnemy_Count = nCnt;
-					m_fEnemy_Speed = pEnemy->GetSpeed();
-					m_pEnemy = pEnemy;
+					// 敵の位置の取得
+					Mob_Pos = pEnemy->GetCenterPos();
 
-					m_bTarget = true;
+					// プレイヤーから敵の距離
+					BulletVec = Mob_Pos - Player_Pos;
 
-					// 画面に映っている時だけターゲットする
-					bScreen = Target_Scope(m_NearMob_Pos);
+					// 距離の算出
+					DistanceXZ = sqrtf(BulletVec.x * BulletVec.x
+						+ BulletVec.z * BulletVec.z);
+
+					// 距離3000以上
+					if (DistanceXZ > m_fTarget_Scope)
+						continue;
+
+					// 距離を比べる
+					if (NearDistance >= DistanceXZ && NextNearDistance < DistanceXZ)
+					{
+						// 短い方の距離と位置を代入
+						NearDistance = DistanceXZ;
+						m_NearMob_Pos = Mob_Pos;
+						m_nEnemy_Count = nCnt;
+						m_fEnemy_Speed = pEnemy->GetSpeed();
+						m_pEnemy = pEnemy;
+
+						m_bTarget = true;
+
+						// 画面に映っている時だけターゲットする
+						bScreen = Target_Scope(m_NearMob_Pos);
+					}
 				}
 			}
+
+			if (m_bTarget != bScreen)
+			{
+				// 距離が近いが画面に映っていない敵との距離
+				NextNearDistance = NearDistance;
+				NearDistance = m_fTarget_Scope;
+				nCnt = 0;
+				m_bTarget = false;
+			}
+			else
+				break;
 		}
 
-		if (m_bTarget != bScreen)
+		if (m_bTarget && bScreen)
 		{
-			// 距離が近いが画面に映っていない敵との距離
-			NextNearDistance = NearDistance;
-			NearDistance = m_fTarget_Scope;
-			nCnt = 0;
-			m_bTarget = false;
+			m_bReticle_Draw = true;
+
+			// プレイヤーから敵の距離
+			BulletVec = m_NearMob_Pos - GetPos();
+
+			// ターゲットした敵の方向
+			m_fAngle = atan2(BulletVec.x, BulletVec.z);
+			float AngleY = 0.0f;
+
+			// プレイヤーから敵の直線距離
+			m_fHypotenuse = sqrt((BulletVec.y * BulletVec.y) + (NearDistance * NearDistance));
+
+			// Y座標の追従
+			AngleY = sinf(BulletVec.y / m_fHypotenuse);
+
+			// 目的の角度の設定
+			CCharacter::SetBulletRot({ AngleY,m_fAngle + D3DX_PI,0.0f });
 		}
 		else
-			break;
+		{// ターゲットがいない場合は正面に弾を撃つ
+			m_bReticle_Draw = false;
+
+			// カメラの角度
+			CCamera *Camera = CApplication::GetCamera();
+			D3DXVECTOR3 rotCamera = Camera->GetRot();
+
+			// 目的の角度の設定
+			CCharacter::SetBulletRot({ rotCamera.x + D3DX_PI,rotCamera.y + D3DX_PI ,rotCamera.z + D3DX_PI });
+
+			m_NearMob_Pos = { 0.0f,0.0f,0.0f };
+		}
+
+		// レティクルの設定
+		Reticle(m_NearMob_Pos);
 	}
-
-	if (m_bTarget && bScreen)
-	{
-		m_bReticle_Draw = true;
-
-		// プレイヤーから敵の距離
-		BulletVec = m_NearMob_Pos - GetPos();
-
-		// ターゲットした敵の方向
-		m_fAngle = atan2(BulletVec.x, BulletVec.z);
-		float AngleY = 0.0f;
-
-		// プレイヤーから敵の直線距離
-		m_fHypotenuse = sqrt((BulletVec.y * BulletVec.y) + (NearDistance * NearDistance));
-
-		// Y座標の追従
-		AngleY = sinf(BulletVec.y / m_fHypotenuse);
-
-		// 目的の角度の設定
-		CCharacter::SetBulletRot({ AngleY,m_fAngle + D3DX_PI,0.0f });
-	}
-	else
-	{// ターゲットがいない場合は正面に弾を撃つ
-		m_bReticle_Draw = false;
-
-		// カメラの角度
-		CCamera *Camera = CApplication::GetCamera();
-		D3DXVECTOR3 rotCamera = Camera->GetRot();
-
-		// 目的の角度の設定
-		CCharacter::SetBulletRot({ rotCamera.x + D3DX_PI,rotCamera.y + D3DX_PI ,rotCamera.z + D3DX_PI });
-
-		m_NearMob_Pos = { 0.0f,0.0f,0.0f };
-	}
-
-	// レティクルの設定
-	Reticle(m_NearMob_Pos);
 }
 
 //============================================================================
@@ -786,47 +794,50 @@ void CPlayer::CollisionDropWeapon()
 	CDrop_Weapon* pNearDrop = nullptr;	// 最も距離が近い落とし物
 	float fNearDistance = 0.0f;			// 最も近い距離
 
-	// 全ての落とし物を読み込む
-	for (auto pDrop : pManager->GetAllDrop())
+	if (Mode == CApplication::MODE_GAME)
 	{
-		// プレイヤーから落ちてるパーツの距離
-		D3DXVECTOR3 Vec = pDrop->GetPos() - pos;
-
-		// 距離の算出
-		float fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
-
-		// 最短距離が更新された場合
-		if (fNearDistance > fDistance)
+		// 全ての落とし物を読み込む
+		for (auto pDrop : pManager->GetAllDrop())
 		{
-			fNearDistance = fDistance;
-			pNearDrop = pDrop;
+			// プレイヤーから落ちてるパーツの距離
+			D3DXVECTOR3 Vec = pDrop->GetPos() - pos;
+
+			// 距離の算出
+			float fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
+
+			// 最短距離が更新された場合
+			if (fNearDistance > fDistance)
+			{
+				fNearDistance = fDistance;
+				pNearDrop = pDrop;
+			}
+			// 距離が格納されていない場合 且つ 円と円の当たり判定の中にいる場合
+			else if (fNearDistance == 0.0f && fRadius + CDrop_Weapon::PARTS_COLLISION_RADIUS >= fDistance)
+			{
+				fNearDistance = fDistance;
+				pNearDrop = pDrop;
+			}
 		}
-		// 距離が格納されていない場合 且つ 円と円の当たり判定の中にいる場合
-		else if(fNearDistance == 0.0f && fRadius + CDrop_Weapon::PARTS_COLLISION_RADIUS >= fDistance)
+
+		// 接触している落とし物が存在する場合
+		m_bDrop_Contact = pNearDrop != nullptr;
+
+		// 落とし物と接触している場合
+		if (m_bDrop_Contact == true)
 		{
-			fNearDistance = fDistance;
-			pNearDrop = pDrop;
+			// ピックアップ状態を返す
+			pNearDrop->SetPick_Up(true);
+
+			// 落とし物を入手する場合
+			if (m_bDrop_Get == true)
+			{
+				// 落とし物を入手する処理
+				DropGet(pNearDrop);
+			}
 		}
+		// 落とし物を入手する判定のリセット
+		m_bDrop_Get = false;
 	}
-
-	// 接触している落とし物が存在する場合
-	m_bDrop_Contact = pNearDrop != nullptr;
-
-	// 落とし物と接触している場合
-	if (m_bDrop_Contact == true)
-	{
-		// ピックアップ状態を返す
-		pNearDrop->SetPick_Up(true);
-
-		// 落とし物を入手する場合
-		if (m_bDrop_Get == true)
-		{
-			// 落とし物を入手する処理
-			DropGet(pNearDrop);
-		}
-	}
-	// 落とし物を入手する判定のリセット
-	m_bDrop_Get = false;
 }
 
 //============================================================================
@@ -834,68 +845,81 @@ void CPlayer::CollisionDropWeapon()
 //============================================================================
 void CPlayer::SettingParameter()
 {
+
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
-
-	// パラメーターの情報
-	CPlayer_Parameter::PARAMETERS Parameter = {};
-
-	int nLife = 0;				// 耐久値
-	int nStamina = 0;			// スタミナ容量
-	int nStan_Tolerance = 0;	// スタン許容値
-	int nGravity = 0;			// 重量
-
-	CPlayer_Parameter* pPlayer_Parameter = nullptr;
-	CWeapon_Parameter* pWeapon_Parameter = nullptr;
-
-	//パラメータの取得
-	/*if (Mode == CApplication::MODE_TUTORIAL)
+	if (Mode != CApplication::MODE_RESULT)
 	{
-		pParameter = CTutorial::GetPlayerParameter();
-		pWeapon_Parameter = CTutorial::GetWeaponParameter();
-	}
-	else*/
-	if (Mode == CApplication::MODE_GAME)
-	{
-		pPlayer_Parameter = CGame::GetPlayerParameter();
-		pWeapon_Parameter = CGame::GetWeaponParameter();
-	}
 
-	// パーツ毎のパラメーター
-	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
-	{
-		switch (nCnt)
+		// パラメーターの情報
+		CPlayer_Parameter::PARAMETERS Parameter = {};
+
+		int nLife = 0;				// 耐久値
+		int nStamina = 0;			// スタミナ容量
+		int nStan_Tolerance = 0;	// スタン許容値
+		int nGravity = 0;			// 重量
+
+		CPlayer_Parameter* pPlayer_Parameter = nullptr;
+		CWeapon_Parameter* pWeapon_Parameter = nullptr;
+
+		//パラメータの取得
+		/*if (Mode == CApplication::MODE_TUTORIAL)
 		{
-		case 0:
-			Parameter = pPlayer_Parameter->GetParameterJob(m_Parts_Job[nCnt]);
-			break;
-		case 1:
-			Parameter = pPlayer_Parameter->GetParameterArms(m_Parts_Job[nCnt], m_nArms_Rarity);
-			break;
-		case 2:
-			Parameter = pPlayer_Parameter->GetParameterLeg(m_Parts_Job[nCnt], m_nLeg_Rarity);
-			break;
-		default:
-			break;
+			pParameter = CTutorial::GetPlayerParameter();
+			pWeapon_Parameter = CTutorial::GetWeaponParameter();
+		}
+		else*/
+		if (Mode == CApplication::MODE_GAME)
+		{
+			pPlayer_Parameter = CGame::GetPlayerParameter();
+			pWeapon_Parameter = CGame::GetWeaponParameter();
+		}
+		if (Mode == CApplication::MODE_RESULT)
+		{
+			pPlayer_Parameter = CResult::GetPlayerParameter();
 		}
 
-		nLife += Parameter.nLife;
-		nStamina += Parameter.nStamina;
-		nStan_Tolerance += Parameter.nStan_Tolerance;
-		nGravity += Parameter.nGravity;
+		// パーツ毎のパラメーター
+		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+		{
+			switch (nCnt)
+			{
+			case 0:
+				Parameter = pPlayer_Parameter->GetParameterJob(m_Parts_Job[nCnt]);
+				break;
+			case 1:
+				Parameter = pPlayer_Parameter->GetParameterArms(m_Parts_Job[nCnt], m_nArms_Rarity);
+				break;
+			case 2:
+				Parameter = pPlayer_Parameter->GetParameterLeg(m_Parts_Job[nCnt], m_nLeg_Rarity);
+				break;
+			default:
+				break;
+			}
+
+			nLife += Parameter.nLife;
+			nStamina += Parameter.nStamina;
+			nStan_Tolerance += Parameter.nStan_Tolerance;
+			nGravity += Parameter.nGravity;
+		}
+
+		CWeapon_Parameter::MELEE_WEAPON_PARAMETERS Melee_Parameter = {};
+
+
+		// 武器パラメーター
+		Melee_Parameter = pWeapon_Parameter->GetParameterMeleeWeapon(m_nWeapon_type, m_nWeapon_Rarity);
+		m_nGravity += Melee_Parameter.nGravity;
+
+
+		// 各パラメータの設定
+		SetMaxLife(nLife);
+		if (m_pEnergy_Gauge != nullptr)
+		{
+			m_pEnergy_Gauge->SetMaxEnerugy(nStamina);
+		}
+		m_nStan_Tolerance = nStan_Tolerance;
+		m_nGravity = nGravity;
 	}
-
-	CWeapon_Parameter::MELEE_WEAPON_PARAMETERS Melee_Parameter = {};
-
-	// 武器パラメーター
-	Melee_Parameter = pWeapon_Parameter->GetParameterMeleeWeapon(m_nWeapon_type, m_nWeapon_Rarity);
-	m_nGravity += Melee_Parameter.nGravity;
-
-	// 各パラメータの設定
-	SetMaxLife(nLife);
-	m_pEnergy_Gauge->SetMaxEnerugy(nStamina);
-	m_nStan_Tolerance = nStan_Tolerance;
-	m_nGravity = nGravity;
 }
 
 //============================================================================

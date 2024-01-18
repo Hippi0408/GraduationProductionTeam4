@@ -125,7 +125,7 @@ void CMap::ReadMap(char *filename)
 
 						// “–‚½‚è”»’è–³‚µ
 						if (nCollision == 0)
-							CObjectX::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
+							CObjectX::Create(Pos, Rot, nullptr, &XFileName[nType][0], CObject::PRIORITY_BACK);
 						// “–‚½‚è”»’è‚ ‚è
 						else
 						{

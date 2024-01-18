@@ -29,7 +29,6 @@
     <ClCompile Include="chain.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="chardecision_window.cpp" />
-    <ClCompile Include="charselect_window.cpp" />
     <ClCompile Include="char_select.cpp" />
     <ClCompile Include="chain_manager.cpp" />
     <ClCompile Include="client.cpp" />
@@ -102,6 +101,7 @@
     </ClCompile>
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="restraint_switch.cpp" />
+    <ClCompile Include="restrictions.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="smoke_explosion.cpp" />
@@ -130,7 +130,6 @@
     <ClInclude Include="chain.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="chardecision_window.h" />
-    <ClInclude Include="charselect_window.h" />
     <ClInclude Include="char_select.h" />
     <ClInclude Include="chain_manager.h" />
     <ClInclude Include="client.h" />
@@ -201,6 +200,7 @@
     <ClInclude Include="precompile.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="restraint_switch.h" />
+    <ClInclude Include="restrictions.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="smoke_explosion.h" />

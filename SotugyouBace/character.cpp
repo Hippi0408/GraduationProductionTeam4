@@ -248,61 +248,64 @@ void CCharacter::Landing(const D3DXVECTOR3 pos)
 //============================================================================
 void CCharacter::FieldCollision()
 {
-	// 現在の位置を定数として取得
-	const D3DXVECTOR3 pos = CCharacter::GetPos();
+		// 現在の位置を定数として取得
+		const D3DXVECTOR3 pos = CCharacter::GetPos();
 
-	CMeshField* pMeshField = nullptr;
-	float a = 0.0f;
+		CMeshField* pMeshField = nullptr;
+		float a = 0.0f;
 
-	if (CApplication::GetModeType() == CApplication::MODE_GAME)
-		pMeshField = CGame::GetMeshField();
-	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
-		pMeshField = CTutorial::GetMeshField();
+		if (CApplication::GetModeType() == CApplication::MODE_GAME)
+			pMeshField = CGame::GetMeshField();
+		else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+			pMeshField = CTutorial::GetMeshField();
 
-	if (pMeshField != nullptr)
-	{
-		// 床の当たり判定から高さを定数として取得
 		if (pMeshField != nullptr)
-			a = pMeshField->MeshCollision(pos);
-	}
-	// 接地している場合
-	if (GetGround())
-	{
-		// プレイヤーの高さを設定
-		CCharacter::SetPos({ pos.x, a, pos.z });
-	}
-	// 接地していない場合
-	else
-	{
-		if (!m_bAvoidance)
 		{
-			// メッシュフィールドの上にいる場合は重力をかける
-			CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
-
-			// メッシュフィールドより下の位置にいる場合
-			if (a >= pos.y)
+			// 床の当たり判定から高さを定数として取得
+			if (pMeshField != nullptr)
+				a = pMeshField->MeshCollision(pos);
+		}
+		// 接地している場合
+		if (GetGround())
+		{
+			// プレイヤーの高さを設定
+			CCharacter::SetPos({ pos.x, a, pos.z });
+		}
+		// 接地していない場合
+		else
+		{
+			if (!m_bAvoidance)
 			{
-				// 着地処理を読み込む
-				Landing({ pos.x, a, pos.z });
+				if (CApplication::GetModeType() == CApplication::MODE_GAME)
+				{
+					// メッシュフィールドの上にいる場合は重力をかける
+					CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+				}
+
+				// メッシュフィールドより下の位置にいる場合
+				if (a >= pos.y)
+				{
+					// 着地処理を読み込む
+					Landing({ pos.x, a, pos.z });
+				}
 			}
 		}
-	}
 
-	float y = GetObjY();
+		float y = GetObjY();
 
-	if (!GetGround() && GetObjXZ() && y > pos.y)
-	{
-		// 着地処理を読み込む
-		Landing({ pos.x,y,pos.z });
-	}
-	else if (GetLandObj())
-	{
-		// プレイヤーの高さを設定
-		CCharacter::SetPos({ pos.x, GetObjY(), pos.z });
+		if (!GetGround() && GetObjXZ() && y > pos.y)
+		{
+			// 着地処理を読み込む
+			Landing({ pos.x,y,pos.z });
+		}
+		else if (GetLandObj())
+		{
+			// プレイヤーの高さを設定
+			CCharacter::SetPos({ pos.x, GetObjY(), pos.z });
 
-		// マップオブジェクトの上にいる場合は重力をかけない
-		CCharacter::SetMove({ 0.0f, 0.0f, 0.0f });
-	}
+			// マップオブジェクトの上にいる場合は重力をかけない
+			CCharacter::SetMove({ 0.0f, 0.0f, 0.0f });
+		}
 }
 
 //============================================================================

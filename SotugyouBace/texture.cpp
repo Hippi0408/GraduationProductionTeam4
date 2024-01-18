@@ -66,6 +66,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/up.png",					// 上矢印
 	"Data/texture/reticle.png",						// レティクル
 	"Data/texture/chain.png",						// チェーン
+	"Data/texture/NotEnter.png",					// 移動制限
 
 	"Data/texture/Weapon/Knuckle_icon.png",			// 素手アイコン
 	"Data/texture/Weapon/Slash_icon.png",			// スラッシュアイコン
