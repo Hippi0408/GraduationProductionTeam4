@@ -11,6 +11,7 @@
 #include "tutorial.h"
 #include "gauge_manager.h"
 #include "debugProc.h"
+#include "camera.h"
 
 const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
 const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
@@ -270,8 +271,12 @@ void CCharacter::FieldCollision()
 	{
 		if (!m_bAvoidance)
 		{
-			// メッシュフィールドの上にいる場合は重力をかける
-			CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+			if (!CApplication::GetCamera()->GetOpening())
+				// メッシュフィールドの上にいる場合は重力をかける
+				CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+			else
+				// オープニング時の重力
+				CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY * 5, 0.0f });
 
 			// メッシュフィールドより下の位置にいる場合
 			if (a >= pos.y)

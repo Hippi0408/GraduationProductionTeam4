@@ -34,6 +34,8 @@ public:
 	{
 		MOTION_NEUTRAL = 0,	// ニュートラル
 		MOTION_WALK,		// 歩き
+		MOTION_ENTRANCE,	// 登場
+		MOTION_LANDING,		// 着地
 		MOTION_MAX,
 	};
 
@@ -46,11 +48,13 @@ public:
 	virtual void Draw() override;
 
 	void Destroy() override;			// 破壊処理
+	void ChangeMotion();
+	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
 
 	static CBoss* Create(const D3DXVECTOR3 pos);
 
 private:
-
+	bool m_bOpening;
 };
 
 #endif// _BOSS_H_
