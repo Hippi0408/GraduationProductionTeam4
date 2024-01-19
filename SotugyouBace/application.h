@@ -28,6 +28,7 @@ class CParticleManager;
 class CMenu_Window;
 class CParts_File;
 class ConnectManager;
+class CChar_Select;
 
 #ifdef _DEBUG
 class CDebugProc;
@@ -76,12 +77,14 @@ public:
 	static CMenu* GetMenu() { return m_pMenu; }
 	static CParts_File* GetPartsFile() { return m_pPartsFile; }
 	static CParticleManager* GetParticleManager() { return m_pParticleManager; }
+	static CChar_Select* GetCharSelect() { return m_pCharSelect; }
 
 	static MODE GetModeType() { return m_modeType; }
 
 	static const bool GetGameStart() { return m_bGameStart; }
 	static const bool GetPauce() { return m_bPauce; }
 	static const int GetPlayerJobIndex() { return m_nPlayerJobIndex; }
+	static bool GetSkillType() { return m_nSkill; }
 
 	static ConnectManager* GetClient() { return m_pClient; }
 	static void SetClient(ConnectManager* Client) { m_pClient = Client; }
@@ -101,6 +104,7 @@ private:
 	static CParts_File* m_pPartsFile;
 	static CParticleManager* m_pParticleManager;
 	static ConnectManager* m_pClient;
+	static CChar_Select* m_pCharSelect;
 	CInput* m_pInput;
 
 #ifdef _DEBUG
@@ -113,6 +117,7 @@ private:
 	static bool m_bGameStart;
 	static bool m_bPauce;
 	static int m_nPlayerJobIndex;	// プレイヤーのジョブ番号
+	static bool m_nSkill;
 };
 
 #endif // !_APPLICATION_H_

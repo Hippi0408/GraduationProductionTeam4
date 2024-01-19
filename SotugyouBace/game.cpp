@@ -136,8 +136,7 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-
-		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) });
+		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
 	// ボスキャラの生成
 	CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
@@ -158,6 +157,9 @@ HRESULT CGame::Init()
 
 	// ポーズ画面
 	m_pPause = CPause::Create();
+
+	// フォグの設定
+	CFog::SetFog(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	m_nEndCounter = 0;
 	m_bInputFlag = false;
@@ -287,9 +289,6 @@ void CGame::Update()
 {
 	// メニューウィンドウ処理
 	MenuWindow();
-
-	// フォグの設定
-	CFog::SetFog(D3DXCOLOR(0.2f, 1.0f, 0.5f, 1.0f));
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
@@ -444,7 +443,7 @@ void CGame::MenuWindow()
 {
 	CInput* pInput = CInput::GetKey();
 	//// 現在のモード
-	CApplication::MODE Mode = CApplication::GetModeType();
+	//CApplication::MODE Mode = CApplication::GetModeType();
 
 	//if (Mode == CApplication::MODE_GAME)
 	//{
