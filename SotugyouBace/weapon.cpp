@@ -10,9 +10,21 @@
 const char* CWeapon::m_cWeaponFileName[] =
 {
 	"Data/model/SG_01/DummyParent.x",
-	"Data/model/Weapon/knife.x",
-	"Data/model/Weapon/hammer.x",
-	"Data/model/Weapon/scythe.x",
+
+	"Data/model/Weapon/Melee_Weapon/knuckle.x",			// ナックル
+	"Data/model/Weapon/Melee_Weapon/pilebunker.x",		// パイルバンカー
+	"Data/model/Weapon/Melee_Weapon/brandmarkers.x",	// ブランドマーカー
+	"Data/model/Weapon/Melee_Weapon/stunbaton.x",		// スタンバトン
+
+	"Data/model/Weapon/Melee_Weapon/samuraiSword.x",		// 太刀
+	"Data/model/Weapon/Melee_Weapon/hammer.x",			// ハンマー
+	"Data/model/Weapon/Melee_Weapon/beamSword.x",		// ビームサーベル
+	"Data/model/Weapon/Melee_Weapon/basterSword.x",		// バスターソード
+
+	"Data/model/Weapon/Melee_Weapon/lance.x",			// ランス
+	"Data/model/Weapon/Melee_Weapon/rapier.x",			// レイピア
+	"Data/model/Weapon/Melee_Weapon/partisan.x",		// パルチザン
+	"Data/model/Weapon/Melee_Weapon/beamjavelin.x",		// ビームジャベリン
 };
 //=====================================
 // デフォルトコンストラクタ
@@ -74,7 +86,7 @@ void CWeapon::ChangeWeapon(const int type)
 //============================================================================
 // 生成処理
 //============================================================================
-CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, int type, CObjectX* parent)
+CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, int type, CObjectX* parent)
 {
 	CWeapon* pParts = new CWeapon;
 
@@ -84,6 +96,7 @@ CWeapon* CWeapon::Create(const D3DXVECTOR3 pos, int type, CObjectX* parent)
 	}
 
 	pParts->SetPos(pos);
+	pParts->SetRot(rot);
 	pParts->ChangeWeapon(type);
 	pParts->SetParent(parent);
 

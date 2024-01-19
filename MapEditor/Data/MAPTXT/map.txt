@@ -1,0 +1,125 @@
+#==============================================================================
+#
+# 『Map』スクリプトファイル [Map.txt]
+# Author : 小綱啓仁
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# 読み込むテクスチャファイル名
+#------------------------------------------------------------------------------
+TEXTURE_FILENAME = data/TEXTURE/map.png		# [0]地面テクスチャ
+
+#------------------------------------------------------------------------------
+# 読み込むモデル数
+#------------------------------------------------------------------------------
+NUM_MODEL = 16
+
+#------------------------------------------------------------------------------
+# 読み込むモデルファイル名
+#------------------------------------------------------------------------------
+MODEL_FILENAME = Data/model/md.x
+MODEL_FILENAME = Data/model/bill00.x
+MODEL_FILENAME = Data/model/bill01.x
+MODEL_FILENAME = Data/model/bill02.x
+MODEL_FILENAME = Data/model/ArmyTent.x
+MODEL_FILENAME = Data/model/ArmyTent2.x
+MODEL_FILENAME = Data/model/BuildingOnTheConvenienceStore.x
+MODEL_FILENAME = Data/model/ConvenienceStore.x
+MODEL_FILENAME = Data/model/ConvenienceStore2.x
+MODEL_FILENAME = Data/model/Drywood.x
+MODEL_FILENAME = Data/model/House01.x
+MODEL_FILENAME = Data/model/House02.x
+MODEL_FILENAME = Data/model/House03.x
+MODEL_FILENAME = Data/model/House04.x
+MODEL_FILENAME = Data/model/MetalContainer.x
+MODEL_FILENAME = Data/model/artillerybattery.x
+#------------------------------------------------------------------------------
+# 表示する地面の配置情報
+#------------------------------------------------------------------------------
+
+FIELDSET
+	POS = 0.0 0.0 0.0
+	ROT = 0.0 0.0 0.0
+	COLOR = 1.0 1.0 1.0 1.0
+	SIZE = 10000.0 10000.0
+	DIVISION = 2 2
+END_FIELDSET
+
+#------------------------------------------------------------------------------
+# 表示するモデルの配置情報
+#------------------------------------------------------------------------------
+MODELSET
+	TYPE = 2
+	POS = -30.2 0.0 68.0
+	ROT = 0.0 0.0 0.0
+	COLLISION_OFF = 0
+	OPENING_LOST = 1
+	SWITCH = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = 84.8 0.0 9.4
+	ROT = 0.0 0.0 0.0
+	COLLISION_OFF = 0
+	OPENING_LOST = 1
+	SWITCH = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 7
+	POS = -57.5 0.0 -65.4
+	ROT = 0.0 1.6 0.0
+	COLLISION_OFF = 0
+	OPENING_LOST = 1
+	SWITCH = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -5.6 0.0 314.7
+	ROT = 0.0 1.6 0.0
+	COLLISION_OFF = 0
+	OPENING_LOST = 1
+	SWITCH = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -327.2 0.0 663.7
+	ROT = 0.0 1.6 0.0
+	COLLISION_OFF = 0
+	OPENING_LOST = 1
+	SWITCH = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -613.9 0.0 -52.0
+	ROT = 0.0 1.6 0.0
+	COLLISION_OFF = 0
+	OPENING_LOST = 1
+	SWITCH = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -668.9 0.0 -672.0
+	ROT = 0.0 1.6 0.0
+	COLLISION_OFF = 0
+	OPENING_LOST = 1
+	SWITCH = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -725.2 -100.0 47.6
+	ROT = 0.0 1.6 0.0
+	COLLISION_OFF = 0
+	OPENING_LOST = 1
+	SWITCH = 0
+END_MODELSET
+
+END_SCRIPT		# この行は絶対消さないこと！

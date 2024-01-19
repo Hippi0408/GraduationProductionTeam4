@@ -21,7 +21,6 @@
 #include "title_menu.h"
 #include "texture.h"
 #include "confirmation_window.h"
-#include "charselect_window.h"
 #include "char_select.h"
 #include "connect.h"
 
@@ -59,6 +58,7 @@ HRESULT CCharDecision_Window::Init()
 	m_bMaxSize = false;
 	m_bSlideFlag = false;
 	m_bFontFlag = false;
+	m_bTextureFlag = false;
 	m_bLeftRight = false;
 	m_bStopFlag = true;
 	m_bPosDest = false;
@@ -115,9 +115,6 @@ void CCharDecision_Window::Update()
 
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
-
-		// プレイヤーのジョブ番号の設定
-		CApplication::SetPlayerJobIndex(CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice());
 	}
 	if (m_bScaleReduce == true)
 	{
@@ -130,16 +127,16 @@ void CCharDecision_Window::Update()
 		CharSelectChoice();
 	}
 
-	// ウィンドウを戻す処理
-	if (m_bMaxSize == true)
-	{
-		BackWindow();
-	}
-
 	if (m_bScaleExpansion == true)
 	{
 		m_pConfirmation->ConfirmatiomnMenuScale();
 		m_pConfirmation->VariableInit();
+	}
+
+	if (m_bMaxSize == true && m_bScale == true)
+	{
+		// プレイヤー番号処理
+		PlayerIndex();
 	}
 }
 
@@ -235,7 +232,6 @@ void CCharDecision_Window::CharSelectChoice()
 		if (pInput->Trigger(DIK_A) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_UP)) && m_bStopFlag == false)
 		{
 			// 選択した番号の取得
-			m_nSelectIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
 			m_nSelectIndex--;		// 番号を1つ戻す
 			m_bSlideFlag = true;	// スライドさせる
 			m_bLeftRight = false;	// 左に移動
@@ -248,8 +244,6 @@ void CCharDecision_Window::CharSelectChoice()
 		// 下に移動する
 		else if (pInput->Trigger(DIK_D) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_DOWN)) && m_bStopFlag == false)
 		{
-			// 選択した番号の取得
-			m_nSelectIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetSelectChoice();
 			m_nSelectIndex++;		// 番号を1つ進める
 			m_bSlideFlag = true;	// スライドさせる
 			m_bLeftRight = true;	// 右に移動
@@ -300,7 +294,8 @@ void CCharDecision_Window::SlideWindow()
 		{
 			m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
-			pos.x -= m_fMoveX;					// 移動量の減算
+ 			pos.x -= m_fMoveX;					// 移動量の減算
+
 			if (pos.x <= -SCREEN_WIDTH / 2 && m_bPosDest == false)
 			{// 位置が-640以下 && 目的の位置まで到達していなかったら
 
@@ -312,11 +307,9 @@ void CCharDecision_Window::SlideWindow()
 
 				pos.x = SCREEN_WIDTH / 2;		// 位置の設定
 				m_bFontFlag = false;			// フォントを使用していない状態にする
+				m_bTextureFlag = false;
 				m_bStopFlag = true;				// スライドを停止させる
 				m_bExplanationUninit = false;   // テクスチャとフォントの表示
-
-				// 選択した番号の保存
-				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(m_nSelectIndex);
 			}
 		}
 		// 右移動
@@ -336,11 +329,9 @@ void CCharDecision_Window::SlideWindow()
 
 				pos.x = SCREEN_WIDTH / 2;		// 位置の設定
 				m_bFontFlag = false;			// フォントを使用していない状態にする
+				m_bTextureFlag = false;
 				m_bStopFlag = true;				// スライドを停止させる
 				m_bExplanationUninit = false;	// テクスチャとフォントの表示
-
-				// 選択した番号の保存
-				CChar_Select::GetConfimationWindow()->GetCharSelect()->SetSelectChoice(m_nSelectIndex);
 			}
 		}
 		// 位置の設定
@@ -349,18 +340,50 @@ void CCharDecision_Window::SlideWindow()
 }
 
 //============================================================================
+// プレイヤー番号処理
+//============================================================================
+void CCharDecision_Window::PlayerIndex()
+{
+	if (m_nSelectIndex <= -1)
+	{
+		m_nSelectIndex = 3;
+	}
+	else if (m_nSelectIndex >= 4)
+	{
+		m_nSelectIndex = 0;
+	}
+
+	if (m_nSelectIndex == 0)
+	{
+		SetFont("ラッシュ");
+		SetTextue(CTexture::TEXTURE_SKILL_RUSH, CTexture::TEXTURE_SKILLEXPLANATION_RUSH);
+	}
+	else if (m_nSelectIndex == 1)
+	{
+		SetFont("ヴァンガード");
+		SetTextue(CTexture::TEXTURE_SKILL_VANGUARD, CTexture::TEXTURE_SKILLEXPLANATION_VANGUARD);
+	}
+	else if (m_nSelectIndex == 2)
+	{
+		SetFont("イーグルアイ");
+		SetTextue(CTexture::TEXTURE_SKILL_EAGLEEYE, CTexture::TEXTURE_SKILLEXPLANATION_EAGLEEYE);
+	}
+	else if (m_nSelectIndex == 3)
+	{
+		SetFont("マーシャル");
+		SetTextue(CTexture::TEXTURE_SKILL_MARSHALL, CTexture::TEXTURE_SKILLEXPLANATION_MARSHALL);
+	}
+}
+
+//============================================================================
 // フォントの設定処理
 //============================================================================
-void CCharDecision_Window::SetFont(const std::string lette[])
+void CCharDecision_Window::SetFont(const std::string lette)
 {
-	for (int nCnt = 0; nCnt < 2; nCnt++)
+	if (m_pFont == nullptr && m_bFontFlag == false)
 	{
-		if (m_pFont[nCnt] == nullptr && m_bFontFlag == false)
-		{
-			m_pFont[0] = CFontString::Create(D3DXVECTOR3(750.0f, 200.0f, 0.0f), { 25.0f, 25.0f }, lette[0]);
-			m_pFont[1] = CFontString::Create(D3DXVECTOR3(650.0f, 300.0f, 0.0f), { 35.0f, 35.0f }, lette[1]);
-			m_bFontFlag = true;
-		}
+		m_pFont = CFontString::Create(D3DXVECTOR3(650.0f, 300.0f, 0.0f), { 35.0f, 35.0f }, lette);
+		m_bFontFlag = true;
 	}
 }
 
@@ -369,15 +392,19 @@ void CCharDecision_Window::SetFont(const std::string lette[])
 //============================================================================
 void CCharDecision_Window::SetTextue(CTexture::TEXTURE texture, CTexture::TEXTURE texture1)
 {
-	if (m_pObject2D[0] == nullptr)
+	if (m_bTextureFlag == false)
 	{
-		m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(700.0f, 250.0f), CObject::PRIORITY_SCREEN);
-		m_pObject2D[0]->SetTexture(texture1);
-	}
-	if (m_pObject2D[1] == nullptr)
-	{
-		m_pObject2D[1] = CObject2D::Create(D3DXVECTOR3(500.0f, 250.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
-		m_pObject2D[1]->SetTexture(texture);
+		if (m_pObject2D[0] == nullptr)
+		{
+			m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(700.0f, 250.0f), CObject::PRIORITY_SCREEN);
+			m_pObject2D[0]->SetTexture(texture1);
+		}
+		if (m_pObject2D[1] == nullptr)
+		{
+			m_pObject2D[1] = CObject2D::Create(D3DXVECTOR3(500.0f, 250.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
+			m_pObject2D[1]->SetTexture(texture);
+		}
+		m_bTextureFlag = true;
 	}
 }
 
@@ -387,13 +414,10 @@ void CCharDecision_Window::SetTextue(CTexture::TEXTURE texture, CTexture::TEXTUR
 void CCharDecision_Window::UninitExplanation()
 {
 	// フォントの破棄
-	for (int nCnt = 0; nCnt < 2; nCnt++)
+	if (m_pFont != nullptr)
 	{
-		if (m_pFont[nCnt] != nullptr)
-		{
-			m_pFont[nCnt]->Uninit();
-			m_pFont[nCnt] = nullptr;
-		}
+		m_pFont->Uninit();
+		m_pFont = nullptr;
 	}
 
 	// テクスチャの破棄

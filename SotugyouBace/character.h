@@ -22,11 +22,13 @@ class CGauge_Manager;
 //---------------------------
 class CCharacter : public CMove_Object
 {
-	static const float CHARACTER_FIRST_MOVE_SPEED;	// キャラクターの初期移動速度
+	static const float CHARACTER_FIRST_MOVE_SPEED;		// キャラクターの初期移動速度
 
-	static const float CHARACTER_ROT_SPEED;			// キャラクターの回転する速度
-	static const float CHARACTER_MOVE_INERTIE;		// キャラクターの移動慣性
-	static const float CHARACTER_GRAVITY;			// キャラクターの重力
+	static const float CHARACTER_ROT_SPEED;				// キャラクターの回転する速度
+	static const float CHARACTER_MOVE_INERTIE;			// キャラクターの移動慣性
+	static const float CHARACTER_GRAVITY;				// キャラクターの重力
+	static const int CHARACTER_INVINCIBLE_TIMER = 20;	// キャラクター無敵時間
+	 const int CHARACTER_INVINCIBLE_SPEED = 6;			// キャラクターの透明速度
 
 public:
 
@@ -44,6 +46,7 @@ public:
 	virtual void Destroy();							// 自身を破壊する処理
 	virtual void Landing(const D3DXVECTOR3 pos);	// 着地処理
 	void FieldCollision();							// 床の当たり判定
+	void Invincible();								// 透明状態
 	void Rotation();								// 回転方向へ振り向かせる処理
 	void NormalizeRot();							// 角度の正規化
 	virtual void Hit(CMove_Object* pHit) override = 0;
@@ -62,8 +65,7 @@ public:
 	void SetJump_Boost(const bool jumpboost) { m_bJump_Boost = jumpboost; }
 
 	void SetParts(const int charaParts, const int partsIndex, CMotion::MOTION motion);				// パーツの設定処理
-	//void ChangeParts(const int index, const char* Xfilename);			// パーツ変更処理
-	
+
 	void SetJump_PressCount(const int jumpcount) { m_nJump_PressCount = jumpcount; }
 	void AddJump_PressCount(const int jumpcount) { m_nJump_PressCount += jumpcount; }
 	void SetAvoidance(const bool avoidance) { m_bAvoidance = avoidance; }
@@ -115,6 +117,8 @@ private:
 	int m_nAvoidance_Count;				// 回避の硬直時間
 
 	bool m_bHit_Explosion;				// 爆発に当たったか
+
+	int m_nInvincible_Counter;			// 無敵時間
 
 	std::string m_name;					// 自身の名前
 	std::map<int, CParts*> m_Parts;		// パーツ情報のポインタ

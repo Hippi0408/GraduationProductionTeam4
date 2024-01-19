@@ -11,7 +11,7 @@
 #include "fontString.h"
 #include <vector>
 
-class CConfirmation_Window;
+class CCharDecision_Window;
 class CFontString;
 class CHalfSphere;
 class CPlayerData;
@@ -20,7 +20,7 @@ class CObjectX;
 
 class CChar_Select : public CMode
 {
-	static const int MAX_PLAYER = 4;
+	static const int MAX_PLAYER = 1;
 public:
 	CChar_Select();
 	~CChar_Select();
@@ -33,12 +33,14 @@ public:
 	void SetModel(int index, const char* Xfilename);
 	void SetPlayerIndex(int index) { m_nPlayerIndex = index; }
 
-	static CConfirmation_Window* GetConfimationWindow() { return m_pConfirmation; }
+	int GetIndex() { return m_nIndex; }
+
+	static CCharDecision_Window* GetCharDecisionWindow() { return m_pCharDecisionWindow; }
 
 	static CChar_Select* Create();
 
 private:
-	static CConfirmation_Window* m_pConfirmation;
+	static CCharDecision_Window* m_pCharDecisionWindow;
 	CFontString* m_pFont;
 	CHalfSphere* m_pHalfSphere;
 	CPlayerData* m_pPlayerData;
@@ -46,7 +48,7 @@ private:
 	CObjectX* m_pWareHouse;
 
 	int m_nPlayerIndex;				// プレイヤー番号
-	int m_nIndex;					// スキル現在の番号
+	int m_nIndex;			// スキル現在の番号
 	int m_nIndexKeep;				// スキル番号保存用変数
 };
 

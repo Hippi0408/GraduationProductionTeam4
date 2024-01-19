@@ -65,7 +65,7 @@ HRESULT CGame::Init()
 	}
 	
 	//BG3D
-	m_pMeshfieldBG = cRead.ReadMap("data/MAPTXT/map.txt");
+	m_pMeshfieldBG = cRead.ReadMap("Data/MAPTXT/map.txt");
 	return S_OK;
 }
 

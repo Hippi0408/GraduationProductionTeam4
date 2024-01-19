@@ -11,6 +11,7 @@
 #include "tutorial.h"
 #include "gauge_manager.h"
 #include "debugProc.h"
+#include "camera.h"
 
 const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
 const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
@@ -108,6 +109,9 @@ void CCharacter::Update()
 
 	// 床の当たり判定
 	FieldCollision();
+
+	// 透明状態
+	Invincible();
 }
 
 //============================================================================
@@ -161,31 +165,38 @@ void CCharacter::Move()
 //==============================================================================================
 void CCharacter::Damage(const int value)
 {
-	// ベースの体力の設定
-	if (m_pGaugeManager != nullptr
-		&& m_pGaugeManager->GetBeaseLife() == 0)
+	// 体力が残っている場合
+	if (m_nLife > 0)
 	{
-		m_pGaugeManager->SetBeaseLife(m_nLife);
-	}
+		// ベースの体力の設定
+		if (m_pGaugeManager != nullptr
+			&& m_pGaugeManager->GetBeaseLife() == 0)
+		{
+			m_pGaugeManager->SetBeaseLife(m_nLife);
+		}
 
-	// 体力 - 与ダメージ
-	m_nLife -= value;
+		// 体力 - 与ダメージ
+		m_nLife -= value;
 
-	// 体力ゲージの増減
-	if (m_pGaugeManager != nullptr)
-	{
-		m_pGaugeManager->SetLife(m_nLife);
-		m_pGaugeManager->Fluctuation();
-	}
+		// 体力ゲージの増減
+		if (m_pGaugeManager != nullptr)
+		{
+			m_pGaugeManager->SetLife(m_nLife);
+			m_pGaugeManager->Fluctuation();
+		}
 
-	// 体力チェック
-	if (m_nLife <= 0)
-	{
-		// 体力を0にする
-		m_nLife = 0;
+		// 無敵状態を付与する
+		SetCollisionNoneHit(true);
 
-		// 自身を破壊する処理
-		Destroy();
+		// 体力チェック
+		if (m_nLife <= 0)
+		{
+			// 体力を0にする
+			m_nLife = 0;
+
+			// 自身を破壊する処理
+			Destroy();
+		}
 	}
 }
 
@@ -238,60 +249,94 @@ void CCharacter::Landing(const D3DXVECTOR3 pos)
 //============================================================================
 void CCharacter::FieldCollision()
 {
-	// 現在の位置を定数として取得
-	const D3DXVECTOR3 pos = CCharacter::GetPos();
+		// 現在の位置を定数として取得
+		const D3DXVECTOR3 pos = CCharacter::GetPos();
 
-	CMeshField* pMeshField = nullptr;
-	float a = 0.0f;
+		CMeshField* pMeshField = nullptr;
+		float a = 0.0f;
 
-	if (CApplication::GetModeType() == CApplication::MODE_GAME)
-		pMeshField = CGame::GetMeshField();
-	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
-		pMeshField = CTutorial::GetMeshField();
+		if (CApplication::GetModeType() == CApplication::MODE_GAME)
+			pMeshField = CGame::GetMeshField();
+		else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+			pMeshField = CTutorial::GetMeshField();
 
-	if (pMeshField != nullptr)
-	{
-		// 床の当たり判定から高さを定数として取得
 		if (pMeshField != nullptr)
-			a = pMeshField->MeshCollision(pos);
-	}
-	// 接地している場合
-	if (GetGround())
-	{
-		// プレイヤーの高さを設定
-		CCharacter::SetPos({ pos.x, a, pos.z });
-	}
-	// 接地していない場合
-	else
-	{
-		if (!m_bAvoidance)
 		{
-			// メッシュフィールドの上にいる場合は重力をかける
-			CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
-
-			// メッシュフィールドより下の位置にいる場合
-			if (a >= pos.y)
+			// 床の当たり判定から高さを定数として取得
+			if (pMeshField != nullptr)
+				a = pMeshField->MeshCollision(pos);
+		}
+		// 接地している場合
+		if (GetGround())
+		{
+			// プレイヤーの高さを設定
+			CCharacter::SetPos({ pos.x, a, pos.z });
+		}
+		// 接地していない場合
+		else
+		{
+			if (!m_bAvoidance)
 			{
-				// 着地処理を読み込む
-				Landing({ pos.x, a, pos.z });
+				if (CApplication::GetModeType() == CApplication::MODE_GAME)
+				{
+					CCamera *pCamera = CApplication::GetCamera();
+
+					if (!pCamera->GetOpening())
+						// メッシュフィールドの上にいる場合は重力をかける
+						CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+					else
+						// オープニング時の重力
+						CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY * 5, 0.0f });
+				}
+
+				// メッシュフィールドより下の位置にいる場合
+				if (a >= pos.y)
+				{
+					// 着地処理を読み込む
+					Landing({ pos.x, a, pos.z });
+				}
 			}
 		}
-	}
 
-	float y = GetObjY();
+		float y = GetObjY();
 
-	if (!GetGround() && GetObjXZ() && y > pos.y)
+		if (!GetGround() && GetObjXZ() && y > pos.y)
+		{
+			// 着地処理を読み込む
+			Landing({ pos.x,y,pos.z });
+		}
+		else if (GetLandObj())
+		{
+			// プレイヤーの高さを設定
+			CCharacter::SetPos({ pos.x, GetObjY(), pos.z });
+
+			// マップオブジェクトの上にいる場合は重力をかけない
+			CCharacter::SetMove({ 0.0f, 0.0f, 0.0f });
+		}
+}
+
+//============================================================================
+// 透明状態
+//============================================================================
+void CCharacter::Invincible()
+{
+	// 無敵状態の場合
+	if (GetCollisionNoneHit() == true)
 	{
-		// 着地処理を読み込む
-		Landing({ pos.x,y,pos.z });
-	}
-	else if (GetLandObj())
-	{
-		// プレイヤーの高さを設定
-		CCharacter::SetPos({ pos.x, GetObjY(), pos.z });
+		// 全パーツを点滅させる処理
+		for (auto pAllParts : GetAllParts()) for (auto pParts : pAllParts.second->GetModelAll())
+			pParts->SetDrawFlag(m_nInvincible_Counter % CHARACTER_INVINCIBLE_SPEED * 2 < CHARACTER_INVINCIBLE_SPEED);
+		
+		// 最大時間に達した場合
+		if (++m_nInvincible_Counter > CHARACTER_INVINCIBLE_TIMER)
+		{
+			SetCollisionNoneHit(false);
+			m_nInvincible_Counter = 0;
 
-		// マップオブジェクトの上にいる場合は重力をかけない
-		CCharacter::SetMove({ 0.0f, 0.0f, 0.0f });
+			// 全パーツをの描画を元に戻す処理
+			for (auto pAllParts : GetAllParts()) for (auto pParts : pAllParts.second->GetModelAll())
+				pParts->SetDrawFlag(true);
+		}
 	}
 }
 

@@ -14,6 +14,8 @@
 #include "player_manager.h"
 #include "mode.h"
 #include "fade.h"
+#include"debugProc.h"
+#include "utility.h"
 
 //==============================================
 //コンストラクタ
@@ -47,6 +49,12 @@ void CCamera::Init(void)
 	m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);	// 目的の注視点
 	m_bPerspective = false;
 	m_bValue = false;
+	m_bOpening = true;								// オープニングの有無
+
+	for (int nCnt = 0; nCnt < 3; nCnt++)
+	{
+		m_bOpening_step[nCnt] = false;
+	}
 }
 
 //==============================================
@@ -65,22 +73,34 @@ void CCamera::Update(void)
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
 
-	if ((Mode == CApplication::MODE_GAME && CGame::GetPlayerManager()->GetPlayer(0) != nullptr)
+	if (((Mode == CApplication::MODE_GAME && CGame::GetPlayerManager()->GetPlayer(0) != nullptr)
 		|| (Mode == CApplication::MODE_TUTORIAL && CTutorial::GetPlayerManager()->GetPlayer(0) != nullptr))
+		&& !m_bOpening)
 	{
 		// 視点移動
 		Perspective();
 	}
 	else if (CApplication::GetModeType() == CApplication::MODE_TITLE
-		|| CApplication::GetModeType() == CApplication::MODE_CHAR_SELECT)
+		|| CApplication::GetModeType() == CApplication::MODE_CHAR_SELECT
+		|| CApplication::GetModeType() == CApplication::MODE_RESULT)
 	{
-		Matrix(D3DXVECTOR3(-0.5f,0.0f,0.0f), D3DXVECTOR3(0.0f, 600.0f, 0.0f));
+		Matrix(D3DXVECTOR3(-0.5f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 600.0f, 0.0f));
 	}
 
 #ifdef _DEBUG
 	// カメラの入力処理
 	DebugInput();
 #endif // !_DEBUG
+
+	if ((Mode == CApplication::MODE_GAME || Mode == CApplication::MODE_TUTORIAL))
+	{
+		// 画面の揺れ
+		if (m_bTremor)
+			Tremor();
+		// オープニング
+		if (m_bOpening)
+			Opening_Move();
+	}
 }
 
 //==============================================
@@ -268,4 +288,141 @@ void CCamera::Perspective()
 	}
 	// 行列を使ったカメラ制御
 	Matrix(m_rot, { m_PPos.x, m_PPos.y, m_PPos.z });
+}
+
+//==============================================
+// オープニング
+//==============================================
+void CCamera::Opening_Move()
+{
+	// 入力デバイスの情報
+	CInput* pInput = CInput::GetKey();
+
+	// スキップ
+	if (pInput->Trigger(DIK_RETURN) || pInput->Press(MOUSE_INPUT_LEFT))
+	{
+		m_posV = { 0.0f, 225.0f, -450.0f };
+		m_posR = { 0.0f, 112.5f, 450.0f };
+
+		// オープニング終了
+		m_bOpening = false;
+	}
+
+	// 行列を使ったカメラ制御
+	Matrix(m_rot, { 0.0f,0.0f,6000.0f });
+
+	if (!m_bOpening_step[0])
+	{// ステップ0
+		m_nChange_Count++;
+
+		// 注視点の移動
+		if (m_posR.y > 80.0f)
+			m_posR.y -= 29.0f;
+		else if(m_posR.y <= 80.0f && !m_bTremor)
+		{
+			// カメラの揺れ
+			m_Base_PosV = m_posV;
+			m_Base_PosR = m_posR;
+
+			m_fMax_Scale = 15.0f;
+			m_bTremor = true;
+		}
+
+		if (m_nChange_Count == 300)
+		{
+			// 次のステップに進める
+			m_nChange_Count = 0;
+			m_bOpening_step[0] = true;
+
+			m_posV = { 1500.0f,1000.0f,-5000.0f };
+			m_posR = { 0.0f,1000.0f,0.0f };
+
+			m_bTremor = false;
+		}
+	}
+	else if (m_bOpening_step[0] && !m_bOpening_step[1])
+	{// ステップ1
+		m_nChange_Count++;
+
+		float f = D3DX_PI * 2 / 0.05f;
+
+		if (m_nChange_Count < f)
+			m_rot.y -= 0.05f;
+
+		// 1フレームの移動量
+		float X = 1500 / f;
+		float Z = 4000 / f;
+		float Y = 500 / f;
+
+		// 視点、注視点の移動
+		if (m_posV.x > 0)
+			m_posV.x -= X;
+		if (m_posV.z < -1000)
+			m_posV.z += Z;
+		if (m_posV.y < 1500)
+		{
+			m_posV.y += Y;
+			m_posR.y += Y;
+		}
+
+		if (m_nChange_Count == 160)
+		{
+			// 次のステップに進める
+			m_nChange_Count = 0;
+			m_bOpening_step[1] = true;
+
+			m_posV = { 0.0f,1500.0f,-1000.0f };
+			m_posR = { 0.0f,1500.0f,0.0f };
+			m_rot.y = 0.0f;
+		}
+	}
+	else if (m_bOpening_step[1] && !m_bOpening_step[2])
+	{// ステップ2
+		m_nChange_Count++;
+
+		// 1フレームの移動量
+		float X = 4000 / 20;
+		float Y = 1400 / 20;
+
+		// 視点の移動
+		if (m_posV.z > -5000)
+			m_posV.z -= X;
+		if (m_posV.y > 100)
+			m_posV.y -= Y;
+
+		if (m_nChange_Count == 100)
+		{
+			// 次のステップに進める
+			m_nChange_Count = 0;
+			m_bOpening_step[2] = true;
+
+			m_posV = { 0.0f, 225.0f, -450.0f };
+			m_posR = { 0.0f, 112.5f, 450.0f };
+
+			// オープニング終了
+			m_bOpening = false;
+		}
+	}
+}
+
+//==============================================
+// 画面の揺れ
+//==============================================
+void CCamera::Tremor()
+{
+	// ランダムな数値
+	float fRand_TreX = utility::Random<float>(m_fMax_Scale, -m_fMax_Scale);
+	float fRand_TreY = utility::Random<float>(m_fMax_Scale, -m_fMax_Scale);
+
+	// 視点の移動
+	m_posV.x = m_Base_PosV.x + fRand_TreX;
+	m_posV.y = m_Base_PosV.y + fRand_TreY;
+
+	// 注視点の移動
+	m_posR.x = m_Base_PosR.x + fRand_TreX;
+	m_posR.y = m_Base_PosR.y + fRand_TreY;
+
+	// 揺れを少しずつ小さくする
+	if (m_fMax_Scale > 0)
+		m_fMax_Scale -= 0.1f;
 }

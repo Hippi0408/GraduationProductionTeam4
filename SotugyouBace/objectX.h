@@ -33,6 +33,7 @@ public:
 	void SetParts(const bool parts) { m_bParts = parts; }
 	void SetIndex(const int index) { m_nIndex = index; }
 	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }
+	void SetMove(const D3DXVECTOR3 move) { m_move = move; }
 	void AddPos(const D3DXVECTOR3 pos) { m_pos += pos; }
 	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void AddRot(const D3DXVECTOR3 rot) { m_rot += rot; }
@@ -48,6 +49,7 @@ public:
 	void AddAlpha(const float alpha) { m_col.a += alpha; }
 
 	const D3DXVECTOR3 GetPos() { return m_pos; }
+	const D3DXVECTOR3 GetMove() { return m_move; }
 	const D3DXVECTOR3 GetRot() { return m_rot; }
 	const D3DXMATRIX GetMatrix() { return m_mtxWorld; }
 	CObjectX* GetParent() { return m_pParent; }
@@ -58,6 +60,7 @@ private:
 
 	D3DXVECTOR3 m_pos;			// 位置
 	D3DXVECTOR3 m_rot;			// 現在の角度
+	D3DXVECTOR3 m_move;			// 移動量
 	D3DXVECTOR3 m_size;			// サイズ
 	D3DXVECTOR3 m_vtxMinModel;	// 頂点の最小値
 	D3DXVECTOR3 m_vtxMaxModel;	// 頂点の最大値

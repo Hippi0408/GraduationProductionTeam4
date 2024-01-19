@@ -288,14 +288,14 @@ CMeshfield *CRead::ReadMap(char * sFilePath)
 					//このオブジェクトがメッシュのどこに居るかを調べる用
 					int nPosLocationm = 0;
 
-					//引く数のPosがどのマスに居るかを返す
-					nPosLocationm = pMeshfield->CheckPosLocation(Data.pos);
+					////引く数のPosがどのマスに居るかを返す
+					//nPosLocationm = pMeshfield->CheckPosLocation(Data.pos);
 
-					//エラー検知用
-					if (nPosLocationm < 0)
-					{
-						assert(false);
-					}
+					////エラー検知用
+					//if (nPosLocationm < 0)
+					//{
+					//	assert(false);
+					//}
 
 					//瓦礫マネージャーがNULLだったら
 					if (pBallast_Manager == nullptr)
@@ -498,7 +498,7 @@ void CRead::SaveEditorData(std::list<C3DObject*> data)
 	FILE *pFile = NULL;			//ファイルポインター宣言
 
 	//ファイルを開く
-	pFile = fopen("data/EDITOR_TEXT/EditorData.txt", "w");
+	pFile = fopen("Data/EDITOR_TEXT/EditorData.txt", "w");
 
 	if (pFile == nullptr)
 	{//開けなかった時用
@@ -538,6 +538,36 @@ void CRead::SaveEditorData(std::list<C3DObject*> data)
 
 			//向き
 			fprintf(pFile, "	ROT = %.1f %.1f %.1f\n", rot.x, rot.y, rot.z);
+
+			//当たり判定
+			if (p3DObject->GetCollision())
+			{
+				fprintf(pFile, "	COLLISION_OFF = 1\n");
+			}
+			else
+			{
+				fprintf(pFile, "	COLLISION_OFF = 0\n");
+			}
+
+			//オープニングロスト
+			if (p3DObject->GetOpeningLost())
+			{
+				fprintf(pFile, "	OPENING_LOST = 1\n");
+			}
+			else
+			{
+				fprintf(pFile, "	OPENING_LOST = 0\n");
+			}
+
+			//砲台
+			if (p3DObject->GetSwitch())
+			{
+				fprintf(pFile, "	SWITCH = 1\n");
+			}
+			else
+			{
+				fprintf(pFile, "	SWITCH = 0\n");
+			}
 
 			//テキストに出力の終わり
 			fprintf(pFile, "END_MODELSET\n\n");

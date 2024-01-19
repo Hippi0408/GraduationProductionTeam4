@@ -179,7 +179,7 @@ void CRenderer::Draw(const int nFps)
 void CRenderer::DrawFPS(const int nFps)
 {
 	RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-	TCHAR str[1200];
+	TCHAR str[2048];
 
 	//マネージャーからゲームオブジェクトの取得
 	CManager *pManager = GetManager();
@@ -190,6 +190,24 @@ void CRenderer::DrawFPS(const int nFps)
 	D3DXVECTOR3 pos,rot;
 	int nModelNum;
 	float fMoveMagnification,fSize;
+	char *sCollision = "ない設定";
+	if (pPlayer->GetCollision())
+	{
+		sCollision = "ある設定";
+	}
+
+	char *sOpeningLost = "消えない設定";
+	if(pPlayer->GetOpeningLost())
+	{
+		sOpeningLost = "消える設定";
+	}
+
+
+	char *sSwitch = "通常のオブジェクト";
+	if (pPlayer->GetSwitch())
+	{
+		sSwitch = "砲台設定";
+	}
 
 	pos = pPlayer->GetPos();
 	rot = pPlayer->GetRot();
@@ -197,8 +215,11 @@ void CRenderer::DrawFPS(const int nFps)
 	fMoveMagnification = pPlayer->GetMoveMagnification();
 	fSize = pPlayer->GetSize();
 
-	sprintf(str, _T("FPS : %d\nPos : %f %f %f\nRos : %f %f %f\nModelNum : %d\n倍率 : %f\nサイズ : %f\n\nPosリセットは0+123(xyz)\nRotリセットは0+456(xyz)")
-		, nFps, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, nModelNum, fMoveMagnification, fSize);
+	sprintf(str, _T("FPS : %d\nPos : %f %f %f\nRos : %f %f %f\nModelNum : %d\n"
+		"倍率 : %f\nサイズ : %f\n\n設置　スペースキー\n一つ前に戻る　バックスペース\n移動　WASD\n上下移動　左シフトと左コントロールキー\n"
+		"向きの調整　X軸＝RT　Y軸＝FG　Z軸＝VB\nモデルの変更　上下矢印\n倍率調整 右左矢印\nカメラの距離　OP\n"
+		"Posリセットは0+123(xyz)\nRotリセットは0+456(xyz)\n\n現在当たり判定が%s => YU\n現在オープニング後に%s => HJ\nこのモデルは%s => NM\n\n保存　F1\n")
+		, nFps, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, nModelNum, fMoveMagnification, fSize, sCollision, sOpeningLost, sSwitch);
 
 	// テキスト描画
 	m_pFont->DrawText(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));

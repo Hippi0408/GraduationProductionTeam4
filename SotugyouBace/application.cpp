@@ -56,6 +56,7 @@ CParticleManager* CApplication::m_pParticleManager = nullptr;
 ConnectManager*CApplication::m_pClient = nullptr;
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
+bool CApplication::m_nSkill = false;
 int CApplication::m_nPlayerJobIndex = 0;
 
 #ifdef _DEBUG
@@ -131,7 +132,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 #endif
 
 	// ゲームモード
-	m_modeType = MODE_GAME;
+	m_modeType = MODE_TITLE;
 
 	// モードの定設
 	SetMode(m_modeType);
@@ -295,6 +296,8 @@ void CApplication::Update()
 
 	// カメラの更新処理
 	m_pCamera->Update();
+
+	m_nSkill = CConfirmation_Window::GetSelectChoice();
 }
 
 //==============================================================================================

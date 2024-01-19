@@ -38,7 +38,7 @@ HRESULT CNormal_Bullet::Init()
 	if (m_bTarget)
 	{
 		// ターゲットしている敵の位置
-		D3DXVECTOR3 Enemy_Pos = pEnemy->GetPos();
+		D3DXVECTOR3 Enemy_Pos = pEnemy->GetCenterPos();
 		// 移動量
 		D3DXVECTOR3 Enemy_Move = pEnemy->GetMove();
 

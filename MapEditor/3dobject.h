@@ -34,7 +34,7 @@ enum Object_Type_List;
 class C3DObject : public CObject
 {
 public:
-	static const int MODEL_MAX_TEXTURE = 30;
+	static const int MODEL_MAX_TEXTURE = 256;
 	static const int MODEL_PATTERN_MAX = 120;
 
 	//モデルパターン構造体
@@ -63,6 +63,9 @@ public:
 		D3DXVECTOR3 vtxMin2, vtxMax2;						//モデルのサイズ(ワールドマトリックスで変換したもの)
 		D3DXVECTOR3 posMove = D3DXVECTOR3(0.0f,0.0f,0.0f);	//位置動く時用
 		int nPattn;											//モデルのパターン
+		bool bCollision;									//当たり判定の有無
+		bool bOpeningLost;									//オープニング後に破棄するモデル
+		bool bSwitch;										//砲台の切り替え
 	}Model;
 
 public:
@@ -109,6 +112,14 @@ public:
 	D3DXVECTOR3 GetVtxMax() { return m_Model.vtxMax; }
 	void SetModelNumIndex(int nModelNumIndex) { m_nModelNumIndex = nModelNumIndex; }
 	int GetModelNumIndex() { return m_nModelNumIndex; }
+
+	void SetCollision(bool bCollision) { m_Model.bCollision = bCollision; }
+	void SetOpeningLost(bool bOpeningLost) { m_Model.bOpeningLost = bOpeningLost; }
+	void SetSwitch(bool bSwitch) { m_Model.bSwitch = bSwitch; }
+
+	bool GetCollision() { return m_Model.bCollision; }
+	bool GetOpeningLost() { return m_Model.bOpeningLost; }
+	bool GetSwitch() { return m_Model.bSwitch; }
 
 	void SetObject_Type_List(Object_Type_List object_type_list) { m_Object_Type_List = object_type_list; }
 	Object_Type_List GetObject_Type_List() { return m_Object_Type_List; }

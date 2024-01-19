@@ -66,30 +66,25 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/up.png",					// 上矢印
 	"Data/texture/reticle.png",						// レティクル
 	"Data/texture/chain.png",						// チェーン
+	"Data/texture/NotEnter.png",					// 移動制限
 
 	"Data/texture/Weapon/Knuckle_icon.png",			// 素手アイコン
 	"Data/texture/Weapon/Slash_icon.png",			// スラッシュアイコン
+	"Data/texture/Weapon/stabbing_icon.png",			// 刺突アイコン
 
 	"Data/texture/WeaponSkill/WeaponSkill_Knuckle.png",	// 素手のアタックスキルアイコン
 	"Data/texture/WeaponSkill/WeaponSkill_Slash.png",	// スラッシュのアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_stabbing.png",// 刺突のアタックスキルアイコン
 
 	"Data/texture/job/job_Rush.png",				// ラッシュ
 	"Data/texture/job/job_Vanguard.png",			// ヴァンガード
 	"Data/texture/job/job_Eagleeye.png",			// イーグルアイ
 	"Data/texture/job/job_Marshall.png",			// マーシャル
-	"Data/texture/job/job_Mechanic.png",			// メカニック
-	"Data/texture/job/job_Raider.png",				// レイダー
-	"Data/texture/job/job_Arcphilia.png",			// アークフィリア
-	"Data/texture/job/job_Control.png",				// コントロール
 
 	"Data/texture/job/JobSelect_Rush.png",				// ラッシュ
 	"Data/texture/job/JobSelect_Vanguard.png",			// ヴァンガード
 	"Data/texture/job/JobSelect_Eagleeye.png",			// イーグルアイ
 	"Data/texture/job/JobSelect_Marshall.png",			// マーシャル
-	"Data/texture/job/JobSelect_Mechanic.png",			// メカニック
-	"Data/texture/job/JobSelect_Raider.png",			// レイダー
-	"Data/texture/job/JobSelect_Arcphilia.png",			// アークフィリア
-	"Data/texture/job/JobSelect_Control.png",			// コントロール
 
 };
 

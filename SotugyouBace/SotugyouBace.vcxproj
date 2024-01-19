@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="attack_collision.cpp" />
     <ClCompile Include="boss_life_gauge.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="boss.cpp" />
@@ -28,7 +29,6 @@
     <ClCompile Include="chain.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="chardecision_window.cpp" />
-    <ClCompile Include="charselect_window.cpp" />
     <ClCompile Include="char_select.cpp" />
     <ClCompile Include="chain_manager.cpp" />
     <ClCompile Include="client.cpp" />
@@ -101,6 +101,7 @@
     </ClCompile>
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="restraint_switch.cpp" />
+    <ClCompile Include="restrictions.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="smoke_explosion.cpp" />
@@ -115,10 +116,12 @@
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="udp_client.cpp" />
     <ClCompile Include="weapon.cpp" />
+    <ClCompile Include="weapon_attack.cpp" />
     <ClCompile Include="weapon_parameter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="attack_collision.h" />
     <ClInclude Include="boss_life_gauge.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="boss.h" />
@@ -127,7 +130,6 @@
     <ClInclude Include="chain.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="chardecision_window.h" />
-    <ClInclude Include="charselect_window.h" />
     <ClInclude Include="char_select.h" />
     <ClInclude Include="chain_manager.h" />
     <ClInclude Include="client.h" />
@@ -198,6 +200,7 @@
     <ClInclude Include="precompile.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="restraint_switch.h" />
+    <ClInclude Include="restrictions.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="smoke_explosion.h" />
@@ -213,6 +216,7 @@
     <ClInclude Include="udp_client.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="weapon.h" />
+    <ClInclude Include="weapon_attack.h" />
     <ClInclude Include="weapon_parameter.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

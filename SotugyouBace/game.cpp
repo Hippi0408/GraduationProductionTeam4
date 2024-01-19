@@ -5,7 +5,6 @@
 //
 //==============================================================================================
 #include "game.h"
-#include "application.h"
 #include "camera.h"
 #include "fade.h"
 #include "input.h"
@@ -40,6 +39,7 @@
 #include "weapon_parameter.h"
 #include "map_object_manager.h"
 #include "fog.h"
+#include "restrictions.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -84,9 +84,17 @@ HRESULT CGame::Init()
 	// カメラのポインタ
 	CCamera* pCamera = CApplication::GetCamera();
 
-	// 視点、注視点の設定
-	pCamera->SetPosV({ 0.0f, 225.0f, -450.0f });
-	pCamera->SetPosR({ 0.0f, 112.5f, 450.0f });
+	if (!pCamera->GetOpening())
+	{
+		// 視点、注視点の設定
+		pCamera->SetPosV({ 0.0f, 225.0f, -450.0f });
+		pCamera->SetPosR({ 0.0f, 112.5f, 450.0f });
+	}
+	else
+	{
+		pCamera->SetPosV({ 0.0f,200.0f,-1000.0f });
+		pCamera->SetPosR({ 0.0f, 3000.0f, -500.0f });
+	}
 
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
@@ -128,15 +136,14 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-		//CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) });
+		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
-	CMob::Create({ -1000.0f,0.0f,1000.0f });
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 6000.0f });
+	CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
-	//SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
-	SetDrop_Parts(1, { 1000.0f,0.0f,1000.0f });
+	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
+	SetDrop_Parts(1, { 500.0f,0.0f,500.0f }, false);
 
 	// タイムの生成
 	m_pTime = CTime::Create();
@@ -151,11 +158,17 @@ HRESULT CGame::Init()
 	// ポーズ画面
 	m_pPause = CPause::Create();
 
+	// フォグの設定
+	CFog::SetFog(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
 	m_nEndCounter = 0;
 	m_bInputFlag = false;
 
 	// マップ生成
 	m_pMap->ReadMap("Data/text/map_test.txt");
+
+	// 移動制限
+	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 13000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });
 
 	return S_OK;
 }
@@ -276,9 +289,6 @@ void CGame::Update()
 {
 	// メニューウィンドウ処理
 	MenuWindow();
-
-	// フォグの設定
-	CFog::SetFog(D3DXCOLOR(0.2f, 1.0f, 0.5f, 1.0f));
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
@@ -433,7 +443,7 @@ void CGame::MenuWindow()
 {
 	CInput* pInput = CInput::GetKey();
 	//// 現在のモード
-	CApplication::MODE Mode = CApplication::GetModeType();
+	//CApplication::MODE Mode = CApplication::GetModeType();
 
 	//if (Mode == CApplication::MODE_GAME)
 	//{
@@ -483,16 +493,28 @@ void CGame::SetPlayerUI(const int index, const int type)
 	else
 	{
 		// 近接武器の最低値より大きい場合
-		if (type >= CWeapon::WEAPON_SLASH_KNIFE)
+		if (type >= CWeapon::MELEE_WEAPON_STABBING_LANCE)
 		{
 			// 武器の最低値を初期値に設定
-			nTexNumber = CTexture::TEXTURE_ATTACK_SKILL_SLASH;
+			nTexNumber = CTexture::TEXTURE_WEAPON_STTABING;
+		}
+		// 近接武器の最低値より大きい場合
+		else if (type >= CWeapon::MELEE_WEAPON_SLASH_SAMURAI_SWORD)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_SLASH;
 		}
 		// 素手の最低値より大きい場合
 		else
 		{
 			// 武器の最低値を初期値に設定
 			nTexNumber = CTexture::TEXTURE_WEAPON_KNUCKLE;
+		}
+
+		if (index == CPlayerUi::UITYPE_ATTACK)
+		{
+			// サポートスキルの最低値 + 自身の番号を設定
+			nTexNumber += (CTexture::TEXTURE_ATTACK_SKILL_KNUCKLE - CTexture::TEXTURE_WEAPON_KNUCKLE);
 		}
 	}
 
@@ -510,7 +532,7 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 		D3DXVECTOR3 Pos = pos;
 		if (random)
 			// ランダムな位置
-			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(15000.0f, -500.0f) };
+			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) };
 
 		// タイプの設定
 		int nRandType = 0;
@@ -520,7 +542,7 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 
 		// 最大数 または 素手が読み込まれた場合やり直す処理
 		while (CDrop_Weapon::ARMS_MAX == nRandType || CDrop_Weapon::LEG_MAX == nRandType
-			|| CDrop_Weapon::WEAPON_NONE == nRandType || CDrop_Weapon::WEAPON_MAX == nRandType)
+			|| CDrop_Weapon::MELEE_WEAPON_NONE == nRandType || CDrop_Weapon::MELEE_WEAPON_MAX == nRandType)
 		{
 			// タイプ
 			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);
