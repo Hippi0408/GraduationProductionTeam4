@@ -60,8 +60,8 @@ HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
 	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Parts_Job[PARTS_BODY], CMotion::MOTION_PLAYER_BODY);
-	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1 + m_Parts_Job[PARTS_ARMS], CMotion::MOTION_PLAYER_ARMS);
-	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1 + m_Parts_Job[PARTS_LEG], CMotion::MOTION_PLAYER_LEG);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_0, CMotion::MOTION_PLAYER_ARMS);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_0, CMotion::MOTION_PLAYER_LEG);
 	SetPlayerWeapon(CWeapon::WEAPON_KNUCKLE, 0);
 
 	// パラメータの設定
@@ -288,11 +288,8 @@ void CPlayer::MeleeWeaponAttack()
 		// 攻撃モーションを設定
 		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 		{
-			// パーツ
-			CParts* pParts = GetParts(nCnt);
-
 			// 攻撃モーション + 追加攻撃の回数
-			pParts->SetMotion(nMotion);
+			GetParts(nCnt)->SetMotion(nMotion);
 		}
 	}
 	// 0番目の攻撃終了時に攻撃を行う
