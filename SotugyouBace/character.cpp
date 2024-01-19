@@ -279,11 +279,14 @@ void CCharacter::FieldCollision()
 			{
 				if (CApplication::GetModeType() == CApplication::MODE_GAME)
 				{
-					// メッシュフィールドの上にいる場合は重力をかける
-					CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
-else
-				// オープニング時の重力
-				CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY * 5, 0.0f });
+					CCamera *pCamera = CApplication::GetCamera();
+
+					if (!pCamera->GetOpening())
+						// メッシュフィールドの上にいる場合は重力をかける
+						CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+					else
+						// オープニング時の重力
+						CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY * 5, 0.0f });
 				}
 
 				// メッシュフィールドより下の位置にいる場合
