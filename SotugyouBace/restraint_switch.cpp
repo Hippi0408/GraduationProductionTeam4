@@ -55,7 +55,7 @@ HRESULT CRestraint_Switch::Init()
 	SetSize(GetObjectX()->GetMaxSize());
 
 	// ñCë‰ÇÃà íu
-	D3DXVECTOR3 Cannon_Pos = { GetPos().x,GetPos().y + 300.0f,GetPos().z };
+	D3DXVECTOR3 Cannon_Pos = { GetPos().x,GetPos().y + Max.y,GetPos().z };
 
 	// ñCë‰ÇÃê∂ê¨
 	CMap_Object::Create(Cannon_Pos, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Down.x");
