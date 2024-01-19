@@ -14,7 +14,7 @@ const char* CParts_File::m_cPartsFileName[] =
 	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Body_SG02.txt",
 	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Body_SG03.txt",
 
-	"Data\\text\\PartsList\\Player\\SGStandard\\parts_Player_Arms_S.txt",
+	"Data\\text\\PartsList\\Player\\SG05\\parts_Player_Arms_SG05.txt",
 	"Data\\text\\PartsList\\Player\\SG01\\parts_Player_Arms_SG01.txt",
 	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Arms_SG02.txt",
 	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Arms_SG03.txt",
