@@ -15,7 +15,7 @@ NUM_MODEL = 15
 # 読み込むモデルファイル名
 #------------------------------------------------------------------------------
 MODEL_FILENAME = Data/model/notinisakuzyo.x
-MODEL_FILENAME = Data/model/Boss/Num02/Hastur_Body.x
+MODEL_FILENAME = Data/model/Cannon_Down.x
 MODEL_FILENAME = Data/model/notinisakuzyo.x
 MODEL_FILENAME = Data/model/notinisakuzyo.x
 MODEL_FILENAME = Data/model/notinisakuzyo.x

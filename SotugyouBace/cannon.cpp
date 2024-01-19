@@ -54,6 +54,9 @@ HRESULT CCannon::Init()
 	SetCenterPos({ 0.0f,Max.y / 2,0.0f });
 	SetSize(GetObjectX()->GetMaxSize());
 
+	// “–‚½‚è”»’è‚ğÁ‚·
+	SetCollisionNoneHit(true);
+
 	return S_OK;
 }
 

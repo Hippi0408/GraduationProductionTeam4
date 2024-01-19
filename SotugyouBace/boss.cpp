@@ -107,7 +107,7 @@ void CBoss::Destroy()
 		pos.y += 50.0f * nCnt;
 
 		// 攻撃パーティクル
-		std::move(CParticleEmitter::Create("burst", pos));
+		std::move(CParticleEmitter::Create("Destroy", pos));
 	}
 
 	// ゲーム終了を設定する
