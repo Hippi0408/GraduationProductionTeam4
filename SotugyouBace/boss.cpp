@@ -48,9 +48,11 @@ HRESULT CBoss::Init()
 	CEnemy::Init();
 
 	CParts* pBody = GetParts(PARTS_BODY);
-	//pBody->SetMotion(MOTION_ENTRANCE);
+	pBody->SetMotion(MOTION_NEUTRAL);
 
 	m_bOpening = true;
+
+	//SetCenterPos({ 0.0f,500.0f,0.0f });
 
 	return S_OK;
 }
@@ -71,6 +73,8 @@ void CBoss::Update()
 	// キャラクターの更新
 	CEnemy::Update();
 
+	ChangeMotion();
+
 	// カメラのポインタ
 	bool bOpening = CApplication::GetCamera()->GetOpening();
 
@@ -81,7 +85,7 @@ void CBoss::Update()
 		SetPos({ pos.x,0.0f,pos.z });
 
 		CParts* pBody = GetParts(PARTS_BODY);
-		pBody->SetMotion(MOTION_NEUTRAL);
+		pBody->SetMotion(MOTION_ENTRANCE);
 	}
 
 	m_bOpening = bOpening;
@@ -121,7 +125,7 @@ void CBoss::Destroy()
 //============================================================================
 void CBoss::ChangeMotion()
 {
-	// 着地モーションを設定
+	// ニュートラルモーションモーションを設定
 	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
 		// パーツ
@@ -141,10 +145,16 @@ void CBoss::ChangeMotion()
 //============================================================================
 void CBoss::Landing(const D3DXVECTOR3 pos)
 {
-	// 着地モーションを設定
-	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+	// カメラのポインタ
+	bool bOpening = CApplication::GetCamera()->GetOpening();
+
+	if (bOpening)
 	{
-		//GetParts(nCnt)->SetMotion(MOTION_LANDING);
+		// 着地モーションを設定
+		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+		{
+			GetParts(nCnt)->SetMotion(MOTION_NEUTRAL);
+		}
 	}
 
 	// キャラクターの着地処理

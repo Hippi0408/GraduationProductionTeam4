@@ -105,6 +105,7 @@ void CCannon::Update()
 				&& pEnemy->GetLife() != 0)
 			{
 				Boss_Pos = pEnemy->GetCenterPos();
+				Boss_Pos.y += 500.0f;
 
 				// ボスまでのベクトル
 				Vec = Boss_Pos - GetPos();

@@ -81,15 +81,15 @@ HRESULT CMap_Object::Init()
 	pos[3] = { Max.x,0.0f,Min.z };
 
 	float fAngle[4] = {};
+	float Dis[4] = {};
 
 	for (int nCnt = 0; nCnt < 4; nCnt++)
 	{
 		fAngle[nCnt] = atan2(pos[nCnt].x, pos[nCnt].z);
+		Dis[nCnt] = sqrtf(pos[nCnt].x * pos[nCnt].x + pos[nCnt].z * pos[nCnt].z);
+
+		//pos[nCnt] = sinf(fRotY + fAngle[nCnt]) * Dis[nCnt];
 	}
-
-	float Dis[4] = {};
-
-	//sqrtf(pos[0].x * pos[0].x, pos[1].z * pos[1].z);
 
 	/*Max.x += sinf(fRotY);
 	Max.z += cosf(fRotY);
