@@ -98,18 +98,15 @@ void CBallast_Manager::Update()
 			//使用状態かどうか
 			if (pBallast->GetUse())
 			{
-				D3DXVECTOR3 pos = pBallast->GetWorldPos();
-				//エリア外にあるかどうか
-				if (CConvenience_Function::CircleCollision(D3DXVECTOR3(0.0f,0.0f,0.0f), MAP_MAX, pos, 0.0f))
-				{
-					//更新処理
-					pBallast->Update();
 
-					//イテレーターを進める
-					itr++;
+				//更新処理
+				pBallast->Update();
 
-					continue;
-				}
+				//イテレーターを進める
+				itr++;
+
+				continue;
+
 			}
 			
 			
