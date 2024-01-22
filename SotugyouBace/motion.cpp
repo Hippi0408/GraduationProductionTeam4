@@ -14,7 +14,7 @@ const char* CMotion::m_cMotionFileName[] =
 
 	"Data\\text\\Motion\\Mob\\motion_mob.txt",
 
-	"Data\\text\\Motion\\Boss\\motion_boss_num02.txt",
+	"Data\\text\\Motion\\Boss\\Boss002.txt",
 };
 
 //=====================================

@@ -56,14 +56,15 @@ public:
 
 	bool GetUninit() { return m_bConfimationUninitFlag; }						// 削除フラグの取得処理
 	bool GetSapawnWindow() { return m_bConfimationSpawnWindow; }				// ウィンドウ生成フラグの取得処理
-	bool GetSelectChoice() { return m_bConfimationSelectChoice; }				// 選択肢番号の取得処理
 	std::vector<CFontString*> GetChoiceAll() { return m_vpListChoice; }			// 選択肢ポインタの取得処理
+	static bool GetSelectChoice() { return m_bConfimationSelectChoice; }		// 選択肢番号の取得処理
 	static CCharSelect_Window* GetCharSelect() { return m_pCharSelectWindow; }	// キャラ選択用ウィンドウの取得処理
 
 	static CConfirmation_Window* Create(D3DXVECTOR3 pos,float xsize, float ysize, D3DXCOLOR col);		// 生成処理
 
 private:
 	static CCharSelect_Window* m_pCharSelectWindow;	// キャラ選択用ウィンドウのインスタンス
+	static bool	m_bConfimationSelectChoice;			// 選択肢の番号
 	CObject2D* m_pObject2D;							// オブジェクト2Dのインスタンス
 	CFontString* m_pFont;							// フォント
 	D3DXVECTOR3 m_pos;								// 位置
@@ -74,7 +75,6 @@ private:
 	float	m_fConfimationBlinkSpeed;				// 点滅速度
 
 	bool	m_bConfimationMaxSize;					// XとYのサイズが最大値まで行ったか
-	bool	m_bConfimationSelectChoice;				// 選択肢の番号
 	bool	m_bConfimationDisplay;					// 表示中の判定
 	bool	m_bConfimationScale;					// 拡大縮小のフラグ
 	bool    m_bConfimationUninitFlag;				// 削除フラグ

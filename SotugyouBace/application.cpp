@@ -56,6 +56,7 @@ CParticleManager* CApplication::m_pParticleManager = nullptr;
 ConnectManager*CApplication::m_pClient = nullptr;
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
+bool CApplication::m_nSkill = false;
 int CApplication::m_nPlayerJobIndex = 0;
 
 #ifdef _DEBUG
@@ -295,6 +296,8 @@ void CApplication::Update()
 
 	// ƒJƒƒ‰‚ÌXVˆ—
 	m_pCamera->Update();
+
+	m_nSkill = CConfirmation_Window::GetSelectChoice();
 }
 
 //==============================================================================================

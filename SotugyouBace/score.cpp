@@ -48,7 +48,7 @@ HRESULT CScore::Init()
 	for (int nCnt = 0; nCnt < MAX_DIGIT; nCnt++)
 	{
 		//ナンバーの生成
-		m_apNumber[nCnt] = CNumber::Create(D3DXVECTOR3(100.0f + 35.0f * nCnt, 50.0f, 0.0f), 20.0f, 30.0f, CObject::PRIORITY_SCREEN);
+		m_apNumber[nCnt] = CNumber::Create(D3DXVECTOR3(m_pos.x + 30.0f * nCnt, m_pos.y, 0.0f), 20.0f, 30.0f, CObject::PRIORITY_SCREEN);
 		//分割数,何番目か
 		m_apNumber[nCnt]->SetTexPos(0.0f, 1.0f, 0.1f * m_aPosTexU[nCnt] + 0.1f, m_aPosTexU[nCnt] * 0.1f);
 	}
@@ -129,7 +129,7 @@ void CScore::AddScore(__int64 nValue)
 //=============================================================================
 // 生成処理
 //=============================================================================
-CScore* CScore::Create()
+CScore* CScore::Create(D3DXVECTOR3 pos)
 {
 	//クラスの生成
 	CScore* pScore = new CScore;
@@ -137,6 +137,8 @@ CScore* CScore::Create()
 	//nullチェック
 	if (pScore != nullptr)
 	{
+
+		pScore->SetPos(pos);
 		//初期化処理
 		pScore->Init();
 	}

@@ -88,14 +88,11 @@ public:
 	// ジョブの種種類
 	enum JOB
 	{
-		JOB_RUSH = 0,	// ラッシュ
-		JOB_VANGUARD,	// ヴァンガード
-		JOB_EAGLEEYE,	// イーグルアイ
-		JOB_MARSHALL,	// マーシャル
-		JOB_MECHANIC,	// メカニック
-		JOB_RAIDER,		// レイダー
-		JOB_ARKPHILIA,	// アークフィリア
-		JOB_CONTROL,	// コントロール
+		JOB_STANDART = 0,	// スタンダード
+		JOB_RUSH ,			// ラッシュ
+		JOB_VANGUARD,		// ヴァンガード
+		JOB_EAGLEEYE,		// イーグルアイ
+		JOB_MARSHALL,		// マーシャル
 		JOB_MAX
 	};
 
@@ -138,6 +135,8 @@ public:
 	const int GetCharaIndex() { return m_nCharaIndex; }
 	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 	const bool GetPlayerAttack() { return m_bPlayer_Attack; }
+	const int GetWeaponType() { return m_nWeapon_type; }
+	const JOB GetJobIndex(const int index) { return  m_Parts_Job[index]; }
 
 private:
 	int m_nCharaIndex;			// 自身の番号
@@ -170,7 +169,7 @@ private:
 	int m_nAttackRate_Counter;			// 攻撃間隔の経過時間
 	int m_nAttackRate_Max_Counter;		// 攻撃間隔の最大時間
 
-	JOB m_Parts_Job[PARTS_MAX];				// プレイヤーのパーツ毎のジョブ種類
+	JOB m_Parts_Job[PARTS_MAX];			// プレイヤーのパーツ毎のジョブ種類
 	int m_nArms_Rarity;					// 腕のレアリティ
 	int m_nLeg_Rarity;					// 脚のレアリティ
 

@@ -29,7 +29,6 @@
     <ClCompile Include="chain.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="chardecision_window.cpp" />
-    <ClCompile Include="charselect_window.cpp" />
     <ClCompile Include="char_select.cpp" />
     <ClCompile Include="chain_manager.cpp" />
     <ClCompile Include="client.cpp" />
@@ -131,7 +130,6 @@
     <ClInclude Include="chain.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="chardecision_window.h" />
-    <ClInclude Include="charselect_window.h" />
     <ClInclude Include="char_select.h" />
     <ClInclude Include="chain_manager.h" />
     <ClInclude Include="client.h" />

@@ -34,6 +34,10 @@ public:
 	{
 		MOTION_NEUTRAL = 0,	// ƒjƒ…[ƒgƒ‰ƒ‹
 		MOTION_WALK,		// •à‚«
+		MOTION_ATTACK1,		// UŒ‚1
+		MOTION_ATTACK2,		// UŒ‚2
+		MOTION_ATTACK3,		// UŒ‚3
+		MOTION_ENTRANCE,	// “oê
 		MOTION_MAX,
 	};
 
@@ -46,11 +50,13 @@ public:
 	virtual void Draw() override;
 
 	void Destroy() override;			// ”j‰óˆ—
+	void ChangeMotion();
+	void Landing(const D3DXVECTOR3 pos) override;	// ’…’nˆ—
 
 	static CBoss* Create(const D3DXVECTOR3 pos);
 
 private:
-
+	bool m_bOpening;
 };
 
 #endif// _BOSS_H_
