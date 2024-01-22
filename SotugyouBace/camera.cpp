@@ -49,7 +49,7 @@ void CCamera::Init(void)
 	m_posRDest = D3DXVECTOR3(600.0f, 150.0f, 0.0f);	// 目的の注視点
 	m_bPerspective = false;
 	m_bValue = false;
-	m_bOpening = true;								// オープニングの有無
+	m_bOpening = false;								// オープニングの有無
 
 	for (int nCnt = 0; nCnt < 3; nCnt++)
 	{

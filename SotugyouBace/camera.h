@@ -32,6 +32,7 @@ public:
 	void SetPerspective(bool flag) { m_bPerspective = flag; }
 	D3DXVECTOR3 GetPlayerPos() { return m_PPos; }
 	void SetPlayerPos(D3DXVECTOR3 pos) { m_PPos = pos; }
+	void SetOpening(bool opening) { m_bOpening = opening; }
 
 	void SetPosV(const D3DXVECTOR3 posV) { m_posV = posV; }// éãì_
 	void SetPosR(const D3DXVECTOR3 posR) { m_posR = posR; }// íçéãì_

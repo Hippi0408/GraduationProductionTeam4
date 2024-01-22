@@ -90,12 +90,7 @@ HRESULT CGame::Init()
 		pCamera->SetPosV({ 0.0f, 225.0f, -450.0f });
 		pCamera->SetPosR({ 0.0f, 112.5f, 450.0f });
 	}
-	else
-	{
-		pCamera->SetPosV({ 0.0f,200.0f,-1000.0f });
-		pCamera->SetPosR({ 0.0f, 3000.0f, -500.0f });
-	}
-
+	
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
 
@@ -139,7 +134,7 @@ HRESULT CGame::Init()
 		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
+	//CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
@@ -383,6 +378,13 @@ void CGame::Update()
 			}
 		}
 #endif
+
+		// ボスが出るまではチュートリアル
+		if (pInput->Trigger(DIK_T) && pBoss == nullptr)
+		{
+			// ボスキャラの生成
+			pBoss = CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
+		}
 
 		//オンラインの送信
 		/*if (CApplication::GetClient()->GetIsConnect())

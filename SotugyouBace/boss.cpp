@@ -54,6 +54,12 @@ HRESULT CBoss::Init()
 
 	//SetCenterPos({ 0.0f,500.0f,0.0f });
 
+	CCamera *pCamera = CApplication::GetCamera();
+	pCamera->SetOpening(m_bOpening);
+
+	pCamera->SetPosV({ 0.0f,200.0f,-1000.0f });
+	pCamera->SetPosR({ 0.0f, 3000.0f, -500.0f });
+
 	return S_OK;
 }
 
@@ -131,8 +137,12 @@ void CBoss::ChangeMotion()
 		// パーツ
 		CParts* pParts = GetParts(nCnt);
 
+		if (pParts->GetMotion() == MOTION_ATTACK1 && pParts->GetMotionStop() == true)
+		{
+			pParts->SetMotion(MOTION_ATTACK2);
+		}
 		// モーションがループしない場合
-		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
+		else if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
 		{
 			// ニュートラルモーションにする
 			pParts->SetMotion(MOTION_NEUTRAL);
