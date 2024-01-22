@@ -133,7 +133,7 @@ void CCannon::Update()
 						// 鎖の発射
 						m_pChain_Manager = CChain_Manager::Create(GetPos(), Vec, Dis, fRotDest + D3DX_PI / 2, 1000);
 						// 攻撃パーティクル
-						//wwwwwwwwwwwstd::move(CParticleEmitter::Create("spark", GetPos()));
+						std::move(CParticleEmitter::Create("spark", GetPos()));
 					}
 				}
 
