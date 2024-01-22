@@ -224,7 +224,7 @@ void CMob::Move()
 		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
 
 		// íe
-		CNormal_Bullet::Create(GetPos(), { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, nullptr, 0.0f, false, false, PRIORITY_BACK);
+		//CNormal_Bullet::Create(GetPos(), { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, nullptr, 0.0f, false, false, PRIORITY_BACK);
 
 		// à⁄ìÆó ÇÃê›íË
 		SetMove(move);
