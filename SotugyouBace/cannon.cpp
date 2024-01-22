@@ -54,6 +54,9 @@ HRESULT CCannon::Init()
 	SetCenterPos({ 0.0f,Max.y / 2,0.0f });
 	SetSize(GetObjectX()->GetMaxSize());
 
+	// 当たり判定を消す
+	SetCollisionNoneHit(true);
+
 	return S_OK;
 }
 
@@ -102,6 +105,7 @@ void CCannon::Update()
 				&& pEnemy->GetLife() != 0)
 			{
 				Boss_Pos = pEnemy->GetCenterPos();
+				Boss_Pos.y += 500.0f;
 
 				// ボスまでのベクトル
 				Vec = Boss_Pos - GetPos();

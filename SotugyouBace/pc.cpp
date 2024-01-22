@@ -21,6 +21,8 @@
 #include"player_manager.h"
 #include"debugProc.h"
 
+#include "result.h"
+
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -42,8 +44,11 @@ CPC::~CPC()
 //============================================================================
 HRESULT CPC::Init()
 {
-	SetEnergyGauge(CEnergy_Gauge::Create({ 70,720.0f / 2,0.0f }, { 20.0f,500.0f }));
-	SetGaugeManager(CPlayer_Life_Gauge::Create({ 1210.0f,720.0f / 2,0.0f }, { 20.0f,500.0f }));
+	if (CApplication::GetModeType() == CApplication::MODE_GAME)
+	{
+		SetEnergyGauge(CEnergy_Gauge::Create({ 70,720.0f / 2,0.0f }, { 20.0f,500.0f }));
+		SetGaugeManager(CPlayer_Life_Gauge::Create({ 1210.0f,720.0f / 2,0.0f }, { 20.0f,500.0f }));
+	}
 
 	CPlayer::Init();
 
@@ -63,8 +68,9 @@ void CPC::Uninit()
 //============================================================================
 void CPC::Update()
 {
-	// 入力処理
-	Input();
+	if (!CApplication::GetCamera()->GetOpening())
+		// 入力処理
+		Input();
 
 	CPlayer::Update();
 }
@@ -82,6 +88,8 @@ void CPC::Draw()
 //==============================================================================================
 void CPC::Input()
 {
+	if (CApplication::GetModeType() != CApplication::MODE_RESULT)
+	{
 	//入力デバイスの情報
 	CInput* pInput = CInput::GetKey();
 
@@ -123,7 +131,7 @@ void CPC::Input()
 		bWalk = true;
 	}
 
-		// 歩いている場合
+	// 歩いている場合
 	if (bWalk == true && !GetAvoidance())
 	{
 		//カメラの向き（Y軸のみ）
@@ -274,76 +282,77 @@ void CPC::Input()
 
 	CPause *pPause = nullptr;
 
-	// ポーズの取得
-	if (CApplication::GetModeType() == CApplication::MODE_GAME)
-		pPause = CGame::GetPause();
-	else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
-		pPause = CTutorial::GetPause();
+		// ポーズの取得
+		if (CApplication::GetModeType() == CApplication::MODE_GAME)
+			pPause = CGame::GetPause();
+		else if (CApplication::GetModeType() == CApplication::MODE_TUTORIAL)
+			pPause = CTutorial::GetPause();
 
-	// ポーズしてないとき
-	if (!pPause->GetPause())
-	{
-		// 視点処理
-		Perspective();
-	}
-
-	if (pGauge != nullptr)
-	{
-		// 地上にいる場合
-		if (GetGround())
+		// ポーズしてないとき
+		if (!pPause->GetPause())
 		{
-			// 消費速度
-			pGauge->SetConsumption_Speed(1.5f);
-			// 回復速度
-			pGauge->SetRecovery_Speed(10.0f);
-		}
-		// 空中にいる場合
-		else
-		{
-			// 消費速度
-			pGauge->SetConsumption_Speed(3.0f);
-			// 回復速度
-			pGauge->SetRecovery_Speed(0.3f);
+			// 視点処理
+			Perspective();
 		}
 
-		// エネルギーが残っている状態
-		if (!pGauge->GetConsumption())
+		if (pGauge != nullptr)
 		{
-			if (GetJump_Boost())
-				// ジャンプブースト
-				JumpBoost();
-
-			if ((pInput->Press(DIK_LSHIFT) || pInput->Press(JOYPAD_A)) && bWalk)
+			// 地上にいる場合
+			if (GetGround())
 			{
-				// ブーストする
-				SetBoost(true);
+				// 消費速度
+				pGauge->SetConsumption_Speed(1.5f);
+				// 回復速度
+				pGauge->SetRecovery_Speed(10.0f);
+			}
+			// 空中にいる場合
+			else
+			{
+				// 消費速度
+				pGauge->SetConsumption_Speed(3.0f);
+				// 回復速度
+				pGauge->SetRecovery_Speed(0.3f);
+			}
 
-				// エネルギーを消費する
-				pGauge->Consumption_Gauge();
-				pLeg->SetMotion(MOTION_BOOST_RUN);
+			// エネルギーが残っている状態
+			if (!pGauge->GetConsumption())
+			{
+				if (GetJump_Boost())
+					// ジャンプブースト
+					JumpBoost();
+
+				if ((pInput->Press(DIK_LSHIFT) || pInput->Press(JOYPAD_A)) && bWalk)
+				{
+					// ブーストする
+					SetBoost(true);
+
+					// エネルギーを消費する
+					pGauge->Consumption_Gauge();
+					pLeg->SetMotion(MOTION_BOOST_RUN);
+				}
 			}
 		}
-	}
 
-	// パーツ変更処理
-	if (GetDropContact() == true)
-	{
-		// Eボタンで落とし物の取得
-		if(pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_Y))
+		// パーツ変更処理
+		if (GetDropContact() == true)
 		{
-			SetDropGet(true);
+			// Eボタンで落とし物の取得
+			if (pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_Y))
+			{
+				SetDropGet(true);
+			}
 		}
-	}
 
-	for (int nCnt = 0; nCnt < CRestraint_Switch::SWITHC_NUM; nCnt++)
-	{
-		// 拘束スイッチの取得
-		CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);
+		for (int nCnt = 0; nCnt < CRestraint_Switch::SWITHC_NUM; nCnt++)
+		{
+			// 拘束スイッチの取得
+			CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);
 
-		if (pRestraint != nullptr && (pRestraint->GetHit()
-			&& pInput->Trigger(DIK_E)))
-			// ボタンを押した数のカウント
-			pRestraint->AddCountSwitch();
+			if (pRestraint != nullptr && (pRestraint->GetHit()
+				&& pInput->Trigger(DIK_E)))
+				// ボタンを押した数のカウント
+				pRestraint->AddCountSwitch();
+		}
 	}
 }
 

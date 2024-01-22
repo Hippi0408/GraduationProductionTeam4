@@ -36,21 +36,21 @@ ALL_PARTSSET
 	PARTSSET
 		INDEX = 1					# 右肩
 		PARENT = 0					# (親)体
-		POS = -24.0 10.0 0.0
+		POS = -9.0 13.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 2					# 右前腕
 		PARENT = 1					# (親)右上腕
-		POS = 7.0 -13.0 0.0
+		POS = -9.5 -2.00 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 	
 	PARTSSET
 		INDEX = 3					# 右前腕
 		PARENT = 2					# (親)右上腕
-		POS = 0.0 0.0 0.0
+		POS = 0.00 -16.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
@@ -64,29 +64,29 @@ ALL_PARTSSET
 	PARTSSET
 		INDEX = 5					# 左肩
 		PARENT = 0					# (親)体
-		POS = 11.0 10.0 0.0
-		ROT = 0.0 0.00 0.0
+		POS = 9.0 13.0 0.0
+		ROT = 0.0 59.7 0.0
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 6					# 左前腕
 		PARENT = 5					# (親)左上腕
-		POS = 7.00 -13.00 0.0
+		POS = -9.5 -2.0 0.0
 		ROT = 0.0 0.00 0.0
 	END_PARTSSET
 	
 	PARTSSET
 		INDEX = 7					# 左前腕
 		PARENT = 6					# (親)左上腕
-		POS = 0.0 0.00 0.0
+		POS = 0.00 -16.0 0.0
 		ROT = 0.0 0.00 0.0
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 8					# 左手
 		PARENT = 7					# (親)左前腕
-		POS = 0.0 -18.00 0.0
-		ROT = 0.0 0.00 0.0
+		POS = 0.0 -18.0 0.0
+		ROT = 0.0 59.7 0.0
 	END_PARTSSET
 
 END_ALL_PARTSSET

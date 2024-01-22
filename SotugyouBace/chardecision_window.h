@@ -47,9 +47,10 @@ public:
 	void CharSelectChoice();									// 選択肢の処理
 	void BackWindow();											// ウィンドウを戻す処理
 	void SlideWindow();											// ウィンドウをスライドさせる処理
+	void PlayerIndex();											// プレイヤー番号処理
 	bool CharDecisionMenuScaleReduce();							// キャラ決定のサイズ縮小処理
 
-	void SetFont(const std::string lette[]);									// フォントの設定処理
+	void SetFont(const std::string lette);									// フォントの設定処理
 	void SetTextue(CTexture::TEXTURE texture, CTexture::TEXTURE texture1);		// テクスチャの設定
 
 	int GetSelectIndex() { return m_nSelectIndex; }
@@ -66,7 +67,7 @@ private:
 	static CConfirmation_Window* m_pConfirmation;
 	CObject2D* m_pWindow;						// ウィンドウ用オブジェクト2Dのインスタンス
 	CObject2D* m_pObject2D[MAX_TEXTURE];		// 説明用オブジェクト2Dのインスタンス
-	CFontString* m_pFont[2];					// フォント
+	CFontString* m_pFont;						// フォント
 	D3DXVECTOR3 m_pos;							// 位置
 	D3DXVECTOR2 m_size;							// サイズ
 	D3DXVECTOR2 m_MaxSize;						// 最大サイズ
@@ -92,5 +93,6 @@ private:
 	bool    m_bUninitFlag;						// 削除フラグ
 	bool    m_bScaleReduce;						// 縮小
 	bool	m_bScaleExpansion;					// 拡大
+	bool    m_bTextureFlag;
 };
 #endif

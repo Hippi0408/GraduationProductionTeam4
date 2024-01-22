@@ -12,7 +12,6 @@
 #include "playerdata.h"
 #include "char_select.h"
 #include "confirmation_window.h"
-#include "charselect_window.h"
 #include "chardecision_window.h"
 #include "player_manager.h"
 
@@ -56,10 +55,8 @@ void CPlayerData::Uninit()
 //=============================================================================
 void CPlayerData::Update()
 {
-	if (CChar_Select::GetConfimationWindow() != nullptr
-		&& CChar_Select::GetConfimationWindow()->GetCharSelect() != nullptr
-		&& CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision() != nullptr)
+	if (CChar_Select::GetCharDecisionWindow() != nullptr)
 	{
-		m_nPlayerIndex = CChar_Select::GetConfimationWindow()->GetCharSelect()->GetCharDecision()->GetSelectIndex();
+		m_nPlayerIndex = CChar_Select::GetCharDecisionWindow()->GetSelectIndex();
 	}
 }

@@ -5,7 +5,6 @@
 //
 //==============================================================================================
 #include "game.h"
-#include "application.h"
 #include "camera.h"
 #include "fade.h"
 #include "input.h"
@@ -85,9 +84,17 @@ HRESULT CGame::Init()
 	// カメラのポインタ
 	CCamera* pCamera = CApplication::GetCamera();
 
-	// 視点、注視点の設定
-	pCamera->SetPosV({ 0.0f, 225.0f, -450.0f });
-	pCamera->SetPosR({ 0.0f, 112.5f, 450.0f });
+	if (!pCamera->GetOpening())
+	{
+		// 視点、注視点の設定
+		pCamera->SetPosV({ 0.0f, 225.0f, -450.0f });
+		pCamera->SetPosR({ 0.0f, 112.5f, 450.0f });
+	}
+	else
+	{
+		pCamera->SetPosV({ 0.0f,200.0f,-1000.0f });
+		pCamera->SetPosR({ 0.0f, 3000.0f, -500.0f });
+	}
 
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
@@ -129,11 +136,10 @@ HRESULT CGame::Init()
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
-
-		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) });
+		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
 	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 0.0f, 6000.0f });
+	CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
@@ -150,6 +156,9 @@ HRESULT CGame::Init()
 
 	// ポーズ画面
 	m_pPause = CPause::Create();
+
+	// フォグの設定
+	CFog::SetFog(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	m_nEndCounter = 0;
 	m_bInputFlag = false;
@@ -279,9 +288,6 @@ void CGame::Update()
 {
 	// メニューウィンドウ処理
 	MenuWindow();
-
-	// フォグの設定
-	CFog::SetFog(D3DXCOLOR(0.2f, 1.0f, 0.5f, 1.0f));
 
 	// ゲーム終了判定が真の場合
 	if (m_bGameEnd == true)
@@ -436,7 +442,7 @@ void CGame::MenuWindow()
 {
 	CInput* pInput = CInput::GetKey();
 	//// 現在のモード
-	CApplication::MODE Mode = CApplication::GetModeType();
+	//CApplication::MODE Mode = CApplication::GetModeType();
 
 	//if (Mode == CApplication::MODE_GAME)
 	//{

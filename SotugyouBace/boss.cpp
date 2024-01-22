@@ -9,6 +9,7 @@
 #include "game.h"
 #include "particle_emitter.h"
 #include "boss_life_gauge.h"
+#include "camera.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 500.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -46,6 +47,13 @@ HRESULT CBoss::Init()
 
 	CEnemy::Init();
 
+	CParts* pBody = GetParts(PARTS_BODY);
+	pBody->SetMotion(MOTION_NEUTRAL);
+
+	m_bOpening = true;
+
+	//SetCenterPos({ 0.0f,500.0f,0.0f });
+
 	return S_OK;
 }
 
@@ -64,6 +72,23 @@ void CBoss::Update()
 {
 	// キャラクターの更新
 	CEnemy::Update();
+
+	ChangeMotion();
+
+	// カメラのポインタ
+	bool bOpening = CApplication::GetCamera()->GetOpening();
+
+	if (m_bOpening != bOpening)
+	{
+		// オープニング終了時に着地する
+		D3DXVECTOR3 pos = GetPos();
+		SetPos({ pos.x,0.0f,pos.z });
+
+		CParts* pBody = GetParts(PARTS_BODY);
+		pBody->SetMotion(MOTION_ENTRANCE);
+	}
+
+	m_bOpening = bOpening;
 }
 
 //============================================================================
@@ -93,6 +118,47 @@ void CBoss::Destroy()
 	CGame::SetGameEnd();
 
 	CEnemy::Destroy();
+}
+
+//============================================================================
+// モーション変更処理
+//============================================================================
+void CBoss::ChangeMotion()
+{
+	// ニュートラルモーションモーションを設定
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+	{
+		// パーツ
+		CParts* pParts = GetParts(nCnt);
+
+		// モーションがループしない場合
+		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
+		{
+			// ニュートラルモーションにする
+			pParts->SetMotion(MOTION_NEUTRAL);
+		}
+	}
+}
+
+//============================================================================
+// 着地処理
+//============================================================================
+void CBoss::Landing(const D3DXVECTOR3 pos)
+{
+	// カメラのポインタ
+	bool bOpening = CApplication::GetCamera()->GetOpening();
+
+	if (bOpening)
+	{
+		// 着地モーションを設定
+		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+		{
+			GetParts(nCnt)->SetMotion(MOTION_NEUTRAL);
+		}
+	}
+
+	// キャラクターの着地処理
+	CCharacter::Landing(pos);
 }
 
 //============================================================================
