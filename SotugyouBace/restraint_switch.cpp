@@ -55,10 +55,10 @@ HRESULT CRestraint_Switch::Init()
 	SetSize(GetObjectX()->GetMaxSize());
 
 	// ñCë‰ÇÃà íu
-	D3DXVECTOR3 Cannon_Pos = { GetPos().x,GetPos().y + Max.y,GetPos().z };
+	D3DXVECTOR3 Cannon_Pos = { GetPos().x,GetPos().y/* + Max.y*/,GetPos().z };
 
 	// ñCë‰ÇÃê∂ê¨
-	CMap_Object::Create(Cannon_Pos, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Down.x");
+	//CMap_Object::Create(Cannon_Pos, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Down.x");
 	CCannon::Create({ Cannon_Pos.x,Cannon_Pos.y + 30.0f,Cannon_Pos.z }, { 0.0f,0.0f,0.0f }, nullptr, "Data/model/Cannon_Up.x", m_nIndex);
 
 	m_Display_Key = CObject3D::Create({ GetPos().x, GetPos().y + 120.0f, GetPos().z }, { 70.0f,70.0f }, PRIORITY_CENTER, { 1.0f,1.0f,1.0f,1.0f }, true);

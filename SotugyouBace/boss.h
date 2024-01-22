@@ -34,8 +34,10 @@ public:
 	{
 		MOTION_NEUTRAL = 0,	// ニュートラル
 		MOTION_WALK,		// 歩き
+		MOTION_ATTACK1,		// 攻撃1
+		MOTION_ATTACK2,		// 攻撃2
+		MOTION_ATTACK3,		// 攻撃3
 		MOTION_ENTRANCE,	// 登場
-		MOTION_LANDING,		// 着地
 		MOTION_MAX,
 	};
 

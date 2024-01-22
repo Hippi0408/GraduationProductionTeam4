@@ -143,7 +143,6 @@ HRESULT CGame::Init()
 
 	// 武器、パーツのドロップ
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
-	SetDrop_Parts(1, { 500.0f,0.0f,500.0f }, false);
 
 	// タイムの生成
 	m_pTime = CTime::Create();
