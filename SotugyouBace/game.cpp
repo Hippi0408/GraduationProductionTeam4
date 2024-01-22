@@ -133,8 +133,6 @@ HRESULT CGame::Init()
 		// モブキャラの生成
 		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
-	// ボスキャラの生成
-	//CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);

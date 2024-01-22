@@ -37,12 +37,12 @@ HRESULT CNormal_Bullet::Init()
 	// ’e‚ª“G‚É“Í‚­‚Ü‚Å‚ÌŽžŠÔ
 	float fHitCnt = m_fHypotenuse / GetSpeed_XZ();
 
-	if (m_bTarget && GetPlayerSide())
+	if (m_bTarget)
 	{
 		// ƒ^[ƒQƒbƒg‚µ‚Ä‚¢‚é“G‚ÌˆÊ’u
-		D3DXVECTOR3 Enemy_Pos = pEnemy->GetCenterPos();
+		D3DXVECTOR3 Enemy_Pos = pChara->GetCenterPos();
 		// ˆÚ“®—Ê
-		D3DXVECTOR3 Enemy_Move = pEnemy->GetMove();
+		D3DXVECTOR3 Enemy_Move = pChara->GetMove();
 
 		// ’e‚ª“Í‚­‚Æ‚«‚Ì“G‚ÌˆÊ’u
 		Enemy_Pos.x += (Enemy_Move.x * m_fSpeed * fHitCnt);
@@ -52,15 +52,6 @@ HRESULT CNormal_Bullet::Init()
 		D3DXVECTOR3 Mob_Vec = Enemy_Pos - GetPos();
 		D3DXVec3Normalize(&Mob_Vec, &Mob_Vec);
 		SetMove(Mob_Vec);
-	}
-	else if (!GetPlayerSide())
-	{
-		CPlayer* pPlayer = nullptr;
-
-		// ƒvƒŒƒCƒ„[‚Ìî•ñ
-		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
-
-
 	}
 
 	return S_OK;
@@ -93,7 +84,7 @@ void CNormal_Bullet::Draw()
 //==============================================================================================
 // ¶¬ˆ—
 //==============================================================================================
-CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CEnemy *enemy, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority)
+CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CCharacter *chara, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority)
 {
 	//ƒNƒ‰ƒX‚Ì¶¬
 	CNormal_Bullet* pNormal_Bullet = new CNormal_Bullet(priority);
@@ -103,9 +94,10 @@ CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 
 	{
 		pNormal_Bullet->SetPos(pos);
 		pNormal_Bullet->SetSize(size);
+		pNormal_Bullet->SetMove(move);
 		pNormal_Bullet->SetPlayerSide(side);
 		pNormal_Bullet->m_fHypotenuse = hypotenuse;
-		pNormal_Bullet->pEnemy = enemy;
+		pNormal_Bullet->pChara = chara;
 		pNormal_Bullet->m_fSpeed = enemy_speed;
 		pNormal_Bullet->m_bTarget = target;
 		pNormal_Bullet->Init();

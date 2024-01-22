@@ -71,30 +71,6 @@ HRESULT CMap_Object::Init()
 	
 	D3DXVECTOR3 Max = Obj->GetMaxSize();
 	D3DXVECTOR3 Min = Obj->GetMinSize();
-	float fRotY = Obj->GetRot().y;
-
-	D3DXVECTOR3 pos[4] = {};
-
-	pos[0] = { Min.x,0.0f,Min.z };
-	pos[1] = { Min.x,0.0f,Max.z };
-	pos[2] = { Max.x,0.0f,Max.z };
-	pos[3] = { Max.x,0.0f,Min.z };
-
-	float fAngle[4] = {};
-	float Dis[4] = {};
-
-	for (int nCnt = 0; nCnt < 4; nCnt++)
-	{
-		fAngle[nCnt] = atan2(pos[nCnt].x, pos[nCnt].z);
-		Dis[nCnt] = sqrtf(pos[nCnt].x * pos[nCnt].x + pos[nCnt].z * pos[nCnt].z);
-
-		//pos[nCnt] = sinf(fRotY + fAngle[nCnt]) * Dis[nCnt];
-	}
-
-	/*Max.x += sinf(fRotY);
-	Max.z += cosf(fRotY);
-	Min.x += sinf(fRotY);
-	Min.z += cosf(fRotY);*/
 
 	SetIndex({ Min.x,0.0f,Min.z }, 0);
 	SetIndex({ Min.x,0.0f,Max.z }, 1);

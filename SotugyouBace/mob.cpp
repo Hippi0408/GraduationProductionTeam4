@@ -104,6 +104,14 @@ void CMob::Update()
 		}
 	}
 
+	if (!CApplication::GetCamera()->GetOpening())
+	{
+		// 攻撃
+		Attack();
+		// 回避
+		Avoidance();
+	}
+
 	// キャラクターの更新
 	CEnemy::Update();
 }
@@ -196,14 +204,13 @@ void CMob::Move()
 	// モブ敵とプレイヤーの距離
 	float fDistance = GetDistance();
 
-	// 距離が3000より近い場合、追跡状態にする
-	if (fDistance <= 3000 && fDistance >= 2000)
+	// 距離が3000より近い場合に追跡状態にする
+	if (fDistance <= 3000)
 		SetTracking(true);
-	// 距離が2000のり近くなると追跡を終了し弾を撃つ
-	else if (fDistance < 2000)
+	else
 		SetTracking(false);
 
-	// 追跡状態
+		// 追跡状態
 	if (GetTracking())
 	{
 		// プレイヤーまでの角度
@@ -213,24 +220,110 @@ void CMob::Move()
 		D3DXVECTOR3 move = { 0.0f,GetMove().y,0.0f };
 
 		// 速度の設定
-		SetSpeed(2.0f);
+		SetSpeed(3.0f);
 
-		move.x = sinf(fAngle) * GetSpeed();
-		move.z = cosf(fAngle) * GetSpeed();
-
-		CPlayer* pPlayer = nullptr;
-
-		// プレイヤーの情報
-		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
-
-		// 弾
-		//CNormal_Bullet::Create(GetPos(), { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, nullptr, 0.0f, false, false, PRIORITY_BACK);
-
+		if (fDistance >= 2000 && !m_bAvoidance)
+		{
+			move.x = sinf(fAngle) * GetSpeed();
+			move.z = cosf(fAngle) * GetSpeed();
+		}
+		else if(fDistance < 2000 && !m_bAvoidance)
+		{
+			move.x = sinf(fAngle + D3DX_PI) * GetSpeed();
+			move.z = cosf(fAngle + D3DX_PI) * GetSpeed();
+		}
+		
 		// 移動量の設定
 		SetMove(move);
 
 		// 角度の設定
-		SetRot({ 0.0f,fAngle + D3DX_PI,0.0f });
+		SetRot({ 0.0f,fAngle + D3DX_PI,0.0f });		
+
+		// 回避のカウント
+		m_fAvoidance_Count++;
+
+		if (m_fAvoidance_Count >= 100)
+		{
+			// 一定時間ごとに確率で回避する
+			int nRand = rand() % 100;
+
+			if (nRand == 0)
+			{
+				// 回避
+				m_bAvoidance = true;
+				m_fAvoidance_Speed = 20.0f;
+				m_fAvoidance_Count = 0;
+			}
+		}
+	}
+}
+
+//============================================================================
+// 攻撃処理
+//============================================================================
+void CMob::Attack()
+{
+	// モブ敵とプレイヤーの距離
+	float fDistance = GetDistance();
+
+	CPlayer* pPlayer = nullptr;
+
+	// プレイヤーの情報
+	pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+	
+	// 弾を撃つ間隔
+	m_nBullet_Interval++;
+
+	if (m_nBullet_Interval >= 50)
+	{
+		// 弾
+		CNormal_Bullet::Create(GetPos(), { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false, PRIORITY_BACK);
+		m_nBullet_Interval = 0;
+	}
+}
+
+//============================================================================
+// 回避処理
+//============================================================================
+void CMob::Avoidance()
+{
+	if (m_bAvoidance)
+	{
+		// プレイヤーまでの角度
+		float fAngle = GetAngle();
+
+		// 敵の移動量
+		D3DXVECTOR3 move = { 0.0f,GetMove().y,0.0f };
+
+		// 右か左に回避
+		int nRand = rand() % 2;
+
+		if (nRand == 0 && !m_bfAvo_Step)
+		{
+			m_fStep = fAngle + D3DX_PI / 2;
+			m_bfAvo_Step = true;
+		}
+		else if(nRand == 1 && !m_bfAvo_Step)
+		{
+			m_fStep = fAngle - D3DX_PI / 2;
+			m_bfAvo_Step = true;
+		}
+
+		// 移動量の設定
+		move.x = sinf(m_fStep) * m_fAvoidance_Speed;
+		move.z = cosf(m_fStep) * m_fAvoidance_Speed;
+
+		// 移動量の減衰
+		m_fAvoidance_Speed -= 0.5f;
+
+		if (m_fAvoidance_Speed <= 0)
+		{
+			m_bAvoidance = false;
+			m_bfAvo_Step = false;
+		}
+
+		// 移動量の設定
+		SetMove(move);
 	}
 }
 
