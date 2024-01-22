@@ -12,6 +12,7 @@
 #include"tutorial.h"
 #include"enemy_manager.h"
 #include"application.h"
+#include "particle_emitter.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -124,8 +125,12 @@ void CCannon::Update()
 					m_nChain_Count++;
 
 					if (m_nChain_Count >= 120)
+					{
 						// 鎖の発射
 						m_pChain_Manager = CChain_Manager::Create(GetPos(), Vec, Dis, fRotDest + D3DX_PI / 2, 1000);
+						// 攻撃パーティクル
+						//wwwwwwwwwwwstd::move(CParticleEmitter::Create("spark", GetPos()));
+					}
 				}
 
 				break;
