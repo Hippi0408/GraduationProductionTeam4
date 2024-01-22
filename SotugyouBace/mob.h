@@ -13,6 +13,7 @@
 #include "enemy.h"
 
 class CMob_Life_Gauge;
+class CBoss;
 
 //---------------------------
 // クラス宣言
@@ -51,11 +52,15 @@ public:
 
 	void Destroy() override;			// 破壊処理
 	void DrawLifeGauge();		// 体力ゲージの表示
+	void Move() override;
 
 	static CMob* Create(const D3DXVECTOR3 pos);
 
 private:
+	static int m_DeathCount;
 	float m_fDistance;
+
+	CBoss *pBoss;
 };
 
 #endif// _MOB_H_

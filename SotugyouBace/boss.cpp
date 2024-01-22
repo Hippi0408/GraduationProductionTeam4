@@ -59,6 +59,7 @@ HRESULT CBoss::Init()
 
 	pCamera->SetPosV({ 0.0f,200.0f,-1000.0f });
 	pCamera->SetPosR({ 0.0f, 3000.0f, -500.0f });
+	pCamera->SetRot({ 0.0f,0.0f,0.0f });
 
 	return S_OK;
 }
@@ -91,7 +92,7 @@ void CBoss::Update()
 		SetPos({ pos.x,0.0f,pos.z });
 
 		CParts* pBody = GetParts(PARTS_BODY);
-		pBody->SetMotion(MOTION_ENTRANCE);
+		pBody->SetMotion(MOTION_NEUTRAL);
 	}
 
 	m_bOpening = bOpening;
@@ -169,6 +170,17 @@ void CBoss::Landing(const D3DXVECTOR3 pos)
 
 	// キャラクターの着地処理
 	CCharacter::Landing(pos);
+}
+
+//============================================================================
+// 移動処理
+//============================================================================
+void CBoss::Move()
+{
+	CEnemy::Move();
+
+	// 常に追跡状態
+	SetTracking(true);
 }
 
 //============================================================================

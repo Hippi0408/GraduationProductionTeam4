@@ -164,8 +164,9 @@ void CPlayer::Update()
 	// パラメーターの変更があった場合にパラメーターを設定し直す処理
 	if (m_bChange_Parameter == true) SettingParameter();
 
-	// ターゲット
-	Target();
+	if (!CApplication::GetCamera()->GetOpening())
+		// ターゲット
+		Target();
 
 	// 落ちてる武器の当たり判定
 	CollisionDropWeapon();
@@ -202,7 +203,7 @@ void CPlayer::ChangeMotion()
 		CParts* pParts = GetParts(nCnt);
 
 		// モーションがループしない場合
-		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
+		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true && !GetBoost())
 		{
 			pParts->SetMotion(MOTION_NEUTRAL);
 		}
@@ -219,12 +220,12 @@ void CPlayer::PlayerAttack()
 	{
 		const int nWeaponType = m_nWeapon_type + CDrop_Weapon::MELEE_WEAPON_NONE;
 
-		if (nWeaponType < CDrop_Weapon::MELEE_WEAPON_MAX)
+		/*if (nWeaponType < CDrop_Weapon::MELEE_WEAPON_MAX)
 		{
 			MeleeWeaponAttack();
 		}
 		else
-		{
+		{*/
 			// 情報の取得
 			D3DXVECTOR3 pos = GetCenterPos();
 			D3DXVECTOR3 rot = GetBulletRot();
@@ -236,7 +237,7 @@ void CPlayer::PlayerAttack()
 			/*CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
 			CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);
 			CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);*/
-		}
+		//}
 	}
 }
 

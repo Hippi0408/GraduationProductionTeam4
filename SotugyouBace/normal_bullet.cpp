@@ -10,6 +10,8 @@
 #include"enemy_manager.h"
 #include "game.h"
 #include "tutorial.h"
+#include "player.h"
+#include "player_manager.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -35,7 +37,7 @@ HRESULT CNormal_Bullet::Init()
 	// 弾が敵に届くまでの時間
 	float fHitCnt = m_fHypotenuse / GetSpeed_XZ();
 
-	if (m_bTarget)
+	if (m_bTarget && GetPlayerSide())
 	{
 		// ターゲットしている敵の位置
 		D3DXVECTOR3 Enemy_Pos = pEnemy->GetCenterPos();
@@ -50,6 +52,15 @@ HRESULT CNormal_Bullet::Init()
 		D3DXVECTOR3 Mob_Vec = Enemy_Pos - GetPos();
 		D3DXVec3Normalize(&Mob_Vec, &Mob_Vec);
 		SetMove(Mob_Vec);
+	}
+	else if (!GetPlayerSide())
+	{
+		CPlayer* pPlayer = nullptr;
+
+		// プレイヤーの情報
+		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+
+
 	}
 
 	return S_OK;
@@ -91,7 +102,6 @@ CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 
 	if (pNormal_Bullet != nullptr)
 	{
 		pNormal_Bullet->SetPos(pos);
-		pNormal_Bullet->SetMove(move);
 		pNormal_Bullet->SetSize(size);
 		pNormal_Bullet->SetPlayerSide(side);
 		pNormal_Bullet->m_fHypotenuse = hypotenuse;

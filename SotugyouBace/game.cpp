@@ -379,13 +379,6 @@ void CGame::Update()
 		}
 #endif
 
-		// ボスが出るまではチュートリアル
-		if (pInput->Trigger(DIK_T) && pBoss == nullptr)
-		{
-			// ボスキャラの生成
-			pBoss = CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
-		}
-
 		//オンラインの送信
 		/*if (CApplication::GetClient()->GetIsConnect())
 		{
