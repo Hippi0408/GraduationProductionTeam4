@@ -40,7 +40,7 @@ HRESULT CRestraint_Switch::Init()
 	SetCollision();
 
 	// 当たり判定のタイプ
-	SetCollision_Type(CMove_Object::COLLISION_TYPE_SWITCH);
+	SetCollision_Type(CMove_Object::COLLISION_TYPE_BLOCK);
 
 	// タグの設定
 	SetTag(TAG_MAP_OBJECT);

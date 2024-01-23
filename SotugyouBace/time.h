@@ -38,19 +38,25 @@ public:
 	void Update();						// 更新処理
 
 	void SetTime();						// 時間の設定
+	void SetTime(int time);
 	void ZoroCount();					// 先頭の0を消す処理
+	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 
-	static CTime* Create();				// 生成
+	int GetTime();						// 時間の取得
+
+	static CTime* Create(D3DXVECTOR3 pos);		// 生成
 
 private:
 	//****************
 	// privateな変数
 	//****************
-	CNumber* m_apNumber[TIME_DIGIT];		//ナンバーの桁数
+	CNumber* m_apNumber[TIME_DIGIT];		// ナンバーの桁数
+	D3DXVECTOR3 m_pos;						// 位置
 
 	int m_aPosTexU[TIME_DIGIT];				// 桁数
 	int m_nCntTime;							// 時間のカウント
 	int m_nTime;							// 時間の値
+	int m_nKeepTime;						// 時間の保存用変数
 	int m_nZeroCount;						// 0の数
 
 };

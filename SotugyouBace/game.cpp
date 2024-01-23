@@ -61,6 +61,7 @@ CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
 CWeapon_Parameter *CGame::m_pWeapon_Parameter = nullptr;
 CMap_Object_Manager *CGame::m_pMap_Object_Manager = nullptr;
 CMap *CGame::m_pMap = nullptr;
+CTime *CGame::m_pTime = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -139,7 +140,7 @@ HRESULT CGame::Init()
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
 
 	// タイムの生成
-	m_pTime = CTime::Create();
+	m_pTime = CTime::Create(D3DXVECTOR3(540.0f,50.0f,0.0f));
 
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20000.0f, 20000.0f, 20000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
@@ -158,7 +159,7 @@ HRESULT CGame::Init()
 	m_bInputFlag = false;
 
 	// マップ生成
-	m_pMap->ReadMap("Data/text/map_test.txt");
+	m_pMap->ReadMap("Data/text/map.txt");
 
 	// 移動制限
 	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 13000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });
@@ -303,6 +304,7 @@ void CGame::Update()
 		CInput* pInput = CInput::GetKey();
 		if (pInput->Trigger(DIK_F5))
 		{
+			SetGameEnd();
 			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
 		}
 		// 左Shiftキーを押したままの場合

@@ -235,7 +235,7 @@ void CPC::Input()
 	// 目的の角度の設定
 	CCharacter::SetRotDest(rotDest);
 
-	if (pInput->Trigger(DIK_F))
+	/*if (pInput->Trigger(DIK_F))
 	{
 		CMeshField *pMeshField = nullptr;
 
@@ -246,7 +246,7 @@ void CPC::Input()
 
 		if (pMeshField != nullptr)
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
-	}
+	}*/
 	// ジャンプ処理
 	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_B))
 	{

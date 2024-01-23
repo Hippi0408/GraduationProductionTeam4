@@ -124,11 +124,11 @@ void CMap::ReadMap(char *filename)
 						}
 
 						// ìñÇΩÇËîªíËñ≥Çµ
-						if (nCollision == 0)
-							CObjectX::Create(Pos, Rot, nullptr, &XFileName[nType][0], CObject::PRIORITY_BACK);
-						// ìñÇΩÇËîªíËÇ†ÇË
-						else
-						{
+						//if (nCollision == 0)
+						//	CObjectX::Create(Pos, Rot, nullptr, &XFileName[nType][0], CObject::PRIORITY_BACK);
+						//// ìñÇΩÇËîªíËÇ†ÇË
+						//else
+						//{
 							// ÉÇÉfÉãê∂ê¨
 							if (nRestraint_Switch == 0)
 								CMap_Object::Create(Pos, Rot, nullptr, &XFileName[nType][0]);
@@ -138,7 +138,7 @@ void CMap::ReadMap(char *filename)
 								m_pRestraint_Switch[nSwitch_Index] = CRestraint_Switch::Create(Pos, Rot, nullptr, &XFileName[nType][0], nSwitch_Index);
 								nSwitch_Index++;
 							}
-						}
+						//}
 					}
 				}
 			}

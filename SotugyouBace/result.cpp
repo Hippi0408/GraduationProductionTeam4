@@ -24,6 +24,9 @@
 #include "score.h"
 #include "pause.h"
 #include "parts.h"
+#include "time.h"
+#include "number.h"
+#include "mob.h"
 #include "sound.h"
 
 //==============================================================================================
@@ -61,6 +64,8 @@ HRESULT CResult::Init()
 	m_bCreateFlag = false;
 	m_MoveCount = 120;
 	m_PlayerIndex = 0;
+	m_nZeroCountDeathCount = 0;
+	m_nZeroCountTotalDamage = 0;
 
 	// カメラのポインタ
 	CCamera* pCamera = CApplication::GetCamera();
@@ -93,6 +98,17 @@ HRESULT CResult::Init()
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, -1000.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
+
+	for (int nCnt = 0; nCnt < 5; nCnt++)
+	{
+		//ナンバーの初期化
+		m_apTotalDamage[nCnt] = nullptr;
+	}
+	for (int nCnt = 0; nCnt < 3; nCnt++)
+	{
+		//ナンバーの初期化
+		m_apDeathCount[nCnt] = nullptr;
+	}
 
 	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_RESULT);
 
@@ -128,6 +144,28 @@ void CResult::Uninit()
 		m_pPlayerManager = nullptr;
 	}
 
+	// タイマーの終了処理
+	if (m_pTime != nullptr)
+	{
+		m_pTime->Uninit();
+		delete m_pTime;
+		m_pTime = nullptr;
+	}
+
+	//ナンバーの破棄
+	for (int nCnt = 0; nCnt < 5; nCnt++)
+	{
+		m_apTotalDamage[nCnt]->Uninit();
+		m_apTotalDamage[nCnt] = nullptr;
+	}
+
+	//ナンバーの破棄
+	for (int nCnt = 0; nCnt < 3; nCnt++)
+	{
+		m_apDeathCount[nCnt]->Uninit();
+		m_apDeathCount[nCnt] = nullptr;
+	}
+
 	CApplication::GetSound()->StopAll();
 }
 
@@ -138,9 +176,6 @@ void CResult::Update()
 {
 	// インプットの取得処理
 	CInput* pInput = CInput::GetKey();
-
-	// スキルの種類
-	//SkillType();
 
 	if (m_PlayerIndex <= 0)// ココの値を変えれば人数を増やしたり減らしたりできる
 	{
@@ -225,6 +260,19 @@ void CResult::Update()
 			}
 		}
 	}
+
+	if (m_bCreateFlag == true)
+	{
+		// 受けたダメージの総数
+		SetTotalDamage(CApplication::GetTotalDamage(), D3DXVECTOR3(100.0f, 375.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f));
+		// 倒した敵の数
+		SetDeathCount(CMob::GetDeathCount(), D3DXVECTOR3(240.0f,525.0f,0.0f), D3DXVECTOR2(30.0f, 30.0f));
+		// タイマーの更新
+		if (m_pTime != nullptr)
+		{
+			m_pTime->SetTime(CApplication::GetDestroyTime());
+		}
+	}
 }
 
 //=============================================================================
@@ -250,10 +298,24 @@ void CResult::ScaleExpansion()
 
 		if (m_size.x >= 700.0f && m_size.y >= 500.0f && m_bCreateFlag == false)
 		{
-			m_pScore = CScore::Create(D3DXVECTOR3(100.0f, 500.0f, 0.0f));
-			m_pFont[0] = CFontString::Create({ 100.0f, 150.0f, 0.0f }, { 35.0f, 35.0f }, "おはようございます");
-			m_pFont[1] = CFontString::Create({ 100.0f, 250.0f, 0.0f }, { 35.0f, 35.0f }, "こんにちは");
-			m_pFont[2] = CFontString::Create({ 100.0f, 350.0f, 0.0f }, { 35.0f, 35.0f }, "おやすみなさい");
+
+			// タイムの生成
+			m_pTime = CTime::Create(D3DXVECTOR3(240.0f, 225.0f, 0.0f));
+			for (int nCnt = 0; nCnt < 5; nCnt++)
+			{
+				//ナンバーの初期化
+				m_apTotalDamage[nCnt] = CNumber::Create(D3DXVECTOR3(0.0f,0.0f,0.0f),0.0f,0.0f,CObject::PRIORITY_SCREEN);
+			}
+			for (int nCnt = 0; nCnt < 3; nCnt++)
+			{
+				//ナンバーの初期化
+				m_apDeathCount[nCnt] = CNumber::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, CObject::PRIORITY_SCREEN);
+			}
+
+		/*	m_pScore = CScore::Create(D3DXVECTOR3(100.0f, 500.0f, 0.0f));*/
+			m_pFont[0] = CFontString::Create({ 100.0f, 175.0f, 0.0f }, { 45.0f, 45.0f }, "さいたんげきは");
+			m_pFont[1] = CFontString::Create({ 100.0f, 325.0f, 0.0f }, { 45.0f, 45.0f }, "うけたダメージ");
+			m_pFont[2] = CFontString::Create({ 100.0f, 475.0f, 0.0f }, { 45.0f, 45.0f }, "たおしたてきのかず");
 			m_bCreateFlag = true;
 		}
 
@@ -304,52 +366,94 @@ void CResult::InformationUninit()
 	m_MoveCount = 120;
 }
 
-//==============================================================================================
-// スキルの種類処理
-//==============================================================================================
-void CResult::SkillType()
+//============================================
+// 値の設定処理
+//============================================
+void CResult::SetTotalDamage(int num, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 {
-	/*if (m_pObjectX == nullptr)
+	m_aPosTexU[0] = num % 100000 / 10000;
+	m_aPosTexU[1] = num % 10000 / 1000;
+	m_aPosTexU[2] = num % 1000 / 100;
+	m_aPosTexU[3] = num % 100 / 10;
+	m_aPosTexU[4] = num % 10 / 1;
+
+	for (int nCnt = 0; nCnt < 5; nCnt++)
 	{
-		if (CApplication::GetSkillType() == true)
+		//分割数,何番目か
+		m_apTotalDamage[nCnt]->SetPos(D3DXVECTOR3(pos.x + (70.0f * nCnt) + 50.0f / 2, pos.y, 0.0f));
+		m_apTotalDamage[nCnt]->SetSize(D3DXVECTOR2(size.x, size.y));
+		m_apTotalDamage[nCnt]->SetTexPos(0.0f, 1.0f, 0.1f * m_aPosTexU[nCnt] + 0.1f, m_aPosTexU[nCnt] * 0.1f);
+		ZoroDamageCount();
+	}
+}
+
+//============================================
+// 倒した敵の設定処理
+//============================================
+void CResult::SetDeathCount(int num, D3DXVECTOR3 pos, D3DXVECTOR2 size)
+{
+	m_aPosTexU[0] = num % 1000 / 100;
+	m_aPosTexU[1] = num % 100 / 10;
+	m_aPosTexU[2] = num % 10 / 1;
+
+	for (int nCnt = 0; nCnt < 3; nCnt++)
+	{
+		//分割数,何番目か
+		m_apDeathCount[nCnt]->SetPos(D3DXVECTOR3(pos.x + (70.0f * nCnt) + 50.0f / 2, pos.y, 0.0f));
+		m_apDeathCount[nCnt]->SetSize(D3DXVECTOR2(size.x, size.y));
+		m_apDeathCount[nCnt]->SetTexPos(0.0f, 1.0f, 0.1f * m_aPosTexU[nCnt] + 0.1f, m_aPosTexU[nCnt] * 0.1f);
+		ZoroDeathCount();
+	}
+}
+
+//=============================================================================
+// 先頭の0を消す処理
+//=============================================================================
+void CResult::ZoroDamageCount()
+{
+	if (m_apTotalDamage[m_nZeroCountTotalDamage] != nullptr)
+	{
+		if (m_aPosTexU[m_nZeroCountTotalDamage] == 0 && CApplication::GetTotalDamage() != 0)
 		{
-			if (m_Index == 0)
-			{
-				m_pObjectX = CObjectX::Create(D3DXVECTOR3(-100.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_00.x");
-			}
-			if (m_Index == 1)
-			{
-				m_pObjectX = CObjectX::Create(D3DXVECTOR3(-100.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_01.x");
-			}
-			if (m_Index == 2)
-			{
-				m_pObjectX = CObjectX::Create(D3DXVECTOR3(-100.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_02.x");
-			}
-			if (m_Index == 3)
-			{
-				m_pObjectX = CObjectX::Create(D3DXVECTOR3(-100.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_03.x");
-			}
+			m_apTotalDamage[m_nZeroCountTotalDamage]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+			m_nZeroCountTotalDamage++;
 		}
-		else
+		else if (m_aPosTexU[m_nZeroCountTotalDamage] == 0 && CApplication::GetTotalDamage() == 0)
 		{
-			if (m_Index == 0)
-			{
-				m_pObjectX = CObjectX::Create(D3DXVECTOR3(-100.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_04.x");
-			}
-			if (m_Index == 1)
-			{
-				m_pObjectX = CObjectX::Create(D3DXVECTOR3(-100.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_05.x");
-			}
-			if (m_Index == 2)
-			{
-				m_pObjectX = CObjectX::Create(D3DXVECTOR3(-100.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_06.x");
-			}
-			if (m_Index == 3)
-			{
-				m_pObjectX = CObjectX::Create(D3DXVECTOR3(-100.0f, 600.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nullptr, "Data/model/SelectMode/view_Body_07.x");
-			}
+			m_apTotalDamage[1]->SetTexPos(0.0f, 1.0f, 0.1f, 0.0f);
+			m_apTotalDamage[m_nZeroCountTotalDamage]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+			m_nZeroCountTotalDamage++;
 		}
-	}*/
+		if (CApplication::GetTotalDamage() == 0)
+		{
+			m_apTotalDamage[4]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+	}
+}
+
+//=============================================================================
+// 先頭の0を消す処理
+//=============================================================================
+void CResult::ZoroDeathCount()
+{
+	if (m_apDeathCount[m_nZeroCountDeathCount] != nullptr)
+	{
+		if (m_aPosTexU[m_nZeroCountDeathCount] == 0 && CMob::GetDeathCount() != 0 && m_nZeroCountDeathCount <= 2)
+		{
+			m_apDeathCount[m_nZeroCountDeathCount]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+			m_nZeroCountDeathCount++;
+		}
+		else if (m_aPosTexU[m_nZeroCountDeathCount] == 0 && CMob::GetDeathCount() == 0 && m_nZeroCountDeathCount <= 2)
+		{
+			m_apDeathCount[1]->SetTexPos(0.0f, 1.0f, 0.1f, 0.0f);
+			m_apDeathCount[m_nZeroCountDeathCount]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+			m_nZeroCountDeathCount++;
+		}
+		if (CMob::GetDeathCount() == 0)
+		{
+			m_apDeathCount[2]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+	}
 }
 
 //==============================================================================================

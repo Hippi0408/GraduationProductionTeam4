@@ -106,7 +106,7 @@ void CMob::Update()
 
 	if (!CApplication::GetCamera()->GetOpening())
 		// 回避
-		Avoidance();
+		//Avoidance();
 
 	// キャラクターの更新
 	CEnemy::Update();

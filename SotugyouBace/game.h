@@ -69,6 +69,7 @@ public:
 	static CWeapon_Parameter *GetWeaponParameter() { return m_pWeapon_Parameter; }
 	static CMap_Object_Manager *GetMap_Object_Manager() { return m_pMap_Object_Manager; }
 	static CMap *GetMap() { return m_pMap; }
+	static CTime *GetTime() { return m_pTime; }
 
 private:
 
@@ -76,7 +77,6 @@ private:
 	static bool m_bGameWindow;
 	static bool m_bInputFlag;
 	int m_nEndCounter;								// ゲーム終了までの時間
-	CTime* m_pTime;
 	CHalfSphere* m_pHalfSphere;
 
 	static CPlayerUi* m_pPlayer_UI[CPlayerUi::UITYPE_MAX];
@@ -95,6 +95,7 @@ private:
 	static CWeapon_Parameter *m_pWeapon_Parameter;	// 武器パラメーター
 	static CMap_Object_Manager *m_pMap_Object_Manager;
 	static CMap *m_pMap;
+	static CTime* m_pTime;
 
 };
 
