@@ -1034,9 +1034,10 @@ void CPlayer::SetPlayerWeapon(const int weapon, const int rarity)
 		CTutorial::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);
 		CTutorial::SetPlayerUI(CPlayerUi::UITYPE_WEAPON, weapon);
 	}
-	else*/ if (Mode == CApplication::MODE_GAME)
+	else*/ 
+	/*if (Mode == CApplication::MODE_GAME)
 	{
 		CGame::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);
 		CGame::SetPlayerUI(CPlayerUi::UITYPE_WEAPON, weapon);
-	}
+	}*/
 }
