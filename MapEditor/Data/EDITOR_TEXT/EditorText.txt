@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # 読み込むモデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 30
+NUM_MODEL = 31
 
 #------------------------------------------------------------------------------
 # 読み込むモデルファイル名
@@ -45,5 +45,6 @@ MODEL_FILENAME = Data/model/PowerGenerationCar.x
 MODEL_FILENAME = Data/model/ShovelCar.x
 MODEL_FILENAME = Data/model/TransportVehicle.x
 MODEL_FILENAME = Data/model/Truck.x
+MODEL_FILENAME = Data/model/bill03.x
 
 END_SCRIPT		# この行は絶対消さないこと！
