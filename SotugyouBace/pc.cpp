@@ -68,8 +68,9 @@ void CPC::Uninit()
 //============================================================================
 void CPC::Update()
 {
-	// “ü—Íˆ—
-	Input();
+	if (!CApplication::GetCamera()->GetOpening())
+		// “ü—Íˆ—
+		Input();
 
 	CPlayer::Update();
 }

@@ -8,6 +8,7 @@
 #include"chain.h"
 #include"math.h"
 #include"objectX.h"
+#include "particle_emitter.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -123,7 +124,8 @@ CChain_Manager *CChain_Manager::Create(D3DXVECTOR3 pos, D3DXVECTOR3 vec, float D
 	if (pChain_Manager != nullptr)
 	{
 		pChain_Manager->m_Pos = { pos.x,pos.y + 50.0f,pos.z };
-		pChain_Manager->m_Vec = { vec.x,0.0f,vec.z };
+		//pChain_Manager->m_Vec = { vec.x,0.0f,vec.z };
+		pChain_Manager->m_Vec = vec;
 		pChain_Manager->m_fDistance = Distance;
 		pChain_Manager->m_fRot = rot;
 		pChain_Manager->m_nRestraint_Break = breakcount;

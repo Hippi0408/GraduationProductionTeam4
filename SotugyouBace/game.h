@@ -97,7 +97,6 @@ private:
 	static CMap *m_pMap;
 	static CTime* m_pTime;
 
-
 };
 
 #endif // !_GAME_H_

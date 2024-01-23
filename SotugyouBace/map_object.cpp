@@ -67,8 +67,10 @@ HRESULT CMap_Object::Init()
 	// ƒ^ƒO‚ÌÝ’è
 	SetTag(TAG_MAP_OBJECT);
 
-	D3DXVECTOR3 Max = GetObjectX()->GetMaxSize();
-	D3DXVECTOR3 Min = GetObjectX()->GetMinSize();
+	CObjectX *Obj = GetObjectX();
+	
+	D3DXVECTOR3 Max = Obj->GetMaxSize();
+	D3DXVECTOR3 Min = Obj->GetMinSize();
 
 	SetIndex({ Min.x,0.0f,Min.z }, 0);
 	SetIndex({ Min.x,0.0f,Max.z }, 1);

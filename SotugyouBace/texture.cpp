@@ -61,7 +61,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/bright2.png",			// キラキラB
 	"Data/texture/particle/ray.png",				// レイ
 	"Data/texture/particle/effect001.png",			// コイン
-	"Data/texture/particle/jewel.png",				// パーティクル用宝石
+	"Data/texture/particle/effect003.png",			// playerの炎
 	"Data/texture/particle/soul.png",				// 魂
 	"Data/texture/particle/up.png",					// 上矢印
 	"Data/texture/reticle.png",						// レティクル
@@ -80,19 +80,11 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/job/job_Vanguard.png",			// ヴァンガード
 	"Data/texture/job/job_Eagleeye.png",			// イーグルアイ
 	"Data/texture/job/job_Marshall.png",			// マーシャル
-	"Data/texture/job/job_Mechanic.png",			// メカニック
-	"Data/texture/job/job_Raider.png",				// レイダー
-	"Data/texture/job/job_Arcphilia.png",			// アークフィリア
-	"Data/texture/job/job_Control.png",				// コントロール
 
 	"Data/texture/job/JobSelect_Rush.png",				// ラッシュ
 	"Data/texture/job/JobSelect_Vanguard.png",			// ヴァンガード
 	"Data/texture/job/JobSelect_Eagleeye.png",			// イーグルアイ
 	"Data/texture/job/JobSelect_Marshall.png",			// マーシャル
-	"Data/texture/job/JobSelect_Mechanic.png",			// メカニック
-	"Data/texture/job/JobSelect_Raider.png",			// レイダー
-	"Data/texture/job/JobSelect_Arcphilia.png",			// アークフィリア
-	"Data/texture/job/JobSelect_Control.png",			// コントロール
 
 };
 

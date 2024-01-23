@@ -11,6 +11,7 @@
 #include "tutorial.h"
 #include "gauge_manager.h"
 #include "debugProc.h"
+#include "camera.h"
 
 const float CCharacter::CHARACTER_FIRST_MOVE_SPEED = 10.0f;
 const float CCharacter::CHARACTER_ROT_SPEED = 0.1f;
@@ -108,6 +109,9 @@ void CCharacter::Update()
 
 	// 床の当たり判定
 	FieldCollision();
+
+	// 透明状態
+	Invincible();
 }
 
 //============================================================================
@@ -180,6 +184,9 @@ void CCharacter::Damage(const int value)
 			m_pGaugeManager->SetLife(m_nLife);
 			m_pGaugeManager->Fluctuation();
 		}
+
+		// 無敵状態を付与する
+		SetCollisionNoneHit(true);
 
 		// 体力チェック
 		if (m_nLife <= 0)
@@ -272,8 +279,14 @@ void CCharacter::FieldCollision()
 			{
 				if (CApplication::GetModeType() == CApplication::MODE_GAME)
 				{
-					// メッシュフィールドの上にいる場合は重力をかける
-					CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+					CCamera *pCamera = CApplication::GetCamera();
+
+					if (!pCamera->GetOpening())
+						// メッシュフィールドの上にいる場合は重力をかける
+						CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY, 0.0f });
+					else
+						// オープニング時の重力
+						CCharacter::AddMove({ 0.0f, -CHARACTER_GRAVITY * 5, 0.0f });
 				}
 
 				// メッシュフィールドより下の位置にいる場合
@@ -300,6 +313,31 @@ void CCharacter::FieldCollision()
 			// マップオブジェクトの上にいる場合は重力をかけない
 			CCharacter::SetMove({ 0.0f, 0.0f, 0.0f });
 		}
+}
+
+//============================================================================
+// 透明状態
+//============================================================================
+void CCharacter::Invincible()
+{
+	// 無敵状態の場合
+	if (GetCollisionNoneHit() == true)
+	{
+		// 全パーツを点滅させる処理
+		for (auto pAllParts : GetAllParts()) for (auto pParts : pAllParts.second->GetModelAll())
+			pParts->SetDrawFlag(m_nInvincible_Counter % CHARACTER_INVINCIBLE_SPEED * 2 < CHARACTER_INVINCIBLE_SPEED);
+		
+		// 最大時間に達した場合
+		if (++m_nInvincible_Counter > CHARACTER_INVINCIBLE_TIMER)
+		{
+			SetCollisionNoneHit(false);
+			m_nInvincible_Counter = 0;
+
+			// 全パーツをの描画を元に戻す処理
+			for (auto pAllParts : GetAllParts()) for (auto pParts : pAllParts.second->GetModelAll())
+				pParts->SetDrawFlag(true);
+		}
+	}
 }
 
 //==============================================================================================

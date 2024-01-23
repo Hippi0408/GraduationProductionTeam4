@@ -22,14 +22,17 @@ public:
 	void SetCamera(void);
 
 	void Matrix(D3DXVECTOR3 rot, D3DXVECTOR3 pos);
-	void DebugInput();						// 入力処理
+	void DebugInput();			// 入力処理
 	void Move();
-	void Perspective();					// 視点処理
+	void Perspective();			// 視点処理
+	void Opening_Move();		// オープニング
+	void Tremor();				// カメラの揺れ
 
 	bool GetPerspective() { return m_bPerspective; }
 	void SetPerspective(bool flag) { m_bPerspective = flag; }
 	D3DXVECTOR3 GetPlayerPos() { return m_PPos; }
 	void SetPlayerPos(D3DXVECTOR3 pos) { m_PPos = pos; }
+	void SetOpening(bool opening) { m_bOpening = opening; }
 
 	void SetPosV(const D3DXVECTOR3 posV) { m_posV = posV; }// 視点
 	void SetPosR(const D3DXVECTOR3 posR) { m_posR = posR; }// 注視点
@@ -43,6 +46,7 @@ public:
 	const CCamera* GetCamera() { return m_pCamera; }
 	const D3DXVECTOR3 GetWorldPosV() { return m_worldCameraPosV; }
 	const D3DXVECTOR3 GetWorldPosR() { return m_worldCameraPosR; }
+	const bool GetOpening() { return m_bOpening; }
 
 private:
 	D3DVIEWPORT9	m_viewport;			// ビューポート
@@ -71,6 +75,15 @@ private:
 	bool			m_bCollision;		// オブジェクトに当たっているか
 	bool			m_bPerspective;		// 視点のフラグ
 	bool			m_bValue;			// 値を通すフラグ
+
+	bool			m_bOpening;			// オープニング
+	bool			m_bOpening_step[3];	// カメラ移動の順番
+
+	bool			m_bTremor;			// 揺れているか
+	int				m_nChange_Count;	// 移動カウント
+	float			m_fMax_Scale;		// 揺れの大きさ
+	D3DXVECTOR3		m_Base_PosV;		// 揺れるときのベースの視点
+	D3DXVECTOR3		m_Base_PosR;		// 揺れるときのベースの注視点
 
 	D3DXMATRIX		m_mtxWorld;			// ワールドマトリックス
 	D3DXVECTOR3		m_worldCameraPosV;	// 視点のワールド座標

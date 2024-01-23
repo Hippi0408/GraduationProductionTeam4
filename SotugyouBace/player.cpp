@@ -60,8 +60,8 @@ HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
 	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Parts_Job[PARTS_BODY], CMotion::MOTION_PLAYER_BODY);
-	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_1 + m_Parts_Job[PARTS_ARMS], CMotion::MOTION_PLAYER_ARMS);
-	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_1 + m_Parts_Job[PARTS_LEG], CMotion::MOTION_PLAYER_LEG);
+	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_0, CMotion::MOTION_PLAYER_ARMS);
+	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_0, CMotion::MOTION_PLAYER_LEG);
 	SetPlayerWeapon(CWeapon::WEAPON_KNUCKLE, 0);
 
 	// パラメータの設定
@@ -164,8 +164,9 @@ void CPlayer::Update()
 	// パラメーターの変更があった場合にパラメーターを設定し直す処理
 	if (m_bChange_Parameter == true) SettingParameter();
 
-	// ターゲット
-	Target();
+	if (!CApplication::GetCamera()->GetOpening())
+		// ターゲット
+		Target();
 
 	// 落ちてる武器の当たり判定
 	CollisionDropWeapon();
@@ -202,7 +203,7 @@ void CPlayer::ChangeMotion()
 		CParts* pParts = GetParts(nCnt);
 
 		// モーションがループしない場合
-		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
+		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true && !GetBoost())
 		{
 			pParts->SetMotion(MOTION_NEUTRAL);
 		}
@@ -288,11 +289,8 @@ void CPlayer::MeleeWeaponAttack()
 		// 攻撃モーションを設定
 		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 		{
-			// パーツ
-			CParts* pParts = GetParts(nCnt);
-
 			// 攻撃モーション + 追加攻撃の回数
-			pParts->SetMotion(nMotion);
+			GetParts(nCnt)->SetMotion(nMotion);
 		}
 	}
 	// 0番目の攻撃終了時に攻撃を行う
@@ -326,7 +324,7 @@ void CPlayer::MeleeWeaponAttack()
 		D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
 
 		// 当たり判定の大きさ
-		float radiusSize = 80.0f * (Melee_Parameter.nLength + 2);
+		float radiusSize = 80.0f * (Melee_Parameter.nLength + 3);
 
 		// 射程の加算
 		pos += pos_vec * radiusSize / 2.0f;
@@ -402,12 +400,17 @@ void CPlayer::JumpBoost()
 //============================================================================
 void CPlayer::Landing(const D3DXVECTOR3 pos)
 {
-	// 着地モーションを設定
+		// 着地モーションを設定
 	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
-		GetParts(nCnt)->SetMotion(MOTION_LANDING);
-	}
+		CParts* pParts = GetParts(nCnt);
 
+		// 通常モーションの場合
+		if (pParts->GetMotion() == MOTION_NEUTRAL || pParts->GetMotion() == MOTION_JUMP)
+		{
+			pParts->SetMotion(MOTION_LANDING);
+		}
+	}
 	// キャラクターの着地処理
 	CCharacter::Landing(pos);
 }

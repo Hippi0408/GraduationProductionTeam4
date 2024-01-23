@@ -10,6 +10,8 @@
 #include"enemy_manager.h"
 #include "game.h"
 #include "tutorial.h"
+#include "player.h"
+#include "player_manager.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -38,9 +40,9 @@ HRESULT CNormal_Bullet::Init()
 	if (m_bTarget)
 	{
 		// ターゲットしている敵の位置
-		D3DXVECTOR3 Enemy_Pos = pEnemy->GetCenterPos();
+		D3DXVECTOR3 Enemy_Pos = pChara->GetCenterPos();
 		// 移動量
-		D3DXVECTOR3 Enemy_Move = pEnemy->GetMove();
+		D3DXVECTOR3 Enemy_Move = pChara->GetMove();
 
 		// 弾が届くときの敵の位置
 		Enemy_Pos.x += (Enemy_Move.x * m_fSpeed * fHitCnt);
@@ -82,7 +84,7 @@ void CNormal_Bullet::Draw()
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CEnemy *enemy, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority)
+CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CCharacter *chara, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority)
 {
 	//クラスの生成
 	CNormal_Bullet* pNormal_Bullet = new CNormal_Bullet(priority);
@@ -91,11 +93,11 @@ CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 
 	if (pNormal_Bullet != nullptr)
 	{
 		pNormal_Bullet->SetPos(pos);
-		pNormal_Bullet->SetMove(move);
 		pNormal_Bullet->SetSize(size);
+		pNormal_Bullet->SetMove(move);
 		pNormal_Bullet->SetPlayerSide(side);
 		pNormal_Bullet->m_fHypotenuse = hypotenuse;
-		pNormal_Bullet->pEnemy = enemy;
+		pNormal_Bullet->pChara = chara;
 		pNormal_Bullet->m_fSpeed = enemy_speed;
 		pNormal_Bullet->m_bTarget = target;
 		pNormal_Bullet->Init();
