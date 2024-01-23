@@ -128,7 +128,6 @@ void CCollision::Collision()
 
 				// “–‚½‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
 				bool bHit = false;
-				bool bHit_Block = false;
 
 				// “–‚½‚è”»’è‚Ìƒ^ƒCƒv‚ª‰~‚Ìê‡
 				if (pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_SHERER)
@@ -140,7 +139,7 @@ void CCollision::Collision()
 					bHit = Sphere_Collision(pos, fRadius, OtherPos, fOtherRadius);
 				}
 				// “–‚½‚è”»’è‚Ìƒ^ƒCƒv‚ª‹éŒ`‚Ìê‡
-				else if (pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_BLOCK || pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_SWITCH
+				else if (pMove_Object->GetCollision_Type() == CMove_Object::COLLISION_TYPE_BLOCK
 					&& pMove_Object->GetCollision_Type() != m_pParent->GetCollision_Type())
 				{
 					D3DXVECTOR3 Pos = m_pParent->GetPos();
@@ -153,7 +152,7 @@ void CCollision::Collision()
 					D3DXVECTOR3 OtherSize = pMove_Object->GetSize();
 
 					// ‹éŒ`‚Ì“–‚½‚è”»’è‚ÌŒvŽZ
-					bHit_Block = Block_Collision(Pos, PosOld, Size, Otherpos, OtherSize, m_pParent, pMove_Object);
+					bHit = Block_Collision(Pos, PosOld, Size, Otherpos, OtherSize, m_pParent, pMove_Object);
 				}
 
 				// ƒqƒbƒg‚µ‚½ê‡
@@ -164,17 +163,6 @@ void CCollision::Collision()
 
 					// ‘ŠŽè‚ÌÚG”»’è
 					pMove_Object->Hit(m_pParent);
-				}
-				if ((bHit_Block))
-				{
-					// Ž©g‚ÌÚG”»’è
-					m_pParent->Hit(pMove_Object);
-
-					if (pMove_Object->GetCollision_Type() != CMove_Object::COLLISION_TYPE_SWITCH)
-						// ‘ŠŽè‚ÌÚG”»’è
-						pMove_Object->Uninit();
-					else
-						pMove_Object->Hit(m_pParent);
 				}
 			}
 		}

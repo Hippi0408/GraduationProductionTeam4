@@ -136,7 +136,7 @@ void CMob::Destroy()
 	m_DeathCount++;
 
 	// ボスが出るまではチュートリアル
-	if (pBoss == nullptr && m_DeathCount == 10)
+	if (pBoss == nullptr && m_DeathCount == 1)
 	{
 		// ボスキャラの生成
 		pBoss = CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
