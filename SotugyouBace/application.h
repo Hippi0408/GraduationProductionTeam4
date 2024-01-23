@@ -85,6 +85,7 @@ public:
 	static const bool GetPauce() { return m_bPauce; }
 	static const int GetPlayerJobIndex() { return m_nPlayerJobIndex; }
 	static bool GetSkillType() { return m_nSkill; }
+	static int GetDestroyTime() { return m_nDestroyTime; }
 
 	static ConnectManager* GetClient() { return m_pClient; }
 	static void SetClient(ConnectManager* Client) { m_pClient = Client; }
@@ -118,6 +119,9 @@ private:
 	static bool m_bPauce;
 	static int m_nPlayerJobIndex;	// プレイヤーのジョブ番号
 	static bool m_nSkill;
+	static int m_nDestroyTime;		// 最短で倒した時間
+	static int m_nDamage;			// 耐えたダメージ数
+	static int m_nDefeats;			// 倒した敵の数
 };
 
 #endif // !_APPLICATION_H_

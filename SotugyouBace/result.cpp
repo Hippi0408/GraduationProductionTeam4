@@ -24,6 +24,7 @@
 #include "score.h"
 #include "pause.h"
 #include "parts.h"
+#include "time.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -123,6 +124,14 @@ void CResult::Uninit()
 		m_pPlayerManager->Uninit();
 		delete m_pPlayerManager;
 		m_pPlayerManager = nullptr;
+	}
+
+	// タイマーの終了処理
+	if (m_pTime != nullptr)
+	{
+		m_pTime->Uninit();
+		delete m_pTime;
+		m_pTime = nullptr;
 	}
 }
 
@@ -245,10 +254,20 @@ void CResult::ScaleExpansion()
 
 		if (m_size.x >= 700.0f && m_size.y >= 500.0f && m_bCreateFlag == false)
 		{
+
+			// タイムの生成
+			m_pTime = CTime::Create(D3DXVECTOR3(540.0f, 150.0f, 0.0f));
+
+			// タイマーの更新
+			if (m_pTime != nullptr)
+			{
+				m_pTime->SetTime(CApplication::GetDestroyTime());
+			}
+
 			m_pScore = CScore::Create(D3DXVECTOR3(100.0f, 500.0f, 0.0f));
-			m_pFont[0] = CFontString::Create({ 100.0f, 150.0f, 0.0f }, { 35.0f, 35.0f }, "おはようございます");
-			m_pFont[1] = CFontString::Create({ 100.0f, 250.0f, 0.0f }, { 35.0f, 35.0f }, "こんにちは");
-			m_pFont[2] = CFontString::Create({ 100.0f, 350.0f, 0.0f }, { 35.0f, 35.0f }, "おやすみなさい");
+			m_pFont[0] = CFontString::Create({ 100.0f, 150.0f, 0.0f }, { 35.0f, 35.0f }, "さいたんげきは");
+			m_pFont[1] = CFontString::Create({ 100.0f, 250.0f, 0.0f }, { 35.0f, 35.0f }, "ひだめりつ");
+			m_pFont[2] = CFontString::Create({ 100.0f, 350.0f, 0.0f }, { 35.0f, 35.0f }, "たおしたてきのかず");
 			m_bCreateFlag = true;
 		}
 

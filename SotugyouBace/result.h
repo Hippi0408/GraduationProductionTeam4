@@ -26,6 +26,7 @@ class CObject2D;
 class CParts;
 class CFontString;
 class CScore;
+class CTime;
 
 //==============================================================================================
 // リザルトクラス
@@ -60,6 +61,7 @@ private:
 	CObject2D* m_pObject2D;							// オブジェクト2D
 	CFontString* m_pFont[3];						// フォント
 	CScore* m_pScore;								// スコア
+	CTime* m_pTime;									// タイム
 	D3DXVECTOR3 m_pos;								// 位置
 	D3DXVECTOR3 m_move;								// 移動量
 	D3DXVECTOR2 m_size;								// サイズ

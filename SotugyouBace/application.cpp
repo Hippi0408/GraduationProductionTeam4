@@ -29,6 +29,7 @@
 #include "tutorial.h"
 #include "confirmation_window.h"
 #include "parts_file.h"
+#include "time.h"
 #include "connect.h"
 #include <time.h>
 
@@ -58,6 +59,9 @@ bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
 bool CApplication::m_nSkill = false;
 int CApplication::m_nPlayerJobIndex = 0;
+int CApplication::m_nDestroyTime = 0;
+int CApplication::m_nDamage = 0;
+int CApplication::m_nDefeats = 0;
 
 #ifdef _DEBUG
 CDebugProc *CApplication::m_pDebugProc = nullptr;
@@ -132,7 +136,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 #endif
 
 	// ゲームモード
-	m_modeType = MODE_TITLE;
+	m_modeType = MODE_RESULT;
 
 	// モードの定設
 	SetMode(m_modeType);
@@ -268,9 +272,7 @@ void CApplication::Uninit()
 			delete m_pClient;
 			m_pClient = nullptr;
 		}
-
 	}
-	
 }
 
 //==============================================================================================
@@ -298,6 +300,10 @@ void CApplication::Update()
 	m_pCamera->Update();
 
 	m_nSkill = CConfirmation_Window::GetSelectChoice();
+	if (CGame::GetTime() != nullptr)
+	{
+		m_nDestroyTime = CGame::GetTime()->GetTime();
+	}
 }
 
 //==============================================================================================
