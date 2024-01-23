@@ -9,7 +9,7 @@
 
 #include"bullet.h"
 
-class CEnemy;
+class CCharacter;
 
 class CNormal_Bullet : public CBullet
 {
@@ -22,13 +22,13 @@ public:
 	void Update() override;		// çXêVèàóù
 	void Draw() override;		// ï`âÊèàóù
 
-	static CNormal_Bullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CEnemy *enemy, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority);
+	static CNormal_Bullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CCharacter *chara, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority);
 
 private:
 	float m_fHypotenuse;
 	float m_fSpeed;
 	bool m_bTarget;
-	CEnemy *pEnemy;
+	CCharacter *pChara;
 };
 
 #endif // !_NORMAL_BULLET_H_

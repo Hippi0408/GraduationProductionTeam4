@@ -96,7 +96,6 @@ private:
 	static CMap_Object_Manager *m_pMap_Object_Manager;
 	static CMap *m_pMap;
 
-
 };
 
 #endif // !_GAME_H_

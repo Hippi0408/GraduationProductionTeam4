@@ -52,6 +52,7 @@ public:
 	void Destroy() override;			// ”j‰óˆ—
 	void ChangeMotion();
 	void Landing(const D3DXVECTOR3 pos) override;	// ’…’nˆ—
+	void Move() override;
 
 	static CBoss* Create(const D3DXVECTOR3 pos);
 
