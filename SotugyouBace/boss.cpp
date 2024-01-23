@@ -121,10 +121,13 @@ void CBoss::Destroy()
 		std::move(CParticleEmitter::Create("Destroy", pos));
 	}
 
+
+
 	// ƒQ[ƒ€I—¹‚ğİ’è‚·‚é
 	CGame::SetGameEnd();
 
 	CEnemy::Destroy();
+
 }
 
 //============================================================================

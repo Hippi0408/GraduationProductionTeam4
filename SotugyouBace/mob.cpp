@@ -107,9 +107,9 @@ void CMob::Update()
 	if (!CApplication::GetCamera()->GetOpening())
 	{
 		// 攻撃
-		Attack();
+		//Attack();
 		// 回避
-		Avoidance();
+		//Avoidance();
 	}
 
 	// キャラクターの更新

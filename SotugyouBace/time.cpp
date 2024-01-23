@@ -50,7 +50,7 @@ HRESULT CTime::Init()
 	//êîéöÇÃê∂ê¨
 	for (int nCnt = 0; nCnt < TIME_DIGIT; nCnt++)
 	{
-		m_apNumber[nCnt] = CNumber::Create(D3DXVECTOR3(m_pos.x + (70.0f * nCnt) + 50.0f / 2, m_pos.y, 0.0f), 50.0f, 50.0f,CObject::PRIORITY_SCREEN);
+		m_apNumber[nCnt] = CNumber::Create(D3DXVECTOR3(m_pos.x + (70.0f * nCnt) + 50.0f / 2, m_pos.y, 0.0f), 30.0f, 30.0f,CObject::PRIORITY_SCREEN);
 		//ï™äÑêî,âΩî‘ñ⁄Ç©
 		m_apNumber[nCnt]->SetTexPos(0.0f, 1.0f, 0.1f * m_aPosTexU[nCnt] + 0.1f, m_aPosTexU[nCnt] * 0.1f);
 	}
@@ -116,7 +116,7 @@ void CTime::SetTime()
 			m_apNumber[nCnt]->SetTexPos(0.0f, 1.0f, 0.1f * m_aPosTexU[nCnt] + 0.1f, m_aPosTexU[nCnt] * 0.1f);
 		}
 
-		// êÊì™ÇÃ0Çè¡Ç∑èàóù
+		//// êÊì™ÇÃ0Çè¡Ç∑èàóù
 		//ZoroCount();
 }
 
@@ -133,6 +133,8 @@ void CTime::SetTime(int time)
 	{
 		//ï™äÑêî,âΩî‘ñ⁄Ç©
 		m_apNumber[nCnt]->SetTexPos(0.0f, 1.0f, 0.1f * m_aPosTexU[nCnt] + 0.1f, m_aPosTexU[nCnt] * 0.1f);
+		// êÊì™ÇÃ0Çè¡Ç∑èàóù
+		ZoroCount();
 	}
 }
 
@@ -143,16 +145,20 @@ void CTime::ZoroCount()
 {
 	if (m_apNumber[m_nZeroCount] != nullptr)
 	{
-		if (m_aPosTexU[m_nZeroCount] == 0 && m_nTime != 0)
+		if (m_aPosTexU[m_nZeroCount] == 0 && m_nTime != 0 && m_nZeroCount <= 2)
 		{
 			m_apNumber[m_nZeroCount]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 			m_nZeroCount++;
 		}
-		else if (m_aPosTexU[m_nZeroCount] == 0 && m_nTime == 0)
+		else if (m_aPosTexU[m_nZeroCount] == 0 && m_nTime == 0 && m_nZeroCount <= 2)
 		{
 			m_apNumber[1]->SetTexPos(0.0f, 1.0f, 0.1f, 0.0f);
 			m_apNumber[m_nZeroCount]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 			m_nZeroCount++;
+		}
+		if (m_nTime == 0)
+		{
+			m_apNumber[2]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
 }

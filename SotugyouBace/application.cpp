@@ -32,6 +32,8 @@
 #include "time.h"
 #include "connect.h"
 #include <time.h>
+#include "character.h"
+#include "player_manager.h"
 
 #ifdef _DEBUG
 #include "debugProc.h"
@@ -62,6 +64,7 @@ int CApplication::m_nPlayerJobIndex = 0;
 int CApplication::m_nDestroyTime = 0;
 int CApplication::m_nDamage = 0;
 int CApplication::m_nDefeats = 0;
+int CApplication::m_nTotalDamage = 0;
 
 #ifdef _DEBUG
 CDebugProc *CApplication::m_pDebugProc = nullptr;
@@ -136,7 +139,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 #endif
 
 	// ゲームモード
-	m_modeType = MODE_RESULT;
+	m_modeType = MODE_TITLE;
 
 	// モードの定設
 	SetMode(m_modeType);
@@ -303,6 +306,10 @@ void CApplication::Update()
 	if (CGame::GetTime() != nullptr)
 	{
 		m_nDestroyTime = CGame::GetTime()->GetTime();
+	}
+	if (CGame::GetPlayerManager() != nullptr)
+	{
+		m_nTotalDamage = CGame::GetPlayerManager()->GetPlayer(0)->GetDamage();
 	}
 }
 

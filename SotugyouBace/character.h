@@ -90,6 +90,7 @@ public:
 	const bool GetAvoidance() { return m_bAvoidance; }
 	const bool GetHitExplosion() { return m_bHit_Explosion; }
 	CGauge_Manager *GetGaugeManager() { return m_pGaugeManager; }
+	int GetDamage() { return m_fDamageReceived; }
 
 private:
 
@@ -109,6 +110,7 @@ private:
 
 	float m_fSpeed;						// 移動速度
 	float m_fRotSpeed;					// 回転のスピード
+	int m_fDamageReceived;				// 受けたダメージの総数
 
 	bool m_bBoost;						// ブーストしているか
 	bool m_bJump_Boost;					// ジャンプブーストしているか

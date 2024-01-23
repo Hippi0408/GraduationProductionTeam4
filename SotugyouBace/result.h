@@ -27,6 +27,7 @@ class CParts;
 class CFontString;
 class CScore;
 class CTime;
+class CNumber;
 
 //==============================================================================================
 // リザルトクラス
@@ -44,9 +45,12 @@ public:
 	void Uninit() override;							// 終了処理
 	void Update() override;							// 更新処理
 
-	void SkillType();								// スキルの種類処理
+	void SetTotalDamage(int num, D3DXVECTOR3 pos, D3DXVECTOR2 size);			// 受けたダメージの設定処理
+	void SetDeathCount(int num, D3DXVECTOR3 pos, D3DXVECTOR2 size);				// 倒した敵の設定処理
 	void ScaleExpansion();							// サイズ拡大処理
 	void InformationUninit();						// 情報の破棄
+	void ZoroDamageCount();
+	void ZoroDeathCount();
 			
 	static CResult* Create();						// 生成処理
 	static CPlayer_Parameter *GetPlayerParameter() { return m_pPlayerParameter; }	// プレイヤーパラメータ取得処理
@@ -62,9 +66,15 @@ private:
 	CFontString* m_pFont[3];						// フォント
 	CScore* m_pScore;								// スコア
 	CTime* m_pTime;									// タイム
+	CNumber* m_apTotalDamage[5];					// ナンバー
+	CNumber* m_apDeathCount[3];						// ナンバー
 	D3DXVECTOR3 m_pos;								// 位置
 	D3DXVECTOR3 m_move;								// 移動量
 	D3DXVECTOR2 m_size;								// サイズ
+	int m_aPosTexU[5];								//各桁のスコアを格納
+	int m_nZeroCountTotalDamage;					// 0の数
+	int m_nZeroCountDeathCount;					// 0の数
+	int m_nNum;										// 値
 	int m_Index;									// プレイヤー番号
 	int m_MoveCount;								// 移動時間
 	int m_PlayerIndex;								// プレイヤーの番号
