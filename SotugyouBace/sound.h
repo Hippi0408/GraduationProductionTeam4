@@ -23,7 +23,7 @@ public:
 	enum SOUND_LABEL
 	{
 		SOUND_LABEL_BGM_TITLE = 0,			// タイトル画面BGM
-		SOUND_LABEL_BGM_GAME1,				// ゲーム画面BGM1
+		SOUND_LABEL_BGM_GAME,				// ゲーム画面BGM1
 		SOUND_LABEL_BGM_RESULT,				// リザルト画面BGM
 
 		SOUND_LABEL_SE_SELECT,				// 選択

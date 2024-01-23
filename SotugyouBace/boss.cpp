@@ -10,6 +10,7 @@
 #include "particle_emitter.h"
 #include "boss_life_gauge.h"
 #include "camera.h"
+#include "particle_emitter.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 500.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -117,7 +118,7 @@ void CBoss::Destroy()
 		D3DXVECTOR3 pos = GetPos();
 		pos.y += 50.0f * nCnt;
 
-		// 攻撃パーティクル
+		// 撃破時パーティクル
 		std::move(CParticleEmitter::Create("Destroy", pos));
 	}
 
@@ -165,6 +166,9 @@ void CBoss::Landing(const D3DXVECTOR3 pos)
 		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 		{
 			GetParts(nCnt)->SetMotion(MOTION_NEUTRAL);
+			// 着地時パーティクル
+			std::move(CParticleEmitter::Create("Shock", pos));
+			std::move(CParticleEmitter::Create("Dust", pos));
 		}
 	}
 

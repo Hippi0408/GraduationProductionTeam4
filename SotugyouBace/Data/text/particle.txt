@@ -533,7 +533,7 @@ LockPosition : 0
 DelayStartTime : 0
 CreateRange : 0.05
 PosOffset : 0 , 0 , 0
-Velocity : 0 , 5 , 0
+Velocity : 0 , 1 , 0
 VelocityAttenuation : 0.5
 Behavior : 1
 Scale : 10 , 10 , 0
@@ -548,7 +548,7 @@ RotateAngle : 0
 RotateRadius : 0
 RandomRotateMinBH : 0
 RandomRotateMaxBH : 0
-PopTime : 80
+PopTime : 100
 Quantity : 20
 TextureTag : SMOKE
 Trail : false
@@ -567,7 +567,7 @@ LockPosition : 0
 DelayStartTime : 25
 CreateRange : 0.08
 PosOffset : 0 , 0 , 0
-Velocity : 0 , 5 , 0
+Velocity : 0 , 1 , 0
 VelocityAttenuation : 0.5
 Behavior : 1
 Scale : 10 , 10 , 0

@@ -92,7 +92,8 @@ void CMap_Object::Uninit()
 
 	GetObjectX()->Uninit();
 
-	std::move(CParticleEmitter::Create("Locus", GetPos()));
+	//std::move(CParticleEmitter::Create("Dust", GetPos()));
+	std::move(CParticleEmitter::Create("smoke", GetPos()));
 }
 
 //==============================================================================================

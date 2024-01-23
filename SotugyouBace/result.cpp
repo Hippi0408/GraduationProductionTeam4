@@ -24,6 +24,7 @@
 #include "score.h"
 #include "pause.h"
 #include "parts.h"
+#include "sound.h"
 
 //==============================================================================================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
@@ -93,6 +94,8 @@ HRESULT CResult::Init()
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, -1000.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
+	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_RESULT);
+
 	return S_OK;
 }
 
@@ -124,6 +127,8 @@ void CResult::Uninit()
 		delete m_pPlayerManager;
 		m_pPlayerManager = nullptr;
 	}
+
+	CApplication::GetSound()->StopAll();
 }
 
 //==============================================================================================

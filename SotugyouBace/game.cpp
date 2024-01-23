@@ -40,6 +40,7 @@
 #include "map_object_manager.h"
 #include "fog.h"
 #include "restrictions.h"
+#include "sound.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -162,6 +163,8 @@ HRESULT CGame::Init()
 	// 移動制限
 	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 13000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });
 
+	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_GAME);
+
 	return S_OK;
 }
 
@@ -270,6 +273,8 @@ void CGame::Uninit()
 		delete m_pMap;
 		m_pMap = nullptr;
 	}
+
+	CApplication::GetSound()->StopAll();
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
