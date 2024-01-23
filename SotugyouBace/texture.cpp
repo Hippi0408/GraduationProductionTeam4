@@ -25,7 +25,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/Font/Font_Alphabet.png",			// アルファベットフォント
 	"Data/texture/number.png",						// ナンバーのテクスチャ
 	"Data/texture/bullet000.png",					// 弾のテクスチャ
-	"Data/texture/floor.png",						// 地面のテクスチャ
+	"Data/texture/Concrete.png",						// 地面のテクスチャ
 	"Data/texture/map.png",							// マップのテクスチャ
 	"Data/texture/reticle.png",						// レティクルのテクスチャ
 	"Data/texture/circle.png",						// 円のテクスチャ
