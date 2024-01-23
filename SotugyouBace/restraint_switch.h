@@ -40,6 +40,7 @@ private:
 	int m_nIndex;
 	bool m_bPush;
 	bool m_bHit;
+	bool m_bBoss;
 	CObject3D *m_Display_Key;		// ÉLÅ[ÇÃï\é¶
 };
 

@@ -164,8 +164,9 @@ void CPlayer::Update()
 	// パラメーターの変更があった場合にパラメーターを設定し直す処理
 	if (m_bChange_Parameter == true) SettingParameter();
 
-	// ターゲット
-	Target();
+	if (!CApplication::GetCamera()->GetOpening())
+		// ターゲット
+		Target();
 
 	// 落ちてる武器の当たり判定
 	CollisionDropWeapon();
@@ -179,7 +180,7 @@ void CPlayer::Update()
 	// キャラクターの更新
 	CCharacter::Update();
 	//CDebugProc::Print("プレイヤーライフ：%d / %d\n", GetLife(), GetMaxLife());
-	//CDebugProc::Print("腕パーツ：%d\n脚パーツ : %d\n", m_nRarity_Arms, m_nRarity_Leg);
+	//CDebugProc::Print("%f %f %f\n", GetPos().x, GetPos().y, GetPos().z);
 }
 
 //============================================================================
@@ -202,7 +203,7 @@ void CPlayer::ChangeMotion()
 		CParts* pParts = GetParts(nCnt);
 
 		// モーションがループしない場合
-		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
+		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true && !GetBoost())
 		{
 			pParts->SetMotion(MOTION_NEUTRAL);
 		}

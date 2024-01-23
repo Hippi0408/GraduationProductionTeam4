@@ -13,16 +13,22 @@ const char* CParts_File::m_cPartsFileName[] =
 	"Data\\text\\PartsList\\Player\\SG01\\parts_Player_Body_SG01.txt",
 	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Body_SG02.txt",
 	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Body_SG03.txt",
+	"Data\\text\\PartsList\\Player\\SG05\\parts_Player_Body_SG05.txt",
+	"Data\\text\\PartsList\\Player\\SG06\\parts_Player_Body_SG06.txt",
 
 	"Data\\text\\PartsList\\Player\\SGStandard\\parts_Player_Arms_S.txt",
 	"Data\\text\\PartsList\\Player\\SG01\\parts_Player_Arms_SG01.txt",
 	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Arms_SG02.txt",
 	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Arms_SG03.txt",
+	"Data\\text\\PartsList\\Player\\SG05\\parts_Player_Arms_SG05.txt",
+	"Data\\text\\PartsList\\Player\\SG06\\parts_Player_Arms_SG06.txt",
 
 	"Data\\text\\PartsList\\Player\\SGStandard\\parts_Player_Legs_S.txt",
 	"Data\\text\\PartsList\\Player\\SG01\\parts_Player_Leg_SG01.txt",
 	"Data\\text\\PartsList\\Player\\SG02\\parts_Player_Leg_SG02.txt",
 	"Data\\text\\PartsList\\Player\\SG03\\parts_Player_Leg_SG03.txt",
+	"Data\\text\\PartsList\\Player\\SG05\\parts_Player_Leg_SG05.txt",
+	"Data\\text\\PartsList\\Player\\SG06\\parts_Player_Leg_SG06.txt",
 
 	"Data\\text\\PartsList\\Mob\\parts_Mob.txt",
 
