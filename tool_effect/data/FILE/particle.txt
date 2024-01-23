@@ -537,7 +537,7 @@ Velocity : 0 , 5 , 0
 VelocityAttenuation : 0.5
 Behavior : 1
 Scale : 10 , 10 , 0
-Color : 0.453416 , 0.453416 , 0.453416 , 1
+Color : 0.273292 , 0.132402 , 0 , 1
 DestColor : 0.217391 , 0.217391 , 0.217391 , 0.248447
 ColorAttenuation : 1
 BlendType : 0
