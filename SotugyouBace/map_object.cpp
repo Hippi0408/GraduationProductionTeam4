@@ -91,8 +91,6 @@ void CMap_Object::Uninit()
 	CMove_Object::Uninit();
 
 	GetObjectX()->Uninit();
-
-	std::move(CParticleEmitter::Create("Locus", GetPos()));
 }
 
 //==============================================================================================
@@ -118,6 +116,9 @@ void CMap_Object::Draw()
 //==============================================================================================
 void CMap_Object::Hit(CMove_Object* /*pHit*/)
 {
+	Uninit();
+
+	std::move(CParticleEmitter::Create("Locus", GetPos()));
 }
 
 //==============================================================================================
