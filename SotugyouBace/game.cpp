@@ -158,7 +158,7 @@ HRESULT CGame::Init()
 	m_bInputFlag = false;
 
 	// ƒ}ƒbƒv¶¬
-	m_pMap->ReadMap("Data/text/map_test.txt");
+	m_pMap->ReadMap("Data/text/map.txt");
 
 	// ˆÚ“®§ŒÀ
 	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 13000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });

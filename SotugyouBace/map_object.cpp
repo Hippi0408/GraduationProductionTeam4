@@ -14,6 +14,7 @@
 #include"tutorial.h"
 #include"map_object_manager.h"
 #include"drop_manager.h"
+#include "particle_emitter.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -88,6 +89,8 @@ HRESULT CMap_Object::Init()
 void CMap_Object::Uninit()
 {
 	CMove_Object::Uninit();
+
+	GetObjectX()->Uninit();
 }
 
 //==============================================================================================
@@ -113,6 +116,9 @@ void CMap_Object::Draw()
 //==============================================================================================
 void CMap_Object::Hit(CMove_Object* /*pHit*/)
 {
+	Uninit();
+
+	std::move(CParticleEmitter::Create("Locus", GetPos()));
 }
 
 //==============================================================================================

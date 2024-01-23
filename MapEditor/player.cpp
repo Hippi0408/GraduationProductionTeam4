@@ -345,6 +345,10 @@ void CPlayer::MoveRot()
 	{
 		m_Rot.x -= D3DXToRadian(1);
 	}
+	else if (pInput->Trigger(DIK_1))
+	{
+		m_Rot.x += D3DXToRadian(90);
+	}
 
 	if (pInput->Press(DIK_F))
 	{
@@ -354,6 +358,11 @@ void CPlayer::MoveRot()
 	{
 		m_Rot.y -= D3DXToRadian(1);
 	}
+	else if (pInput->Trigger(DIK_2))
+	{
+		m_Rot.y += D3DXToRadian(90);
+	}
+
 
 	if (pInput->Press(DIK_V))
 	{
@@ -363,6 +372,13 @@ void CPlayer::MoveRot()
 	{
 		m_Rot.z -= D3DXToRadian(1);
 	}
+	else if (pInput->Trigger(DIK_3))
+	{
+		m_Rot.z += D3DXToRadian(90);
+	}
+
+
+
 
 
 	//ƒŠƒZƒbƒg

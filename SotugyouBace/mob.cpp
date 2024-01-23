@@ -105,12 +105,8 @@ void CMob::Update()
 	}
 
 	if (!CApplication::GetCamera()->GetOpening())
-	{
-		// 攻撃
-		//Attack();
 		// 回避
 		//Avoidance();
-	}
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -211,8 +207,11 @@ void CMob::Move()
 		SetTracking(false);
 
 		// 追跡状態
-	if (GetTracking())
+	if (GetTracking() && !CApplication::GetCamera()->GetOpening())
 	{
+		// 攻撃
+		Attack();
+
 		// プレイヤーまでの角度
 		float fAngle = GetAngle();
 
