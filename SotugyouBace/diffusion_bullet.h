@@ -20,7 +20,7 @@ public:
 	void Update() override;		// XVˆ—
 	void Draw() override;		// •`‰æˆ—
 
-	static CDiffusion_Bullet *Create(const D3DXVECTOR3 pos, D3DXVECTOR2 size, D3DXVECTOR3 move, int number, const bool side, const CObject::PRIORITY priority);
+	static CDiffusion_Bullet *Create(const D3DXVECTOR3 pos, D3DXVECTOR2 size, D3DXVECTOR3 move, int number, const bool side, const int power, const float speed, const int life);
 
 private:
 

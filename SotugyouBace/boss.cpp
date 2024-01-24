@@ -11,7 +11,7 @@
 #include "boss_life_gauge.h"
 #include "camera.h"
 
-const float CBoss::BOSS_COLLISION_RADIUS = 500.0f;	// ボスの当たり判定の大きさ
+const float CBoss::BOSS_COLLISION_RADIUS = 1000.0f;	// ボスの当たり判定の大きさ
 //=====================================
 // デフォルトコンストラクタ
 //=====================================

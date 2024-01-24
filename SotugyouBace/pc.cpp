@@ -270,7 +270,7 @@ void CPC::Input()
 	if ((pInput->Press(DIK_B)) || pInput->Press(JOYPAD_R2) || pInput->Press(MOUSE_INPUT_LEFT))
 	{
 		// ƒvƒŒƒCƒ„[‚ÌUŒ‚ˆ—
-		if (GetPlayerAttack())
+		if (GetStandbyAttack() == true)
 		{
 			SetAdditionalAttack(true);
 		}

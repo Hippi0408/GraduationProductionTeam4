@@ -38,6 +38,32 @@ public:
 		LEG_SG03,				// SG03の脚
 		LEG_MAX,				// 脚の最大数
 
+		GUN_WEAPON_AR_AR40,					// AR40
+		GUN_WEAPON_AR_TEC_A3,				// Tec-A3
+		GUN_WEAPON_AR_DUMPMAN,				// DumpMan
+		GUN_WEAPON_AR_STARVERSE_AR,			// StarVerseAR
+		GUN_WEAPON_AR_MM400JINX,			// MM400ジンクス
+
+		GUN_WEAPON_SMG_MPC50,				// MPC50
+		GUN_WEAPON_SMG_PDW_920,				// PDW-920
+		GUN_WEAPON_SMG_PEARL_SMG,			// パールSMG
+		GUN_WEAPON_SMG_SILVERCOMET,			// SilverComet
+
+		GUN_WEAPON_HG_HG37,					// HG37
+		GUN_WEAPON_HG_REVOLVER,				// Revolver
+		GUN_WEAPON_HG_AKIMBO20,				// アキンボ2.0
+
+		GUN_WEAPON_MG_LA2000,				// LA2000
+		GUN_WEAPON_MG_METALLICA255,			// メタリカ255
+
+		GUN_WEAPON_SG_12PUMP,				// 12Pump
+		GUN_WEAPON_SG_WR2154,				// WR2154
+
+		GUN_WEAPON_SR_WINTER5000,			// Winter5000
+		GUN_WEAPON_SR_ATHENA,				// アテナ
+
+		GUN_WEAPON_MAX,						// 銃武器の最大数
+
 		// 武器
 		MELEE_WEAPON_NONE,					// 素手
 
@@ -56,7 +82,7 @@ public:
 		MELEE_WEAPON_STABBING_PARTISAN,		// パルチザン
 		MELEE_WEAPON_STABBING_BEAM_JAVELIN,	// ビームジャベリン
 
-		MELEE_WEAPON_MAX,					// 武器の最大数
+		MELEE_WEAPON_MAX,					// 近接武器の最大数
 
 		DROP_PARTS_MAX,
 		DROP_PARTS_NONE

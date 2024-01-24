@@ -17,7 +17,7 @@ MOTIONSET
 	NUM_KEY = 2		# キー数
 
 	KEYSET			# --- << 0 / 2 >> ---
-		FRAME = 40
+		FRAME = 60
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
@@ -60,7 +60,7 @@ MOTIONSET
 	END_KEYSET
 
 	KEYSET			# --- << 1 / 2 >> ---
-		FRAME = 40
+		FRAME = 60
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00

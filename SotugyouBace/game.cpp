@@ -493,10 +493,10 @@ void CGame::SetPlayerUI(const int index, const int type)
 	else
 	{
 		// 近接武器の最低値より大きい場合
-		if (type >= CWeapon::MELEE_WEAPON_STABBING_LANCE)
+		if (type >= CWeapon::MELEE_WEAPON_POKE_LANCE)
 		{
 			// 武器の最低値を初期値に設定
-			nTexNumber = CTexture::TEXTURE_WEAPON_STTABING;
+			nTexNumber = CTexture::TEXTURE_WEAPON_POKE;
 		}
 		// 近接武器の最低値より大きい場合
 		else if (type >= CWeapon::MELEE_WEAPON_SLASH_SAMURAI_SWORD)
@@ -505,10 +505,46 @@ void CGame::SetPlayerUI(const int index, const int type)
 			nTexNumber = CTexture::TEXTURE_WEAPON_SLASH;
 		}
 		// 素手の最低値より大きい場合
-		else
+		else if(type >= CWeapon::WEAPON_KNUCKLE)
 		{
 			// 武器の最低値を初期値に設定
 			nTexNumber = CTexture::TEXTURE_WEAPON_KNUCKLE;
+		}
+		// SRの最低値より大きい場合
+		else if (type >= CWeapon::GUN_WEAPON_SR_WINTER5000)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_SR;
+		}
+		// SGの最低値より大きい場合
+		else if (type >= CWeapon::GUN_WEAPON_SG_12PUMP)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_SG;
+		}
+		// MGの最低値より大きい場合
+		else if(type >= CWeapon::GUN_WEAPON_MG_LA2000)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_MG;
+		}
+		// HGの最低値より大きい場合
+		else if (type >= CWeapon::GUN_WEAPON_HG_HG37)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_HG;
+		}
+		// SMGの最低値より大きい場合
+		else if (type >= CWeapon::GUN_WEAPON_SMG_MPC50)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_SMG;
+		}
+		// ARの最低値より大きい場合
+		else if (type >= CWeapon::GUN_WEAPON_AR_AR40)
+		{
+			// 武器の最低値を初期値に設定
+			nTexNumber = CTexture::TEXTURE_WEAPON_AR;
 		}
 
 		if (index == CPlayerUi::UITYPE_ATTACK)
@@ -532,7 +568,7 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 		D3DXVECTOR3 Pos = pos;
 		if (random)
 			// ランダムな位置
-			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, -200.0f), utility::Random<float>(5000.0f, -5000.0f) };
+			Pos = { utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) };
 
 		// タイプの設定
 		int nRandType = 0;
@@ -542,7 +578,8 @@ void CGame::SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random)
 
 		// 最大数 または 素手が読み込まれた場合やり直す処理
 		while (CDrop_Weapon::ARMS_MAX == nRandType || CDrop_Weapon::LEG_MAX == nRandType
-			|| CDrop_Weapon::MELEE_WEAPON_NONE == nRandType || CDrop_Weapon::MELEE_WEAPON_MAX == nRandType)
+			|| CDrop_Weapon::MELEE_WEAPON_NONE == nRandType || CDrop_Weapon::MELEE_WEAPON_MAX == nRandType
+			|| CDrop_Weapon::GUN_WEAPON_MAX == nRandType)
 		{
 			// タイプ
 			nRandType = utility::Random<int>(CDrop_Weapon::DROP_PARTS_MAX, 0);

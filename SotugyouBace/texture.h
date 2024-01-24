@@ -68,15 +68,27 @@ public: /* 定義 */
 		TEXTURE_CHAIN,
 		TEXTURE_DONOT_ENTER,
 
-		/* 武器 */
+		/* 武器アイコン */
+		TEXTURE_WEAPON_AR,				// アサルトライフルアイコン
+		TEXTURE_WEAPON_SMG,				// サブマシンガンアイコン
+		TEXTURE_WEAPON_HG,				// ハンドガンアイコン
+		TEXTURE_WEAPON_MG,				// マシンガンアイコン
+		TEXTURE_WEAPON_SG,				// ショットガンアイコン
+		TEXTURE_WEAPON_SR,				// スナイパーライフルアイコン
 		TEXTURE_WEAPON_KNUCKLE,			// 素手アイコン
 		TEXTURE_WEAPON_SLASH,			// スラッシュアイコン
-		TEXTURE_WEAPON_STTABING,		// スラッシュアイコン
+		TEXTURE_WEAPON_POKE,			// 刺突アイコン
 
 		/* アタックスキル */
+		TEXTURE_ATTACK_SKILL_AR,		// アサルトライフルのアタックスキルアイコン
+		TEXTURE_ATTACK_SKILL_SMG,		// サブマシンガンのアタックスキルアイコン
+		TEXTURE_ATTACK_SKILL_HG,		// ハンドガンのアタックスキルアイコン
+		TEXTURE_ATTACK_SKILL_MG,		// マシンガンのアタックスキルアイコン
+		TEXTURE_ATTACK_SKILL_SG,		// ショットガンのアタックスキルアイコン
+		TEXTURE_ATTACK_SKILL_SR,		// スナイパーライフルのアタックスキルアイコン
 		TEXTURE_ATTACK_SKILL_KNUCKLE,	// 素手のアタックスキルアイコン
 		TEXTURE_ATTACK_SKILL_SLASH,		// スラッシュのアタックスキルアイコン
-		TEXTURE_ATTACK_SKILL_STTABING,	// 刺突のアタックスキルアイコン
+		TEXTURE_ATTACK_SKILL_POKE,		// 刺突のアタックスキルアイコン
 
 		/* サポートスキル */
 		TEXTURE_SKILL_RUSH,				// ラッシュ

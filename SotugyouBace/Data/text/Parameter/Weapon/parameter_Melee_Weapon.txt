@@ -20,9 +20,9 @@ ALL_PARAM_SET
 		# 素手(初期武器)
 		#------------------
 		PARAM_SET
-			POWER = 1100 1300 1500		# 威力
+			POWER = 900 1000 1100		# 威力
 			ATTACK_RATE = 1				# 攻撃速度(0:遅い 1:普通 2:速い)
-			GRAVITY = 4					# 重力
+			GRAVITY = 3					# 重力
 			LENGTH = 0					# 射程(0:短い 1:普通 2:長い)
 		END_PARAM_SET
 

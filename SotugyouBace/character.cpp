@@ -185,9 +185,6 @@ void CCharacter::Damage(const int value)
 			m_pGaugeManager->Fluctuation();
 		}
 
-		// 無敵状態を付与する
-		SetCollisionNoneHit(true);
-
 		// 体力チェック
 		if (m_nLife <= 0)
 		{

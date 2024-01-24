@@ -30,8 +30,8 @@ HRESULT CDiffusion_Bullet::Init()
 {
 	CBullet::Init();
 
-	SetSpeed(60.0f);
-	SetPower(8);
+	//SetSpeed(60.0f);
+	//SetPower(8);
 
 	D3DXVECTOR3 Move = GetMove();
 
@@ -75,14 +75,14 @@ void CDiffusion_Bullet::Draw()
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CDiffusion_Bullet *CDiffusion_Bullet::Create(const D3DXVECTOR3 pos, D3DXVECTOR2 size, D3DXVECTOR3 move, int number, const bool side, const CObject::PRIORITY priority)
+CDiffusion_Bullet *CDiffusion_Bullet::Create(const D3DXVECTOR3 pos, D3DXVECTOR2 size, D3DXVECTOR3 move, int number, const bool side, const int power, const float speed, const int life)
 {
 	CDiffusion_Bullet* pDiffusion_Bullet = nullptr;
 
 	for (int nCnt = 0; nCnt < number; nCnt++)
 	{
 		//クラスの生成
-		pDiffusion_Bullet = new CDiffusion_Bullet(priority);
+		pDiffusion_Bullet = new CDiffusion_Bullet(PRIORITY_BACK);
 
 		if (pDiffusion_Bullet != nullptr)
 		{
@@ -90,10 +90,13 @@ CDiffusion_Bullet *CDiffusion_Bullet::Create(const D3DXVECTOR3 pos, D3DXVECTOR2 
 			pDiffusion_Bullet->SetSize(size);
 			pDiffusion_Bullet->SetMove(move);
 			pDiffusion_Bullet->SetPlayerSide(side);
+			pDiffusion_Bullet->SetPower(power);
+			pDiffusion_Bullet->SetSpeed(speed);
+			pDiffusion_Bullet->SetLife(life);
 			pDiffusion_Bullet->Init();
 
 			// 弾オブジェクトの生成
-			pDiffusion_Bullet->SetObj3D(CObject3D::Create(pos, size, priority));
+			pDiffusion_Bullet->SetObj3D(CObject3D::Create(pos, size, PRIORITY_BACK));
 			// 弾のテクスチャ
 			pDiffusion_Bullet->GetObj3D()->SetTexture(CTexture::TEXTURE_BULLET);
 

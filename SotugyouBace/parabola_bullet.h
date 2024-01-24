@@ -22,7 +22,7 @@ public:
 
 	void Destroy() override;	// îjâÛèàóù
 
-	static CParabola_Bullet *Create(const D3DXVECTOR3 pos, D3DXVECTOR3 move, float hypotenuse, D3DXVECTOR3 rot, char *filename, const bool side, const CObject::PRIORITY priority);
+	static CParabola_Bullet *Create(const D3DXVECTOR3 pos, D3DXVECTOR3 move, float hypotenuse, D3DXVECTOR3 rot, char *filename, const bool side, const int power, const float speed, const int life);
 
 private:
 	static const int HIT_COUNT = 55;
