@@ -103,7 +103,7 @@ void CCharDecision_Window::Update()
 	}
 
 	// ƒQ[ƒ€‰æ–Ê‚Ö‚Ì‘JˆÚ
-	if (pInput->Trigger(DIK_RETURN)
+	if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_A) || pInput->Trigger(JOYPAD_B))
 		&& m_bMaxSize == true
 		&& m_bScaleReduce == false
 		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
@@ -232,7 +232,8 @@ void CCharDecision_Window::CharSelectChoice()
 	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
 		// ¶‚ÉˆÚ“®‚·‚é
-		if (pInput->Trigger(DIK_A) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_UP)) && m_bStopFlag == false)
+		if ((pInput->Trigger(DIK_A) || pInput->Trigger(JOYPAD_LEFT)) && m_bStopFlag == true
+			|| (pInput->Trigger(JOYPAD_UP)) && m_bStopFlag == false)
 		{
 
 			// ‘I‘ðSE
@@ -248,7 +249,8 @@ void CCharDecision_Window::CharSelectChoice()
 
 		}
 		// ‰º‚ÉˆÚ“®‚·‚é
-		else if (pInput->Trigger(DIK_D) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_DOWN)) && m_bStopFlag == false)
+		else if ((pInput->Trigger(DIK_D) || pInput->Trigger(JOYPAD_RIGHT) )&& m_bStopFlag == true
+			|| (pInput->Trigger(JOYPAD_DOWN)) && m_bStopFlag == false)
 		{
 			// ‘I‘ðSE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);

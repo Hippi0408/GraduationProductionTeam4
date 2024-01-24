@@ -303,13 +303,19 @@ void CApplication::Update()
 	m_pCamera->Update();
 
 	m_nSkill = CConfirmation_Window::GetSelectChoice();
+
+	CPlayer *pPlayer = nullptr;
+
+	if (m_modeType == MODE_GAME)
+		pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+
 	if (CGame::GetTime() != nullptr)
 	{
 		m_nDestroyTime = CGame::GetTime()->GetTime();
 	}
-	if (CGame::GetPlayerManager() != nullptr)
+	if (CGame::GetPlayerManager() != nullptr && pPlayer != nullptr)
 	{
-		m_nTotalDamage = CGame::GetPlayerManager()->GetPlayer(0)->GetDamage();
+		m_nTotalDamage = pPlayer->GetDamage();
 	}
 }
 

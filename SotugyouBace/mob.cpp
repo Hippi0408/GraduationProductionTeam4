@@ -106,7 +106,7 @@ void CMob::Update()
 
 	if (!CApplication::GetCamera()->GetOpening())
 		// 回避
-		//Avoidance();
+		Avoidance();
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -244,7 +244,7 @@ void CMob::Move()
 		if (m_fAvoidance_Count >= 100)
 		{
 			// 一定時間ごとに確率で回避する
-			int nRand = rand() % 100;
+			int nRand = rand() % 10;
 
 			if (nRand == 0)
 			{

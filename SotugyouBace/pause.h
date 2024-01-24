@@ -19,7 +19,7 @@ public:
 	{
 		PAUSE_HEADER = 0,	// ポーズ
 		PAUSE_CONTINUE,		// ゲームを続ける
-		PAUSE_STAGE_SELECT,	// ステージセレクトに戻る
+		//PAUSE_STAGE_SELECT,	// ステージセレクトに戻る
 		PAUSE_CHAR_SELECT,	// キャラ選択を終了する
 		PAUSE_MAX,
 		PAUSE_NONE

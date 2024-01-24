@@ -201,7 +201,7 @@ void CPC::Input()
 			pLeg->SetMotion(MOTION_WALK);
 		}
 		// 回避
-		if (pInput->Trigger(MOUSE_INPUT_RIGHT)
+		if ((pInput->Trigger(MOUSE_INPUT_RIGHT) || pInput->Trigger(JOYPAD_X))
 			&& !pGauge->GetConsumption())
 		{
 			// 歩き
@@ -248,7 +248,7 @@ void CPC::Input()
 			pMeshField->Ground_Broken(CCharacter::GetPos(), 30.0f, 10);
 	}*/
 	// ジャンプ処理
-	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_B))
+	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A))
 	{
 		// ジャンプ入力時間の加算
 		AddJump_PressCount(1);
@@ -321,7 +321,7 @@ void CPC::Input()
 					// ジャンプブースト
 					JumpBoost();
 
-				if ((pInput->Press(DIK_LSHIFT) || pInput->Press(JOYPAD_A)) && bWalk)
+				if ((pInput->Press(DIK_LSHIFT) || pInput->Press(JOYPAD_L1)) && bWalk)
 				{
 					// ブーストする
 					SetBoost(true);
@@ -337,7 +337,7 @@ void CPC::Input()
 		if (GetDropContact() == true)
 		{
 			// Eボタンで落とし物の取得
-			if (pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_Y))
+			if (pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_R1))
 			{
 				SetDropGet(true);
 			}
@@ -348,8 +348,8 @@ void CPC::Input()
 			// 拘束スイッチの取得
 			CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);
 
-			if (pRestraint != nullptr && (pRestraint->GetHit()
-				&& pInput->Trigger(DIK_E)))
+			if (pRestraint != nullptr && pRestraint->GetHit()
+				&& (pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_R1)))
 				// ボタンを押した数のカウント
 				pRestraint->AddCountSwitch();
 		}

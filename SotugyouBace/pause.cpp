@@ -10,6 +10,7 @@
 #include"fontString.h"
 #include"application.h"
 #include"fade.h"
+#include"camera.h"
 
 //=============================================================================
 // コンストラクタ
@@ -43,12 +44,12 @@ HRESULT CPause::Init(void)
 
 	// 選択メニューのサイズ
 	m_pPause_Pos[PAUSE_CONTINUE] = { 800.0f, 290.0f, 0.0f };
-	m_pPause_Pos[PAUSE_STAGE_SELECT] = { 770.0f, 430.0f, 0.0f };
+	//m_pPause_Pos[PAUSE_STAGE_SELECT] = { 770.0f, 430.0f, 0.0f };
 	m_pPause_Pos[PAUSE_CHAR_SELECT] = { 790.0f, 570.0f, 0.0f };
 
 	// 選択メニューの生成
 	m_pPause_Menu[PAUSE_CONTINUE] = CFontString::Create(m_pPause_Pos[PAUSE_CONTINUE], { m_StringSize }, "ゲームをつづける");
-	m_pPause_Menu[PAUSE_STAGE_SELECT] = CFontString::Create(m_pPause_Pos[PAUSE_STAGE_SELECT], { m_StringSize }, "ステージせんたくへ");
+	//m_pPause_Menu[PAUSE_STAGE_SELECT] = CFontString::Create(m_pPause_Pos[PAUSE_STAGE_SELECT], { m_StringSize }, "ステージせんたくへ");
 	m_pPause_Menu[PAUSE_CHAR_SELECT] = CFontString::Create(m_pPause_Pos[PAUSE_CHAR_SELECT], { m_StringSize }, "キャラせんたくへ");
 
 	// 選択の初期値
@@ -69,6 +70,7 @@ void CPause::Uninit(void)
 //==============================================================================================
 void CPause::Update(void)
 {
+	if (!CApplication::GetCamera()->GetOpening())
 	// ポーズ
 	Pause();
 
@@ -100,7 +102,8 @@ void CPause::Pause()
 	if (pInput != nullptr)
 	{
 		// ポーズ中
-		if (pInput->Trigger(DIK_P) && !m_bPause)
+		if ((pInput->Trigger(DIK_P) || pInput->Trigger(JOYPAD_START))
+			&& !m_bPause)
 		{
 			m_pPause->SetSize({ 400.0f,500.0f });
 			m_StringSize = { 30.0f,30.0f };
@@ -108,7 +111,8 @@ void CPause::Pause()
 			m_bPause = true;
 		}
 		// ポーズしてない
-		else if (pInput->Trigger(DIK_P) && m_bPause || m_Select_Pause)
+		else if ((pInput->Trigger(DIK_P) || pInput->Trigger(JOYPAD_START))
+			&& m_bPause || m_Select_Pause)
 		{
 			m_pPause->SetSize({ 0.0f,0.0f });
 			m_StringSize = { 0.0f,0.0f };
@@ -136,11 +140,13 @@ void CPause::Pause()
 void CPause::Select()
 {
 	CInput *pInput = CInput::GetKey();
-
+	
 	// 選択肢の変更
-	if (pInput->Trigger(DIK_DOWN) && m_nSelect < PAUSE_CHAR_SELECT)
+	if ((pInput->Trigger(DIK_DOWN) || pInput->Trigger(JOYPAD_DOWN)) 
+		&& m_nSelect < PAUSE_CHAR_SELECT)
 		m_nSelect++;
-	else if (pInput->Trigger(DIK_UP) && m_nSelect > PAUSE_CONTINUE)
+	else if ((pInput->Trigger(DIK_UP) || pInput->Trigger(JOYPAD_UP))
+		&& m_nSelect > PAUSE_CONTINUE)
 		m_nSelect--;
 
 	// 選択している項目を濃くする
@@ -155,18 +161,18 @@ void CPause::Select()
 		m_pPause_Menu[nCnt]->SetColor({ 1.0f,1.0f,1.0f,0.5f });
 	}
 
-	if (pInput->Trigger(DIK_RETURN) || (pInput->Trigger(MOUSE_INPUT_LEFT) && m_Select_Cursor))
+	if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_A) || (pInput->Trigger(MOUSE_INPUT_LEFT)) && m_Select_Cursor))
 	{
 		switch (m_nSelect)
 		{
 		case PAUSE_CONTINUE:
 			m_Select_Pause = true;
 			break;
-		case PAUSE_STAGE_SELECT:
-			// ステージ選択に戻る
-				if(CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
-				// 画面遷移
-				CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
+		//case PAUSE_STAGE_SELECT:
+		//	// ステージ選択に戻る
+		//		if(CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
+		//		// 画面遷移
+		//		CFade::SetFade(CApplication::MODE_STAGE_SELECT, 0.05f);
 			break;
 		case PAUSE_CHAR_SELECT:
 			// ウィンドウの破棄

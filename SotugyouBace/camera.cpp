@@ -299,7 +299,7 @@ void CCamera::Opening_Move()
 	CInput* pInput = CInput::GetKey();
 
 	// スキップ
-	if (pInput->Trigger(DIK_RETURN))
+	if (pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_START))
 	{
 		m_posV = { 0.0f, 225.0f, -450.0f };
 		m_posR = { 0.0f, 112.5f, 450.0f };

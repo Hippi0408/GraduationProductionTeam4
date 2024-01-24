@@ -230,7 +230,8 @@ void CResult::Update()
 			m_pPlayerManager->GetPlayer(m_PlayerIndex)->SetPos(m_pos);
 		}
 
-		if (pInput->Trigger(DIK_RETURN) && m_bCreateFlag == true)
+		if ((pInput->Trigger(DIK_RETURN) || pInput->Press(JOYPAD_B) || pInput->Press(JOYPAD_A)
+			|| pInput->Trigger(JOYPAD_START) && m_bCreateFlag == true))
 		{
 			// Œˆ’èSE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
