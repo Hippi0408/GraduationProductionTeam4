@@ -15,9 +15,11 @@ const CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] =
 	{ "data/sounds/BGM/Title.wav", -1 },				// タイトル画面BGM
 	{ "data/sounds/BGM/Game.wav", -1 },					// ゲーム画面BGM1
 	{ "data/sounds/BGM/Result.wav", -1 },				// リザルト画面BGM
+	{ "data/sounds/BGM/Character.wav", -1 },				// キャラ選択画面BGM
 
-	{ "data/sounds/SE/Select/Select.wav", 0 },			// 選択
-	{ "data/sounds/SE/Select/Decision.wav", 0 },		// 決定
+	{ "data/sounds/SE/Select.wav", 0 },				// 選択
+	{ "data/sounds/SE/Enter001.wav", 0 },			// 決定
+	{ "data/sounds/SE/Enter002.wav", 0 },			// 最終決定
 };
 
 //=============================================================================

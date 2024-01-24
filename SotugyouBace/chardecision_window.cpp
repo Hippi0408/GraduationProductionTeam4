@@ -23,6 +23,7 @@
 #include "confirmation_window.h"
 #include "char_select.h"
 #include "connect.h"
+#include "sound.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -107,6 +108,8 @@ void CCharDecision_Window::Update()
 		&& m_bScaleReduce == false
 		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
+		// 決定SE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 		UninitExplanation();				// フォントの削除
 
 		////サーバーの接続
@@ -231,6 +234,9 @@ void CCharDecision_Window::CharSelectChoice()
 		// 左に移動する
 		if (pInput->Trigger(DIK_A) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_UP)) && m_bStopFlag == false)
 		{
+
+			// 選択SE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 			// 選択した番号の取得
 			m_nSelectIndex--;		// 番号を1つ戻す
 			m_bSlideFlag = true;	// スライドさせる
@@ -244,6 +250,8 @@ void CCharDecision_Window::CharSelectChoice()
 		// 下に移動する
 		else if (pInput->Trigger(DIK_D) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_DOWN)) && m_bStopFlag == false)
 		{
+			// 選択SE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 			m_nSelectIndex++;		// 番号を1つ進める
 			m_bSlideFlag = true;	// スライドさせる
 			m_bLeftRight = true;	// 右に移動
@@ -292,6 +300,7 @@ void CCharDecision_Window::SlideWindow()
 	 // 左移動
 		if (m_bLeftRight == false)
 		{
+
 			m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
  			pos.x -= m_fMoveX;					// 移動量の減算

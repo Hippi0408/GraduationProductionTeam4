@@ -25,9 +25,11 @@ public:
 		SOUND_LABEL_BGM_TITLE = 0,			// タイトル画面BGM
 		SOUND_LABEL_BGM_GAME,				// ゲーム画面BGM1
 		SOUND_LABEL_BGM_RESULT,				// リザルト画面BGM
+		SOUND_LABEL_BGM_CHARACTER,			// キャラ選択画面BGM
 
 		SOUND_LABEL_SE_SELECT,				// 選択
 		SOUND_LABEL_SE_YES,					// 決定
+		SOUND_LABEL_SE_ENTER,				// 最終決定
 
 		SOUND_LABEL_MAX
 	};

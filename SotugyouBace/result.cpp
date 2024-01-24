@@ -232,6 +232,8 @@ void CResult::Update()
 
 		if (pInput->Trigger(DIK_RETURN) && m_bCreateFlag == true)
 		{
+			// Œˆ’èSE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 			m_PlayerIndex++;
 			// ƒvƒŒƒCƒ„[î•ñ‚Ìíœ
 			if (m_PlayerIndex <= 3)
