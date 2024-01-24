@@ -102,7 +102,7 @@ void CCharDecision_Window::Update()
 	}
 
 	// ゲーム画面への遷移
-	if (pInput->Trigger(DIK_RETURN)
+	if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_B) || pInput->Trigger(JOYPAD_A))
 		&& m_bMaxSize == true
 		&& m_bScaleReduce == false
 		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
@@ -267,7 +267,7 @@ void CCharDecision_Window::BackWindow()
 	CInput* pInput = CInput::GetKey();
 	
 	// 前のウィンドウに戻る
-	if (pInput->Trigger(DIK_BACK))
+	if (pInput->Trigger(DIK_BACK) || pInput->Trigger(JOYPAD_B))
 	{
 		m_bDicision = true;
 		m_bScale = true;

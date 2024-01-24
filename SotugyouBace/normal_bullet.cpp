@@ -37,7 +37,7 @@ HRESULT CNormal_Bullet::Init()
 	// ’e‚ª“G‚É“Í‚­‚Ü‚Å‚ÌŽžŠÔ
 	float fHitCnt = m_fHypotenuse / GetSpeed_XZ();
 
-	if (m_bTarget)
+	if (m_bTarget && pChara != nullptr)
 	{
 		// ƒ^[ƒQƒbƒg‚µ‚Ä‚¢‚é“G‚ÌˆÊ’u
 		D3DXVECTOR3 Enemy_Pos = pChara->GetCenterPos();

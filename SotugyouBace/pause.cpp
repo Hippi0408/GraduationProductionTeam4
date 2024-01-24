@@ -10,6 +10,7 @@
 #include"fontString.h"
 #include"application.h"
 #include"fade.h"
+#include"camera.h"
 
 //=============================================================================
 // コンストラクタ
@@ -69,6 +70,7 @@ void CPause::Uninit(void)
 //==============================================================================================
 void CPause::Update(void)
 {
+	if (!CApplication::GetCamera()->GetOpening())
 	// ポーズ
 	Pause();
 
@@ -100,7 +102,8 @@ void CPause::Pause()
 	if (pInput != nullptr)
 	{
 		// ポーズ中
-		if (pInput->Trigger(DIK_P) && !m_bPause)
+		if ((pInput->Trigger(DIK_P) || pInput->Trigger(JOYPAD_START))
+			&& !m_bPause)
 		{
 			m_pPause->SetSize({ 400.0f,500.0f });
 			m_StringSize = { 30.0f,30.0f };
@@ -108,7 +111,8 @@ void CPause::Pause()
 			m_bPause = true;
 		}
 		// ポーズしてない
-		else if (pInput->Trigger(DIK_P) && m_bPause || m_Select_Pause)
+		else if ((pInput->Trigger(DIK_P) || pInput->Trigger(JOYPAD_START))
+			&& m_bPause || m_Select_Pause)
 		{
 			m_pPause->SetSize({ 0.0f,0.0f });
 			m_StringSize = { 0.0f,0.0f };
@@ -136,11 +140,13 @@ void CPause::Pause()
 void CPause::Select()
 {
 	CInput *pInput = CInput::GetKey();
-
+	
 	// 選択肢の変更
-	if (pInput->Trigger(DIK_DOWN) && m_nSelect < PAUSE_CHAR_SELECT)
+	if ((pInput->Trigger(DIK_DOWN) || pInput->Trigger(JOYPAD_DOWN)) 
+		&& m_nSelect < PAUSE_CHAR_SELECT)
 		m_nSelect++;
-	else if (pInput->Trigger(DIK_UP) && m_nSelect > PAUSE_CONTINUE)
+	else if ((pInput->Trigger(DIK_UP) || pInput->Trigger(JOYPAD_UP))
+		&& m_nSelect > PAUSE_CONTINUE)
 		m_nSelect--;
 
 	// 選択している項目を濃くする
@@ -155,7 +161,7 @@ void CPause::Select()
 		m_pPause_Menu[nCnt]->SetColor({ 1.0f,1.0f,1.0f,0.5f });
 	}
 
-	if (pInput->Trigger(DIK_RETURN) || (pInput->Trigger(MOUSE_INPUT_LEFT) && m_Select_Cursor))
+	if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_A) || (pInput->Trigger(MOUSE_INPUT_LEFT)) && m_Select_Cursor))
 	{
 		switch (m_nSelect)
 		{
