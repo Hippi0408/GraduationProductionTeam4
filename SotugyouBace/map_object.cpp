@@ -134,6 +134,7 @@ void CMap_Object::Collision_Hit()
 
 	CEnemyManager *pEnemy_Manager = nullptr;
 	CPlayer *pPlayer = nullptr;
+
 	CDropManager *pDrop_Manager = nullptr;
 
 	// ƒ‚[ƒh–ˆ‚ÉƒLƒƒƒ‰‚ğ“Ç‚İ‚Ş
