@@ -275,6 +275,8 @@ void CGame::Uninit()
 		m_pMap = nullptr;
 	}
 
+	CApplication::GetSound()->StopAllBGM();
+
 	m_bGameEnd = false;	// ƒQ[ƒ€I—¹”»’è‚ğ‹U‚É‚·‚é
 }
 

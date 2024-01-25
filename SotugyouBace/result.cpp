@@ -165,6 +165,8 @@ void CResult::Uninit()
 		m_apDeathCount[nCnt]->Uninit();
 		m_apDeathCount[nCnt] = nullptr;
 	}
+
+	CApplication::GetSound()->StopAllBGM();
 }
 
 //==============================================================================================
