@@ -21,6 +21,8 @@
 #include"player_manager.h"
 #include"debugProc.h"
 
+#include "sound.h"
+
 #include "result.h"
 
 //=====================================
@@ -134,6 +136,8 @@ void CPC::Input()
 	// •à‚¢‚Ä‚¢‚éê‡
 	if (bWalk == true && !GetAvoidance())
 	{
+
+
 		//ƒJƒƒ‰‚ÌŒü‚«iY²‚Ì‚İj
 		float rotY = rotCamera.y;
 
