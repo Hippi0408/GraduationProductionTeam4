@@ -23,6 +23,13 @@ const CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] =
 	{ "data/sounds/SE/Enter001.wav", 0 },			// Œˆ’è
 	{ "data/sounds/SE/Enter002.wav", 0 },			// ÅIŒˆ’è
 
+	{ "data/sounds/SE/game/BossEntry.wav", 0 },		// ƒ{ƒX“oê
+	{ "data/sounds/SE/game/BreakBill.wav", 0 },		// ƒrƒ‹“|‰ó
+	{ "data/sounds/SE/game/bullet001.wav", 0 },		// ’e”­Ë
+	{ "data/sounds/SE/game/Slash.wav", 0 },			// Œ•U‚è
+
+
+
 	{ nullptr, 0 },									// SEÅ‘å’l
 };
 

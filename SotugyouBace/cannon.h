@@ -24,7 +24,11 @@ public:
 
 	static CCannon *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, CObjectX* parent, const char* Xfilename, int index, const PRIORITY priority = PRIORITY_MODEL);
 
+	static void SetRestrain(bool restrain) { m_bRestrain = restrain; }
+	static bool GetRestrain() { return m_bRestrain; }
+
 private:
+	static bool m_bRestrain;
 	int m_nIndex;
 	int m_nChain_Count;
 	float m_fRot;

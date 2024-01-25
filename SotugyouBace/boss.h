@@ -53,11 +53,15 @@ public:
 	void ChangeMotion();
 	void Landing(const D3DXVECTOR3 pos) override;	// íÖínèàóù
 	void Move() override;
+	void Slash_Attack();
+	void Bullet_Attack();
 
 	static CBoss* Create(const D3DXVECTOR3 pos);
 
 private:
 	bool m_bOpening;
+	int m_nAttack_Cooltime;
+	int m_nBullet_Cooltime;
 };
 
 #endif// _BOSS_H_

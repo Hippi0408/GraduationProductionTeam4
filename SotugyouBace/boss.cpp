@@ -11,6 +11,10 @@
 #include "boss_life_gauge.h"
 #include "camera.h"
 #include "particle_emitter.h"
+#include "normal_bullet.h"
+#include "player_manager.h"
+#include "cannon.h"
+#include "weapon_attack.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 1000.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -61,6 +65,11 @@ HRESULT CBoss::Init()
 	pCamera->SetPosV({ 0.0f,200.0f,-1000.0f });
 	pCamera->SetPosR({ 0.0f, 3000.0f, -500.0f });
 	pCamera->SetRot({ 0.0f,0.0f,0.0f });
+
+	// 当たり判定のタイプ
+	SetCollision_Type(COLLISION_TYPE_BOSS);
+
+	SetRadius(300.0f);
 
 	return S_OK;
 }
@@ -142,9 +151,11 @@ void CBoss::ChangeMotion()
 		// パーツ
 		CParts* pParts = GetParts(nCnt);
 
+		// ATTACK1の次にATTACK2を出す
 		if (pParts->GetMotion() == MOTION_ATTACK1 && pParts->GetMotionStop() == true)
 		{
 			pParts->SetMotion(MOTION_ATTACK2);
+			CWeapon_Attack::Create(GetPos(), 3000, false, 300, 20);
 		}
 		// モーションがループしない場合
 		else if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
@@ -184,10 +195,110 @@ void CBoss::Landing(const D3DXVECTOR3 pos)
 //============================================================================
 void CBoss::Move()
 {
-	CEnemy::Move();
+	// 拘束中は動かない
+	if (!CCannon::GetRestrain())
+	{
+		CEnemy::Move();
 
-	// 常に追跡状態
-	SetTracking(true);
+		// 常に追跡状態
+		SetTracking(true);
+
+		// ボスとプレイヤーの距離
+		float fDistance = GetDistance();
+
+		if (GetTracking() && !CApplication::GetCamera()->GetOpening())
+		{
+			// 攻撃処理
+			Bullet_Attack();
+
+			// プレイヤーまでの角度
+			float fAngle = GetAngle();
+
+			// 敵の移動量
+			D3DXVECTOR3 move = { 0.0f,GetMove().y,0.0f };
+
+			// 速度の設定
+			SetSpeed(3.0f);
+
+			if (fDistance >= 1000)
+			{
+				move.x = sinf(fAngle) * GetSpeed();
+				move.z = cosf(fAngle) * GetSpeed();
+			}
+			else if (fDistance < 1000)
+			{
+				move.x = sinf(fAngle + D3DX_PI) * GetSpeed();
+				move.z = cosf(fAngle + D3DX_PI) * GetSpeed();
+			}
+
+			if (fDistance <= 1500)
+				Slash_Attack();
+
+			// 移動量の設定
+			SetMove(move);
+
+			// 角度の設定
+			SetRot({ 0.0f,fAngle + D3DX_PI,0.0f });
+		}
+	}
+}
+
+//============================================================================
+// 近接攻撃
+//============================================================================
+void CBoss::Slash_Attack()
+{
+	// ボスとプレイヤーの距離
+	float fDistance = GetDistance();
+
+	CParts* pBody = GetParts(PARTS_BODY);
+
+	// 近接攻撃の間隔
+	m_nAttack_Cooltime++;
+
+	int nRand_Slash = rand() % 2;
+
+	// 近接攻撃
+	if (m_nAttack_Cooltime >= 100 && nRand_Slash == 0)
+	{
+		pBody->SetMotion(MOTION_ATTACK1);
+		CWeapon_Attack::Create(GetPos(), 3000, false, 300, 20);
+		m_nAttack_Cooltime = 0;
+	}
+	else if (m_nAttack_Cooltime >= 100 && nRand_Slash == 1)
+	{
+		pBody->SetMotion(MOTION_ATTACK3);
+		CWeapon_Attack::Create(GetPos(), 3000, false, 200, 80);
+		m_nAttack_Cooltime = 0;
+	}
+}
+
+//============================================================================
+// 遠距離攻撃
+//============================================================================
+void CBoss::Bullet_Attack()
+{
+	// ボスとプレイヤーの距離
+	float fDistance = GetDistance();
+
+	// 遠距離攻撃の間隔
+	m_nBullet_Cooltime++;
+
+	CPlayer* pPlayer = nullptr;
+
+	// プレイヤーの情報
+	pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+
+	D3DXVECTOR3 BulletPos[10] = {};
+
+	// 弾が発射される位置
+	if (m_nBullet_Cooltime >= 30)
+	{
+		// 遠距離攻撃
+		CNormal_Bullet::Create({ GetPos().x,GetPos().y + 700.0f,GetPos().z }, { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false,
+			100, 200, 60);
+		m_nBullet_Cooltime = 0;
+	}
 }
 
 //============================================================================

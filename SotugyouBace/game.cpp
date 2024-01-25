@@ -275,7 +275,7 @@ void CGame::Uninit()
 		m_pMap = nullptr;
 	}
 
-	CApplication::GetSound()->StopAllBGM();
+	CApplication::GetSound()->StopAll();
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
@@ -383,6 +383,13 @@ void CGame::Update()
 			}
 		}
 #endif
+
+		// ボスが出るまではチュートリアル
+		if (m_pBoss == nullptr && CMob::GetDeathCount() == 10)
+		{
+			// ボスキャラの生成
+			m_pBoss = CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
+		}
 
 		//オンラインの送信
 		/*if (CApplication::GetClient()->GetIsConnect())

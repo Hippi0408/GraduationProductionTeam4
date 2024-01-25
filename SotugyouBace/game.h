@@ -32,6 +32,7 @@ class CWeapon_Parameter;
 class CMap_Object_Manager;
 class CFog;
 class CMap;
+class CBoss;
 
 class CGame : public CMode
 {
@@ -96,6 +97,7 @@ private:
 	static CMap_Object_Manager *m_pMap_Object_Manager;
 	static CMap *m_pMap;
 	static CTime* m_pTime;
+	CBoss *m_pBoss;
 
 };
 

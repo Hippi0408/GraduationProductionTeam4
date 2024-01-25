@@ -539,6 +539,8 @@ void CPlayer::BulletAttack(const int weapon)
 	else
 	{
 		CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+		// 弾発射SE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET);
 	}
 
 	// クールタイムの派生
@@ -683,6 +685,14 @@ void CPlayer::Hit(CMove_Object* pHit)
 			break;
 		}
 	}
+}
+
+//============================================================================
+// 破壊処理
+//============================================================================
+void CPlayer::Destroy()
+{
+	CCharacter::Destroy();
 }
 
 //============================================================================

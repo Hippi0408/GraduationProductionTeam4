@@ -334,23 +334,26 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 					}
 				}
 
-				// ‰Ÿ‚µo‚µ
-				switch (nHit_Index)
+				if (objParent->GetCollision_Type() != CMove_Object::COLLISION_TYPE_BOSS)
 				{
-				case 0:
-					objParent->SetPos({ Index[nHit_Index].x - size.x,pos.y,pos.z });
-					break;
-				case 1:
-					objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z + size.z });
-					break;
-				case 2:
-					objParent->SetPos({ Index[nHit_Index].x + size.x,pos.y,pos.z });
-					break;
-				case 3:
-					objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z - size.z });
-					break;
-				default:
-					break;
+					// ‰Ÿ‚µo‚µ
+					switch (nHit_Index)
+					{
+					case 0:
+						objParent->SetPos({ Index[nHit_Index].x - size.x,pos.y,pos.z });
+						break;
+					case 1:
+						objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z + size.z });
+						break;
+					case 2:
+						objParent->SetPos({ Index[nHit_Index].x + size.x,pos.y,pos.z });
+						break;
+					case 3:
+						objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z - size.z });
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}

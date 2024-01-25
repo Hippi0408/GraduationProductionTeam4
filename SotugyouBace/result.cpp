@@ -174,6 +174,10 @@ void CResult::Uninit()
 	}
 
 	CApplication::GetSound()->StopAllBGM();
+	// モブの討伐数のリセット
+	CMob::SetDeathCount(0);
+
+	CApplication::GetSound()->StopAll();
 }
 
 //==============================================================================================

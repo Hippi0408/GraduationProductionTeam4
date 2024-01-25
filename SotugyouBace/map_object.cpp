@@ -119,6 +119,9 @@ void CMap_Object::Hit(CMove_Object* /*pHit*/)
 	Uninit();
 
 	std::move(CParticleEmitter::Create("smoke", GetPos()));
+
+	// ビル倒壊SE
+	CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BREAKBILL);
 }
 
 //==============================================================================================
@@ -131,6 +134,7 @@ void CMap_Object::Collision_Hit()
 
 	CEnemyManager *pEnemy_Manager = nullptr;
 	CPlayer *pPlayer = nullptr;
+
 	CDropManager *pDrop_Manager = nullptr;
 
 	// モード毎にキャラを読み込む
