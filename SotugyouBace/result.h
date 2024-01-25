@@ -66,12 +66,12 @@ private:
 	CObject2D* m_pFontTexture[3];					// フォントテクスチャ
 	CScore* m_pScore;								// スコア
 	CTime* m_pTime;									// タイム
-	CNumber* m_apTotalDamage[5];					// ナンバー
+	CNumber* m_apTotalDamage[6];					// ナンバー
 	CNumber* m_apDeathCount[3];						// ナンバー
 	D3DXVECTOR3 m_pos;								// 位置
 	D3DXVECTOR3 m_move;								// 移動量
 	D3DXVECTOR2 m_size;								// サイズ
-	int m_aPosTexU[5];								//各桁のスコアを格納
+	int m_aPosTexU[6];								//各桁のスコアを格納
 	int m_nZeroCountTotalDamage;					// 0の数
 	int m_nZeroCountDeathCount;					// 0の数
 	int m_nNum;										// 値

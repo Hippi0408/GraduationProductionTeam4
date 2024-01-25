@@ -100,7 +100,7 @@ HRESULT CResult::Init()
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, -1000.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
-	for (int nCnt = 0; nCnt < 5; nCnt++)
+	for (int nCnt = 0; nCnt < 6; nCnt++)
 	{
 		//ナンバーの初期化
 		m_apTotalDamage[nCnt] = nullptr;
@@ -154,7 +154,7 @@ void CResult::Uninit()
 	}
 
 	//ナンバーの破棄
-	for (int nCnt = 0; nCnt < 5; nCnt++)
+	for (int nCnt = 0; nCnt < 6; nCnt++)
 	{
 		if (m_apTotalDamage[nCnt] != nullptr)
 		{
@@ -279,7 +279,7 @@ void CResult::Update()
 	if (m_bCreateFlag == true)
 	{
 		// 受けたダメージの総数
-		SetTotalDamage(CApplication::GetTotalDamage(), D3DXVECTOR3(100.0f, 375.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f));
+		SetTotalDamage(CApplication::GetTotalDamage(), D3DXVECTOR3(150.0f, 375.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f));
 		// 倒した敵の数
 		SetDeathCount(CMob::GetDeathCount(), D3DXVECTOR3(240.0f,525.0f,0.0f), D3DXVECTOR2(30.0f, 30.0f));
 		// タイマーの更新
@@ -315,7 +315,7 @@ void CResult::ScaleExpansion()
 		{
 			// タイムの生成
 			m_pTime = CTime::Create(D3DXVECTOR3(240.0f, 225.0f, 0.0f));
-			for (int nCnt = 0; nCnt < 5; nCnt++)
+			for (int nCnt = 0; nCnt < 6; nCnt++)
 			{
 				//ナンバーの初期化
 				m_apTotalDamage[nCnt] = CNumber::Create(D3DXVECTOR3(0.0f,0.0f,0.0f),0.0f,0.0f,CObject::PRIORITY_SCREEN);
@@ -387,7 +387,7 @@ void CResult::InformationUninit()
 	}
 
 	//ナンバーの破棄
-	for (int nCnt = 0; nCnt < 5; nCnt++)
+	for (int nCnt = 0; nCnt < 6; nCnt++)
 	{
 		if (m_apTotalDamage[nCnt] != nullptr)
 		{
@@ -422,7 +422,7 @@ void CResult::SetTotalDamage(int num, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	m_aPosTexU[3] = num % 100 / 10;
 	m_aPosTexU[4] = num % 10 / 1;
 
-	for (int nCnt = 0; nCnt < 5; nCnt++)
+	for (int nCnt = 0; nCnt < 6; nCnt++)
 	{
 		//分割数,何番目か
 		m_apTotalDamage[nCnt]->SetPos(D3DXVECTOR3(pos.x + (70.0f * nCnt) + 50.0f / 2, pos.y, 0.0f));
@@ -471,7 +471,7 @@ void CResult::ZoroDamageCount()
 		}
 		if (CApplication::GetTotalDamage() == 0)
 		{
-			m_apTotalDamage[4]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_apTotalDamage[5]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
 }
