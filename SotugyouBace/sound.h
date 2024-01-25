@@ -27,9 +27,13 @@ public:
 		SOUND_LABEL_BGM_RESULT,				// リザルト画面BGM
 		SOUND_LABEL_BGM_CHARACTER,			// キャラ選択画面BGM
 
+		SOUND_BGM_MAX,						// BGM最大値
+
 		SOUND_LABEL_SE_SELECT,				// 選択
 		SOUND_LABEL_SE_YES,					// 決定
 		SOUND_LABEL_SE_ENTER,				// 最終決定
+
+		SOUND_SE_MAX,						// SE最大値
 
 		SOUND_LABEL_MAX
 	};
@@ -44,6 +48,7 @@ public:
 	HRESULT Play(SOUND_LABEL label);	// 選択した曲の再生処理
 	void StopLabel(SOUND_LABEL label);	// 選択した曲の停止処理
 	void StopAll();						// 全ての曲の停止処理
+	void StopAllBGM();					// 全てのBGMの停止処理
 
 	static CSound* Create(HWND hWnd);
 

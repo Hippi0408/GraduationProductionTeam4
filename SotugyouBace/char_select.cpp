@@ -94,8 +94,6 @@ void CChar_Select::Uninit()
 		delete m_pPlayerData;
 		m_pPlayerData = nullptr;
 	}
-
-	CApplication::GetSound()->StopAll();
 }
 
 //==============================================================================================

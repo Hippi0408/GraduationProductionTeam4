@@ -12,14 +12,18 @@
 // 曲の場所を設定
 const CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] =
 {
-	{ "data/sounds/BGM/Title.wav", -1 },				// タイトル画面BGM
-	{ "data/sounds/BGM/Game.wav", -1 },					// ゲーム画面BGM1
-	{ "data/sounds/BGM/Result.wav", -1 },				// リザルト画面BGM
-	{ "data/sounds/BGM/Character.wav", -1 },				// キャラ選択画面BGM
+	{ "data/sounds/BGM/Title.wav", -1 },			// タイトル画面BGM
+	{ "data/sounds/BGM/Game.wav", -1 },				// ゲーム画面BGM1
+	{ "data/sounds/BGM/Result.wav", -1 },			// リザルト画面BGM
+	{ "data/sounds/BGM/Character.wav", -1 },		// キャラ選択画面BGM
+
+	{ nullptr, -1 },								// BGM最大値
 
 	{ "data/sounds/SE/Select.wav", 0 },				// 選択
 	{ "data/sounds/SE/Enter001.wav", 0 },			// 決定
 	{ "data/sounds/SE/Enter002.wav", 0 },			// 最終決定
+
+	{ nullptr, 0 },									// SE最大値
 };
 
 //=============================================================================
@@ -92,69 +96,72 @@ HRESULT CSound::Init(HWND hWnd)
 		//memset(&m_aWfx[nCntSound], 0, sizeof(WAVEFORMATEXTENSIBLE));
 		memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
 
-		// サウンドデータファイルの生成
-		hFile = CreateFile(m_aParam[nCntSound].pFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
-		if (hFile == INVALID_HANDLE_VALUE)
+		if (m_aParam[nCntSound].pFilename != nullptr)
 		{
-			MessageBox(hWnd, "サウンドデータファイルの生成に失敗！(1)", "警告！", MB_ICONWARNING);
-			return HRESULT_FROM_WIN32(GetLastError());
-		}
-		if (SetFilePointer(hFile, 0, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
-		{// ファイルポインタを先頭に移動
-			MessageBox(hWnd, "サウンドデータファイルの生成に失敗！(2)", "警告！", MB_ICONWARNING);
-			return HRESULT_FROM_WIN32(GetLastError());
-		}
+			// サウンドデータファイルの生成
+			hFile = CreateFile(m_aParam[nCntSound].pFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+			if (hFile == INVALID_HANDLE_VALUE)
+			{
+				MessageBox(hWnd, "サウンドデータファイルの生成に失敗！(1)", "警告！", MB_ICONWARNING);
+				return HRESULT_FROM_WIN32(GetLastError());
+			}
+			if (SetFilePointer(hFile, 0, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+			{// ファイルポインタを先頭に移動
+				MessageBox(hWnd, "サウンドデータファイルの生成に失敗！(2)", "警告！", MB_ICONWARNING);
+				return HRESULT_FROM_WIN32(GetLastError());
+			}
 
-		// WAVEファイルのチェック
-		hr = CheckChunk(hFile, 'FFIR', &dwChunkSize, &dwChunkPosition);
-		if (FAILED(hr))
-		{
-			MessageBox(hWnd, "WAVEファイルのチェックに失敗！(1)", "警告！", MB_ICONWARNING);
-			return S_FALSE;
-		}
-		hr = ReadChunkData(hFile, &dwFiletype, sizeof(DWORD), dwChunkPosition);
-		if (FAILED(hr))
-		{
-			MessageBox(hWnd, "WAVEファイルのチェックに失敗！(2)", "警告！", MB_ICONWARNING);
-			return S_FALSE;
-		}
-		if (dwFiletype != 'EVAW')
-		{
-			MessageBox(hWnd, "WAVEファイルのチェックに失敗！(3)", "警告！", MB_ICONWARNING);
-			return S_FALSE;
-		}
+			// WAVEファイルのチェック
+			hr = CheckChunk(hFile, 'FFIR', &dwChunkSize, &dwChunkPosition);
+			if (FAILED(hr))
+			{
+				MessageBox(hWnd, "WAVEファイルのチェックに失敗！(1)", "警告！", MB_ICONWARNING);
+				return S_FALSE;
+			}
+			hr = ReadChunkData(hFile, &dwFiletype, sizeof(DWORD), dwChunkPosition);
+			if (FAILED(hr))
+			{
+				MessageBox(hWnd, "WAVEファイルのチェックに失敗！(2)", "警告！", MB_ICONWARNING);
+				return S_FALSE;
+			}
+			if (dwFiletype != 'EVAW')
+			{
+				MessageBox(hWnd, "WAVEファイルのチェックに失敗！(3)", "警告！", MB_ICONWARNING);
+				return S_FALSE;
+			}
 
-		// フォーマットチェック
-		hr = CheckChunk(hFile, ' tmf', &dwChunkSize, &dwChunkPosition);
-		if (FAILED(hr))
-		{
-			MessageBox(hWnd, "フォーマットチェックに失敗！(1)", "警告！", MB_ICONWARNING);
-			return S_FALSE;
-		}
-		hr = ReadChunkData(hFile, &m_aWfx[nCntSound], dwChunkSize, dwChunkPosition);
-		if (FAILED(hr))
-		{
-			MessageBox(hWnd, "フォーマットチェックに失敗！(2)", "警告！", MB_ICONWARNING);
-			return S_FALSE;
-		}
+			// フォーマットチェック
+			hr = CheckChunk(hFile, ' tmf', &dwChunkSize, &dwChunkPosition);
+			if (FAILED(hr))
+			{
+				MessageBox(hWnd, "フォーマットチェックに失敗！(1)", "警告！", MB_ICONWARNING);
+				return S_FALSE;
+			}
+			hr = ReadChunkData(hFile, &m_aWfx[nCntSound], dwChunkSize, dwChunkPosition);
+			if (FAILED(hr))
+			{
+				MessageBox(hWnd, "フォーマットチェックに失敗！(2)", "警告！", MB_ICONWARNING);
+				return S_FALSE;
+			}
 
-		// オーディオデータ読み込み
-		hr = CheckChunk(hFile, 'atad', &m_aSizeAudio[nCntSound], &dwChunkPosition);
-		if (FAILED(hr))
-		{
-			MessageBox(hWnd, "オーディオデータ読み込みに失敗！(1)", "警告！", MB_ICONWARNING);
-			return S_FALSE;
-		}
-		m_apDataAudio[nCntSound] = (BYTE*)malloc(m_aSizeAudio[nCntSound]);
-		hr = ReadChunkData(hFile, m_apDataAudio[nCntSound], m_aSizeAudio[nCntSound], dwChunkPosition);
-		if (FAILED(hr))
-		{
-			MessageBox(hWnd, "オーディオデータ読み込みに失敗！(2)", "警告！", MB_ICONWARNING);
-			return S_FALSE;
-		}
+			// オーディオデータ読み込み
+			hr = CheckChunk(hFile, 'atad', &m_aSizeAudio[nCntSound], &dwChunkPosition);
+			if (FAILED(hr))
+			{
+				MessageBox(hWnd, "オーディオデータ読み込みに失敗！(1)", "警告！", MB_ICONWARNING);
+				return S_FALSE;
+			}
+			m_apDataAudio[nCntSound] = (BYTE*)malloc(m_aSizeAudio[nCntSound]);
+			hr = ReadChunkData(hFile, m_apDataAudio[nCntSound], m_aSizeAudio[nCntSound], dwChunkPosition);
+			if (FAILED(hr))
+			{
+				MessageBox(hWnd, "オーディオデータ読み込みに失敗！(2)", "警告！", MB_ICONWARNING);
+				return S_FALSE;
+			}
 
-		// ファイルをクローズ
-		CloseHandle(hFile);
+			// ファイルをクローズ
+			CloseHandle(hFile);
+		}
 	}
 
 	return S_OK;
@@ -321,7 +328,7 @@ void CSound::StopLabel(SOUND_LABEL label)
 }
 
 //=============================================================================
-// セグメント停止(全て)
+// セグメント停止(全ての曲)
 //=============================================================================
 void CSound::StopAll()
 {
@@ -340,6 +347,44 @@ void CSound::StopAll()
 
 		// 一番後ろの配列を除外
 		m_listSourceVoice.pop_back();
+	}
+}
+
+//=============================================================================
+// セグメント停止(全てのBGM)
+//=============================================================================
+void CSound::StopAllBGM()
+{
+	// リストの全ての要素の終了処理
+	for (auto itr = m_listSourceVoice.begin(); itr != m_listSourceVoice.end();)
+	{
+		SSourceVoice sourceVoice = *itr;
+
+		// サウンドラベルがBGMより下の場合
+		if (sourceVoice.label < SOUND_BGM_MAX)
+		{
+			XAUDIO2_VOICE_STATE xa2state;
+
+			// 状態取得
+			sourceVoice.pSourceVoice->GetState(&xa2state);
+
+			// 一時停止
+			sourceVoice.pSourceVoice->Stop(0);
+
+			// オーディオバッファの削除
+			sourceVoice.pSourceVoice->FlushSourceBuffers();
+
+			// ソースボイスの破棄
+			sourceVoice.pSourceVoice->DestroyVoice();
+			sourceVoice.pSourceVoice = NULL;
+
+			// 自身をリストから除外
+			itr = m_listSourceVoice.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
 	}
 }
 
