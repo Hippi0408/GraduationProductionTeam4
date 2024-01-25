@@ -110,7 +110,7 @@ void CStage_Select::Update()
 	// “ü—Íˆ—‚ÌŽæ“¾
 	CInput* pInput = CInput::GetKey();
 
-	if(pInput->Trigger(DIK_BACK))
+	if(pInput->Trigger(DIK_BACK) || pInput->Trigger(JOYPAD_B))
 		// ‰æ–Ê‘JˆÚ
 		CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
 
@@ -204,7 +204,7 @@ void CStage_Select::Select()
 			}
 
 			// ƒLƒƒƒ‰ƒZƒŒƒNƒg‰æ–Ê‚É–ß‚é
-			if (pInput->Trigger(DIK_BACK, nCnt)
+			if ((pInput->Trigger(DIK_BACK, nCnt) || pInput->Trigger(JOYPAD_B))
 				&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 				// ‰æ–Ê‘JˆÚ
 				CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);

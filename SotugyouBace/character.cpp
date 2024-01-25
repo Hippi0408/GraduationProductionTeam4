@@ -177,6 +177,7 @@ void CCharacter::Damage(const int value)
 
 		// 体力 - 与ダメージ
 		m_nLife -= value;
+		m_fDamageReceived += value;
 
 		// 体力ゲージの増減
 		if (m_pGaugeManager != nullptr)

@@ -8,6 +8,10 @@
 #include"chain.h"
 #include"math.h"
 #include"objectX.h"
+#include "particle_emitter.h"
+#include"enemy.h"
+#include"enemy_manager.h"
+#include"game.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -57,7 +61,6 @@ HRESULT CChain_Manager::Init()
 //==============================================================================================
 void CChain_Manager::Uninit()
 {
-
 }
 
 //==============================================================================================
@@ -65,20 +68,11 @@ void CChain_Manager::Uninit()
 //==============================================================================================
 void CChain_Manager::Update()
 {
-	// アンカーの位置
-	D3DXVECTOR3 Anchor_Pos = m_Pos + m_nNumChain * m_Vec;
-
-	// 鎖の先に付けるアンカーの移動
-	m_pAnchor->SetPos({ Anchor_Pos.x,Anchor_Pos.y - CHAIN_SIZE_Y / 4,Anchor_Pos.z });
-
 	// 鎖の長さ
 	if (CHAIN_SIZE_X > m_fChain_Size)
 		m_fChain_Size += 50;
-	// ボスを拘束する
-	else if (m_fChain_Size >= CHAIN_SIZE_X)
-	{
+	else if (m_fChain_Size > CHAIN_SIZE_X)
 		m_fChain_Size = CHAIN_SIZE_X;
-	}
 
 	// 正規化
 	D3DXVec3Normalize(&m_Vec, &m_Vec);
@@ -95,6 +89,12 @@ void CChain_Manager::Update()
 		m_pChain[1][nCnt]->SetPos(m_Pos + (float)nCnt * m_Vec);
 	}
 
+	// アンカーの位置
+	D3DXVECTOR3 Anchor_Pos = m_Pos + m_nNumChain * m_Vec;
+
+	// 鎖の先に付けるアンカーの移動
+	m_pAnchor->SetPos({ Anchor_Pos.x,Anchor_Pos.y - CHAIN_SIZE_Y / 4,Anchor_Pos.z });
+
 	m_nRestraint_Count++;
 	if (m_nRestraint_Count == m_nRestraint_Break)
 	{
@@ -104,6 +104,26 @@ void CChain_Manager::Update()
 			m_pChain[0][nCnt]->Uninit();
 			m_pChain[1][nCnt]->Uninit();
 			m_pAnchor->Uninit();
+		}
+	}
+
+	CEnemyManager* pEnemyManager = nullptr;
+
+	// ボスの読み込み
+	pEnemyManager = CGame::GetEnemyManager();
+
+	for (auto pEnemy : pEnemyManager->GetAllEnemy())
+	{
+		if (pEnemy->GetEnemyType() == CEnemy::ENEMY_TYPE_BOSS
+			&& pEnemy->GetLife() != 0)
+		{
+			for (int nCnt = 0; nCnt < m_nNumChain; nCnt++)
+			{
+				// ボスの体力が0になると消える
+				m_pChain[0][nCnt]->Uninit();
+				m_pChain[1][nCnt]->Uninit();
+				m_pAnchor->Uninit();
+			}
 		}
 	}
 }
@@ -126,7 +146,8 @@ CChain_Manager *CChain_Manager::Create(D3DXVECTOR3 pos, D3DXVECTOR3 vec, float D
 	if (pChain_Manager != nullptr)
 	{
 		pChain_Manager->m_Pos = { pos.x,pos.y + 50.0f,pos.z };
-		pChain_Manager->m_Vec = { vec.x,0.0f,vec.z };
+		//pChain_Manager->m_Vec = { vec.x,0.0f,vec.z };
+		pChain_Manager->m_Vec = vec;
 		pChain_Manager->m_fDistance = Distance;
 		pChain_Manager->m_fRot = rot;
 		pChain_Manager->m_nRestraint_Break = breakcount;

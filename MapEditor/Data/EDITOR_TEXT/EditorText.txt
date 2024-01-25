@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # 読み込むモデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 16
+NUM_MODEL = 31
 
 #------------------------------------------------------------------------------
 # 読み込むモデルファイル名
@@ -31,5 +31,20 @@ MODEL_FILENAME = Data/model/House03.x
 MODEL_FILENAME = Data/model/House04.x
 MODEL_FILENAME = Data/model/MetalContainer.x
 MODEL_FILENAME = Data/model/artillerybattery.x
+MODEL_FILENAME = Data/model/ArmyTruck.x
+MODEL_FILENAME = Data/model/bus.x
+MODEL_FILENAME = Data/model/car.x
+MODEL_FILENAME = Data/model/car2.x
+MODEL_FILENAME = Data/model/CargoHelicopter.x
+MODEL_FILENAME = Data/model/CommunicationVehicle.x
+MODEL_FILENAME = Data/model/Helicopter.x
+MODEL_FILENAME = Data/model/MORTAR.x
+MODEL_FILENAME = Data/model/MortarCar.x
+MODEL_FILENAME = Data/model/Osprey.x
+MODEL_FILENAME = Data/model/PowerGenerationCar.x
+MODEL_FILENAME = Data/model/ShovelCar.x
+MODEL_FILENAME = Data/model/TransportVehicle.x
+MODEL_FILENAME = Data/model/Truck.x
+MODEL_FILENAME = Data/model/bill03.x
 
 END_SCRIPT		# この行は絶対消さないこと！

@@ -29,16 +29,22 @@ public:
 		PARTS_PLAYER_BODY_1 = 0,	// 体パーツ1
 		PARTS_PLAYER_BODY_2,		// 体パーツ2
 		PARTS_PLAYER_BODY_3,		// 体パーツ3
+		PARTS_PLAYER_BODY_4,		// 体パーツ4
+		PARTS_PLAYER_BODY_5,		// 体パーツ5
 
 		PARTS_PLAYER_ARMS_0,		// 腕パーツ0(スタンダード)
 		PARTS_PLAYER_ARMS_1,		// 腕パーツ1
 		PARTS_PLAYER_ARMS_2,		// 腕パーツ2
 		PARTS_PLAYER_ARMS_3,		// 腕パーツ3
+		PARTS_PLAYER_ARMS_4,		// 腕パーツ4
+		PARTS_PLAYER_ARMS_5,		// 腕パーツ5
 
 		PARTS_PLAYER_LEG_0,			// 脚パーツ0(スタンダード)
 		PARTS_PLAYER_LEG_1,			// 脚パーツ1
 		PARTS_PLAYER_LEG_2,			// 脚パーツ2
 		PARTS_PLAYER_LEG_3,			// 脚パーツ3
+		PARTS_PLAYER_LEG_4,			// 脚パーツ4
+		PARTS_PLAYER_LEG_5,			// 脚パーツ5
 
 		PARTS_MOB,					// モブパーツ
 

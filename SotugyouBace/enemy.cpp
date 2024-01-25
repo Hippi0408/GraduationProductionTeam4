@@ -9,6 +9,8 @@
 #include "application.h"
 #include "tutorial.h"
 #include "game.h"
+#include "player.h"
+#include "player_manager.h"
 
 //=====================================
 // デフォルトコンストラクタ
@@ -84,6 +86,9 @@ void CEnemy::Update()
 {
 	// キャラクターの更新
 	CCharacter::Update();
+
+	// 移動処理
+	Move();
 }
 
 //============================================================================
@@ -92,6 +97,37 @@ void CEnemy::Update()
 void CEnemy::Draw()
 {
 	CCharacter::Draw();
+}
+
+//============================================================================
+// 移動処理
+//============================================================================
+void CEnemy::Move()
+{
+	CPlayer* pPlayer = nullptr;
+
+	// プレイヤーの情報
+	pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
+
+	// 位置の格納先
+	D3DXVECTOR3 Player_Pos = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 Enemy_Pos = { 0.0f,0.0f,0.0f };
+
+	if (pPlayer != nullptr)
+	{
+		// 位置の取得
+		Player_Pos = pPlayer->GetPos();
+		Enemy_Pos = GetPos();
+	}
+
+	// プレイヤーから敵の距離
+	D3DXVECTOR3 Vec = Player_Pos - Enemy_Pos;
+
+	// 距離の算出
+	m_fDistance = sqrtf(Vec.x * Vec.x + Vec.z * Vec.z);
+
+	// 角度の算出
+	m_fAngle = atan2(Vec.x, Vec.z);
 }
 
 //============================================================================

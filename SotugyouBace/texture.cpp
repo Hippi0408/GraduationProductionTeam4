@@ -25,7 +25,8 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/Font/Font_Alphabet.png",			// アルファベットフォント
 	"Data/texture/number.png",						// ナンバーのテクスチャ
 	"Data/texture/bullet000.png",					// 弾のテクスチャ
-	"Data/texture/floor.png",						// 地面のテクスチャ
+	"Data/texture/Concrete.png",						// 地面のテクスチャ
+	"Data/texture/map.png",							// マップのテクスチャ
 	"Data/texture/reticle.png",						// レティクルのテクスチャ
 	"Data/texture/circle.png",						// 円のテクスチャ
 	"Data/texture/ItemPointer.png",					// アイテムポインターのテクスチャ
@@ -61,7 +62,7 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/particle/bright2.png",			// キラキラB
 	"Data/texture/particle/ray.png",				// レイ
 	"Data/texture/particle/effect001.png",			// コイン
-	"Data/texture/particle/jewel.png",				// パーティクル用宝石
+	"Data/texture/particle/effect003.png",			// playerの炎
 	"Data/texture/particle/soul.png",				// 魂
 	"Data/texture/particle/up.png",					// 上矢印
 	"Data/texture/reticle.png",						// レティクル
@@ -93,10 +94,10 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/job/job_Eagleeye.png",			// イーグルアイ
 	"Data/texture/job/job_Marshall.png",			// マーシャル
 
-	"Data/texture/job/JobSelect_Rush.png",				// ラッシュ
-	"Data/texture/job/JobSelect_Vanguard.png",			// ヴァンガード
-	"Data/texture/job/JobSelect_Eagleeye.png",			// イーグルアイ
-	"Data/texture/job/JobSelect_Marshall.png",			// マーシャル
+	"Data/texture/job/status_rush.png",				// ラッシュ
+	"Data/texture/job/status_vanguard.png",			// ヴァンガード
+	"Data/texture/job/status_eagleeye.png",			// イーグルアイ
+	"Data/texture/job/status_standard.png",			// マーシャル
 
 };
 

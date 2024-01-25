@@ -16,6 +16,7 @@
 #include "playerdata.h"
 #include "model.h"
 #include "objectX.h"
+#include "sound.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -67,6 +68,9 @@ HRESULT CChar_Select::Init()
 	// 倉庫モデルの生成
 	m_pWareHouse = CObjectX::Create(D3DXVECTOR3(0.0f, 300.0f, 1000.0f), D3DXVECTOR3(0.0f, 0.0, 0.0f), nullptr, "Data/model/CharacterSelect/Warehouse.x");
 
+	//BGM
+	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_CHARACTER);
+
 	return S_OK;
 }
 
@@ -90,6 +94,8 @@ void CChar_Select::Uninit()
 		delete m_pPlayerData;
 		m_pPlayerData = nullptr;
 	}
+
+	CApplication::GetSound()->StopAll();
 }
 
 //==============================================================================================
@@ -107,6 +113,8 @@ void CChar_Select::Update()
 		{
 			if (m_pCharDecisionWindow == nullptr)
 			{
+				// 決定SE
+				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
 				m_pCharDecisionWindow = CCharDecision_Window::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 400.0f, 0.0f), 900.0f, 500.0f, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
 			}
 		}

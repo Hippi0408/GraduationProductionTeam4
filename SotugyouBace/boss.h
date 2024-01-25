@@ -34,8 +34,10 @@ public:
 	{
 		MOTION_NEUTRAL = 0,	// ニュートラル
 		MOTION_WALK,		// 歩き
+		MOTION_ATTACK1,		// 攻撃1
+		MOTION_ATTACK2,		// 攻撃2
+		MOTION_ATTACK3,		// 攻撃3
 		MOTION_ENTRANCE,	// 登場
-		MOTION_LANDING,		// 着地
 		MOTION_MAX,
 	};
 
@@ -50,6 +52,7 @@ public:
 	void Destroy() override;			// 破壊処理
 	void ChangeMotion();
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
+	void Move() override;
 
 	static CBoss* Create(const D3DXVECTOR3 pos);
 

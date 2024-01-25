@@ -10,6 +10,7 @@
 #include "particle_emitter.h"
 #include "boss_life_gauge.h"
 #include "camera.h"
+#include "particle_emitter.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 1000.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -48,9 +49,18 @@ HRESULT CBoss::Init()
 	CEnemy::Init();
 
 	CParts* pBody = GetParts(PARTS_BODY);
-	//pBody->SetMotion(MOTION_ENTRANCE);
+	pBody->SetMotion(MOTION_NEUTRAL);
 
 	m_bOpening = true;
+
+	//SetCenterPos({ 0.0f,500.0f,0.0f });
+
+	CCamera *pCamera = CApplication::GetCamera();
+	pCamera->SetOpening(m_bOpening);
+
+	pCamera->SetPosV({ 0.0f,200.0f,-1000.0f });
+	pCamera->SetPosR({ 0.0f, 3000.0f, -500.0f });
+	pCamera->SetRot({ 0.0f,0.0f,0.0f });
 
 	return S_OK;
 }
@@ -70,6 +80,8 @@ void CBoss::Update()
 {
 	// キャラクターの更新
 	CEnemy::Update();
+
+	ChangeMotion();
 
 	// カメラのポインタ
 	bool bOpening = CApplication::GetCamera()->GetOpening();
@@ -106,14 +118,17 @@ void CBoss::Destroy()
 		D3DXVECTOR3 pos = GetPos();
 		pos.y += 50.0f * nCnt;
 
-		// 攻撃パーティクル
+		// 撃破時パーティクル
 		std::move(CParticleEmitter::Create("Destroy", pos));
 	}
+
+
 
 	// ゲーム終了を設定する
 	CGame::SetGameEnd();
 
 	CEnemy::Destroy();
+
 }
 
 //============================================================================
@@ -121,14 +136,18 @@ void CBoss::Destroy()
 //============================================================================
 void CBoss::ChangeMotion()
 {
-	// 着地モーションを設定
+	// ニュートラルモーションモーションを設定
 	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
 	{
 		// パーツ
 		CParts* pParts = GetParts(nCnt);
 
+		if (pParts->GetMotion() == MOTION_ATTACK1 && pParts->GetMotionStop() == true)
+		{
+			pParts->SetMotion(MOTION_ATTACK2);
+		}
 		// モーションがループしない場合
-		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
+		else if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
 		{
 			// ニュートラルモーションにする
 			pParts->SetMotion(MOTION_NEUTRAL);
@@ -141,14 +160,34 @@ void CBoss::ChangeMotion()
 //============================================================================
 void CBoss::Landing(const D3DXVECTOR3 pos)
 {
-	// 着地モーションを設定
-	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+	// カメラのポインタ
+	bool bOpening = CApplication::GetCamera()->GetOpening();
+
+	if (bOpening)
 	{
-		//GetParts(nCnt)->SetMotion(MOTION_LANDING);
+		// 着地モーションを設定
+		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+		{
+			GetParts(nCnt)->SetMotion(MOTION_NEUTRAL);
+			// 着地時パーティクル
+			std::move(CParticleEmitter::Create("Shock", pos));
+			std::move(CParticleEmitter::Create("Dust", pos));
+		}
 	}
 
 	// キャラクターの着地処理
 	CCharacter::Landing(pos);
+}
+
+//============================================================================
+// 移動処理
+//============================================================================
+void CBoss::Move()
+{
+	CEnemy::Move();
+
+	// 常に追跡状態
+	SetTracking(true);
 }
 
 //============================================================================

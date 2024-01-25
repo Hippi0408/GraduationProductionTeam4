@@ -23,6 +23,7 @@
 #include "confirmation_window.h"
 #include "char_select.h"
 #include "connect.h"
+#include "sound.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -102,19 +103,21 @@ void CCharDecision_Window::Update()
 	}
 
 	// ゲーム画面への遷移
-	if (pInput->Trigger(DIK_RETURN)
+	if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_A) || pInput->Trigger(JOYPAD_B))
 		&& m_bMaxSize == true
 		&& m_bScaleReduce == false
 		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
+		// 決定SE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 		UninitExplanation();				// フォントの削除
-		m_bScaleReduce = true;
 
 		////サーバーの接続
 		//CApplication::GetClient()->Init("127.0.0.1", 15678);
 
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
+		m_bScaleReduce = true;
 	}
 	if (m_bScaleReduce == true)
 	{
@@ -229,8 +232,12 @@ void CCharDecision_Window::CharSelectChoice()
 	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
 		// 左に移動する
-		if (pInput->Trigger(DIK_A) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_UP)) && m_bStopFlag == false)
+		if ((pInput->Trigger(DIK_A) || pInput->Trigger(JOYPAD_LEFT)) && m_bStopFlag == true
+			|| (pInput->Trigger(JOYPAD_UP)) && m_bStopFlag == false)
 		{
+
+			// 選択SE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 			// 選択した番号の取得
 			m_nSelectIndex--;		// 番号を1つ戻す
 			m_bSlideFlag = true;	// スライドさせる
@@ -242,8 +249,11 @@ void CCharDecision_Window::CharSelectChoice()
 
 		}
 		// 下に移動する
-		else if (pInput->Trigger(DIK_D) && m_bStopFlag == true || (pInput->Trigger(JOYPAD_DOWN)) && m_bStopFlag == false)
+		else if ((pInput->Trigger(DIK_D) || pInput->Trigger(JOYPAD_RIGHT) )&& m_bStopFlag == true
+			|| (pInput->Trigger(JOYPAD_DOWN)) && m_bStopFlag == false)
 		{
+			// 選択SE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 			m_nSelectIndex++;		// 番号を1つ進める
 			m_bSlideFlag = true;	// スライドさせる
 			m_bLeftRight = true;	// 右に移動
@@ -292,6 +302,7 @@ void CCharDecision_Window::SlideWindow()
 	 // 左移動
 		if (m_bLeftRight == false)
 		{
+
 			m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
  			pos.x -= m_fMoveX;					// 移動量の減算

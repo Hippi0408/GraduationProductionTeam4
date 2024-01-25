@@ -40,6 +40,7 @@
 #include "map_object_manager.h"
 #include "fog.h"
 #include "restrictions.h"
+#include "sound.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -60,6 +61,7 @@ CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
 CWeapon_Parameter *CGame::m_pWeapon_Parameter = nullptr;
 CMap_Object_Manager *CGame::m_pMap_Object_Manager = nullptr;
 CMap *CGame::m_pMap = nullptr;
+CTime *CGame::m_pTime = nullptr;
 
 //==============================================================================================
 // コンストラクタ
@@ -90,12 +92,7 @@ HRESULT CGame::Init()
 		pCamera->SetPosV({ 0.0f, 225.0f, -450.0f });
 		pCamera->SetPosR({ 0.0f, 112.5f, 450.0f });
 	}
-	else
-	{
-		pCamera->SetPosV({ 0.0f,200.0f,-1000.0f });
-		pCamera->SetPosR({ 0.0f, 3000.0f, -500.0f });
-	}
-
+	
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
 
@@ -111,9 +108,9 @@ HRESULT CGame::Init()
 	m_pWeapon_Parameter->Init();
 
 	// プレイヤーUIの生成
-	m_pPlayer_UI[CPlayerUi::UITYPE_SUPPORT] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_SUPPORT, CObject::PRIORITY_CENTER);
-	m_pPlayer_UI[CPlayerUi::UITYPE_ATTACK] = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_ATTACK, CObject::PRIORITY_CENTER);
-	m_pPlayer_UI[CPlayerUi::UITYPE_WEAPON] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_WEAPON, CObject::PRIORITY_CENTER);
+	//m_pPlayer_UI[CPlayerUi::UITYPE_SUPPORT] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_SUPPORT, CObject::PRIORITY_CENTER);
+	//m_pPlayer_UI[CPlayerUi::UITYPE_ATTACK] = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_ATTACK, CObject::PRIORITY_CENTER);
+	//m_pPlayer_UI[CPlayerUi::UITYPE_WEAPON] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_WEAPON, CObject::PRIORITY_CENTER);
 
 	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
@@ -138,15 +135,12 @@ HRESULT CGame::Init()
 		// モブキャラの生成
 		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
 	}
-	// ボスキャラの生成
-	CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
 
 	// 武器、パーツのドロップ
 	SetDrop_Parts(20, { 0.0f,0.0f,0.0f }, true);
-	SetDrop_Parts(1, { 500.0f,0.0f,500.0f }, false);
 
 	// タイムの生成
-	m_pTime = CTime::Create();
+	m_pTime = CTime::Create(D3DXVECTOR3(540.0f,-50.0f,0.0f));
 
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20000.0f, 20000.0f, 20000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
@@ -165,10 +159,12 @@ HRESULT CGame::Init()
 	m_bInputFlag = false;
 
 	// マップ生成
-	m_pMap->ReadMap("Data/text/map_test.txt");
+	m_pMap->ReadMap("Data/text/map.txt");
 
 	// 移動制限
 	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 13000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });
+
+	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_GAME);
 
 	return S_OK;
 }
@@ -279,6 +275,8 @@ void CGame::Uninit()
 		m_pMap = nullptr;
 	}
 
+	CApplication::GetSound()->StopAll();
+
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
 
@@ -306,6 +304,7 @@ void CGame::Update()
 		CInput* pInput = CInput::GetKey();
 		if (pInput->Trigger(DIK_F5))
 		{
+			SetGameEnd();
 			CFade::SetFade(CApplication::MODE_RESULT, 0.05f);
 		}
 		// 左Shiftキーを押したままの場合
@@ -555,7 +554,7 @@ void CGame::SetPlayerUI(const int index, const int type)
 	}
 
 	// スキル画像の設定
-	m_pPlayer_UI[index]->GetSkillUI()->SetTexture((CTexture::TEXTURE)nTexNumber);
+	//m_pPlayer_UI[index]->GetSkillUI()->SetTexture((CTexture::TEXTURE)nTexNumber);
 }
 
 //==============================================================================================

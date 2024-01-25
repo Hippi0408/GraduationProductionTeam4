@@ -16,6 +16,7 @@
 #include "title_menu.h"
 #include "menu_window.h"
 #include "confirmation_window.h"
+#include "sound.h"
 #include "object2D.h"
 #include "objectX.h"
 #include "debugProc.h"
@@ -193,6 +194,8 @@ HRESULT CTitle::Init()
 	m_bWindowUninit = false;
 	m_bWindow = false;
 
+	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_TITLE);
+
 	return S_OK;
 }
 
@@ -208,6 +211,8 @@ void CTitle::Uninit()
 		delete m_pMenuWindow;
 		m_pMenuWindow = nullptr;
 	}
+
+	CApplication::GetSound()->StopAll();
 }
 
 //==============================================================================================

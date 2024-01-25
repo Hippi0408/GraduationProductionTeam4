@@ -14,6 +14,7 @@
 #include"tutorial.h"
 #include"map_object_manager.h"
 #include"drop_manager.h"
+#include "particle_emitter.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -71,12 +72,6 @@ HRESULT CMap_Object::Init()
 	
 	D3DXVECTOR3 Max = Obj->GetMaxSize();
 	D3DXVECTOR3 Min = Obj->GetMinSize();
-	float fRotY = Obj->GetRot().y;
-
-	/*Max.x += sinf(fRotY);
-	Max.z += cosf(fRotY);
-	Min.x += sinf(fRotY);
-	Min.z += cosf(fRotY);*/
 
 	SetIndex({ Min.x,0.0f,Min.z }, 0);
 	SetIndex({ Min.x,0.0f,Max.z }, 1);
@@ -94,6 +89,8 @@ HRESULT CMap_Object::Init()
 void CMap_Object::Uninit()
 {
 	CMove_Object::Uninit();
+
+	GetObjectX()->Uninit();
 }
 
 //==============================================================================================
@@ -119,6 +116,9 @@ void CMap_Object::Draw()
 //==============================================================================================
 void CMap_Object::Hit(CMove_Object* /*pHit*/)
 {
+	Uninit();
+
+	std::move(CParticleEmitter::Create("smoke", GetPos()));
 }
 
 //==============================================================================================
