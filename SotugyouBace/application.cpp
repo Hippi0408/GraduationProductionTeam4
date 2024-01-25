@@ -115,7 +115,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	bWindow = TRUE;
 #endif
 
-	m_pRenderer->Init(Window, bWindow);				// レンダリング
+	m_pRenderer->Init(Window, bWindow);			// レンダリング
 	m_pLight->Init();							// ライト
 	m_pCamera->Init();							// カメラ
 
@@ -356,6 +356,9 @@ void CApplication::SetMode(MODE mode)
 
 		// 全てのモデルセットの終了
 		m_pPartsFile->ReleaseAllFile();
+
+		// 全BGMの終了処理
+		m_pSound->StopAllBGM();
 	}
 	// カメラの初期化
 	m_pCamera->Init();

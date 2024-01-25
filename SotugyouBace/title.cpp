@@ -204,6 +204,8 @@ HRESULT CTitle::Init()
 //==============================================================================================
 void CTitle::Uninit()
 {
+	CApplication::GetSound()->StopAllBGM();
+
 	// メニューウィンドウの終了処理
 	if (m_pMenuWindow != nullptr)
 	{
@@ -211,8 +213,6 @@ void CTitle::Uninit()
 		delete m_pMenuWindow;
 		m_pMenuWindow = nullptr;
 	}
-
-	CApplication::GetSound()->StopAll();
 }
 
 //==============================================================================================

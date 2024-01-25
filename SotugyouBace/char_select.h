@@ -41,7 +41,7 @@ public:
 
 private:
 	static CCharDecision_Window* m_pCharDecisionWindow;
-	CFontString* m_pFont;
+	CObject2D* m_pFontTexture;
 	CHalfSphere* m_pHalfSphere;
 	CPlayerData* m_pPlayerData;
 	CObjectX* m_pObjectX[MAX_PLAYER];

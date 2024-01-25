@@ -298,19 +298,17 @@ void CPC::Input()
 
 		if (pGauge != nullptr)
 		{
+				// 消費速度
+				pGauge->SetConsumption_Speed(1.0f);
 			// 地上にいる場合
 			if (GetGround())
 			{
-				// 消費速度
-				pGauge->SetConsumption_Speed(1.5f);
 				// 回復速度
 				pGauge->SetRecovery_Speed(10.0f);
 			}
 			// 空中にいる場合
 			else
 			{
-				// 消費速度
-				pGauge->SetConsumption_Speed(3.0f);
 				// 回復速度
 				pGauge->SetRecovery_Speed(0.3f);
 			}

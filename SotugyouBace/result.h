@@ -63,7 +63,7 @@ private:
 	CParts* m_pParts[3];							// パーツ
 	CHalfSphere* m_pHalfSphere;						// ハーフスフィア
 	CObject2D* m_pObject2D;							// オブジェクト2D
-	CFontString* m_pFont[3];						// フォント
+	CObject2D* m_pFontTexture[3];					// フォントテクスチャ
 	CScore* m_pScore;								// スコア
 	CTime* m_pTime;									// タイム
 	CNumber* m_apTotalDamage[5];					// ナンバー
