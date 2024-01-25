@@ -14,6 +14,7 @@
 #include "normal_bullet.h"
 #include "player_manager.h"
 #include "cannon.h"
+#include "weapon_attack.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 1000.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -67,6 +68,8 @@ HRESULT CBoss::Init()
 
 	// 当たり判定のタイプ
 	SetCollision_Type(COLLISION_TYPE_BOSS);
+
+	SetRadius(300.0f);
 
 	return S_OK;
 }
@@ -152,6 +155,7 @@ void CBoss::ChangeMotion()
 		if (pParts->GetMotion() == MOTION_ATTACK1 && pParts->GetMotionStop() == true)
 		{
 			pParts->SetMotion(MOTION_ATTACK2);
+			CWeapon_Attack::Create(GetPos(), 3000, false, 300, 20);
 		}
 		// モーションがループしない場合
 		else if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
@@ -255,14 +259,16 @@ void CBoss::Slash_Attack()
 	int nRand_Slash = rand() % 2;
 
 	// 近接攻撃
-	if (m_nAttack_Cooltime >= 300 && nRand_Slash == 0)
+	if (m_nAttack_Cooltime >= 100 && nRand_Slash == 0)
 	{
 		pBody->SetMotion(MOTION_ATTACK1);
+		CWeapon_Attack::Create(GetPos(), 3000, false, 300, 20);
 		m_nAttack_Cooltime = 0;
 	}
-	else if (m_nAttack_Cooltime >= 300 && nRand_Slash == 1)
+	else if (m_nAttack_Cooltime >= 100 && nRand_Slash == 1)
 	{
 		pBody->SetMotion(MOTION_ATTACK3);
+		CWeapon_Attack::Create(GetPos(), 3000, false, 200, 80);
 		m_nAttack_Cooltime = 0;
 	}
 }
@@ -290,7 +296,7 @@ void CBoss::Bullet_Attack()
 	{
 		// 遠距離攻撃
 		CNormal_Bullet::Create({ GetPos().x,GetPos().y + 700.0f,GetPos().z }, { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false,
-			50, 120, 60);
+			100, 200, 60);
 		m_nBullet_Cooltime = 0;
 	}
 }

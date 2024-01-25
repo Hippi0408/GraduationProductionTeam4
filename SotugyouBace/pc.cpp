@@ -347,10 +347,12 @@ void CPC::Input()
 			// 拘束スイッチの取得
 			CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);
 
-			if (pRestraint != nullptr && pRestraint->GetHit()
-				&& (pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_R1)))
+			if (pRestraint != nullptr && pRestraint->GetHit())
+			{
+				if (pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_R1))
 				// ボタンを押した数のカウント
-				pRestraint->AddCountSwitch();
+					pRestraint->AddCountSwitch();
+			}
 		}
 	}
 }
