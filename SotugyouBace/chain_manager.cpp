@@ -12,6 +12,7 @@
 #include"enemy.h"
 #include"enemy_manager.h"
 #include"game.h"
+#include"cannon.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -104,6 +105,9 @@ void CChain_Manager::Update()
 			m_pChain[0][nCnt]->Uninit();
 			m_pChain[1][nCnt]->Uninit();
 			m_pAnchor->Uninit();
+
+			// 拘束を解く
+			CCannon::SetRestrain(false);
 		}
 	}
 }

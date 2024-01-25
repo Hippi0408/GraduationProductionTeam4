@@ -17,6 +17,7 @@
 #include "pause.h"
 #include "map.h"
 #include "restraint_switch.h"
+#include "particle_emitter.h"
 
 #include"player_manager.h"
 #include"debugProc.h"
@@ -354,6 +355,20 @@ void CPC::Input()
 				pRestraint->AddCountSwitch();
 		}
 	}
+}
+
+//============================================================================
+// ”j‰óˆ—
+//============================================================================
+void CPC::Destroy()
+{
+	std::move(CParticleEmitter::Create("burst", GetPos()));
+
+	CPlayer::Destroy();
+
+	CPlayerManager *pPlayerManager = CGame::GetPlayerManager();
+
+	pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, 0);
 }
 
 //============================================================================

@@ -155,16 +155,25 @@ void CResult::Uninit()
 	//ナンバーの破棄
 	for (int nCnt = 0; nCnt < 5; nCnt++)
 	{
-		m_apTotalDamage[nCnt]->Uninit();
-		m_apTotalDamage[nCnt] = nullptr;
+		if (m_apTotalDamage[nCnt] != nullptr)
+		{
+			m_apTotalDamage[nCnt]->Uninit();
+			m_apTotalDamage[nCnt] = nullptr;
+		}
 	}
 
 	//ナンバーの破棄
 	for (int nCnt = 0; nCnt < 3; nCnt++)
 	{
-		m_apDeathCount[nCnt]->Uninit();
-		m_apDeathCount[nCnt] = nullptr;
+		if (m_apDeathCount[nCnt] != nullptr)
+		{
+			m_apDeathCount[nCnt]->Uninit();
+			m_apDeathCount[nCnt] = nullptr;
+		}
 	}
+
+	// モブの討伐数のリセット
+	CMob::SetDeathCount(0);
 
 	CApplication::GetSound()->StopAll();
 }
