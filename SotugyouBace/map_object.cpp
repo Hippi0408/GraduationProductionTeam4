@@ -119,6 +119,9 @@ void CMap_Object::Hit(CMove_Object* /*pHit*/)
 	Uninit();
 
 	std::move(CParticleEmitter::Create("smoke", GetPos()));
+
+	// ƒrƒ‹“|‰óSE
+	CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BREAKBILL);
 }
 
 //==============================================================================================
