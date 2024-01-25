@@ -424,6 +424,8 @@ void CGame::GameEnd()
 		{
 			m_pFinishRogo = CFontString::Create({ SCREEN_WIDTH / 2 - 360, SCREEN_HEIGHT / 2, 0.0f }, { 100.0f, 100.0f }, "‚°‚«‚Íƒ@!");
 			m_pFinishRogo->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 		}
 		m_nEndCounter++;
 	}

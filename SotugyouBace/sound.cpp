@@ -27,8 +27,10 @@ const CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] =
 	{ "data/sounds/SE/game/BreakBill.wav", 0 },		// ビル倒壊
 	{ "data/sounds/SE/game/bullet001.wav", 0 },		// 弾発射
 	{ "data/sounds/SE/game/Slash.wav", 0 },			// 剣振り
+	{ "data/sounds/SE/game/PlayerJump.wav", 0 },	// プレイヤーのジャンプ
+	{ "data/sounds/SE/game/PlayerWalk.wav", 0 },	// プレイヤーの歩き
 
-
+	
 
 	{ nullptr, 0 },									// SE最大値
 };
