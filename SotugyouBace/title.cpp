@@ -204,6 +204,8 @@ HRESULT CTitle::Init()
 //==============================================================================================
 void CTitle::Uninit()
 {
+	CApplication::GetSound()->StopAllBGM();
+
 	// メニューウィンドウの終了処理
 	if (m_pMenuWindow != nullptr)
 	{

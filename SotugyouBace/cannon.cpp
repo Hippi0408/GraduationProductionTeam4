@@ -14,6 +14,8 @@
 #include"application.h"
 #include "particle_emitter.h"
 
+bool CCannon::m_bRestrain = false;
+
 //==============================================================================================
 // コンストラクタ
 //==============================================================================================
@@ -130,8 +132,10 @@ void CCannon::Update()
 
 					if (m_nChain_Count >= 120)
 					{
+						m_bRestrain = true;
+
 						// 鎖の発射
-						m_pChain_Manager = CChain_Manager::Create(GetPos(), Vec, Dis, fRotDest + D3DX_PI / 2, 1000);
+						m_pChain_Manager = CChain_Manager::Create(GetPos(), Vec, Dis, fRotDest + D3DX_PI / 2, 500);
 						// 攻撃パーティクル
 						std::move(CParticleEmitter::Create("spark", GetPos()));
 					}

@@ -15,10 +15,10 @@
 #include "boss.h"
 #include "utility.h"
 #include "normal_bullet.h"
+#include "sound.h"
 
 const float CMob::MOB_COLLISION_RADIUS = 200.0f;	// モブキャラの当たり判定の大きさ
 const float CMob::MOB_BULLET_SPEED = 60.0f;		// 敵キャラの弾の速度
-int CMob::m_DeathCount = 0;
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -107,7 +107,7 @@ void CMob::Update()
 
 	if (!CApplication::GetCamera()->GetOpening())
 		// 回避
-		Avoidance();
+		//Avoidance();
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -134,18 +134,8 @@ void CMob::Destroy()
 	// 武器、パーツのドロップ
 	CGame::SetDrop_Parts(1, GetPos());
 
-	m_DeathCount++;
-
-	// ボスが出るまではチュートリアル
-	if (pBoss == nullptr && m_DeathCount == 10)
-	{
-		// ボスキャラの生成
-		pBoss = CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
-	}
-
-	// 二体倒したら一体復活
-	if (m_DeathCount % 2 == 0)
-		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
+	// 撃墜数をカウント
+	CGame::AddDeathCount();
 }
 
 //============================================================================
@@ -211,7 +201,7 @@ void CMob::Move()
 	if (GetTracking() && !CApplication::GetCamera()->GetOpening())
 	{
 		// 攻撃
-		Attack();
+	//	Attack();
 
 		// プレイヤーまでの角度
 		float fAngle = GetAngle();

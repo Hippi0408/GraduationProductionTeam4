@@ -17,6 +17,7 @@
 #include "model.h"
 #include "objectX.h"
 #include "sound.h"
+#include "texture.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -48,7 +49,8 @@ HRESULT CChar_Select::Init()
 	m_nIndex = 0;
 	m_nPlayerIndex = 0;
 
-	m_pFont = CFontString::Create({ 280.0f, 200.0f, 0.0f }, { 50.0f, 50.0f }, "キャラクターセレクト");
+	m_pFontTexture = CObject2D::Create({ SCREEN_WIDTH / 2,100.0f,0.0f }, { 300.0f,100.0f });
+	m_pFontTexture->SetTexture(CTexture::TEXTURE_AIRCRAAFTSELECTION);
 
 	CCamera* pCamera = CApplication::GetCamera();	// カメラのポインタ
 	m_pPlayerData = new CPlayerData;				// プレイヤーデータのインスタンス

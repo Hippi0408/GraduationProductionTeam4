@@ -59,12 +59,9 @@ public:
 	void Attack();
 	void Avoidance();
 
-	static int GetDeathCount() { return m_DeathCount; }
-
 	static CMob* Create(const D3DXVECTOR3 pos);
 
 private:
-	static int m_DeathCount;
 	float m_fDistance;
 
 	int m_nBullet_Interval;	// 弾を撃つ間隔
@@ -73,7 +70,6 @@ private:
 	int m_fAvoidance_Count;	// 回避するタイミング
 	bool m_bfAvo_Step;
 	float m_fStep;
-	CBoss *pBoss;
 };
 
 #endif// _MOB_H_

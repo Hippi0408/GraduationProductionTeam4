@@ -53,7 +53,7 @@ HRESULT CPlayerUi::Init()
 		break;
 	case CPlayerUi::UITYPE_WEAPON:
 		SetTexPos(0.0f, 1.0f, 1.0f, 0.66f);
-		SetData(1150.0f, 660.0f, 100.0f, 100.0f, CTexture::TEXTURE_NONE);
+		SetData(1150.0f, 60.0f, 100.0f, 100.0f, CTexture::TEXTURE_NONE);
 		break;
 	case CPlayerUi::UITYPE_MAX:
 		break;

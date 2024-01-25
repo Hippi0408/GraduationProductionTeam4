@@ -28,6 +28,7 @@
 #include "number.h"
 #include "mob.h"
 #include "sound.h"
+#include "texture.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -96,7 +97,7 @@ HRESULT CResult::Init()
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, -1000.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
 	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
 
-	for (int nCnt = 0; nCnt < 5; nCnt++)
+	for (int nCnt = 0; nCnt < 6; nCnt++)
 	{
 		//ナンバーの初期化
 		m_apTotalDamage[nCnt] = nullptr;
@@ -150,7 +151,7 @@ void CResult::Uninit()
 	}
 
 	//ナンバーの破棄
-	for (int nCnt = 0; nCnt < 5; nCnt++)
+	for (int nCnt = 0; nCnt < 6; nCnt++)
 	{
 		if (m_apTotalDamage[nCnt] != nullptr)
 		{
@@ -261,6 +262,7 @@ void CResult::Update()
 				|| pInput->Trigger(JOYPAD_START, nCnt))
 				&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 			{
+				InformationUninit();
 				CFade::SetFade(CApplication::MODE_TITLE, 0.05f);
 			}
 		}
@@ -269,9 +271,9 @@ void CResult::Update()
 	if (m_bCreateFlag == true)
 	{
 		// 受けたダメージの総数
-		SetTotalDamage(CApplication::GetTotalDamage(), D3DXVECTOR3(100.0f, 375.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f));
+		SetTotalDamage(CApplication::GetTotalDamage(), D3DXVECTOR3(150.0f, 375.0f, 0.0f), D3DXVECTOR2(30.0f, 30.0f));
 		// 倒した敵の数
-		SetDeathCount(CMob::GetDeathCount(), D3DXVECTOR3(240.0f,525.0f,0.0f), D3DXVECTOR2(30.0f, 30.0f));
+		SetDeathCount(CGame::GetDeathCount(), D3DXVECTOR3(240.0f,525.0f,0.0f), D3DXVECTOR2(30.0f, 30.0f));
 		// タイマーの更新
 		if (m_pTime != nullptr)
 		{
@@ -303,10 +305,9 @@ void CResult::ScaleExpansion()
 
 		if (m_size.x >= 700.0f && m_size.y >= 500.0f && m_bCreateFlag == false)
 		{
-
 			// タイムの生成
 			m_pTime = CTime::Create(D3DXVECTOR3(240.0f, 225.0f, 0.0f));
-			for (int nCnt = 0; nCnt < 5; nCnt++)
+			for (int nCnt = 0; nCnt < 6; nCnt++)
 			{
 				//ナンバーの初期化
 				m_apTotalDamage[nCnt] = CNumber::Create(D3DXVECTOR3(0.0f,0.0f,0.0f),0.0f,0.0f,CObject::PRIORITY_SCREEN);
@@ -317,10 +318,13 @@ void CResult::ScaleExpansion()
 				m_apDeathCount[nCnt] = CNumber::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, CObject::PRIORITY_SCREEN);
 			}
 
-		/*	m_pScore = CScore::Create(D3DXVECTOR3(100.0f, 500.0f, 0.0f));*/
-			m_pFont[0] = CFontString::Create({ 100.0f, 175.0f, 0.0f }, { 45.0f, 45.0f }, "さいたんげきは");
-			m_pFont[1] = CFontString::Create({ 100.0f, 325.0f, 0.0f }, { 45.0f, 45.0f }, "うけたダメージ");
-			m_pFont[2] = CFontString::Create({ 100.0f, 475.0f, 0.0f }, { 45.0f, 45.0f }, "たおしたてきのかず");
+			m_pFontTexture[0] = CObject2D::Create({ 400.0f, 175.0f, 0.0f }, { 200.0f, 50.0f }, CObject::PRIORITY_SCREEN);
+			m_pFontTexture[0]->SetTexture(CTexture::TEXTURE_FASTESTDEFEATE);
+			m_pFontTexture[1] = CObject2D::Create({ 400.0f, 325.0f, 0.0f }, { 300.0f, 50.0f }, CObject::PRIORITY_SCREEN);
+			m_pFontTexture[1]->SetTexture(CTexture::TEXTURE_DURABILITYDAMAGE);
+			m_pFontTexture[2] = CObject2D::Create({ 400.0f, 475.0f, 0.0f }, { 200.0f, 50.0f }, CObject::PRIORITY_SCREEN);
+			m_pFontTexture[2]->SetTexture(CTexture::TEXTURE_NUMBEROFDEFEATS);
+
 			m_bCreateFlag = true;
 		}
 
@@ -352,10 +356,10 @@ void CResult::InformationUninit()
 	// フォントの破棄
 	for (int nCnt = 0; nCnt < 3; nCnt++)
 	{
-		if (m_pFont[nCnt] != nullptr)
+		if (m_pFontTexture[nCnt] != nullptr)
 		{
-			m_pFont[nCnt]->Uninit();
-			m_pFont[nCnt] = nullptr;
+			m_pFontTexture[nCnt]->Uninit();
+			m_pFontTexture[nCnt] = nullptr;
 		}
 	}
 
@@ -364,6 +368,34 @@ void CResult::InformationUninit()
 	{
 		m_pScore->Uninit();
 		m_pScore = nullptr;
+	}
+
+	// タイマーの終了処理
+	if (m_pTime != nullptr)
+	{
+		m_pTime->Uninit();
+		delete m_pTime;
+		m_pTime = nullptr;
+	}
+
+	//ナンバーの破棄
+	for (int nCnt = 0; nCnt < 6; nCnt++)
+	{
+		if (m_apTotalDamage[nCnt] != nullptr)
+		{
+			m_apTotalDamage[nCnt]->Uninit();
+			m_apTotalDamage[nCnt] = nullptr;
+		}
+	}
+
+	//ナンバーの破棄
+	for (int nCnt = 0; nCnt < 3; nCnt++)
+	{
+		if (m_apDeathCount[nCnt] != nullptr)
+		{
+			m_apDeathCount[nCnt]->Uninit();
+			m_apDeathCount[nCnt] = nullptr;
+		}
 	}
 
 	m_bGetFlag = false;
@@ -382,7 +414,7 @@ void CResult::SetTotalDamage(int num, D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	m_aPosTexU[3] = num % 100 / 10;
 	m_aPosTexU[4] = num % 10 / 1;
 
-	for (int nCnt = 0; nCnt < 5; nCnt++)
+	for (int nCnt = 0; nCnt < 6; nCnt++)
 	{
 		//分割数,何番目か
 		m_apTotalDamage[nCnt]->SetPos(D3DXVECTOR3(pos.x + (70.0f * nCnt) + 50.0f / 2, pos.y, 0.0f));
@@ -431,7 +463,7 @@ void CResult::ZoroDamageCount()
 		}
 		if (CApplication::GetTotalDamage() == 0)
 		{
-			m_apTotalDamage[4]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_apTotalDamage[5]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
 }
@@ -443,18 +475,18 @@ void CResult::ZoroDeathCount()
 {
 	if (m_apDeathCount[m_nZeroCountDeathCount] != nullptr)
 	{
-		if (m_aPosTexU[m_nZeroCountDeathCount] == 0 && CMob::GetDeathCount() != 0 && m_nZeroCountDeathCount <= 2)
+		if (m_aPosTexU[m_nZeroCountDeathCount] == 0 && CGame::GetDeathCount() != 0 && m_nZeroCountDeathCount <= 2)
 		{
 			m_apDeathCount[m_nZeroCountDeathCount]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 			m_nZeroCountDeathCount++;
 		}
-		else if (m_aPosTexU[m_nZeroCountDeathCount] == 0 && CMob::GetDeathCount() == 0 && m_nZeroCountDeathCount <= 2)
+		else if (m_aPosTexU[m_nZeroCountDeathCount] == 0 && CGame::GetDeathCount() == 0 && m_nZeroCountDeathCount <= 2)
 		{
 			m_apDeathCount[1]->SetTexPos(0.0f, 1.0f, 0.1f, 0.0f);
 			m_apDeathCount[m_nZeroCountDeathCount]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 			m_nZeroCountDeathCount++;
 		}
-		if (CMob::GetDeathCount() == 0)
+		if (CGame::GetDeathCount() == 0)
 		{
 			m_apDeathCount[2]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}

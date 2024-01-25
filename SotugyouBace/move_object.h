@@ -34,6 +34,7 @@ public:
 		COLLISION_NONE = 0,
 		COLLISION_TYPE_SHERER,
 		COLLISION_TYPE_BLOCK,
+		COLLISION_TYPE_BOSS,
 		COLLISION_MAX,
 	};
 
@@ -65,7 +66,7 @@ public:
 	void SetLandObj(bool land) { m_bLand_Obj = land; }
 	void SetObjY(const float Y) { m_fObjY = Y; }
 	void SetObjXZ(const bool xz) { m_bInXZ = xz; }
-	void SetOnObj(CMove_Object *onobj, int index) { m_OnObject[index] = onobj; }
+	//void SetOnObj(CMove_Object *onobj, int index) { m_OnObject[index] = onobj; }
 	void SetIndex(D3DXVECTOR3 index, int cnt) { m_Index[cnt] = index; }
 	void AddOnObjCnt(int cnt) { m_nOnObjCnt += cnt; }
 	void SetOnObjCnt(int cnt) { m_nOnObjCnt = cnt; }
@@ -86,7 +87,7 @@ public:
 	bool GetLandObj() { return m_bLand_Obj; }
 	const float GetObjY() { return m_fObjY; }
 	const bool GetObjXZ() { return m_bInXZ; }
-	CMove_Object *GetOnObj(int index) { return m_OnObject[index]; }
+	//CMove_Object *GetOnObj(int index) { return m_OnObject[index]; }
 	D3DXVECTOR3 GetIndex(int cnt) { return m_Index[cnt]; }
 	int GetOnObjCnt() { return m_nOnObjCnt; }
 	CObjectX *GetObjectX() { return m_pObjectX; }
@@ -108,7 +109,7 @@ private:
 	bool m_bInXZ;				// XZが重なってるか
 	float m_fObjY;				// オブジェクトのY座標
 	D3DXVECTOR3 m_Index[4];		// オブジェクトの4頂点
-	CMove_Object *m_OnObject[128];
+	//CMove_Object *m_OnObject[128];
 	int m_nOnObjCnt;
 	CObjectX *m_pObjectX;
 };

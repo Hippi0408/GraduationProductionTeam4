@@ -95,6 +95,7 @@ private:
 	bool    m_bUninitFlag;						// íœƒtƒ‰ƒO
 	bool    m_bScaleReduce;						// k¬
 	bool	m_bScaleExpansion;					// Šg‘å
+	bool    m_bSelect;
 	bool    m_bTextureFlag;
 };
 #endif

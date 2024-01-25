@@ -28,15 +28,15 @@ const char* CDrop_Weapon::s_Weapon_FileName[] =
 {
 	// 腕
 	"Data/model/DropParts/SG_01/SG_01_DropArm.x",
-	"Data/model/DropParts/SG_02/SG_02_DropArm.x",
 	"Data/model/DropParts/SG_03/SG_03_DropArm.x",
+	"Data/model/DropParts/SG_02/SG_02_DropArm.x",
 	"Data/model/DropParts/SG_05/SG_05_DropArm.x",
 	nullptr,
 
 	// 脚
 	"Data/model/DropParts/SG_01/SG_01_DropLeg.x",
-	"Data/model/DropParts/SG_02/SG_02_DropLeg.x",
 	"Data/model/DropParts/SG_03/SG_03_DropLeg.x",
+	"Data/model/DropParts/SG_02/SG_02_DropLeg.x",
 	"Data/model/DropParts/SG_05/SG_05_DropLeg.x",
 	nullptr,
 
@@ -191,14 +191,14 @@ void CDrop_Weapon::Uninit()
 	if (GetObjectX() != nullptr)
 		GetObjectX()->Uninit();
 
-	if (GetLandObj())
-	{
-		for (int nCnt = 0; nCnt < GetOnObj(0)->GetOnObjCnt(); nCnt++)
-		{
-			GetOnObj(0)->SetOnObj(nullptr, nCnt);
-		}
-		GetOnObj(0)->SetOnObjCnt(0);
-	}
+	//if (GetLandObj())
+	//{
+	//	for (int nCnt = 0; nCnt < GetOnObj(0)->GetOnObjCnt(); nCnt++)
+	//	{
+	//		GetOnObj(0)->SetOnObj(nullptr, nCnt);
+	//	}
+	//	GetOnObj(0)->SetOnObjCnt(0);
+	//}
 
 	CMove_Object::Uninit();
 }
@@ -332,7 +332,7 @@ void CDrop_Weapon::FieldCollision()
 		SetPosOld(pos);
 
 		// メッシュフィールドとの当たり判定
-		float MeshY = pMesh->MeshCollision(pos);
+		float MeshY = pMesh->MeshCollision(pos) + ;
 
 		// メッシュフィールドに乗ってる
 		if (pMesh->GetHit())

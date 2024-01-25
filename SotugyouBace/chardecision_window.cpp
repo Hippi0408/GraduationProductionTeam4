@@ -65,7 +65,7 @@ HRESULT CCharDecision_Window::Init()
 	m_bLeftRight = false;
 	m_bStopFlag = true;
 	m_bPosDest = false;
-	m_bExplanationUninit = false;
+	//m_bExplanationUninit = false;
 	m_bScale = false;
 	m_bDicision = false;
 	m_bUninitFlag = false;
@@ -111,37 +111,14 @@ void CCharDecision_Window::Update()
 		CharDecisionMenuScale();
 	}
 
-	// ゲーム画面への遷移
-	if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_A) || pInput->Trigger(JOYPAD_B))
-		&& m_bMaxSize == true
-		&& m_bScaleReduce == false
-		&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
-	{
-		// 決定SE
-		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
-		UninitExplanation();				// フォントの削除
-
-		////サーバーの接続
-		//CApplication::GetClient()->Init("127.0.0.1", 15678);
-
-		// 画面遷移
-		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
-		m_bScaleReduce = true;
-
-		// プレイヤー番号の設定
-		CApplication::SetPlayerJobIndex(m_nSelectIndex, CPlayer::PARTS_BODY);
-		CApplication::SetPlayerJobIndex(-1, CPlayer::PARTS_ARMS);
-		CApplication::SetPlayerJobIndex(-1, CPlayer::PARTS_LEG);
-
-		// 素手の設定
-		CApplication::SetPlayerWeaponIndex(CWeapon::WEAPON_KNUCKLE);
-	}
 	if (m_bScaleReduce == true)
 	{
+		// フォントとテクスチャの削除
+		UninitExplanation();
 		CharDecisionMenuScaleReduce();
 	}
 
-	if (m_pWindow != nullptr)
+	if (m_pWindow != nullptr && m_bScaleReduce == false)
 	{
 		// キャラの変更処理
 		CharSelectChoice();
@@ -158,6 +135,21 @@ void CCharDecision_Window::Update()
 		// プレイヤー番号処理
 		PlayerIndex();
 	}
+
+	// ゲーム画面への遷移
+	if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_A) || pInput->Trigger(JOYPAD_B))
+		&& m_bMaxSize == true)
+	{
+		m_bScaleReduce = true;
+
+		// プレイヤー番号の設定
+		CApplication::SetPlayerJobIndex(m_nSelectIndex, CPlayer::PARTS_BODY);
+		CApplication::SetPlayerJobIndex(-1, CPlayer::PARTS_ARMS);
+		CApplication::SetPlayerJobIndex(-1, CPlayer::PARTS_LEG);
+
+		// 素手の設定
+		CApplication::SetPlayerWeaponIndex(CWeapon::WEAPON_KNUCKLE);
+	}
 }
 
 //============================================================================
@@ -165,7 +157,7 @@ void CCharDecision_Window::Update()
 //============================================================================
 void CCharDecision_Window::CharDecisionMenuScale()
 {
-	if (m_pObject2D != nullptr)
+	if (m_pWindow != nullptr)
 	{// nullチェック
 
 		// サイズの拡大
@@ -203,8 +195,10 @@ void CCharDecision_Window::CharDecisionMenuScale()
 //=============================================================================
 bool CCharDecision_Window::CharDecisionMenuScaleReduce()
 {
-	if (m_pObject2D != nullptr)
+	if (m_pWindow != nullptr)
 	{// nullチェック
+
+		//m_bExplanationUninit = true;		// テクスチャとフォントの削除
 
 		// サイズの縮小
 		m_size.x -= SizeXScaleSpeed;
@@ -218,16 +212,15 @@ bool CCharDecision_Window::CharDecisionMenuScaleReduce()
 		{// Yサイズの最小
 			m_size.y = 0.0f;
 		}
-		m_bExplanationUninit = true;		// テクスチャとフォントの削除
-
-		// フォントとテクスチャの削除
-		UninitExplanation();
 
 		// ウィンドウが最小値まで行ったら
 		if (m_size.x <= 0.0f && m_size.y <= 0.0f)
 		{
+			// 画面遷移
+			CFade::SetFade(CApplication::MODE_GAME, 0.1f);
 			m_bSpawnWindow = false;		// ウィンドウを生成されていない状態にする
 			m_bUninitFlag = true;		// 削除フラグをtrue
+			m_bScaleReduce = false;
 
 			// 終了処理
 			Uninit();					
@@ -243,7 +236,7 @@ bool CCharDecision_Window::CharDecisionMenuScaleReduce()
 
 //=============================================================================
 // 選択肢の処理
-//=============================================================================
+//=============================================================================w
 void CCharDecision_Window::CharSelectChoice()
 {
 	// 入力デバイスの情報
@@ -322,7 +315,7 @@ void CCharDecision_Window::SlideWindow()
 	 // 左移動
 		if (m_bLeftRight == false)
 		{
-			m_bExplanationUninit = true;		// テクスチャとフォントの削除
+			//m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
  			pos.x += m_fMoveX;					// 移動量の減算
 
@@ -339,13 +332,13 @@ void CCharDecision_Window::SlideWindow()
 				m_bFontFlag = false;			// フォントを使用していない状態にする
 				m_bTextureFlag = false;
 				m_bStopFlag = true;				// スライドを停止させる
-				m_bExplanationUninit = false;   // テクスチャとフォントの表示
+				//m_bExplanationUninit = false;   // テクスチャとフォントの表示
 			}
 		}
 		// 右移動
 		else
 		{
-			m_bExplanationUninit = true;		// テクスチャとフォントの削除
+			//m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
 			pos.x -= m_fMoveX;					// 移動量の加算
 			if (pos.x <= -SCREEN_WIDTH / 2 && m_bPosDest == false)
@@ -361,7 +354,7 @@ void CCharDecision_Window::SlideWindow()
 				m_bFontFlag = false;			// フォントを使用していない状態にする
 				m_bTextureFlag = false;
 				m_bStopFlag = true;				// スライドを停止させる
-				m_bExplanationUninit = false;	// テクスチャとフォントの表示
+				//m_bExplanationUninit = false;	// テクスチャとフォントの表示
 			}
 		}
 		// 位置の設定
@@ -405,7 +398,10 @@ void CCharDecision_Window::PlayerIndex()
 	}
 
 	// 選択番号の更新
-	m_pSelect_Number->AnimTexture(m_nSelectIndex + 1, 10);
+	if (m_pSelect_Number != nullptr)
+	{
+		m_pSelect_Number->AnimTexture(m_nSelectIndex + 1, 10);
+	}
 }
 
 //============================================================================

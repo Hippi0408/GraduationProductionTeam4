@@ -71,7 +71,7 @@ const char* CTexture::s_FileName[] =
 
 	"Data/texture/Weapon/AR_icon.png",				// アサルトライフルアイコン
 	"Data/texture/Weapon/SMG_icon.png",				// サブマシンガンアイコン
-	"Data/texture/Weapon/SHandgun_icon.png",			// ハンドガンアイコン
+	"Data/texture/Weapon/SHandgun_icon.png",		// ハンドガンアイコン
 	"Data/texture/Weapon/MG_icon.png",				// マシンガンアイコン
 	"Data/texture/Weapon/SG_icon.png",				// ショットガンアイコン
 	"Data/texture/Weapon/SR_icon.png",				// スナイパーライフルアイコン
@@ -98,6 +98,11 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/job/status_vanguard.png",			// ヴァンガード
 	"Data/texture/job/status_eagleeye.png",			// イーグルアイ
 	"Data/texture/job/status_standard.png",			// マーシャル
+
+	"Data/texture/TEX001.png",						// 機体選択
+	"Data/texture/TEX002.png",						// 最短撃破
+	"Data/texture/TEX003.png",						// 耐久ダメージ
+	"Data/texture/TEX004.png",						// 撃破数
 
 };
 

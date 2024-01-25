@@ -78,14 +78,14 @@ void CCharacter::Uninit()
 		m_pGaugeManager = nullptr;
 	}
 
-	if (GetLandObj())
-	{
-		for (int nCnt = 0; nCnt < GetOnObj(0)->GetOnObjCnt(); nCnt++)
-		{
-			GetOnObj(0)->SetOnObj(nullptr, nCnt);
-		}
-		GetOnObj(0)->SetOnObjCnt(0);
-	}
+	//if (GetLandObj())
+	//{
+	//	for (int nCnt = 0; nCnt < GetOnObj(0)->GetOnObjCnt(); nCnt++)
+	//	{
+	//		GetOnObj(0)->SetOnObj(nullptr, nCnt);
+	//	}
+	//	GetOnObj(0)->SetOnObjCnt(0);
+	//}
 
 	m_Parts.clear();
 

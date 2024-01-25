@@ -17,9 +17,12 @@
 #include "pause.h"
 #include "map.h"
 #include "restraint_switch.h"
+#include "particle_emitter.h"
 
 #include"player_manager.h"
 #include"debugProc.h"
+
+#include "sound.h"
 
 #include "result.h"
 
@@ -88,7 +91,8 @@ void CPC::Draw()
 //==============================================================================================
 void CPC::Input()
 {
-	if (CApplication::GetModeType() != CApplication::MODE_RESULT)
+	// リザルトではない場合 && ダメージ中じゃない場合
+	if (CApplication::GetModeType() != CApplication::MODE_RESULT && GetCollisionNoneHit() == false)
 	{
 	//入力デバイスの情報
 	CInput* pInput = CInput::GetKey();
@@ -134,6 +138,9 @@ void CPC::Input()
 	// 歩いている場合
 	if (bWalk == true && !GetAvoidance())
 	{
+		// 決定SE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERWALK);
+
 		//カメラの向き（Y軸のみ）
 		float rotY = rotCamera.y;
 
@@ -250,6 +257,8 @@ void CPC::Input()
 	// ジャンプ処理
 	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A))
 	{
+		// 決定SE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERJUMP);
 		// ジャンプ入力時間の加算
 		AddJump_PressCount(1);
 
@@ -350,12 +359,28 @@ void CPC::Input()
 			// 拘束スイッチの取得
 			CRestraint_Switch *pRestraint = CGame::GetMap()->GetRestraint_Switch(nCnt);
 
-			if (pRestraint != nullptr && pRestraint->GetHit()
-				&& (pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_R1)))
+			if (pRestraint != nullptr && pRestraint->GetHit())
+			{
+				if (pInput->Trigger(DIK_E) || pInput->Trigger(JOYPAD_R1))
 				// ボタンを押した数のカウント
-				pRestraint->AddCountSwitch();
+					pRestraint->AddCountSwitch();
+			}
 		}
 	}
+}
+
+//============================================================================
+// 破壊処理
+//============================================================================
+void CPC::Destroy()
+{
+	std::move(CParticleEmitter::Create("burst", GetPos()));
+
+	CPlayer::Destroy();
+
+	CPlayerManager *pPlayerManager = CGame::GetPlayerManager();
+
+	pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 }
 
 //============================================================================

@@ -32,6 +32,7 @@ class CWeapon_Parameter;
 class CMap_Object_Manager;
 class CFog;
 class CMap;
+class CBoss;
 
 class CGame : public CMode
 {
@@ -52,12 +53,14 @@ public:
 	static void SetPlayerUI(const int index, const int type);
 	static void SetDrop_Parts(int num, D3DXVECTOR3 pos, bool random = false);
 	static void SetGameEnd();
+	static void AddDeathCount() { m_DeathCount++; }
 
 	static CGame* Create();
 
 	static const bool GetGameEnd() { return m_bGameEnd; }
 	static void SetGameWindow(bool flag) { m_bGameWindow = flag; }
 	static const bool GetGameWindow() { return m_bGameWindow; }
+	static int GetDeathCount() { return m_DeathCount; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
 	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
 	static CDropManager* GetDropManager() { return m_pDropManager; }
@@ -76,6 +79,9 @@ private:
 	static bool m_bGameEnd;							// ゲーム終了判定
 	static bool m_bGameWindow;
 	static bool m_bInputFlag;
+	static int m_DeathCount;
+	bool m_bSpawn_Boss;								// ボスが出現しているかどうか
+	int m_nNumMob;									// モブ数
 	int m_nEndCounter;								// ゲーム終了までの時間
 	CHalfSphere* m_pHalfSphere;
 

@@ -55,6 +55,7 @@ CMeshField *CGame::m_pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 bool CGame::m_bInputFlag = false;
+int CGame::m_DeathCount = 0;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPause *CGame::m_pPause = nullptr;
 CPlayer_Parameter *CGame::m_pPlayer_Parameter = nullptr;
@@ -110,7 +111,7 @@ HRESULT CGame::Init()
 	// プレイヤーUIの生成
 	//m_pPlayer_UI[CPlayerUi::UITYPE_SUPPORT] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_SUPPORT, CObject::PRIORITY_CENTER);
 	//m_pPlayer_UI[CPlayerUi::UITYPE_ATTACK] = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_ATTACK, CObject::PRIORITY_CENTER);
-	m_pPlayer_UI[CPlayerUi::UITYPE_WEAPON] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_WEAPON, CObject::PRIORITY_CENTER);
+	m_pPlayer_UI[CPlayerUi::UITYPE_WEAPON] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 60.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_WEAPON, CObject::PRIORITY_CENTER);
 
 	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
@@ -127,7 +128,7 @@ HRESULT CGame::Init()
 	// プレイヤーの生成(テスト)
 	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
-	for (int nCnt = 0; nCnt < 20; nCnt++)
+	for (int nCnt = 0; nCnt < 20; nCnt++, m_nNumMob++)
 	{
 		// モブキャラの生成
 		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
@@ -163,6 +164,9 @@ HRESULT CGame::Init()
 
 	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_GAME);
 
+	// 討伐数をリセット
+	m_DeathCount = 0;
+
 	return S_OK;
 }
 
@@ -190,13 +194,6 @@ void CGame::Uninit()
 	// プレイヤーマネージャーの破棄
 	if (m_pPlayerManager != nullptr)
 	{
-		CPlayer* pPlayer = m_pPlayerManager->GetPlayer(0);
-
-		// プレイヤー情報の記録
-		CApplication::SetPlayerJobIndex(pPlayer->GetJobIndex(CPlayer::PARTS_ARMS), CPlayer::PARTS_ARMS);
-		CApplication::SetPlayerJobIndex(pPlayer->GetJobIndex(CPlayer::PARTS_LEG), CPlayer::PARTS_LEG);
-		CApplication::SetPlayerWeaponIndex(pPlayer->GetWeaponType());
-
 		m_pPlayerManager->Uninit();
 		delete m_pPlayerManager;
 		m_pPlayerManager = nullptr;
@@ -279,9 +276,10 @@ void CGame::Uninit()
 		m_pMap = nullptr;
 	}
 
+	CApplication::GetSound()->StopAll();
+
 	// フォグの終了処理
 	CFog::DestroyFog();
-
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }
 
@@ -389,6 +387,32 @@ void CGame::Update()
 		}
 #endif
 
+		// ボスが出るまではチュートリアル
+		if (m_bSpawn_Boss == false)
+		{
+			// 計10体倒すと出現
+			if (m_DeathCount == 10)
+			{
+				// ボス出現
+				m_bSpawn_Boss = true;
+				// ボスキャラの生成
+				CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
+
+				// ボス登場SE
+				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BOSSENTRY);
+			}
+		}
+		// ボスが出てからの処理
+		else
+		{
+			// 二体倒したら一体復活
+			if (m_nNumMob - m_DeathCount % 2 == 0)
+			{
+				CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
+				m_nNumMob++;
+			}
+		}
+
 		//オンラインの送信
 		/*if (CApplication::GetClient()->GetIsConnect())
 		{
@@ -422,6 +446,8 @@ void CGame::GameEnd()
 		{
 			m_pFinishRogo = CFontString::Create({ SCREEN_WIDTH / 2 - 360, SCREEN_HEIGHT / 2, 0.0f }, { 100.0f, 100.0f }, "げきはァ!");
 			m_pFinishRogo->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 		}
 		m_nEndCounter++;
 	}
@@ -559,7 +585,7 @@ void CGame::SetPlayerUI(const int index, const int type)
 	}
 
 	// スキル画像の設定
-	//m_pPlayer_UI[index]->GetSkillUI()->SetTexture((CTexture::TEXTURE)nTexNumber);
+	m_pPlayer_UI[index]->GetSkillUI()->SetTexture((CTexture::TEXTURE)nTexNumber);
 }
 
 //==============================================================================================

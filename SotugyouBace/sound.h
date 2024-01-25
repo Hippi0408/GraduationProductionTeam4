@@ -33,6 +33,13 @@ public:
 		SOUND_LABEL_SE_YES,					// 決定
 		SOUND_LABEL_SE_ENTER,				// 最終決定
 
+		SOUND_LABEL_SE_BOSSENTRY,			// ボス登場
+		SOUND_LABEL_SE_BREAKBILL,			// ビル倒壊
+		SOUND_LABEL_SE_BULLET,				// 弾発射
+		SOUND_LABEL_SE_SLASH,				// 剣振り
+		SOUND_LABEL_SE_PLAYERJUMP,			// ジャンプ
+		SOUND_LABEL_SE_PLAYERWALK,			// 歩き
+
 		SOUND_SE_MAX,						// SE最大値
 
 		SOUND_LABEL_MAX

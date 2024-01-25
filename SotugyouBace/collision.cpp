@@ -203,69 +203,69 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 	if ((otherpos.y + othersize.y > pos.y && otherpos.y < pos.y + size.y + othersize.y)
 		|| objParent->GetLandObj())
 	{
-		// 上に乗る
-		if (otherpos.y + othersize.y <= posold.y
-			&& otherpos.x + othersize.x > pos.x - size.x
-			&& otherpos.x - othersize.x < pos.x + size.x
-			&& otherpos.z + othersize.z > pos.z - size.z
-			&& otherpos.z - othersize.z < pos.z + size.z)
-		{
-			// オブジェクトに乗ってる数
-			int nOnObj = objOther->GetOnObjCnt();
-			bool bOn = false;
+		//// 上に乗る
+		//if (otherpos.y + othersize.y <= posold.y
+		//	&& otherpos.x + othersize.x > pos.x - size.x
+		//	&& otherpos.x - othersize.x < pos.x + size.x
+		//	&& otherpos.z + othersize.z > pos.z - size.z
+		//	&& otherpos.z - othersize.z < pos.z + size.z)
+		//{
+		//	// オブジェクトに乗ってる数
+		//	int nOnObj = objOther->GetOnObjCnt();
+		//	bool bOn = false;
 
-			for (int nCnt = 0; nCnt < nOnObj; nCnt++)
-			{
-				if (objOther->GetOnObj(nCnt) == objParent)
-					bOn = true;
-			}
+		//	for (int nCnt = 0; nCnt < nOnObj; nCnt++)
+		//	{
+		//		if (objOther->GetOnObj(nCnt) == objParent)
+		//			bOn = true;
+		//	}
 
-			if (!bOn)
-			{
-				objOther->SetOnObj(objParent, nOnObj);
-				nOnObj++;
-			}
+		//	if (!bOn)
+		//	{
+		//		objOther->SetOnObj(objParent, nOnObj);
+		//		nOnObj++;
+		//	}
 
-			objOther->SetOnObjCnt(nOnObj);
+		//	objOther->SetOnObjCnt(nOnObj);
 
-			objOther->SetLandObj(true);		// Move_Objectが上に乗ってるか
-			objOther->SetObjXZ(true);
+		//	objOther->SetLandObj(true);		// Move_Objectが上に乗ってるか
+		//	objOther->SetObjXZ(true);
 
-			objParent->SetOnObj(objOther, 0);
-			objParent->SetLandObj(true);									// オブジェクトの上に乗ってるか
-			objParent->SetObjXZ(true);										// オブジェクトとXZ軸が重なってるか
-			objParent->SetObjY(otherpos.y + othersize.y);					// オブジェクトの高さ
-			objParent->SetPos({ Pos.x,otherpos.y + othersize.y,Pos.z });	// 押し出し
-			bHit = true;
-		}
-		// 降りる
-		else
-		{
-			for (int nCnt = 0; nCnt < objOther->GetOnObjCnt(); nCnt++)
-			{
-				if (objOther->GetOnObj(nCnt) != nullptr
-					&& objOther->GetLandObj() && objOther->GetObjXZ()
-					&& objOther->GetOnObj(nCnt)->GetLandObj() && objOther->GetOnObj(nCnt)->GetObjXZ()
-					&& objOther->GetOnObj(nCnt) == objParent)
-				{
-					objOther->SetLandObj(false);
-					objOther->SetObjXZ(false);
+		//	objParent->SetOnObj(objOther, 0);
+		//	objParent->SetLandObj(true);									// オブジェクトの上に乗ってるか
+		//	objParent->SetObjXZ(true);										// オブジェクトとXZ軸が重なってるか
+		//	objParent->SetObjY(otherpos.y + othersize.y);					// オブジェクトの高さ
+		//	objParent->SetPos({ Pos.x,otherpos.y + othersize.y,Pos.z });	// 押し出し
+		//	bHit = true;
+		//}
+		//// 降りる
+		//else
+		//{
+		//	for (int nCnt = 0; nCnt < objOther->GetOnObjCnt(); nCnt++)
+		//	{
+		//		if (objOther->GetOnObj(nCnt) != nullptr
+		//			&& objOther->GetLandObj() && objOther->GetObjXZ()
+		//			&& objOther->GetOnObj(nCnt)->GetLandObj() && objOther->GetOnObj(nCnt)->GetObjXZ()
+		//			&& objOther->GetOnObj(nCnt) == objParent)
+		//		{
+		//			objOther->SetLandObj(false);
+		//			objOther->SetObjXZ(false);
 
-					for (int nCnt2 = 0; nCnt2 < objOther->GetOnObjCnt(); nCnt2++)
-					{
-						objOther->SetOnObj(nullptr, nCnt2);
-					}
-					objOther->SetOnObjCnt(0);
+		//			for (int nCnt2 = 0; nCnt2 < objOther->GetOnObjCnt(); nCnt2++)
+		//			{
+		//				objOther->SetOnObj(nullptr, nCnt2);
+		//			}
+		//			objOther->SetOnObjCnt(0);
 
-					objParent->SetLandObj(false);
-					objParent->SetGround(false);
-					objParent->SetObjXZ(false);
-					bHit = false;
-				}
-			}
-		}
+		//			objParent->SetLandObj(false);
+		//			objParent->SetGround(false);
+		//			objParent->SetObjXZ(false);
+		//			bHit = false;
+		//		}
+		//	}
+		//}
 		// 下からぶつかる
-		if (otherpos.y > posold.y
+		/*if (otherpos.y > posold.y
 			&& otherpos.x + othersize.x > pos.x - size.x
 			&& otherpos.x - othersize.x < pos.x + size.x
 			&& otherpos.z + othersize.z > pos.z - size.z
@@ -274,7 +274,7 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 			objParent->SetPos({ Pos.x,otherpos.y - size.y - othersize.y,Pos.z });	// 押し出し
 		}
 		// 着地している場合
-		else if (!objParent->GetLandObj())
+		else */if (!objParent->GetLandObj())
 		{
 			D3DXVECTOR3 Index[4] = {};				// オブジェクトの4頂点の位置
 			D3DXVECTOR3 Index_Vec[4] = {};			// 頂点から頂点までのベクトル
@@ -334,24 +334,27 @@ bool CCollision::Block_Collision(const D3DXVECTOR3 pos, const D3DXVECTOR3 posold
 					}
 				}
 
-				// 押し出し
-				switch (nHit_Index)
-				{
-				case 0:
-					objParent->SetPos({ Index[nHit_Index].x - size.x,pos.y,pos.z });
-					break;
-				case 1:
-					objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z + size.z });
-					break;
-				case 2:
-					objParent->SetPos({ Index[nHit_Index].x + size.x,pos.y,pos.z });
-					break;
-				case 3:
-					objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z - size.z });
-					break;
-				default:
-					break;
-				}
+				//if (objParent->GetCollision_Type() != CMove_Object::COLLISION_TYPE_BOSS)
+				//{
+				//	// 押し出し
+				//	switch (nHit_Index)
+				//	{
+				//	case 0:
+				//		objParent->SetPos({ Index[nHit_Index].x - size.x,pos.y,pos.z });
+				//		break;
+				//	case 1:
+				//		objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z + size.z });
+				//		break;
+				//	case 2:
+				//		objParent->SetPos({ Index[nHit_Index].x + size.x,pos.y,pos.z });
+				//		break;
+				//	case 3:
+				//		objParent->SetPos({ pos.x,pos.y,Index[nHit_Index].z - size.z });
+				//		break;
+				//	default:
+				//		break;
+				//	}
+				//}
 			}
 		}
 	}

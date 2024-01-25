@@ -116,7 +116,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	bWindow = TRUE;
 #endif
 
-	m_pRenderer->Init(Window, bWindow);				// レンダリング
+	m_pRenderer->Init(Window, bWindow);			// レンダリング
 	m_pLight->Init();							// ライト
 	m_pCamera->Init();							// カメラ
 

@@ -107,6 +107,7 @@ public:
 
 	void ChangeMotion();		// モーションの切り替え
 	void Hit(CMove_Object* pHit) override;
+	virtual void Destroy() override;			// 破壊処理
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
 	void MeleeWeaponAttack();			// 近接武器の攻撃処理
