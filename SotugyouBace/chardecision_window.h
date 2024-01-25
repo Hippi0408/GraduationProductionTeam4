@@ -22,6 +22,7 @@
 class CObject2D;
 class CFontString;
 class CConfirmation_Window;
+class CNumber;
 
 //=============================================================================
 // キャラ決定ウィンドウクラス
@@ -68,6 +69,7 @@ private:
 	CObject2D* m_pWindow;						// ウィンドウ用オブジェクト2Dのインスタンス
 	CObject2D* m_pObject2D[MAX_TEXTURE];		// 説明用オブジェクト2Dのインスタンス
 	CFontString* m_pFont;						// フォント
+	CNumber* m_pSelect_Number;					// 選択番号
 	D3DXVECTOR3 m_pos;							// 位置
 	D3DXVECTOR2 m_size;							// サイズ
 	D3DXVECTOR2 m_MaxSize;						// 最大サイズ

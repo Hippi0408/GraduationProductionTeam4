@@ -23,7 +23,9 @@
 #include "confirmation_window.h"
 #include "char_select.h"
 #include "connect.h"
-#include "sound.h"
+#include "number.h"
+#include "player.h"
+#include "weapon.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -87,6 +89,13 @@ void CCharDecision_Window::Uninit()
 		m_pWindow->Uninit();
 		m_pWindow = nullptr;
 	}
+
+	// 選択番号の破棄
+	if (m_pSelect_Number != nullptr)
+	{
+		m_pSelect_Number->Uninit();
+		m_pSelect_Number = nullptr;
+	}
 }
 
 //============================================================================
@@ -118,6 +127,14 @@ void CCharDecision_Window::Update()
 		// 画面遷移
 		CFade::SetFade(CApplication::MODE_GAME, 0.1f);
 		m_bScaleReduce = true;
+
+		// プレイヤー番号の設定
+		CApplication::SetPlayerJobIndex(m_nSelectIndex, CPlayer::PARTS_BODY);
+		CApplication::SetPlayerJobIndex(-1, CPlayer::PARTS_ARMS);
+		CApplication::SetPlayerJobIndex(-1, CPlayer::PARTS_LEG);
+
+		// 素手の設定
+		CApplication::SetPlayerWeaponIndex(CWeapon::WEAPON_KNUCKLE);
 	}
 	if (m_bScaleReduce == true)
 	{
@@ -169,6 +186,10 @@ void CCharDecision_Window::CharDecisionMenuScale()
 		{
 			m_bMaxSize = true;		// 最大サイズに到達
 			m_bScale = true;		// 拡大された
+
+			// 選択番号の生成
+			m_pSelect_Number = CNumber::Create({SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT - 50.0f, 0.0f}, 80.0f, 100.0f, CObject::PRIORITY_SCREEN);
+			m_pSelect_Number->AnimTexture(m_nSelectIndex + 1, 10);
 			return;
 		}
 
@@ -231,35 +252,34 @@ void CCharDecision_Window::CharSelectChoice()
 	// フェード中では無い場合 && 表示中の場合
 	if (CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 	{
+		// 選択されたかどうか
+		bool bSelect = false;
+
 		// 左に移動する
 		if ((pInput->Trigger(DIK_A) || pInput->Trigger(JOYPAD_LEFT)) && m_bStopFlag == true
 			|| (pInput->Trigger(JOYPAD_UP)) && m_bStopFlag == false)
 		{
-
-			// 選択SE
-			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 			// 選択した番号の取得
 			m_nSelectIndex--;		// 番号を1つ戻す
-			m_bSlideFlag = true;	// スライドさせる
+			bSelect = true;
 			m_bLeftRight = false;	// 左に移動
-			m_bPosDest = false;		// 目的の位置に到達していない
-			m_bStopFlag = false;	// 動いている状態
-			// 選択SE
-			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
-
 		}
-		// 下に移動する
+		// 右に移動する
 		else if ((pInput->Trigger(DIK_D) || pInput->Trigger(JOYPAD_RIGHT) )&& m_bStopFlag == true
 			|| (pInput->Trigger(JOYPAD_DOWN)) && m_bStopFlag == false)
 		{
-			// 選択SE
-			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 			m_nSelectIndex++;		// 番号を1つ進める
-			m_bSlideFlag = true;	// スライドさせる
+			bSelect = true;
 			m_bLeftRight = true;	// 右に移動
+		}
+
+		// 選択された場合
+		if (bSelect == true)
+		{
+			m_bSlideFlag = true;	// スライドさせる
 			m_bPosDest = false;		// 目的の位置に到達していない
 			m_bStopFlag = false;	// 動いている状態
-			// 選択SE
+									// 選択SE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_SELECT);
 		}
 	}
@@ -302,18 +322,17 @@ void CCharDecision_Window::SlideWindow()
 	 // 左移動
 		if (m_bLeftRight == false)
 		{
-
 			m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
- 			pos.x -= m_fMoveX;					// 移動量の減算
+ 			pos.x += m_fMoveX;					// 移動量の減算
 
-			if (pos.x <= -SCREEN_WIDTH / 2 && m_bPosDest == false)
-			{// 位置が-640以下 && 目的の位置まで到達していなかったら
+			if (pos.x >= 1920.0f && m_bPosDest == false)
+			{// 位置が1920.0f以上 && 目的の位置まで到達していなかったら
 
-				pos.x = 1920.0f;				// 位置の設定
+				pos.x = -SCREEN_WIDTH / 2;		// 位置の設定
 				m_bPosDest = true;				// 目的の位置まで到達した
 			}
-			if (pos.x <= SCREEN_WIDTH / 2 && m_bPosDest == true)
+			if (pos.x >= SCREEN_WIDTH / 2 && m_bPosDest == true)
 			{// 位置が640以下 && 目的の位置まで到達した時
 
 				pos.x = SCREEN_WIDTH / 2;		// 位置の設定
@@ -328,14 +347,14 @@ void CCharDecision_Window::SlideWindow()
 		{
 			m_bExplanationUninit = true;		// テクスチャとフォントの削除
 			UninitExplanation();				// フォントの削除
-			pos.x += m_fMoveX;					// 移動量の加算
-			if (pos.x >= 1920.0f && m_bPosDest == false)
-			{// 位置が1920.0f以上 && 目的の位置まで到達していなかったら
+			pos.x -= m_fMoveX;					// 移動量の加算
+			if (pos.x <= -SCREEN_WIDTH / 2 && m_bPosDest == false)
+			{// 位置が-640以下 && 目的の位置まで到達していなかったら
 
-				pos.x = -SCREEN_WIDTH / 2;		// 位置の設定
+				pos.x = 1920.0f;				// 位置の設定
 				m_bPosDest = true;				// 目的の位置まで到達した
 			}
-			if (pos.x >= SCREEN_WIDTH / 2 && m_bPosDest == true)
+			if (pos.x <= SCREEN_WIDTH / 2 && m_bPosDest == true)
 			{// 位置が640以下 && 目的の位置まで到達した時
 
 				pos.x = SCREEN_WIDTH / 2;		// 位置の設定
@@ -384,6 +403,9 @@ void CCharDecision_Window::PlayerIndex()
 		SetFont("マーシャル");
 		SetTextue(CTexture::TEXTURE_SKILL_MARSHALL, CTexture::TEXTURE_SKILLEXPLANATION_MARSHALL);
 	}
+
+	// 選択番号の更新
+	m_pSelect_Number->AnimTexture(m_nSelectIndex + 1, 10);
 }
 
 //============================================================================
@@ -393,7 +415,7 @@ void CCharDecision_Window::SetFont(const std::string lette)
 {
 	if (m_pFont == nullptr && m_bFontFlag == false)
 	{
-		m_pFont = CFontString::Create(D3DXVECTOR3(650.0f, 300.0f, 0.0f), { 35.0f, 35.0f }, lette);
+		m_pFont = CFontString::Create(D3DXVECTOR3(650.0f, 250.0f, 0.0f), { 35.0f, 35.0f }, lette);
 		m_bFontFlag = true;
 	}
 }
@@ -407,12 +429,12 @@ void CCharDecision_Window::SetTextue(CTexture::TEXTURE texture, CTexture::TEXTUR
 	{
 		if (m_pObject2D[0] == nullptr)
 		{
-			m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 500.0f, 0.0f), D3DXVECTOR2(700.0f, 250.0f), CObject::PRIORITY_SCREEN);
+			m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), D3DXVECTOR2(700.0f, 250.0f), CObject::PRIORITY_SCREEN);
 			m_pObject2D[0]->SetTexture(texture1);
 		}
 		if (m_pObject2D[1] == nullptr)
 		{
-			m_pObject2D[1] = CObject2D::Create(D3DXVECTOR3(500.0f, 250.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
+			m_pObject2D[1] = CObject2D::Create(D3DXVECTOR3(500.0f, 200.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
 			m_pObject2D[1]->SetTexture(texture);
 		}
 		m_bTextureFlag = true;

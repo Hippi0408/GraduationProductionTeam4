@@ -60,7 +60,8 @@ ConnectManager*CApplication::m_pClient = nullptr;
 bool CApplication::m_bGameStart = false;
 bool CApplication::m_bPauce = false;
 bool CApplication::m_nSkill = false;
-int CApplication::m_nPlayerJobIndex = 0;
+int CApplication::m_nPlayerJobIndex[3] = {};
+int CApplication::m_nPlayerWeaponIndex = 0;
 int CApplication::m_nDestroyTime = 0;
 int CApplication::m_nDamage = 0;
 int CApplication::m_nDefeats = 0;
@@ -156,14 +157,6 @@ void CApplication::Uninit()
 {
 	// 入力処理の終了処理
 	m_pInput->Uninit();
-
-	// レンダリングの終了
-	if (m_pRenderer != nullptr)
-	{
-		m_pRenderer->Uninit();
-		delete m_pRenderer;
-		m_pRenderer = nullptr;
-	}
 
 	// テクスチャの終了
 	if (m_pTexture != nullptr)
@@ -275,6 +268,14 @@ void CApplication::Uninit()
 			delete m_pClient;
 			m_pClient = nullptr;
 		}
+	}
+
+	// レンダリングの終了
+	if (m_pRenderer != nullptr)
+	{
+		m_pRenderer->Uninit();
+		delete m_pRenderer;
+		m_pRenderer = nullptr;
 	}
 }
 

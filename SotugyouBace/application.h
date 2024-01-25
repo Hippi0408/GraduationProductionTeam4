@@ -62,7 +62,8 @@ public:
 	static void SetMode(MODE mode);		// モードの設定
 	static void SetGameStart(const bool game_start) { m_bGameStart = game_start; }
 	static void SetPauce(const bool pauce) { m_bPauce = pauce; }
-	static void SetPlayerJobIndex(const int index) { m_nPlayerJobIndex = index; }
+	static void SetPlayerJobIndex(const int index, const int parts) { m_nPlayerJobIndex[parts] = index; }
+	static void SetPlayerWeaponIndex(const int index) { m_nPlayerWeaponIndex = index; }
 
 	static HWND GetWindow() { return Window; }			// ウィンドウ
 	static CRenderer* GetRenderer() { return m_pRenderer; }
@@ -83,7 +84,8 @@ public:
 
 	static const bool GetGameStart() { return m_bGameStart; }
 	static const bool GetPauce() { return m_bPauce; }
-	static const int GetPlayerJobIndex() { return m_nPlayerJobIndex; }
+	static const int GetPlayerJobIndex(const int parts) { return m_nPlayerJobIndex[parts]; }
+	static const int GetPlayerWeaponIndex() { return m_nPlayerWeaponIndex; }
 	static bool GetSkillType() { return m_nSkill; }
 	static int GetDestroyTime() { return m_nDestroyTime; }
 	static int GetTotalDamage() { return m_nTotalDamage; }
@@ -118,7 +120,9 @@ private:
 	bool m_bWireFrame;
 	static bool m_bGameStart;
 	static bool m_bPauce;
-	static int m_nPlayerJobIndex;	// プレイヤーのジョブ番号
+	static int m_nPlayerJobIndex[3];	// プレイヤーのジョブ番号
+	static int m_nPlayerWeaponIndex;	// プレイヤーの武器番号
+
 	static bool m_nSkill;
 	static int m_nDestroyTime;		// 最短で倒した時間
 	static int m_nDamage;			// 耐えたダメージ数

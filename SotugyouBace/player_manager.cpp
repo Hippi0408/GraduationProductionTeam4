@@ -76,7 +76,7 @@ void CPlayerManager::PlayerRelease(const int index)
 //==============================================================================================
 // キャラ設定処理
 //==============================================================================================
-CPlayer* CPlayerManager::SetPlayer(const D3DXVECTOR3 pos, const Chara_Type type, const int index, const int job)
+CPlayer* CPlayerManager::SetPlayer(const D3DXVECTOR3 pos, const Chara_Type type, const int index)
 {
 	// キャラクターが使用中では無い場合
 	if (m_pPlayer[index] == nullptr)
@@ -85,10 +85,10 @@ CPlayer* CPlayerManager::SetPlayer(const D3DXVECTOR3 pos, const Chara_Type type,
 		switch (type)
 		{
 		case TYPE_PC:
-			m_pPlayer[index] = CPC::Create(pos, index, job);
+			m_pPlayer[index] = CPC::Create(pos, index);
 			break;
 		case TYPE_CPU:
-			m_pPlayer[index] = CCPU::Create(pos, index, job);
+			m_pPlayer[index] = CCPU::Create(pos, index);
 			break;
 		default:
 			break;

@@ -78,6 +78,23 @@ ALL_PARAM_SET
 		END_PARAM_SET
 
 	END_JOB_PARAM_SET
+	
+	#---------------------------------------
+	# ジョブ：マーシャル
+	#---------------------------------------
+	JOB_PARAM_SET
+	
+		#------------------
+		# 胴パーツ
+		#------------------
+		PARAM_SET
+			LIFE = 13000			# 体力
+			STAMINA = 40			# スタミナ
+			STAN_TOLERANCE = 40		# スタン許容値
+			GRAVITY = 6				# 重力
+		END_PARAM_SET
+
+	END_JOB_PARAM_SET
 
 END_ALL_PARAM_SET
 

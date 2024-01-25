@@ -110,7 +110,7 @@ HRESULT CGame::Init()
 	// プレイヤーUIの生成
 	//m_pPlayer_UI[CPlayerUi::UITYPE_SUPPORT] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_SUPPORT, CObject::PRIORITY_CENTER);
 	//m_pPlayer_UI[CPlayerUi::UITYPE_ATTACK] = CPlayerUi::Create(D3DXVECTOR3(100.0f, 50.0f, 0.0f), D3DXVECTOR2(100.0f, 75.0f), CPlayerUi::UITYPE_ATTACK, CObject::PRIORITY_CENTER);
-	//m_pPlayer_UI[CPlayerUi::UITYPE_WEAPON] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_WEAPON, CObject::PRIORITY_CENTER);
+	m_pPlayer_UI[CPlayerUi::UITYPE_WEAPON] = CPlayerUi::Create(D3DXVECTOR3(1200.0f, 660.0f, 0.0f), D3DXVECTOR2(100.0f, 85.0f), CPlayerUi::UITYPE_WEAPON, CObject::PRIORITY_CENTER);
 
 	m_pPlayerManager = CPlayerManager::Create();	// プレイヤーマネージャーの生成
 	m_pEnemyManager = new CEnemyManager;			// 敵キャラマネージャーの生成
@@ -124,11 +124,8 @@ HRESULT CGame::Init()
 	pWeaponDummer->LoadAllFile();
 	pWeaponDummer->Uninit();
 
-	// プレイヤーのジョブ番号
-	int nJob_Index = CApplication::GetPlayerJobIndex() % 3;
-
 	// プレイヤーの生成(テスト)
-	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
+	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
@@ -193,6 +190,13 @@ void CGame::Uninit()
 	// プレイヤーマネージャーの破棄
 	if (m_pPlayerManager != nullptr)
 	{
+		CPlayer* pPlayer = m_pPlayerManager->GetPlayer(0);
+
+		// プレイヤー情報の記録
+		CApplication::SetPlayerJobIndex(pPlayer->GetJobIndex(CPlayer::PARTS_ARMS), CPlayer::PARTS_ARMS);
+		CApplication::SetPlayerJobIndex(pPlayer->GetJobIndex(CPlayer::PARTS_LEG), CPlayer::PARTS_LEG);
+		CApplication::SetPlayerWeaponIndex(pPlayer->GetWeaponType());
+
 		m_pPlayerManager->Uninit();
 		delete m_pPlayerManager;
 		m_pPlayerManager = nullptr;
@@ -274,6 +278,9 @@ void CGame::Uninit()
 		delete m_pMap;
 		m_pMap = nullptr;
 	}
+
+	// フォグの終了処理
+	CFog::DestroyFog();
 
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
 }

@@ -21,9 +21,9 @@ public:
 	~CObject2D() override;
 
 	virtual HRESULT Init() override;
-	void Uninit() override;
+	virtual void Uninit() override;
 	virtual void Update() override;
-	void Draw()  override;
+	virtual void Draw()  override;
 
 	void Stencil();
 	void UV();																		// UV‚Ìˆ—

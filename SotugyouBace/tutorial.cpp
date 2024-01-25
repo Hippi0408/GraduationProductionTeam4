@@ -75,11 +75,8 @@ HRESULT CTutorial::Init()
 	pWeaponDummer->LoadAllFile();
 	pWeaponDummer->Uninit();
 
-	// プレイヤーのジョブ番号
-	int nJob_Index = CApplication::GetPlayerJobIndex();
-
 	// プレイヤーの生成(テスト)
-	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0, nJob_Index);
+	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
 	// ハーフスフィアの生成
 	CHalfSphere *pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20000.0f, 20000.0f, 20000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);

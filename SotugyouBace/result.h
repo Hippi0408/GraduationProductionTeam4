@@ -53,11 +53,11 @@ public:
 	void ZoroDeathCount();
 			
 	static CResult* Create();						// 生成処理
-	static CPlayer_Parameter *GetPlayerParameter() { return m_pPlayerParameter; }	// プレイヤーパラメータ取得処理
+	//static CPlayer_Parameter *GetPlayerParameter() { return m_pPlayerParameter; }	// プレイヤーパラメータ取得処理
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
 
 private:
-	static CPlayer_Parameter *m_pPlayerParameter;	// プレイヤーパラメーター
+	//static CPlayer_Parameter *m_pPlayerParameter;	// プレイヤーパラメーター
 	static CPlayerManager* m_pPlayerManager;		// プレイヤーマネージャー
 	CWeapon_Parameter *m_pWeaponParameter;			// 武器パラメーター
 	CParts* m_pParts[3];							// パーツ
@@ -75,7 +75,6 @@ private:
 	int m_nZeroCountTotalDamage;					// 0の数
 	int m_nZeroCountDeathCount;					// 0の数
 	int m_nNum;										// 値
-	int m_Index;									// プレイヤー番号
 	int m_MoveCount;								// 移動時間
 	int m_PlayerIndex;								// プレイヤーの番号
 	bool m_bGetFlag;								// 取得フラグ

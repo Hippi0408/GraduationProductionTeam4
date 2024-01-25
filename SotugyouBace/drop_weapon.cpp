@@ -30,12 +30,14 @@ const char* CDrop_Weapon::s_Weapon_FileName[] =
 	"Data/model/DropParts/SG_01/SG_01_DropArm.x",
 	"Data/model/DropParts/SG_02/SG_02_DropArm.x",
 	"Data/model/DropParts/SG_03/SG_03_DropArm.x",
+	"Data/model/DropParts/SG_05/SG_05_DropArm.x",
 	nullptr,
 
 	// ‹r
 	"Data/model/DropParts/SG_01/SG_01_DropLeg.x",
 	"Data/model/DropParts/SG_02/SG_02_DropLeg.x",
 	"Data/model/DropParts/SG_03/SG_03_DropLeg.x",
+	"Data/model/DropParts/SG_05/SG_05_DropLeg.x",
 	nullptr,
 
 	"Data/model/Weapon/Gun_Weapon/AR40.x",				// AR40

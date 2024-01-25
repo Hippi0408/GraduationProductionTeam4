@@ -139,9 +139,6 @@ HRESULT CHalfSphere::Init(void)
 	// インデックスの開放
 	m_pIdxBuff->Unlock();
 
-	// テクスチャの反映
-	BindTexture(m_pTexture);
-
 	return S_OK;
 }
 
@@ -162,6 +159,7 @@ void CHalfSphere::Uninit(void)
 	}
 	if (m_pTexture != nullptr)
 	{
+		m_pTexture->Release();
 		m_pTexture = nullptr;
 	}
 
@@ -227,6 +225,9 @@ void CHalfSphere::Update(void)
 		}
 	}
 
+	// インデックスの開放
+	m_pVtxBuff->Unlock();
+
 	m_fRot += m_fRotMove;
 	m_Animation += m_AnimationMove;
 
@@ -243,6 +244,7 @@ void CHalfSphere::Draw(void)
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
 
+	// ライトを無効化
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 	//pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -275,8 +277,10 @@ void CHalfSphere::Draw(void)
 	//メッシュフィールドの描画
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, HALFSPHEAR_VERTEX_NUM, 0, HALFSPHEAR_PRIMITIVE_NUM);
 
+	//元に戻す
 	pDevice->SetTexture(0, NULL);
 
+	//ライトを有効にする
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 	//pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

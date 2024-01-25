@@ -32,7 +32,7 @@
 //==============================================================================================
 // 静的メンバ変数宣言
 //==============================================================================================
-CPlayer_Parameter* CResult::m_pPlayerParameter = nullptr;
+//CPlayer_Parameter* CResult::m_pPlayerParameter = nullptr;
 CPlayerManager* CResult::m_pPlayerManager = nullptr;
 
 //==============================================================================================
@@ -72,18 +72,15 @@ HRESULT CResult::Init()
 	pCamera->SetPosV({ 0.0f, 4.0f,-3.0f });
 	pCamera->SetPosR({ 0.0f, 0.0f, 3.0f });
 
-	// プレイヤー番号の取得
-	m_Index = CApplication::GetPlayerJobIndex();
-
 	// 全てのモデルパーツの読み込み
 	CApplication::GetPartsFile()->LoadAllFile();
 
 	// 全てのモデルパーツの読み込み
 	CApplication::GetMotion()->LoadAllFile();
 
-	// プレイヤーパラメーターの生成
-	m_pPlayerParameter = new CPlayer_Parameter;
-	m_pPlayerParameter->Init();
+	//// プレイヤーパラメーターの生成
+	//m_pPlayerParameter = new CPlayer_Parameter;
+	//m_pPlayerParameter->Init();
 
 	// 武器パラメーターの生成
 	m_pWeaponParameter = new CWeapon_Parameter;
@@ -93,7 +90,7 @@ HRESULT CResult::Init()
 	m_pPlayerManager = CPlayerManager::Create();	
 
 	// プレイヤーの生成(テスト)
-	m_pPlayerManager->SetPlayer({ m_pos.x, m_pos.y, m_pos.z }, CPlayerManager::TYPE_PC, m_PlayerIndex, 0);
+	m_pPlayerManager->SetPlayer({ m_pos.x, m_pos.y, m_pos.z }, CPlayerManager::TYPE_PC, m_PlayerIndex);
 
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, -1000.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
@@ -120,13 +117,13 @@ HRESULT CResult::Init()
 //==============================================================================================
 void CResult::Uninit()
 {
-	// プレイヤーパラメーターの破棄
-	if (m_pPlayerParameter != nullptr)
-	{
-		m_pPlayerParameter->Uninit();
-		delete m_pPlayerParameter;
-		m_pPlayerParameter = nullptr;
-	}
+	//// プレイヤーパラメーターの破棄
+	//if (m_pPlayerParameter != nullptr)
+	//{
+	//	m_pPlayerParameter->Uninit();
+	//	delete m_pPlayerParameter;
+	//	m_pPlayerParameter = nullptr;
+	//}
 
 	// 武器パラメーターの破棄
 	if (m_pWeaponParameter != nullptr)
@@ -155,15 +152,21 @@ void CResult::Uninit()
 	//ナンバーの破棄
 	for (int nCnt = 0; nCnt < 5; nCnt++)
 	{
-		m_apTotalDamage[nCnt]->Uninit();
-		m_apTotalDamage[nCnt] = nullptr;
+		if (m_apTotalDamage[nCnt] != nullptr)
+		{
+			m_apTotalDamage[nCnt]->Uninit();
+			m_apTotalDamage[nCnt] = nullptr;
+		}
 	}
 
 	//ナンバーの破棄
 	for (int nCnt = 0; nCnt < 3; nCnt++)
 	{
-		m_apDeathCount[nCnt]->Uninit();
-		m_apDeathCount[nCnt] = nullptr;
+		if (m_apDeathCount[nCnt] != nullptr)
+		{
+			m_apDeathCount[nCnt]->Uninit();
+			m_apDeathCount[nCnt] = nullptr;
+		}
 	}
 }
 
@@ -183,7 +186,8 @@ void CResult::Update()
 			// 位置の取得
 			m_pos = m_pPlayerManager->GetPlayer(m_PlayerIndex)->GetPos();
 
-			for (int nCnt = 0; nCnt < 3; nCnt++)
+			// 最大パーツ数分
+			for (int nCnt = 0; nCnt < CPlayer::PARTS_MAX; nCnt++)
 			{
 				// パーツの取得と向きの設定
 				m_pParts[nCnt] = m_pPlayerManager->GetPlayer(m_PlayerIndex)->GetParts(nCnt);
@@ -203,7 +207,7 @@ void CResult::Update()
 			m_pos.z -= m_move.z;
 
 			// 歩きモーション
-			for (int nCnt = 0; nCnt < 3; nCnt++)
+			for (int nCnt = 0; nCnt < CPlayer::PARTS_MAX; nCnt++)
 			{
 				m_pParts[nCnt]->SetMotion(CPlayer::MOTION_WALK);
 			}
@@ -215,7 +219,7 @@ void CResult::Update()
 			m_pObject2D->SetCol(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f));
 
 			// 歩きを終了させる
-			for (int nCnt = 0; nCnt < 3; nCnt++)
+			for (int nCnt = 0; nCnt < CPlayer::PARTS_MAX; nCnt++)
 			{
 				m_pParts[nCnt]->SetMotion(CPlayer::MOTION_NEUTRAL);
 				m_pPlayerManager->GetPlayer(m_PlayerIndex)->GetParts(nCnt)->SetRot(D3DXVECTOR3(0.0f, 0.25f, 0.0f));
@@ -228,8 +232,8 @@ void CResult::Update()
 			m_pPlayerManager->GetPlayer(m_PlayerIndex)->SetPos(m_pos);
 		}
 
-		if ((pInput->Trigger(DIK_RETURN) || pInput->Press(JOYPAD_B) || pInput->Press(JOYPAD_A)
-			|| pInput->Trigger(JOYPAD_START) && m_bCreateFlag == true))
+		if ((pInput->Trigger(DIK_RETURN) || pInput->Trigger(JOYPAD_B) || pInput->Trigger(JOYPAD_A) || pInput->Trigger(JOYPAD_START))
+			&& m_bCreateFlag == true)
 		{
 			// 決定SE
 			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
@@ -244,7 +248,7 @@ void CResult::Update()
 			{
 				// プレイヤーマネージャーの生成
 				m_pPlayerManager = CPlayerManager::Create();
-				m_pPlayerManager->SetPlayer({ -200.0f, 250.0f, 525.0f }, CPlayerManager::TYPE_PC, m_PlayerIndex, 0);
+				m_pPlayerManager->SetPlayer({ -200.0f, 250.0f, 525.0f }, CPlayerManager::TYPE_PC, m_PlayerIndex);
 			}
 		}
 	}

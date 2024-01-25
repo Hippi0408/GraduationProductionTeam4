@@ -34,7 +34,7 @@ public:
 	void PlayerRelease(const int index);
 
 	// キャラクターの情報の設定
-	CPlayer* SetPlayer(const D3DXVECTOR3 pos, const Chara_Type type, const int index, const int job);
+	CPlayer* SetPlayer(const D3DXVECTOR3 pos, const Chara_Type type, const int index);
 
 	// プレイヤーの情報の取得
 	CPlayer* GetPlayer(const int index) { return m_pPlayer[index]; }

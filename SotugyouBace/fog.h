@@ -31,6 +31,7 @@ public:
 	~CFog();			// フォグのデストラクタ
 
 	static void SetFog(D3DXCOLOR col);	// フォグの設定処理
+	static void DestroyFog();			// フォグの終了処理
 
 private:
 	static bool m_bCreate;

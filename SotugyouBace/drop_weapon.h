@@ -30,12 +30,14 @@ public:
 		ARMS_SG01 = 0,			// SG01�̘r
 		ARMS_SG02,				// SG02�̘r
 		ARMS_SG03,				// SG03�̘r
+		ARMS_SG04,				// SG04�̘r
 		ARMS_MAX,				// �r�̍ő吔
 
 		// [2]�r
 		LEG_SG01,				// SG01�̋r
 		LEG_SG02,				// SG02�̋r
 		LEG_SG03,				// SG03�̋r
+		LEG_SG04,				// SG04�̋r
 		LEG_MAX,				// �r�̍ő吔
 
 		GUN_WEAPON_AR_AR40,					// AR40

@@ -27,7 +27,7 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	static CCPU* Create(const D3DXVECTOR3 pos, const int index, const int job);
+	static CCPU* Create(const D3DXVECTOR3 pos, const int index);
 
 private:
 

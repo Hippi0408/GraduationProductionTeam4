@@ -61,3 +61,17 @@ void CFog::SetFog(D3DXCOLOR col)
 	m_fIntensity = 0.00005f;
 	pDevice->SetRenderState(D3DRS_FOGDENSITY, *(DWORD*)(&m_fIntensity));
 }
+
+//============================================================================
+// フォグの終了処理
+//============================================================================
+void CFog::DestroyFog()
+{
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
+
+	//フォグの有効設定
+	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
+
+	m_fIntensity = 0.0f;
+}

@@ -59,6 +59,11 @@ CPlayer::~CPlayer()
 //============================================================================
 HRESULT CPlayer::Init()
 {
+	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+	{
+		m_Parts_Job[nCnt] = (JOB)CApplication::GetPlayerJobIndex(nCnt);
+	}
+
 	// プレイヤーのモデルを読み込む
 	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Parts_Job[PARTS_BODY], CMotion::MOTION_PLAYER_BODY);
 
@@ -68,7 +73,7 @@ HRESULT CPlayer::Init()
 	SetParts(PARTS_LEG, /*CParts_File::PARTS_PLAYER_LEG_0*/
 		CParts_File::PARTS_PLAYER_LEG_1 + m_Parts_Job[PARTS_LEG], CMotion::MOTION_PLAYER_LEG);
 
-	SetPlayerWeapon(CWeapon::WEAPON_KNUCKLE, 0);
+	SetPlayerWeapon(CApplication::GetPlayerWeaponIndex(), 0);
 
 	// パラメータの設定
 	SettingParameter();
@@ -1108,10 +1113,6 @@ void CPlayer::SettingParameter()
 			pPlayer_Parameter = CGame::GetPlayerParameter();
 			pWeapon_Parameter = CGame::GetWeaponParameter();
 		}
-		if (Mode == CApplication::MODE_RESULT)
-		{
-			pPlayer_Parameter = CResult::GetPlayerParameter();
-		}
 
 		// パーツ毎のパラメーター
 		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
@@ -1119,13 +1120,13 @@ void CPlayer::SettingParameter()
 			switch (nCnt)
 			{
 			case 0:
-				Parameter = pPlayer_Parameter->GetParameterJob(m_Parts_Job[nCnt]);
+				Parameter = pPlayer_Parameter->GetParameterJob(m_Parts_Job[nCnt] + 1);
 				break;
 			case 1:
-				Parameter = pPlayer_Parameter->GetParameterArms(m_Parts_Job[nCnt], m_nArms_Rarity);
+				Parameter = pPlayer_Parameter->GetParameterArms(m_Parts_Job[nCnt] + 1, m_nArms_Rarity);
 				break;
 			case 2:
-				Parameter = pPlayer_Parameter->GetParameterLeg(m_Parts_Job[nCnt], m_nLeg_Rarity);
+				Parameter = pPlayer_Parameter->GetParameterLeg(m_Parts_Job[nCnt] + 1, m_nLeg_Rarity);
 				break;
 			default:
 				break;
@@ -1281,9 +1282,9 @@ void CPlayer::SetPlayerWeapon(const int weapon, const int rarity)
 		CTutorial::SetPlayerUI(CPlayerUi::UITYPE_WEAPON, weapon);
 	}
 	else*/ 
-	/*if (Mode == CApplication::MODE_GAME)
+	if (Mode == CApplication::MODE_GAME)
 	{
-		CGame::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);
+		//CGame::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);
 		CGame::SetPlayerUI(CPlayerUi::UITYPE_WEAPON, weapon);
-	}*/
+	}
 }

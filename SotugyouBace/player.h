@@ -128,7 +128,7 @@ public:
 	void SetCharaIndex(const int index) { m_nCharaIndex = index; }
 	void SetEnergyGauge(CEnergy_Gauge *pEnergy) { m_pEnergy_Gauge = pEnergy; }
 	void SetDropGet(const bool drop_get) { m_bDrop_Get = drop_get; };
-	void SetAllJobIndex(const int index) { for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++) { m_Parts_Job[nCnt] = (JOB)index; } }
+	void SetJobIndex(const int parts, const int index) { m_Parts_Job[parts] = (JOB)index; }
 	void SetPlayerParts(const PARTS parts, const int weapon, const int rarity);
 	void SetPlayerWeapon(const int weapon, const int rarity);
 	void SetPlayerAttack(const bool attack) { m_bPlayer_Attack = attack; }
@@ -141,7 +141,7 @@ public:
 	const bool GetPlayerAttack() { return m_bPlayer_Attack; }
 	const bool GetStandbyAttack() { return m_bStandby_Attack; }
 	const int GetWeaponType() { return m_nWeapon_type; }
-	const JOB GetJobIndex(const int index) { return  m_Parts_Job[index]; }
+	const JOB GetJobIndex(const int index) { return m_Parts_Job[index]; }
 
 private:
 	int m_nCharaIndex;			// Ž©g‚Ì”Ô†
