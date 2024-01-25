@@ -37,6 +37,8 @@ public:
 		SOUND_LABEL_SE_BREAKBILL,			// ビル倒壊
 		SOUND_LABEL_SE_BULLET,				// 弾発射
 		SOUND_LABEL_SE_SLASH,				// 剣振り
+		SOUND_LABEL_SE_PLAYERJUMP,			// ジャンプ
+		SOUND_LABEL_SE_PLAYERWALK,			// 歩き
 
 		SOUND_SE_MAX,						// SE最大値
 

@@ -137,7 +137,8 @@ void CPC::Input()
 	// 歩いている場合
 	if (bWalk == true && !GetAvoidance())
 	{
-
+		// 決定SE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERWALK);
 
 		//カメラの向き（Y軸のみ）
 		float rotY = rotCamera.y;
@@ -255,6 +256,8 @@ void CPC::Input()
 	// ジャンプ処理
 	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A))
 	{
+		// 決定SE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERJUMP);
 		// ジャンプ入力時間の加算
 		AddJump_PressCount(1);
 
