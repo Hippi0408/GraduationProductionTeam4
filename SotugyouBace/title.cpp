@@ -211,8 +211,6 @@ void CTitle::Uninit()
 		delete m_pMenuWindow;
 		m_pMenuWindow = nullptr;
 	}
-
-	CApplication::GetSound()->StopAll();
 }
 
 //==============================================================================================
