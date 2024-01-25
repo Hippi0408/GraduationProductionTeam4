@@ -20,9 +20,9 @@ ALL_PARAM_SET
 		# 胴パーツ
 		#------------------
 		PARAM_SET
-			LIFE = 9000				# 体力
+			LIFE = 6000				# 体力
 			STAMINA = 60			# スタミナ
-			STAN_TOLERANCE = 50		# スタン許容値
+			STAN_TOLERANCE = 60		# スタン許容値
 			GRAVITY = 3				# 重力
 		END_PARAM_SET
 
@@ -39,7 +39,7 @@ ALL_PARAM_SET
 		PARAM_SET
 			LIFE = 7500			# 体力
 			STAMINA = 75			# スタミナ
-			STAN_TOLERANCE = 60		# スタン許容値
+			STAN_TOLERANCE = 50		# スタン許容値
 			GRAVITY = 3				# 重力
 		END_PARAM_SET
 
@@ -73,7 +73,7 @@ ALL_PARAM_SET
 		PARAM_SET
 			LIFE = 5000			# 体力
 			STAMINA = 100			# スタミナ
-			STAN_TOLERANCE = 40		# スタン許容値
+			STAN_TOLERANCE = 50		# スタン許容値
 			GRAVITY = 2				# 重力
 		END_PARAM_SET
 
