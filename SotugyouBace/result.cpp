@@ -27,6 +27,7 @@
 #include "time.h"
 #include "number.h"
 #include "mob.h"
+#include "texture.h"
 
 //==============================================================================================
 // 静的メンバ変数宣言
@@ -152,15 +153,21 @@ void CResult::Uninit()
 	//ナンバーの破棄
 	for (int nCnt = 0; nCnt < 5; nCnt++)
 	{
-		m_apTotalDamage[nCnt]->Uninit();
-		m_apTotalDamage[nCnt] = nullptr;
+		if (m_apTotalDamage[nCnt] != nullptr)
+		{
+			m_apTotalDamage[nCnt]->Uninit();
+			m_apTotalDamage[nCnt] = nullptr;
+		}
 	}
 
 	//ナンバーの破棄
 	for (int nCnt = 0; nCnt < 3; nCnt++)
 	{
-		m_apDeathCount[nCnt]->Uninit();
-		m_apDeathCount[nCnt] = nullptr;
+		if (m_apDeathCount[nCnt] != nullptr)
+		{
+			m_apDeathCount[nCnt]->Uninit();
+			m_apDeathCount[nCnt] = nullptr;
+		}
 	}
 }
 
@@ -251,6 +258,7 @@ void CResult::Update()
 				|| pInput->Trigger(JOYPAD_START, nCnt))
 				&& CApplication::GetFade()->GetFade() == CFade::FADE_NONE)
 			{
+				InformationUninit();
 				CFade::SetFade(CApplication::MODE_TITLE, 0.05f);
 			}
 		}
@@ -293,7 +301,6 @@ void CResult::ScaleExpansion()
 
 		if (m_size.x >= 700.0f && m_size.y >= 500.0f && m_bCreateFlag == false)
 		{
-
 			// タイムの生成
 			m_pTime = CTime::Create(D3DXVECTOR3(240.0f, 225.0f, 0.0f));
 			for (int nCnt = 0; nCnt < 5; nCnt++)
@@ -307,10 +314,13 @@ void CResult::ScaleExpansion()
 				m_apDeathCount[nCnt] = CNumber::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, CObject::PRIORITY_SCREEN);
 			}
 
-		/*	m_pScore = CScore::Create(D3DXVECTOR3(100.0f, 500.0f, 0.0f));*/
-			m_pFont[0] = CFontString::Create({ 100.0f, 175.0f, 0.0f }, { 45.0f, 45.0f }, "さいたんげきは");
-			m_pFont[1] = CFontString::Create({ 100.0f, 325.0f, 0.0f }, { 45.0f, 45.0f }, "うけたダメージ");
-			m_pFont[2] = CFontString::Create({ 100.0f, 475.0f, 0.0f }, { 45.0f, 45.0f }, "たおしたてきのかず");
+			m_pFontTexture[0] = CObject2D::Create({ 400.0f, 175.0f, 0.0f }, { 200.0f, 50.0f }, CObject::PRIORITY_SCREEN);
+			m_pFontTexture[0]->SetTexture(CTexture::TEXTURE_FASTESTDEFEATE);
+			m_pFontTexture[1] = CObject2D::Create({ 400.0f, 325.0f, 0.0f }, { 300.0f, 50.0f }, CObject::PRIORITY_SCREEN);
+			m_pFontTexture[1]->SetTexture(CTexture::TEXTURE_DURABILITYDAMAGE);
+			m_pFontTexture[2] = CObject2D::Create({ 400.0f, 475.0f, 0.0f }, { 200.0f, 50.0f }, CObject::PRIORITY_SCREEN);
+			m_pFontTexture[2]->SetTexture(CTexture::TEXTURE_NUMBEROFDEFEATS);
+
 			m_bCreateFlag = true;
 		}
 
@@ -342,10 +352,10 @@ void CResult::InformationUninit()
 	// フォントの破棄
 	for (int nCnt = 0; nCnt < 3; nCnt++)
 	{
-		if (m_pFont[nCnt] != nullptr)
+		if (m_pFontTexture[nCnt] != nullptr)
 		{
-			m_pFont[nCnt]->Uninit();
-			m_pFont[nCnt] = nullptr;
+			m_pFontTexture[nCnt]->Uninit();
+			m_pFontTexture[nCnt] = nullptr;
 		}
 	}
 
@@ -354,6 +364,34 @@ void CResult::InformationUninit()
 	{
 		m_pScore->Uninit();
 		m_pScore = nullptr;
+	}
+
+	// タイマーの終了処理
+	if (m_pTime != nullptr)
+	{
+		m_pTime->Uninit();
+		delete m_pTime;
+		m_pTime = nullptr;
+	}
+
+	//ナンバーの破棄
+	for (int nCnt = 0; nCnt < 5; nCnt++)
+	{
+		if (m_apTotalDamage[nCnt] != nullptr)
+		{
+			m_apTotalDamage[nCnt]->Uninit();
+			m_apTotalDamage[nCnt] = nullptr;
+		}
+	}
+
+	//ナンバーの破棄
+	for (int nCnt = 0; nCnt < 3; nCnt++)
+	{
+		if (m_apDeathCount[nCnt] != nullptr)
+		{
+			m_apDeathCount[nCnt]->Uninit();
+			m_apDeathCount[nCnt] = nullptr;
+		}
 	}
 
 	m_bGetFlag = false;

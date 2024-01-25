@@ -87,6 +87,11 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/job/status_eagleeye.png",			// イーグルアイ
 	"Data/texture/job/status_standard.png",			// マーシャル
 
+	"Data/texture/TEX001.png",						// 機体選択
+	"Data/texture/TEX002.png",						// 最短撃破
+	"Data/texture/TEX003.png",						// 耐久ダメージ
+	"Data/texture/TEX004.png",						// 撃破数
+
 };
 
 static_assert(sizeof(CTexture::s_FileName) / sizeof(CTexture::s_FileName[0]) == CTexture::TEXTURE_MAX, "aho");

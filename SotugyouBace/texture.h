@@ -91,6 +91,12 @@ public: /* 定義 */
 		TEXTURE_SKILLEXPLANATION_EAGLEEYE,			// イーグルアイ説明
 		TEXTURE_SKILLEXPLANATION_MARSHALL,			// マーシャル説明
 
+		/* 漢字テクスチャ */
+		TEXTURE_AIRCRAAFTSELECTION,					// 機体選択
+		TEXTURE_FASTESTDEFEATE,						// 最短撃破
+		TEXTURE_DURABILITYDAMAGE,					// 耐久ダメージ数
+		TEXTURE_NUMBEROFDEFEATS,					// 撃破数
+
 		TEXTURE_MAX,
 		TEXTURE_NONE
 	};
