@@ -16,6 +16,7 @@ const CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] =
 	{ "data/sounds/BGM/Game.wav", -1 },				// ゲーム画面BGM1
 	{ "data/sounds/BGM/Result.wav", -1 },			// リザルト画面BGM
 	{ "data/sounds/BGM/Character.wav", -1 },		// キャラ選択画面BGM
+	{ "data/sounds/BGM/Boss.wav", -1 },				// ボスBGM
 
 	{ nullptr, -1 },								// BGM最大値
 
@@ -25,9 +26,23 @@ const CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] =
 
 	{ "data/sounds/SE/game/BossEntry.wav", 0 },		// ボス登場
 	{ "data/sounds/SE/game/BreakBill.wav", 0 },		// ビル倒壊
-	{ "data/sounds/SE/game/bullet001.wav", 0 },		// 弾発射
+	{ "data/sounds/SE/game/Damage.wav", 0 },		// ダメージ
+	{ "data/sounds/SE/game/Explosion.wav", 0 },		// 爆発
+
+	{ "data/sounds/SE/game/Warning.wav", 0 },		// 警告音
+	{ "data/sounds/SE/game/Gun_Standby.wav", 0 },	// 銃_構え
+	{ "data/sounds/SE/game/Out_of_Bullets.wav", 0 },// 弾切れ
+
+	{ "data/sounds/SE/game/bullet001.wav", 0 },		// 弾発射(AR)
+	{ "data/sounds/SE/game/bullet002.wav", 0 },		// 弾発射(MG)
+	{ "data/sounds/SE/game/bullet003.wav", 0 },		// 弾発射(SG)
+	{ "data/sounds/SE/game/bullet004.wav", 0 },		// 弾発射(SR)
+
+	{ "data/sounds/SE/game/punchHit.wav", 0 },		// 打撃
 	{ "data/sounds/SE/game/Slash.wav", 0 },			// 剣振り
-	{ "data/sounds/SE/game/PlayerJump.wav", 0 },	// プレイヤーのジャンプ
+	{ "data/sounds/SE/game/Thrust.wav", 0 },		// 刺突
+
+	{ "data/sounds/SE/game/PlayerBoost.wav", 0 },	// プレイヤーブースト
 	{ "data/sounds/SE/game/PlayerWalk.wav", 0 },	// プレイヤーの歩き
 
 	

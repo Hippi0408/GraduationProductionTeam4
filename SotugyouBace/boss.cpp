@@ -15,6 +15,7 @@
 #include "player_manager.h"
 #include "cannon.h"
 #include "weapon_attack.h"
+#include "parabola_bullet.h"
 
 const float CBoss::BOSS_COLLISION_RADIUS = 1000.0f;	// ボスの当たり判定の大きさ
 //=====================================
@@ -125,6 +126,9 @@ void CBoss::Destroy()
 
 		// 撃破時パーティクル
 		std::move(CParticleEmitter::Create("Destroy", pos));
+
+		// 爆発SE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_EXPLOSION);
 	}
 
 	// ゲーム終了を設定する
@@ -132,6 +136,8 @@ void CBoss::Destroy()
 
 	CEnemy::Destroy();
 
+	// BGMを停止する
+	CApplication::GetSound()->StopAllBGM();
 }
 
 //============================================================================
@@ -149,7 +155,7 @@ void CBoss::ChangeMotion()
 		if (pParts->GetMotion() == MOTION_ATTACK1 && pParts->GetMotionStop() == true)
 		{
 			pParts->SetMotion(MOTION_ATTACK2);
-			CWeapon_Attack::Create(GetPos(), 1200, false, 300, 20);
+			CWeapon_Attack::Create(GetPos(), 1100, false, 600, 20);
 		}
 		// モーションがループしない場合
 		else if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true)
@@ -202,8 +208,6 @@ void CBoss::Move()
 
 		if (GetTracking() && !CApplication::GetCamera()->GetOpening())
 		{
-			// 攻撃処理
-			Bullet_Attack();
 
 			// プレイヤーまでの角度
 			float fAngle = GetAngle();
@@ -225,8 +229,11 @@ void CBoss::Move()
 				move.z = cosf(fAngle + D3DX_PI) * GetSpeed();
 			}
 
+			// 攻撃処理
 			if (fDistance <= 1500)
 				Slash_Attack();
+			else
+			Bullet_Attack();
 
 			// 移動量の設定
 			SetMove(move);
@@ -256,13 +263,13 @@ void CBoss::Slash_Attack()
 	if (m_nAttack_Cooltime >= 100 && nRand_Slash == 0)
 	{
 		pBody->SetMotion(MOTION_ATTACK1);
-		CWeapon_Attack::Create(GetPos(), 1200, false, 300, 20);
+		CWeapon_Attack::Create(GetPos(), 1100, false, 600, 20);
 		m_nAttack_Cooltime = 0;
 	}
 	else if (m_nAttack_Cooltime >= 100 && nRand_Slash == 1)
 	{
 		pBody->SetMotion(MOTION_ATTACK3);
-		CWeapon_Attack::Create(GetPos(), 1200, false, 200, 80);
+		CWeapon_Attack::Create(GetPos(), 1100, false, 400, 80);
 		m_nAttack_Cooltime = 0;
 	}
 }
@@ -283,14 +290,38 @@ void CBoss::Bullet_Attack()
 	// プレイヤーの情報
 	pPlayer = CGame::GetPlayerManager()->GetPlayer(0);
 
-	D3DXVECTOR3 BulletPos[10] = {};
+	D3DXVECTOR3 pos = GetPos();
 
 	// 弾が発射される位置
-	if (m_nBullet_Cooltime >= 30)
+	if (m_nBullet_Cooltime >= 60)
 	{
-		// 遠距離攻撃
-		CNormal_Bullet::Create({ GetPos().x,GetPos().y + 700.0f,GetPos().z }, { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false,
-			100, 200, 60);
+		int nRnd = rand() % 3;
+
+		if (nRnd == 0)
+		{
+			for (int nCnt = 0; nCnt < 8; nCnt++)
+			{
+				// 遠距離攻撃
+				CNormal_Bullet::Create({ pos.x,pos.y + (700.0f / 10.0f * nCnt),pos.z }, { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false,
+					240, 120, 60);
+			}
+		}
+		if (nRnd == 1)
+		{
+			// 遠距離攻撃
+			CNormal_Bullet::Create({ pos.x,pos.y + 700.0f,pos.z }, { 1000.0f,1000.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false,
+				1200, 60, 1000);
+		}
+		if (nRnd == 2)
+		{
+			// 情報の取得
+			D3DXVECTOR3 rot = GetBulletRot();
+
+			D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
+
+			CParabola_Bullet::Create({ pos.x,pos.y + 700.0f,pos.z }, pos_vec, fDistance, rot, "Data/model/Mob/mob000.x", false, 1200, 60, 1000);
+		}
+
 		m_nBullet_Cooltime = 0;
 	}
 }

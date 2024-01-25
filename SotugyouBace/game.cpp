@@ -55,6 +55,7 @@ CMeshField *CGame::m_pMeshField = nullptr;
 bool CGame::m_bGameEnd = false;
 bool CGame::m_bGameWindow = false;
 bool CGame::m_bInputFlag = false;
+bool CGame::m_bSpawn_Boss = false;
 int CGame::m_DeathCount = 0;
 CFontString* CGame::m_pFinishRogo = nullptr;
 CPause *CGame::m_pPause = nullptr;
@@ -128,7 +129,7 @@ HRESULT CGame::Init()
 	// プレイヤーの生成(テスト)
 	m_pPlayerManager->SetPlayer({ 0.0f, 0.0f, 0.0f }, CPlayerManager::TYPE_PC, 0);
 
-	for (int nCnt = 0; nCnt < 20; nCnt++, m_nNumMob++)
+	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		// モブキャラの生成
 		CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
@@ -281,6 +282,8 @@ void CGame::Uninit()
 	// フォグの終了処理
 	CFog::DestroyFog();
 	m_bGameEnd = false;	// ゲーム終了判定を偽にする
+
+	m_bSpawn_Boss = false;
 }
 
 //==============================================================================================
@@ -387,29 +390,65 @@ void CGame::Update()
 		}
 #endif
 
-		// ボスが出るまではチュートリアル
-		if (m_bSpawn_Boss == false)
+		if (m_bGameEnd == false)
 		{
-			// 計10体倒すと出現
-			if (m_DeathCount == 10)
+			// ボスが出るまではチュートリアル
+			if (m_bSpawn_Boss == false)
 			{
-				// ボス出現
-				m_bSpawn_Boss = true;
-				// ボスキャラの生成
-				CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
+				// 計10体倒すと出現
+				if (m_DeathCount > 10)
+				{
+					if(m_nBossSpawn_Counter == 0)
+					{ 
+						// BGMの停止
+						CApplication::GetSound()->StopAllBGM();
 
-				// ボス登場SE
-				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BOSSENTRY);
+						// 赤いフォグを発生させる
+						CFog::SetFog({ 1.0f, 0.0f, 0.0f, 1.0f }, 0.000075f);
+					}
+
+					// 180f後にボス出現
+					if (m_nBossSpawn_Counter == 180)
+					{
+						CSound* pSound = CApplication::GetSound();
+
+						// ボス出現
+						m_bSpawn_Boss = true;
+
+						// ボスキャラの生成
+						CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
+
+						// ボス登場SE
+						pSound->Play(CSound::SOUND_LABEL_SE_BOSSENTRY);
+
+						// ボスBGM
+						pSound->Play(CSound::SOUND_LABEL_BGM_BOSS);
+
+						m_nBossSpawn_Counter = 0;
+					}
+					else
+					{
+						m_nBossSpawn_Counter++;
+					}
+					
+				}
 			}
-		}
-		// ボスが出てからの処理
-		else
-		{
-			// 二体倒したら一体復活
-			if (m_nNumMob - m_DeathCount % 2 == 0)
+			// ボスが出てからの処理
+			else
 			{
-				CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
-				m_nNumMob++;
+				// 十匹以下になったら一体復活
+				if (m_pEnemyManager->GetAllEnemy().size() < 10)
+				{
+					if (m_nMobSpawn_Counter >= 180)
+					{
+						CMob::Create({ utility::Random<float>(5000.0f, -5000.0f), utility::Random<float>(600.0f, 200.0f), utility::Random<float>(5000.0f, -5000.0f) });
+						m_nMobSpawn_Counter = 0;
+					}
+					else
+					{
+						m_nMobSpawn_Counter++;
+					}
+				}
 			}
 		}
 

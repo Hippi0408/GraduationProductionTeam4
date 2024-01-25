@@ -17,7 +17,7 @@
 //---------------------------
 class CBoss : public CEnemy
 {
-	static const int FIRST_MAX_LIFE = 60000;	// 初期最大体力の値
+	static const int FIRST_MAX_LIFE = 100000;	// 初期最大体力の値
 	static const float BOSS_COLLISION_RADIUS;	// ボスの当たり判定の大きさ
 public:
 

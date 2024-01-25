@@ -43,7 +43,7 @@ CFog::~CFog()
 //============================================================================
 // フォグの設定処理
 //============================================================================
-void CFog::SetFog(D3DXCOLOR col)
+void CFog::SetFog(D3DXCOLOR col, const float intensity)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CApplication::GetRenderer()->GetDevice();
@@ -58,7 +58,7 @@ void CFog::SetFog(D3DXCOLOR col)
 	pDevice->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_EXP);
 
 	//密度指定(※EXP時に指定)
-	m_fIntensity = 0.00005f;
+	m_fIntensity = intensity;
 	pDevice->SetRenderState(D3DRS_FOGDENSITY, *(DWORD*)(&m_fIntensity));
 }
 

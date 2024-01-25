@@ -26,6 +26,7 @@ public:
 		SOUND_LABEL_BGM_GAME,				// ゲーム画面BGM1
 		SOUND_LABEL_BGM_RESULT,				// リザルト画面BGM
 		SOUND_LABEL_BGM_CHARACTER,			// キャラ選択画面BGM
+		SOUND_LABEL_BGM_BOSS,				// ボスBGM
 
 		SOUND_BGM_MAX,						// BGM最大値
 
@@ -35,9 +36,23 @@ public:
 
 		SOUND_LABEL_SE_BOSSENTRY,			// ボス登場
 		SOUND_LABEL_SE_BREAKBILL,			// ビル倒壊
-		SOUND_LABEL_SE_BULLET,				// 弾発射
+		SOUND_LABEL_SE_DAMAGE,				// ダメージ
+		SOUND_LABEL_SE_EXPLOSION,			// 爆発
+
+		SOUND_LABEL_SE_WARNING,				// 警告音
+		SOUND_LABEL_SE_GUN_STANDBY,			// 銃_構え
+		SOUND_LABEL_SE_OUT_OF_BULLET,		// 弾切れ
+
+		SOUND_LABEL_SE_BULLET_AR,			// 弾発射(AR)
+		SOUND_LABEL_SE_BULLET_MG,			// 弾発射(MG)
+		SOUND_LABEL_SE_BULLET_SG,			// 弾発射(SG)
+		SOUND_LABEL_SE_BULLET_SR,			// 弾発射(SR)
+
+		SOUND_LABEL_SE_PUNCH,				// 打撃
 		SOUND_LABEL_SE_SLASH,				// 剣振り
-		SOUND_LABEL_SE_PLAYERJUMP,			// ジャンプ
+		SOUND_LABEL_SE_THRUST,				// 刺突
+
+		SOUND_LABEL_SE_PLAYERBOOST,			// ブースト
 		SOUND_LABEL_SE_PLAYERWALK,			// 歩き
 
 		SOUND_SE_MAX,						// SE最大値

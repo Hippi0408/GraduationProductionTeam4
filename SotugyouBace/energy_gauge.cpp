@@ -46,7 +46,7 @@ HRESULT CEnergy_Gauge::Init()
 	// 前方のゲージの色
 	m_FrontGauge->SetCol({ 1.0f, 1.0f, 1.0f,1.0f });
 
-	m_fRecovery_Interval = 300.0f;	// 回復し始めるまでのインターバル
+	m_fRecovery_Interval = 180.0f;	// 回復し始めるまでのインターバル
 	m_fReuse_Percent = 30.0f;		// 全消費からの回復時に再利用できるタイミング
 	m_bConsumption = false;			// 消費中か
 	m_bAllRecovery = true;			// 回復が出来る状態か
@@ -188,6 +188,13 @@ void CEnergy_Gauge::Recovery_Gauge()
 	}
 	else if (!m_bAllRecovery && !m_bRecovery_Pause)
 	{
+		// エネルギーが切れた時
+		if (m_nInterval_Count == 0)
+		{
+			// 警報SE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_WARNING);
+		}
+
 		// インターバルのカウント
 		m_nInterval_Count++;
 
@@ -313,4 +320,42 @@ void CEnergy_Gauge::SetDrawGauge(bool draw)
 {
 	m_BackGauge->SetDrawFlag(draw);
 	m_FrontGauge->SetDrawFlag(draw);
+}
+
+//==============================================================================================
+// エネルギー消費量設定処理
+//==============================================================================================
+void CEnergy_Gauge::SetEnergyConsumed(const float value)
+{
+	// オーバーヒートしていない場合
+	if (!m_bAllConsumption)
+	{
+		// 減少量を加算する
+		m_fFluctuation += value;
+
+		// 現在のエネルギー残量
+		float fEnergy = (float)m_nMax_Enerugy - m_fFluctuation;
+
+		// 全て消費してしまった場合
+		if (fEnergy <= 0.0f)
+		{
+			m_fFluctuation = (float)m_nMax_Enerugy;
+			m_bAllConsumption = true;
+			m_bAllRecovery = false;		// 回復できない状態にする
+		}
+
+
+		// 現在のエネルギー残量の割合
+		float fEnergy_Percent = fEnergy / m_nMax_Enerugy * 100;
+
+		// ゲージサイズをエネルギーの割合に合わせる
+		float fGeuge_Size = GetGaugeSize().y * fEnergy_Percent / 100.0f;
+
+		// ゲージの増減
+		//m_FrontGauge->SetSubSize({ GetGaugeSize().x - fGeuge_Size ,0.0f });
+		m_FrontGauge->SetSubSize({ 0.0 ,-GetGaugeSize().y + fGeuge_Size });
+
+		// エネルギー消費中
+		m_bConsumption = true;
+	}
 }

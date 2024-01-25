@@ -95,7 +95,7 @@ HRESULT CResult::Init()
 
 	// ハーフスフィアの生成
 	m_pHalfSphere = CHalfSphere::Create(D3DXVECTOR3(0.0f, -1000.0f, 0.0f), D3DXVECTOR3(2500.0f, 2500.0f, 2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CHalfSphere::SPHERE_UP);
-	m_pHalfSphere->LoadTexture("Data/texture/sky000.jpg");
+	m_pHalfSphere->LoadTexture("Data/texture/map.png");
 
 	for (int nCnt = 0; nCnt < 6; nCnt++)
 	{

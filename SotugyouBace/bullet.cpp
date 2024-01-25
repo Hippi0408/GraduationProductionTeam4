@@ -264,10 +264,10 @@ void CBullet::Map_Object_Collision()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, const bool side, const PRIORITY priority)
+CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, const bool side, const int power, const float speed, const int life)
 {
 	//クラスの生成
-	CBullet* pBullet = new CBullet(priority);
+	CBullet* pBullet = new CBullet(PRIORITY_BACK);
 
 	//nullチェック
 	if (pBullet != nullptr)
@@ -279,9 +279,12 @@ CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECT
 		pBullet->SetMove(move);
 		pBullet->SetSize(size);
 		pBullet->SetPlayerSide(side);
+		pBullet->SetPower(power);
+		pBullet->SetSpeed(speed);
+		pBullet->SetLife(life);
 
 		// 弾オブジェクトの生成
-		pBullet->m_pObj3D = CObject3D::Create(pos, size, priority);
+		pBullet->m_pObj3D = CObject3D::Create(pos, size, PRIORITY_BACK);
 		// 弾のテクスチャ
 		pBullet->m_pObj3D->SetTexture(CTexture::TEXTURE_BULLET);
 

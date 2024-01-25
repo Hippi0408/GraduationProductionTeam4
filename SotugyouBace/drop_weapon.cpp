@@ -332,7 +332,7 @@ void CDrop_Weapon::FieldCollision()
 		SetPosOld(pos);
 
 		// メッシュフィールドとの当たり判定
-		float MeshY = pMesh->MeshCollision(pos) + ;
+		float MeshY = pMesh->MeshCollision(pos);
 
 		// メッシュフィールドに乗ってる
 		if (pMesh->GetHit())

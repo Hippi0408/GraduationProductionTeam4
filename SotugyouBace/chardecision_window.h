@@ -23,6 +23,7 @@ class CObject2D;
 class CFontString;
 class CConfirmation_Window;
 class CNumber;
+class CPlayer_Parameter;
 
 //=============================================================================
 // キャラ決定ウィンドウクラス
@@ -52,7 +53,8 @@ public:
 	bool CharDecisionMenuScaleReduce();							// キャラ決定のサイズ縮小処理
 
 	void SetFont(const std::string lette);									// フォントの設定処理
-	void SetTextue(CTexture::TEXTURE texture, CTexture::TEXTURE texture1);		// テクスチャの設定
+	void SetTextue(CTexture::TEXTURE texture);		// テクスチャの設定
+	void SetParameterText();						// パラメーターのテキスト設定
 
 	int GetSelectIndex() { return m_nSelectIndex; }
 	bool GetSapawnWindow() { return m_bSpawnWindow; }							// ウィンドウが生成されたかの取得処理
@@ -66,9 +68,11 @@ public:
 
 private:
 	static CConfirmation_Window* m_pConfirmation;
+	static CPlayer_Parameter *m_pPlayer_Parameter;	// プレイヤーパラメーター
 	CObject2D* m_pWindow;						// ウィンドウ用オブジェクト2Dのインスタンス
-	CObject2D* m_pObject2D[MAX_TEXTURE];		// 説明用オブジェクト2Dのインスタンス
+	CObject2D* m_pObject2D;		// 説明用オブジェクト2Dのインスタンス
 	CFontString* m_pFont;						// フォント
+	CFontString* m_pParameter_Font[2];			// パラメーター用のフォント
 	CNumber* m_pSelect_Number;					// 選択番号
 	D3DXVECTOR3 m_pos;							// 位置
 	D3DXVECTOR2 m_size;							// サイズ

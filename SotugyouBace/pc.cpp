@@ -112,8 +112,8 @@ void CPC::Input()
 
 	D3DXVECTOR3 boostMove = { 1.0f,1.0f,1.0f };
 
-	// ブースト中は移動速度が上がる
-	if (GetBoost())
+	// ブースト中は移動速度が上がる && ゲージが残っている場合
+	if (GetBoost() && !pGauge->GetConsumption())
 		boostMove *= 3.0f;
 
 	// 目的の角度
@@ -138,9 +138,6 @@ void CPC::Input()
 	// 歩いている場合
 	if (bWalk == true && !GetAvoidance())
 	{
-		// 決定SE
-		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERWALK);
-
 		//カメラの向き（Y軸のみ）
 		float rotY = rotCamera.y;
 
@@ -206,6 +203,17 @@ void CPC::Input()
 		{
 			// 歩き
 			pLeg->SetMotion(MOTION_WALK);
+
+			if (m_nWalk_Counter >= 20)
+			{
+				// 歩きSE
+				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERWALK);
+				m_nWalk_Counter = 0;
+			}
+			else
+			{
+				m_nWalk_Counter++;
+			}
 		}
 		// 回避
 		if ((pInput->Trigger(MOUSE_INPUT_RIGHT) || pInput->Trigger(JOYPAD_X))
@@ -232,10 +240,8 @@ void CPC::Input()
 	{
 		// 歩きを終了させる
 		pLeg->SetMotion(MOTION_NEUTRAL);
+		m_nWalk_Counter = 0;
 	}
-
-	// ダッシュブーストの初期化
-	SetBoost(false);
 
 	// 移動量を更新
 	CCharacter::SetMove(move);
@@ -257,8 +263,6 @@ void CPC::Input()
 	// ジャンプ処理
 	if ((pInput->Press(DIK_SPACE)) || pInput->Press(JOYPAD_A))
 	{
-		// 決定SE
-		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERJUMP);
 		// ジャンプ入力時間の加算
 		AddJump_PressCount(1);
 
@@ -266,7 +270,15 @@ void CPC::Input()
 			// プレイヤーのジャンプ処理
 			JumpStart();
 		else
+		{
+			if (GetJump_Boost() == false)
+			{
+				// ブーストSE
+				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERBOOST);
+			}
+
 			SetJump_Boost(true);
+		}
 	}
 	else
 		SetJump_Boost(false);
@@ -274,20 +286,6 @@ void CPC::Input()
 	if (GetGround())
 		// ジャンプ入力時間のリセット
 		SetJump_PressCount(0);
-
-	// 攻撃処理
-	if ((pInput->Press(DIK_B)) || pInput->Press(JOYPAD_R2) || pInput->Press(MOUSE_INPUT_LEFT))
-	{
-		// プレイヤーの攻撃処理
-		if (GetStandbyAttack() == true)
-		{
-			SetAdditionalAttack(true);
-		}
-		else
-		{
-			SetPlayerAttack(true);
-		}
-	}
 
 	CPause *pPause = nullptr;
 
@@ -310,36 +308,64 @@ void CPC::Input()
 			if (GetGround())
 			{
 				// 消費速度
-				pGauge->SetConsumption_Speed(1.0f);
+				pGauge->SetConsumption_Speed(50.0f);
 
 				// 回復速度
-				pGauge->SetRecovery_Speed(10.0f);
+				pGauge->SetRecovery_Speed(1000.0f);
 			}
 			// 空中にいる場合
 			else
 			{
 				// 消費速度
-				pGauge->SetConsumption_Speed(1.5f);
+				pGauge->SetConsumption_Speed(75.0f);
 
 				// 回復速度
-				pGauge->SetRecovery_Speed(0.3f);
+				pGauge->SetRecovery_Speed(30.0f);
 			}
 
 			// エネルギーが残っている状態
 			if (!pGauge->GetConsumption())
 			{
+				// 攻撃処理
+				if ((pInput->Press(DIK_B)) || pInput->Press(JOYPAD_R2) || pInput->Press(MOUSE_INPUT_LEFT))
+				{
+					// プレイヤーの攻撃処理
+					if (GetStandbyAttack() == true)
+					{
+						SetAdditionalAttack(true);
+					}
+					else
+					{
+						SetPlayerAttack(true);
+					}
+				}
+
 				if (GetJump_Boost())
+				{
 					// ジャンプブースト
 					JumpBoost();
+				}
 
+				// ブースとダッシュ
 				if ((pInput->Press(DIK_LSHIFT) || pInput->Press(JOYPAD_L1)) && bWalk)
 				{
+					if (GetBoost() == false)
+					{
+						// ブーストSE
+						CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERBOOST);
+					}
+
 					// ブーストする
 					SetBoost(true);
 
 					// エネルギーを消費する
 					pGauge->Consumption_Gauge();
 					pLeg->SetMotion(MOTION_BOOST_RUN);
+				}
+				else
+				{
+					// ダッシュブーストの初期化
+					SetBoost(false);
 				}
 			}
 		}

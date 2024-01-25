@@ -18,7 +18,7 @@
 #include "sound.h"
 
 const float CMob::MOB_COLLISION_RADIUS = 200.0f;	// モブキャラの当たり判定の大きさ
-const float CMob::MOB_BULLET_SPEED = 60.0f;		// 敵キャラの弾の速度
+const float CMob::MOB_BULLET_SPEED = 15.0f;		// 敵キャラの弾の速度
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -70,47 +70,56 @@ void CMob::Uninit()
 //============================================================================
 void CMob::Update()
 {
-	D3DXVECTOR3 Life_Gauge_Pos = GetPos();
-	Life_Gauge_Pos.y += 400.0f;
+		D3DXVECTOR3 Life_Gauge_Pos = GetPos();
+		Life_Gauge_Pos.y += 400.0f;
 
-	CGauge_Manager *GaugeManager = GetGaugeManager();
+		CGauge_Manager *GaugeManager = GetGaugeManager();
 
-	if (GaugeManager != nullptr)
-	{
-		// 体力ゲージ
-		GaugeManager->SetGaugePos(Life_Gauge_Pos);
-
-		// 体力ゲージの表示
-		DrawLifeGauge();
-	}
-
-	// 全てのパーツの処理
-	for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
-	{
-		// パーツの情報
-		CParts* pParts = GetParts(nCnt);
-
-		// パーツが持つ全てのモデル
-		for (auto pModel : pParts->GetModelAll())
+		if (GaugeManager != nullptr)
 		{
-			// 距離7000以上で敵を表示
-			if (m_fDistance > DRAW_DISTANCE)
+			// 体力ゲージ
+			GaugeManager->SetGaugePos(Life_Gauge_Pos);
+
+			// 体力ゲージの表示
+			DrawLifeGauge();
+		}
+
+		// 全てのパーツの処理
+		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+		{
+			// パーツの情報
+			CParts* pParts = GetParts(nCnt);
+
+			// パーツが持つ全てのモデル
+			for (auto pModel : pParts->GetModelAll())
 			{
-				pModel->SetDrawFlag(false);
-			}
-			else
-			{
-				pModel->SetDrawFlag(true);
+				// 距離7000以上で敵を表示
+				if (m_fDistance > DRAW_DISTANCE)
+				{
+					pModel->SetDrawFlag(false);
+				}
+				else
+				{
+					pModel->SetDrawFlag(true);
+				}
 			}
 		}
-	}
-
-	if (!CApplication::GetCamera()->GetOpening())
-		// 回避
-		//Avoidance();
 
 	// キャラクターの更新
 	CEnemy::Update();
+
+	// ゲーム終了前まで行動する
+	if (CGame::GetGameEnd() == false)
+	{
+		if (!CApplication::GetCamera()->GetOpening())
+		// 回避
+		Avoidance();
+	}
+	// ゲームが終了した場合、透明になって消える
+	else
+	{
+		Clear();
+	}
 }
 
 //============================================================================
@@ -201,7 +210,7 @@ void CMob::Move()
 	if (GetTracking() && !CApplication::GetCamera()->GetOpening())
 	{
 		// 攻撃
-	//	Attack();
+		//Attack();
 
 		// プレイヤーまでの角度
 		float fAngle = GetAngle();
@@ -210,7 +219,7 @@ void CMob::Move()
 		D3DXVECTOR3 move = { 0.0f,GetMove().y,0.0f };
 
 		// 速度の設定
-		SetSpeed(3.0f);
+		SetSpeed(CGame::GetSpawnBoss() ? 2.0f : 0.2f);
 
 		if (fDistance >= 2000 && !m_bAvoidance)
 		{
@@ -229,13 +238,23 @@ void CMob::Move()
 		// 角度の設定
 		SetRot({ 0.0f,fAngle + D3DX_PI,0.0f });		
 
-		// 回避のカウント
-		m_fAvoidance_Count++;
-
-		if (m_fAvoidance_Count >= 100)
+		// 回避した時からカウント
+		if (m_bAvoidance)
+		{
+			if (m_fAvoidance_Count == 1000)
+			{
+				m_bAvoidance = false;
+			}
+			else
+			{
+				// 回避のカウント
+				m_fAvoidance_Count++;
+			}
+		}
+		else
 		{
 			// 一定時間ごとに確率で回避する
-			int nRand = rand() % 10;
+			int nRand = rand() % 20;
 
 			if (nRand == 0)
 			{
@@ -264,12 +283,16 @@ void CMob::Attack()
 	// 弾を撃つ間隔
 	m_nBullet_Interval++;
 
-	if (m_nBullet_Interval >= 50)
+	if (m_nBullet_Interval >= 120)
 	{
-		// 弾
-		CNormal_Bullet::Create(GetPos(), { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false,
-			MOB_BULLET_POWER, MOB_BULLET_SPEED, MOB_BULLET_LIFE);
-		m_nBullet_Interval = 0;
+		// 10/1の確立で攻撃
+		if (rand() % 30 == 0)
+		{
+			// 弾
+			CNormal_Bullet::Create(GetPos(), { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false,
+				MOB_BULLET_POWER, MOB_BULLET_SPEED, MOB_BULLET_LIFE);
+			m_nBullet_Interval = 0;
+		}
 	}
 }
 
@@ -305,16 +328,49 @@ void CMob::Avoidance()
 		move.z = cosf(m_fStep) * m_fAvoidance_Speed;
 
 		// 移動量の減衰
-		m_fAvoidance_Speed -= 0.5f;
+		m_fAvoidance_Speed -= 0.1f;
 
 		if (m_fAvoidance_Speed <= 0)
 		{
-			m_bAvoidance = false;
-			m_bfAvo_Step = false;
+			m_fAvoidance_Speed = 0.0f;
+			m_bfAvo_Step = true;
+
+			// 攻撃
+			Attack();
 		}
 
 		// 移動量の設定
 		SetMove(move);
+	}
+}
+
+//============================================================================
+// 透明化処理
+//============================================================================
+void CMob::Clear()
+{
+	// 300f経つまでの処理
+	if (m_nClear_Counter < 300)
+	{
+		float fAlpha = 1.0f - (m_nClear_Counter++ / 300);
+
+		// 全てのパーツの処理
+		for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+		{
+			// パーツの情報
+			CParts* pParts = GetParts(nCnt);
+
+			// パーツが持つ全てのモデル
+			for (auto pModel : pParts->GetModelAll())
+			{
+				pModel->SetAlpha(fAlpha);
+			}
+		}
+	}
+	// 300fしたら消える処理
+	else
+	{
+		Uninit();
 	}
 }
 

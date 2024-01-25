@@ -60,6 +60,7 @@ public:
 	static const bool GetGameEnd() { return m_bGameEnd; }
 	static void SetGameWindow(bool flag) { m_bGameWindow = flag; }
 	static const bool GetGameWindow() { return m_bGameWindow; }
+	static const bool GetSpawnBoss() { return m_bSpawn_Boss; }
 	static int GetDeathCount() { return m_DeathCount; }
 	static CPlayerManager* GetPlayerManager() { return m_pPlayerManager; }
 	static CEnemyManager* GetEnemyManager() { return m_pEnemyManager; }
@@ -80,9 +81,10 @@ private:
 	static bool m_bGameWindow;
 	static bool m_bInputFlag;
 	static int m_DeathCount;
-	bool m_bSpawn_Boss;								// ボスが出現しているかどうか
-	int m_nNumMob;									// モブ数
+	static bool m_bSpawn_Boss;								// ボスが出現しているかどうか
 	int m_nEndCounter;								// ゲーム終了までの時間
+	int m_nMobSpawn_Counter;						// モブ出現間隔
+	int m_nBossSpawn_Counter;						// ボス出現間隔
 	CHalfSphere* m_pHalfSphere;
 
 	static CPlayerUi* m_pPlayer_UI[CPlayerUi::UITYPE_MAX];

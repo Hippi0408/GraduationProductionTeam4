@@ -37,7 +37,7 @@ public:
 
 private:
 	D3DXVECTOR3 m_rotDest;					//–Ú“I‚ÌŒü‚«
-
+	int m_nWalk_Counter;					// •à‚«ŽžŠÔ
 };
 
 #endif// _PC_H_

@@ -24,8 +24,8 @@ class CMob : public CEnemy
 	static const float MOB_COLLISION_RADIUS;	// ƒ{ƒX‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³
 	static const int DRAW_HP_DISTANCE = 3000;	// HPƒQ[ƒW‚ğ•\¦‚·‚é‹——£
 	static const int DRAW_DISTANCE = 7000;		// “G‚ğ•\¦‚·‚é‹——£
-	static const int MOB_BULLET_POWER = 50;		// “GƒLƒƒƒ‰‚Ì’e‚ÌUŒ‚—Í
-	static const int MOB_BULLET_LIFE = 60;		// “GƒLƒƒƒ‰‚Ì’e‚Ìõ–½
+	static const int MOB_BULLET_POWER = 200;	// “GƒLƒƒƒ‰‚Ì’e‚ÌUŒ‚—Í
+	static const int MOB_BULLET_LIFE = 120;		// “GƒLƒƒƒ‰‚Ì’e‚Ìõ–½
 	static const float MOB_BULLET_SPEED;		// “GƒLƒƒƒ‰‚Ì’e‚Ì‘¬“x
 public:
 
@@ -58,6 +58,7 @@ public:
 	void Move() override;
 	void Attack();
 	void Avoidance();
+	void Clear();
 
 	static CMob* Create(const D3DXVECTOR3 pos);
 
@@ -66,10 +67,12 @@ private:
 
 	int m_nBullet_Interval;	// ’e‚ğŒ‚‚ÂŠÔŠu
 	bool m_bAvoidance;		// ‰ñ”ğ
+
 	float m_fAvoidance_Speed;		// ‰ñ”ğ‘¬“x
 	int m_fAvoidance_Count;	// ‰ñ”ğ‚·‚éƒ^ƒCƒ~ƒ“ƒO
 	bool m_bfAvo_Step;
 	float m_fStep;
+	float m_nClear_Counter;	// “§–¾‚É‚È‚é•b”
 };
 
 #endif// _MOB_H_

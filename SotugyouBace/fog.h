@@ -30,7 +30,7 @@ public:
 	CFog();				// フォグのコンストラクタ
 	~CFog();			// フォグのデストラクタ
 
-	static void SetFog(D3DXCOLOR col);	// フォグの設定処理
+	static void SetFog(D3DXCOLOR col, const float intensity = 0.00005f);	// フォグの設定処理
 	static void DestroyFog();			// フォグの終了処理
 
 private:

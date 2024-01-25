@@ -26,11 +26,13 @@
 #include "number.h"
 #include "player.h"
 #include "weapon.h"
+#include "player_parameter.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
 //=============================================================================
 CConfirmation_Window* CCharDecision_Window::m_pConfirmation = nullptr;
+CPlayer_Parameter* CCharDecision_Window::m_pPlayer_Parameter = nullptr;
 const float CCharDecision_Window::BLINK_SPEED = 0.02f;	// 選択肢の点滅速度
 const float CCharDecision_Window::MINI_ALPHA = 0.5f;	// 選択肢の最低透明値
 
@@ -75,6 +77,9 @@ HRESULT CCharDecision_Window::Init()
 	m_pWindow = CObject2D::Create(D3DXVECTOR3(m_pos.x, m_pos.y, 0.0f), D3DXVECTOR2(0.0f, 0.0f), CObject::PRIORITY_SCREEN);
 	m_pWindow->SetCol(D3DXCOLOR(m_Color.r, m_Color.g, m_Color.b, m_Color.a));
 
+	m_pPlayer_Parameter = new CPlayer_Parameter;
+	m_pPlayer_Parameter->Init();
+
 	return S_OK;
 }
 
@@ -95,6 +100,13 @@ void CCharDecision_Window::Uninit()
 	{
 		m_pSelect_Number->Uninit();
 		m_pSelect_Number = nullptr;
+	}
+
+	if (m_pPlayer_Parameter != nullptr)
+	{
+		m_pPlayer_Parameter->Uninit();
+		delete m_pPlayer_Parameter;
+		m_pPlayer_Parameter = nullptr;
 	}
 }
 
@@ -379,22 +391,22 @@ void CCharDecision_Window::PlayerIndex()
 	if (m_nSelectIndex == 0)
 	{
 		SetFont("ラッシュ");
-		SetTextue(CTexture::TEXTURE_SKILL_RUSH, CTexture::TEXTURE_SKILLEXPLANATION_RUSH);
+		SetTextue(CTexture::TEXTURE_SKILL_RUSH);
 	}
 	else if (m_nSelectIndex == 1)
 	{
 		SetFont("ヴァンガード");
-		SetTextue(CTexture::TEXTURE_SKILL_VANGUARD, CTexture::TEXTURE_SKILLEXPLANATION_VANGUARD);
+		SetTextue(CTexture::TEXTURE_SKILL_VANGUARD);
 	}
 	else if (m_nSelectIndex == 2)
 	{
 		SetFont("イーグルアイ");
-		SetTextue(CTexture::TEXTURE_SKILL_EAGLEEYE, CTexture::TEXTURE_SKILLEXPLANATION_EAGLEEYE);
+		SetTextue(CTexture::TEXTURE_SKILL_EAGLEEYE);
 	}
 	else if (m_nSelectIndex == 3)
 	{
 		SetFont("マーシャル");
-		SetTextue(CTexture::TEXTURE_SKILL_MARSHALL, CTexture::TEXTURE_SKILLEXPLANATION_MARSHALL);
+		SetTextue(CTexture::TEXTURE_SKILL_MARSHALL);
 	}
 
 	// 選択番号の更新
@@ -412,28 +424,54 @@ void CCharDecision_Window::SetFont(const std::string lette)
 	if (m_pFont == nullptr && m_bFontFlag == false)
 	{
 		m_pFont = CFontString::Create(D3DXVECTOR3(650.0f, 250.0f, 0.0f), { 35.0f, 35.0f }, lette);
-		m_bFontFlag = true;
 	}
+	m_bFontFlag = true;
 }
 
 //============================================================================
 // テクスチャの設定処理
 //============================================================================
-void CCharDecision_Window::SetTextue(CTexture::TEXTURE texture, CTexture::TEXTURE texture1)
+void CCharDecision_Window::SetTextue(CTexture::TEXTURE texture)
 {
 	if (m_bTextureFlag == false)
 	{
-		if (m_pObject2D[0] == nullptr)
+		if (m_pObject2D == nullptr)
 		{
-			m_pObject2D[0] = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, 450.0f, 0.0f), D3DXVECTOR2(700.0f, 250.0f), CObject::PRIORITY_SCREEN);
-			m_pObject2D[0]->SetTexture(texture1);
+			m_pObject2D = CObject2D::Create(D3DXVECTOR3(500.0f, 200.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
+			m_pObject2D->SetTexture(texture);
 		}
-		if (m_pObject2D[1] == nullptr)
-		{
-			m_pObject2D[1] = CObject2D::Create(D3DXVECTOR3(500.0f, 200.0f, 0.0f), D3DXVECTOR2(175.0f, 175.0f), CObject::PRIORITY_SCREEN);
-			m_pObject2D[1]->SetTexture(texture);
-		}
+
+		// パラメーターのテキスト設定
+		SetParameterText();
+
 		m_bTextureFlag = true;
+	}
+}
+
+//============================================================================
+// パラメーターのテキスト設定
+//============================================================================
+void CCharDecision_Window::SetParameterText()
+{
+	std::string str = {};
+
+	str = "<c=0,255,255,255,>ライフ</>:";
+	std::stringstream strNum;
+	strNum << m_pPlayer_Parameter->GetParameterJob(m_nSelectIndex + 1).nLife;
+	str += strNum.str().c_str();
+
+	if (m_pParameter_Font[0] == nullptr)
+	{
+		m_pParameter_Font[0] = CFontString::Create(D3DXVECTOR3(370.0f, 400.0f, 0.0f), { 50.0f, 50.0f }, str);
+	}
+
+	str = "<c=255,124,0,255,>スタミナ</>:";
+	std::stringstream strNum2;
+	strNum2 << m_pPlayer_Parameter->GetParameterJob(m_nSelectIndex + 1).nStamina;
+	str += strNum2.str().c_str();
+	if (m_pParameter_Font[1] == nullptr)
+	{
+		m_pParameter_Font[1] = CFontString::Create(D3DXVECTOR3(300.0f, 500.0f, 0.0f), { 50.0f, 50.0f }, str);
 	}
 }
 
@@ -449,13 +487,27 @@ void CCharDecision_Window::UninitExplanation()
 		m_pFont = nullptr;
 	}
 
+	// フォントの破棄
+	if (m_pParameter_Font[0] != nullptr)
+	{
+		m_pParameter_Font[0]->Uninit();
+		m_pParameter_Font[0] = nullptr;
+	}
+
+	// フォントの破棄
+	if (m_pParameter_Font[1] != nullptr)
+	{
+		m_pParameter_Font[1]->Uninit();
+		m_pParameter_Font[1] = nullptr;
+	}
+
 	// テクスチャの破棄
 	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
-		if (m_pObject2D[nCnt] != nullptr)
+		if (m_pObject2D != nullptr)
 		{
-			m_pObject2D[nCnt]->Uninit();
-			m_pObject2D[nCnt] = nullptr;
+			m_pObject2D->Uninit();
+			m_pObject2D = nullptr;
 		}
 	}
 }

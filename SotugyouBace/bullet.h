@@ -67,7 +67,7 @@ public:
 	CObject3D *GetObj3D() { return m_pObj3D; }
 	CObjectX *GetObjX() { return m_pObjX; }
 
-	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move, const bool side, const PRIORITY priority = PRIORITY_BACK);	// ê∂ê¨
+	static CBullet* Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, const D3DXVECTOR3 move, const bool side, const int power, const float speed, const int life);	// ê∂ê¨
 
 private:
 	//****************

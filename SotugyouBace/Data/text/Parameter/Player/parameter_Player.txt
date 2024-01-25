@@ -21,7 +21,7 @@ ALL_PARAM_SET
 		#------------------
 		PARAM_SET
 			LIFE = 6000				# 体力
-			STAMINA = 60			# スタミナ
+			STAMINA = 6000			# スタミナ
 			STAN_TOLERANCE = 60		# スタン許容値
 			GRAVITY = 3				# 重力
 		END_PARAM_SET
@@ -38,7 +38,7 @@ ALL_PARAM_SET
 		#------------------
 		PARAM_SET
 			LIFE = 7500			# 体力
-			STAMINA = 75			# スタミナ
+			STAMINA = 8500			# スタミナ
 			STAN_TOLERANCE = 50		# スタン許容値
 			GRAVITY = 3				# 重力
 		END_PARAM_SET
@@ -55,7 +55,7 @@ ALL_PARAM_SET
 		#------------------
 		PARAM_SET
 			LIFE = 10000				# 体力
-			STAMINA = 50			# スタミナ
+			STAMINA = 7000			# スタミナ
 			STAN_TOLERANCE = 80		# スタン許容値
 			GRAVITY = 4				# 重力
 		END_PARAM_SET
@@ -72,7 +72,7 @@ ALL_PARAM_SET
 		#------------------
 		PARAM_SET
 			LIFE = 5000			# 体力
-			STAMINA = 100			# スタミナ
+			STAMINA = 10000			# スタミナ
 			STAN_TOLERANCE = 50		# スタン許容値
 			GRAVITY = 2				# 重力
 		END_PARAM_SET
@@ -89,7 +89,7 @@ ALL_PARAM_SET
 		#------------------
 		PARAM_SET
 			LIFE = 13000			# 体力
-			STAMINA = 40			# スタミナ
+			STAMINA = 6000			# スタミナ
 			STAN_TOLERANCE = 40		# スタン許容値
 			GRAVITY = 6				# 重力
 		END_PARAM_SET

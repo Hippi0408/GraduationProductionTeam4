@@ -134,10 +134,10 @@ ALL_PARAM_SET
 		#------------------
 		PARAM_SET
 			POWER = 500 520 540		# 威力
-			FIRING_SPEED = 3.25		# 発射速度
+			FIRING_SPEED = 6.5		# 発射速度
 			GRAVITY = 3				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 20				# 寿命
+			LIFE = 15				# 寿命
 		END_PARAM_SET
 		
 		#------------------
@@ -145,10 +145,10 @@ ALL_PARAM_SET
 		#------------------
 		PARAM_SET
 			POWER = 800 840 880		# 威力
-			FIRING_SPEED = 1.5		# 発射速度
+			FIRING_SPEED = 3.0		# 発射速度
 			GRAVITY = 5				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 20				# 寿命
+			LIFE = 15				# 寿命
 		END_PARAM_SET
 		
 		#------------------
@@ -156,10 +156,10 @@ ALL_PARAM_SET
 		#------------------
 		PARAM_SET
 			POWER = 500 520 540		# 威力
-			FIRING_SPEED = 3		# 発射速度
+			FIRING_SPEED = 6		# 発射速度
 			GRAVITY = 5				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 20				# 寿命
+			LIFE = 15				# 寿命
 		END_PARAM_SET
 
 	END_JOB_PARAM_SET
@@ -173,10 +173,10 @@ ALL_PARAM_SET
 		# LA2000
 		#------------------
 		PARAM_SET
-			POWER = 140 150 160		# 威力
+			POWER = 320 340 360		# 威力
 			FIRING_SPEED = 16		# 発射速度
 			GRAVITY = 8				# 重力
-			BULLET_SPEED = 4		# 弾速(0:遅い ～ 4:速い)
+			BULLET_SPEED = 6		# 弾速(0:遅い ～ 4:速い)
 			LIFE = 15				# 寿命
 		END_PARAM_SET
 	
@@ -184,10 +184,10 @@ ALL_PARAM_SET
 		# メタリカ255
 		#------------------
 		PARAM_SET
-			POWER = 180 190 200		# 威力
+			POWER = 400 420 440		# 威力
 			FIRING_SPEED = 12		# 発射速度
 			GRAVITY = 10			# 重力
-			BULLET_SPEED = 4		# 弾速(0:遅い ～ 4:速い)
+			BULLET_SPEED = 6		# 弾速(0:遅い ～ 4:速い)
 			LIFE = 15				# 寿命
 		END_PARAM_SET
 		
@@ -202,8 +202,8 @@ ALL_PARAM_SET
 		# 12Pump
 		#------------------
 		PARAM_SET
-			POWER = 240 270 300		# 威力
-			FIRING_SPEED = 1.5		# 発射速度
+			POWER = 340 370 400		# 威力
+			FIRING_SPEED = 1.75		# 発射速度
 			GRAVITY = 5				# 重力
 			BULLET_SPEED = 10		# 弾速(0:遅い ～ 4:速い)
 			LIFE = 5				# 寿命
@@ -213,8 +213,8 @@ ALL_PARAM_SET
 		# WR2154
 		#------------------
 		PARAM_SET
-			POWER = 330 360 240		# 威力
-			FIRING_SPEED = 1.75		# 発射速度
+			POWER = 430 460 490		# 威力
+			FIRING_SPEED = 1.5		# 発射速度
 			GRAVITY = 6				# 重力
 			BULLET_SPEED = 10		# 弾速(0:遅い ～ 4:速い)
 			LIFE = 5				# 寿命

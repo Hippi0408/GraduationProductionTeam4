@@ -157,6 +157,9 @@ void CEnemy::Hit(CMove_Object* pHit)
 
 			// 無敵状態を付与する
 			SetCollisionNoneHit(true);
+
+			// ダメージ
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_DAMAGE);
 			break;
 		case TAG_EXPLOSION:
 			// 爆発のダメージを返す

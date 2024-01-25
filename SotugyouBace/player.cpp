@@ -221,7 +221,8 @@ void CPlayer::ChangeMotion()
 
 		// モーションがループしない場合
 		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true && !GetBoost()
-			&& pParts->GetMotion() == MOTION_LANDING)		{
+			&& pParts->GetMotion() == MOTION_LANDING)
+		{
 			pParts->SetMotion(MOTION_NEUTRAL);
 		}
 	}
@@ -244,7 +245,10 @@ void CPlayer::PlayerAttack()
 		else
 		{
 			GunWeaponAttack();
+
 		}
+			// ゲージ消費状態の設定
+			m_pEnergy_Gauge->SetConsumption(true);
 	}
 }
 
@@ -341,6 +345,10 @@ void CPlayer::MeleeWeaponAttack()
 
 		// 追加攻撃の待機
 		m_bStandby_Attack = true;
+
+		int nPlayLabel = CSound::SOUND_LABEL_SE_PUNCH + ((nWeaponNumber - MOTION_FIST_1) / 4);
+		// 近接攻撃SE
+		CApplication::GetSound()->Play((CSound::SOUND_LABEL)nPlayLabel);
 	}
 
 	// モーションが終了した場合
@@ -442,14 +450,17 @@ void CPlayer::GunWeaponAttack()
 			CMotion::MotionPattern pMotionPattern = pMotion->GetMotionPattern(nWeaponNumber, CMotion::m_cMotionFileName[PARTS_ARMS]);
 
 			// モーション全体の秒数を設定
-			for (int nCnt = 0; nCnt < pMotionPattern.nMaxKey; nCnt++)
+			for (int nCnt = 0; nCnt < pMotionPattern.nMaxKey - 1; nCnt++)
 			{
 				m_fAttackRate_Max_Counter += pMotionPattern.aKeySet[nCnt].nFrame;
 			}
+
+			// 銃_構え
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_GUN_STANDBY);
 		}
 	}
 	// 0番目の攻撃終了時に攻撃を行う && 最初の攻撃の場合
-	else if (m_fAttackRate_Counter == pMotion->GetMotionPattern(nWeaponNumber, CMotion::m_cMotionFileName[PARTS_ARMS]).aKeySet[0].nFrame
+	else if (m_fAttackRate_Counter == m_fAttackRate_Max_Counter
 		&& m_bStandby_Attack == false && m_nAdditional_Attack == 0)
 	{
 		// 弾攻撃処理
@@ -532,30 +543,79 @@ void CPlayer::BulletAttack(const int weapon)
 	// 武器パラメーター(nPower：威力, fFiring_Speed：発射速度, nGravity：重量, nBullet_Speed：弾速, nLife：寿命)
 	Gun_Parameter = pWeapon_Parameter->GetParameterGunWeapon(m_nWeapon_type, m_nWeapon_Rarity);
 
-	// 弾の速度を上げる
-	float fSpeed = BULLET_SPEED_SCALE * (1 + Gun_Parameter.nBullet_Speed);
+	int nBulletPower = Gun_Parameter.nPower;
 
-	// 弾の生成
 	if (weapon == MOTION_HUND_GUN)
 	{
-		pos.x -= 30.0f;
-		CNormal_Bullet::Create(pos, { 15.0f,15.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
-		pos.x += 60.0f;
-		CNormal_Bullet::Create(pos, { 15.0f,15.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+		nBulletPower *= 2;
 	}
 	else if (weapon == MOTION_SHOT_GUN)
 	{
-		CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+		nBulletPower *= 10;
 	}
+
+	// 威力分ゲージを減らす
+	m_pEnergy_Gauge->SetEnergyConsumed((float)nBulletPower);
+
+	// ゲージが残っている場合
+	if (!m_pEnergy_Gauge->GetConsumption())
+	{
+		// 弾の速度を上げる
+		float fSpeed = BULLET_SPEED_SCALE * (1 + Gun_Parameter.nBullet_Speed);
+
+		// 弾の生成
+		if (weapon == MOTION_HUND_GUN)
+		{
+			pos.x -= 30.0f;
+			CNormal_Bullet::Create(pos, { 15.0f,15.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+			pos.x += 60.0f;
+			CNormal_Bullet::Create(pos, { 15.0f,15.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+			// 弾発射SE2発
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_AR);
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_AR);
+		}
+		else if (weapon == MOTION_SHOT_GUN)
+		{
+			CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+			
+			// 弾発射SE3発
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_SG);
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_SG);
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_SG);
+		}
+		else
+		{
+			CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+			
+			// マシンガン系統
+			if (weapon == MOTION_MACHIN_GUN || weapon == MOTION_SUB_MACHIN_GUN)
+			{
+				// 弾発射SE
+				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_MG);
+			}
+			// スナイパーライフル
+			else if (weapon == MOTION_SNIPER_RIFLE)
+			{
+				// 弾発射SE
+				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_SR);
+			}
+			// その他
+			else
+			{
+				// 弾発射SE
+				CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_AR);
+			}
+		}
+	}
+	// 弾切れの場合
 	else
 	{
-		CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
-		// 弾発射SE
-		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET);
+		// 弾切れ
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_OUT_OF_BULLET);
 	}
 
 	// クールタイムの派生
-	float fBulletSpeed = 1.0f / pWeapon_Parameter->GetParameterGunWeapon(m_nWeapon_type, m_nWeapon_Rarity).fFiring_Speed * 60.0f;
+	float fBulletSpeed = 1.0f / Gun_Parameter.fFiring_Speed * 60.0f;
 	m_fAttackRate_Max_Counter = fBulletSpeed != 0.0f ? fBulletSpeed : 1.0f;
 
 	// 最初の場合
@@ -594,6 +654,9 @@ void CPlayer::JumpStart()
 	// 接地している場合のみ
 	if (GetGround())
 	{
+		// ジャンプSE
+		CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_PLAYERWALK);
+
 		// ジャンプモーションを設定
 		GetParts(PARTS_LEG)->SetMotion(MOTION_JUMP);
 
@@ -614,8 +677,8 @@ void CPlayer::JumpBoost()
 {
 	if (m_pEnergy_Gauge != nullptr)
 	{
-		// 空中にいる場合、エネルギーが残っている場合
-		if (!GetGround() && !m_pEnergy_Gauge->GetConsumption())
+		// 空中にいる場合
+		if (!GetGround())
 		{
 			// 上昇する
 			AddMove({ 0.0f, 0.5f, 0.0f });
@@ -685,6 +748,9 @@ void CPlayer::Hit(CMove_Object* pHit)
 
 			// 無敵状態を付与する
 			SetCollisionNoneHit(true);
+
+			// ダメージ
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_DAMAGE);
 			break;
 		case TAG_EXPLOSION:
 			// 爆発のダメージを返す
@@ -1178,7 +1244,11 @@ void CPlayer::SettingParameter()
 			// 武器パラメーター
 			Gun_Parameter = pWeapon_Parameter->GetParameterGunWeapon(m_nWeapon_type, m_nWeapon_Rarity);
 			m_nGravity += Gun_Parameter.nGravity;
-			m_fTarget_Scope = BULLET_SPEED_SCALE * (Gun_Parameter.nBullet_Speed + 1) * Gun_Parameter.nLife;						// ターゲットを狙う範囲
+			m_fTarget_Scope =(BULLET_SPEED_SCALE * (Gun_Parameter.nBullet_Speed + 1) * Gun_Parameter.nLife) - 1000.0f;						// ターゲットを狙う範囲
+			if (m_fTarget_Scope < 3000.0f)
+			{
+				m_fTarget_Scope = 3000.0f;
+			}
 		}
 
 		// 各パラメータの設定
@@ -1274,8 +1344,8 @@ void CPlayer::SetPlayerWeapon(const int weapon, const int rarity)
 	if (m_pRightWeapon == nullptr)
 	{
 		// 右手(腕[3])に武器を設定
-		m_pRightWeapon = CWeapon::Create({ 1.0f, -6.0f, 0.0f }, { -D3DX_PI / 2.0f, 0.0f, 0.0f}, (CWeapon::WEAPON_TYPE)weapon, GetParts(PARTS_ARMS)->GetModel(4));
-		m_pRightWeapon->SetDrawFlag(false);
+		m_pRightWeapon = CWeapon::Create({ 1.0f, -6.0f, 0.0f }, { -D3DX_PI / 2.0f, 0.0f, 0.0f }, weapon, GetParts(PARTS_ARMS)->GetModel(4));
+		m_pRightWeapon->SetDrawFlag(true);
 	}
 	else
 	{	// 右手(腕[3])に武器を変更
@@ -1283,29 +1353,37 @@ void CPlayer::SetPlayerWeapon(const int weapon, const int rarity)
 		m_pRightWeapon->SetDrawFlag(true);
 	}
 
-	// 左手が使用されていない場合
-	if (m_pLeftWeapon == nullptr)
+	// ハンドガンの場合
+	if ((weapon >= CWeapon::GUN_WEAPON_HG_HG37 && weapon <= CWeapon::GUN_WEAPON_HG_AKIMBO20)
+		|| (weapon >= CWeapon::MELEE_WEAPON_FIST_KNUCKLE && weapon <= CWeapon::MELEE_WEAPON_FIST_STUN_BATON))
 	{
-		// 左手(腕[6])に素手を設定
-		m_pLeftWeapon = CWeapon::Create({ -1.0f, -6.0f, 0.0f }, { -D3DX_PI / 2.0f, 0.0f, 0.0f }, CWeapon::WEAPON_KNUCKLE, GetParts(PARTS_ARMS)->GetModel(8));
-		m_pLeftWeapon->SetDrawFlag(false);
-	}
-	else
-	{
-		// ハンドガンの場合
-		if((weapon >= CWeapon::GUN_WEAPON_HG_HG37 && weapon <= CWeapon::GUN_WEAPON_HG_AKIMBO20)
-			|| (weapon >= CWeapon::MELEE_WEAPON_FIST_KNUCKLE && weapon <= CWeapon::MELEE_WEAPON_FIST_STUN_BATON))
+		// 左手が使用されていない場合
+		if (m_pLeftWeapon == nullptr)
+		{
+			// 左手(腕[6])に素手を設定
+			m_pLeftWeapon = CWeapon::Create({ -1.0f, -6.0f, 0.0f }, { -D3DX_PI / 2.0f, 0.0f, 0.0f }, weapon, GetParts(PARTS_ARMS)->GetModel(8));
+		}
+		else
 		{
 			// 左手(腕[6])に素手を設定
 			m_pLeftWeapon->ChangeWeapon(weapon);
 		}
-		// ハンドガンではない場合
+		m_pLeftWeapon->SetDrawFlag(true);
+	}
+	// ハンドガンではない場合
+	else
+	{		// 左手が使用されていない場合
+		if (m_pLeftWeapon == nullptr)
+		{
+			// 左手(腕[6])に素手を設定
+			m_pLeftWeapon = CWeapon::Create({ -1.0f, -6.0f, 0.0f }, { -D3DX_PI / 2.0f, 0.0f, 0.0f }, CWeapon::WEAPON_KNUCKLE, GetParts(PARTS_ARMS)->GetModel(8));
+		}
 		else
 		{
 			// 左手(腕[6])に素手を設定
 			m_pLeftWeapon->ChangeWeapon(CWeapon::WEAPON_KNUCKLE);
 		}
-		m_pLeftWeapon->SetDrawFlag(true);
+		m_pLeftWeapon->SetDrawFlag(false);
 	}
 
 	// 現在のモード
@@ -1317,7 +1395,7 @@ void CPlayer::SetPlayerWeapon(const int weapon, const int rarity)
 		CTutorial::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);
 		CTutorial::SetPlayerUI(CPlayerUi::UITYPE_WEAPON, weapon);
 	}
-	else*/ 
+	else*/
 	if (Mode == CApplication::MODE_GAME)
 	{
 		//CGame::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);

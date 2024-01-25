@@ -36,6 +36,8 @@ public:
 	void SetReuse_Percent(const float reuse) { m_fReuse_Percent = reuse; }						// 全消費からの回復時に再利用できるタイミングの設定
 	void SetRecovery_Interval(const float interval) { m_fRecovery_Interval = interval; }
 	void SetDrawGauge(bool draw) override;
+	void SetEnergyConsumed(const float value);
+	void SetConsumption(const bool recovery) { m_bConsumption = recovery; }
 
 	const bool GetConsumption() { return m_bAllConsumption; }		// エネルギーを全て消費しているか
 	CObject2D *GetBackGauge() { return m_BackGauge; }
