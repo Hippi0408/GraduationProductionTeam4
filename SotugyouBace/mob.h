@@ -59,6 +59,7 @@ public:
 	void Attack();
 	void Avoidance();
 
+	static void SetDeathCount(int death) { m_DeathCount = death; }
 	static int GetDeathCount() { return m_DeathCount; }
 
 	static CMob* Create(const D3DXVECTOR3 pos);
