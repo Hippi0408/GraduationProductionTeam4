@@ -24,6 +24,9 @@ class CMob : public CEnemy
 	static const float MOB_COLLISION_RADIUS;	// ボスの当たり判定の大きさ
 	static const int DRAW_HP_DISTANCE = 3000;	// HPゲージを表示する距離
 	static const int DRAW_DISTANCE = 7000;		// 敵を表示する距離
+	static const int MOB_BULLET_POWER = 50;		// 敵キャラの弾の攻撃力
+	static const int MOB_BULLET_LIFE = 60;		// 敵キャラの弾の寿命
+	static const float MOB_BULLET_SPEED;		// 敵キャラの弾の速度
 public:
 
 	// パーツの種類

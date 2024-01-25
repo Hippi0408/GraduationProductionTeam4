@@ -9,6 +9,9 @@
 #include"math.h"
 #include"objectX.h"
 #include "particle_emitter.h"
+#include"enemy.h"
+#include"enemy_manager.h"
+#include"game.h"
 
 //==============================================================================================
 // コンストラクタ
@@ -58,7 +61,6 @@ HRESULT CChain_Manager::Init()
 //==============================================================================================
 void CChain_Manager::Uninit()
 {
-
 }
 
 //==============================================================================================
@@ -102,6 +104,26 @@ void CChain_Manager::Update()
 			m_pChain[0][nCnt]->Uninit();
 			m_pChain[1][nCnt]->Uninit();
 			m_pAnchor->Uninit();
+		}
+	}
+
+	CEnemyManager* pEnemyManager = nullptr;
+
+	// ボスの読み込み
+	pEnemyManager = CGame::GetEnemyManager();
+
+	for (auto pEnemy : pEnemyManager->GetAllEnemy())
+	{
+		if (pEnemy->GetEnemyType() == CEnemy::ENEMY_TYPE_BOSS
+			&& pEnemy->GetLife() != 0)
+		{
+			for (int nCnt = 0; nCnt < m_nNumChain; nCnt++)
+			{
+				// ボスの体力が0になると消える
+				m_pChain[0][nCnt]->Uninit();
+				m_pChain[1][nCnt]->Uninit();
+				m_pAnchor->Uninit();
+			}
 		}
 	}
 }

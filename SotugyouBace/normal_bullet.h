@@ -22,7 +22,7 @@ public:
 	void Update() override;		// XVˆ—
 	void Draw() override;		// •`‰æˆ—
 
-	static CNormal_Bullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CCharacter *chara, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority);
+	static CNormal_Bullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CCharacter *chara, float enemy_speed, bool target, const bool side, const int power, const float speed, const int life);
 
 private:
 	float m_fHypotenuse;

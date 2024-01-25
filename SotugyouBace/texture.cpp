@@ -69,10 +69,22 @@ const char* CTexture::s_FileName[] =
 	"Data/texture/chain.png",						// チェーン
 	"Data/texture/NotEnter.png",					// 移動制限
 
+	"Data/texture/Weapon/AR_icon.png",				// アサルトライフルアイコン
+	"Data/texture/Weapon/SMG_icon.png",				// サブマシンガンアイコン
+	"Data/texture/Weapon/SHandgun_icon.png",			// ハンドガンアイコン
+	"Data/texture/Weapon/MG_icon.png",				// マシンガンアイコン
+	"Data/texture/Weapon/SG_icon.png",				// ショットガンアイコン
+	"Data/texture/Weapon/SR_icon.png",				// スナイパーライフルアイコン
 	"Data/texture/Weapon/Knuckle_icon.png",			// 素手アイコン
 	"Data/texture/Weapon/Slash_icon.png",			// スラッシュアイコン
-	"Data/texture/Weapon/stabbing_icon.png",			// 刺突アイコン
+	"Data/texture/Weapon/stabbing_icon.png",		// 刺突アイコン
 
+	"Data/texture/WeaponSkill/WeaponSkill_AR.png",		// アサルトライフルのアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_SMG.png",		// サブマシンガンのアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_SHandgun.png",	// ハンドガンのアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_MG.png",		// マシンガンのアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_SG.png",		// ショットガンのアタックスキルアイコン
+	"Data/texture/WeaponSkill/WeaponSkill_SR.png",		// スナイパーライフルのアタックスキルアイコン
 	"Data/texture/WeaponSkill/WeaponSkill_Knuckle.png",	// 素手のアタックスキルアイコン
 	"Data/texture/WeaponSkill/WeaponSkill_Slash.png",	// スラッシュのアタックスキルアイコン
 	"Data/texture/WeaponSkill/WeaponSkill_stabbing.png",// 刺突のアタックスキルアイコン

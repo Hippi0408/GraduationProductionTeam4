@@ -114,7 +114,7 @@ void CTitleMenu::Choice()
 		case Choice_GameStart:
 		{
 			// åàíËSE
-			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_YES);
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 			// ÉQÅ[ÉÄÇ…îÚÇ‘
 			CFade::SetFade(CApplication::MODE_CHAR_SELECT, 0.05f);
 			CTitle::SetUninitWindow(false);

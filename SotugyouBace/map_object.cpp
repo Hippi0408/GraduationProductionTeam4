@@ -118,7 +118,7 @@ void CMap_Object::Hit(CMove_Object* /*pHit*/)
 {
 	Uninit();
 
-	std::move(CParticleEmitter::Create("Locus", GetPos()));
+	std::move(CParticleEmitter::Create("smoke", GetPos()));
 }
 
 //==============================================================================================

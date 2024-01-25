@@ -17,6 +17,7 @@
 #include "normal_bullet.h"
 
 const float CMob::MOB_COLLISION_RADIUS = 200.0f;	// モブキャラの当たり判定の大きさ
+const float CMob::MOB_BULLET_SPEED = 60.0f;		// 敵キャラの弾の速度
 int CMob::m_DeathCount = 0;
 //=====================================
 // デフォルトコンストラクタ
@@ -106,7 +107,7 @@ void CMob::Update()
 
 	if (!CApplication::GetCamera()->GetOpening())
 		// 回避
-		//Avoidance();
+		Avoidance();
 
 	// キャラクターの更新
 	CEnemy::Update();
@@ -244,7 +245,7 @@ void CMob::Move()
 		if (m_fAvoidance_Count >= 100)
 		{
 			// 一定時間ごとに確率で回避する
-			int nRand = rand() % 100;
+			int nRand = rand() % 10;
 
 			if (nRand == 0)
 			{
@@ -276,7 +277,8 @@ void CMob::Attack()
 	if (m_nBullet_Interval >= 50)
 	{
 		// 弾
-		CNormal_Bullet::Create(GetPos(), { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false, PRIORITY_BACK);
+		CNormal_Bullet::Create(GetPos(), { 60.0f,60.0f }, { 0.0f,0.0f,0.0f }, fDistance, pPlayer, 0.0f, true, false,
+			MOB_BULLET_POWER, MOB_BULLET_SPEED, MOB_BULLET_LIFE);
 		m_nBullet_Interval = 0;
 	}
 }

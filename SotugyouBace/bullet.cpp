@@ -31,8 +31,6 @@ const float CBullet::BULLET_COLLISION_RADIUS = 30.0f;	// 弾の当たり判定の大きさ
 //=============================================================================
 CBullet::CBullet(const CObject::PRIORITY priority) : CMove_Object(priority)
 {
-	m_nLife = BULLET_LIFE;
-	SetPower(BULLET_POWER);
 	m_fSpeed_XZ = BULLET_SPEED_XZ;
 	m_fSpeed_Y = BULLET_SPEED_Y;
 	SetRadius(BULLET_COLLISION_RADIUS);
@@ -115,7 +113,8 @@ void CBullet::Update()
 	pos.y += move.y * m_fSpeed_Y;
 
 	// 攻撃パーティクル
-	std::move(CParticleEmitter::Create("Locus", GetPos()));
+	std::move(CParticleEmitter::Create("Locus", pos));
+
 
 	// 位置の設定
 	SetPos(pos);

@@ -106,12 +106,12 @@ void CParabola_Bullet::Destroy()
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CParabola_Bullet *CParabola_Bullet::Create(const D3DXVECTOR3 pos, D3DXVECTOR3 move, float hypotenuse, D3DXVECTOR3 rot, char *filename, const bool side, const CObject::PRIORITY priority)
+CParabola_Bullet *CParabola_Bullet::Create(const D3DXVECTOR3 pos, D3DXVECTOR3 move, float hypotenuse, D3DXVECTOR3 rot, char *filename, const bool side, const int power, const float speed, const int life)
 {
 	CParabola_Bullet* pParabola_Bullet = nullptr;
 
 	//クラスの生成
-	pParabola_Bullet = new CParabola_Bullet(priority);
+	pParabola_Bullet = new CParabola_Bullet(PRIORITY_BACK);
 
 	if (pParabola_Bullet != nullptr)
 	{
@@ -120,10 +120,13 @@ CParabola_Bullet *CParabola_Bullet::Create(const D3DXVECTOR3 pos, D3DXVECTOR3 mo
 		pParabola_Bullet->m_fHyptenuse = hypotenuse;
 		pParabola_Bullet->m_Rot = rot;
 		pParabola_Bullet->SetPlayerSide(side);
+		pParabola_Bullet->SetPower(power);
+		pParabola_Bullet->SetSpeed(speed);
+		pParabola_Bullet->SetLife(life);
 		pParabola_Bullet->Init();
 
 		// 弾オブジェクトの生成
-		pParabola_Bullet->SetObjX(CObjectX::Create(pos, { 0.0f,0.0f,0.0f }, nullptr, filename, priority));
+		pParabola_Bullet->SetObjX(CObjectX::Create(pos, { 0.0f,0.0f,0.0f }, nullptr, filename, PRIORITY_BACK));
 	}
 	else
 		assert(false);

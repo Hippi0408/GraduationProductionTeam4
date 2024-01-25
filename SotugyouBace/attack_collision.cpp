@@ -36,7 +36,7 @@ CAttack_Collision::~CAttack_Collision()
 HRESULT CAttack_Collision::Init()
 {
 	// タグの設定
-	SetTag(TAG_BULLET);
+	SetTag(TAG_ATTACK);
 
 	// 当たり判定のタイプ
 	SetCollision_Type(CMove_Object::COLLISION_TYPE_SHERER);

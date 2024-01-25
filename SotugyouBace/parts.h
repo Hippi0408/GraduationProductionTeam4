@@ -51,6 +51,7 @@ public:
 	void SetModelParent(CObjectX* parts, const bool parent = false);
 	void SetMotionName(const std::string name) { m_sMotionName = name; }
 	void SetMotionSpeed(const float speed) { m_fMotion_Speed = speed; }
+	void SetMotionStop() { m_bMotionStop = true; }
 
 	const bool GetMotionLoop() { return m_bLoop; }			// 現在モーションのループ判定
 	const bool GetMotionStop() { return m_bMotionStop; }	// 現在モーションの終了判定を読み込む

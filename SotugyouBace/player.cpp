@@ -34,6 +34,7 @@ const float CPlayer::PLAYER_JUMP_POWER = 10.0f;			// プレイヤーのジャンプ力
 const float CPlayer::VIEW_SCOPE_ANGLE = 44.3f;		// プレイヤーの視野角
 const float CPlayer::RETICLE_TRANSPARENCY_SIZE = 300.0f;
 const float CPlayer::RETICLE_SIZE = 200.0f;
+const float CPlayer::BULLET_SPEED_SCALE = 50.0f;			// 弾速の倍率
 //=====================================
 // デフォルトコンストラクタ
 //=====================================
@@ -60,8 +61,13 @@ HRESULT CPlayer::Init()
 {
 	// プレイヤーのモデルを読み込む
 	SetParts(PARTS_BODY, CParts_File::PARTS_PLAYER_BODY_1 + m_Parts_Job[PARTS_BODY], CMotion::MOTION_PLAYER_BODY);
-	SetParts(PARTS_ARMS, CParts_File::PARTS_PLAYER_ARMS_0, CMotion::MOTION_PLAYER_ARMS);
-	SetParts(PARTS_LEG, CParts_File::PARTS_PLAYER_LEG_0, CMotion::MOTION_PLAYER_LEG);
+
+	SetParts(PARTS_ARMS, /*CParts_File::PARTS_PLAYER_ARMS_0*/
+		CParts_File::PARTS_PLAYER_ARMS_1 + m_Parts_Job[PARTS_ARMS], CMotion::MOTION_PLAYER_ARMS);
+
+	SetParts(PARTS_LEG, /*CParts_File::PARTS_PLAYER_LEG_0*/
+		CParts_File::PARTS_PLAYER_LEG_1 + m_Parts_Job[PARTS_LEG], CMotion::MOTION_PLAYER_LEG);
+
 	SetPlayerWeapon(CWeapon::WEAPON_KNUCKLE, 0);
 
 	// パラメータの設定
@@ -203,8 +209,8 @@ void CPlayer::ChangeMotion()
 		CParts* pParts = GetParts(nCnt);
 
 		// モーションがループしない場合
-		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true && !GetBoost())
-		{
+		if (pParts->GetMotionLoop() == false && pParts->GetMotionStop() == true && !GetBoost()
+			&& pParts->GetMotion() == MOTION_LANDING)		{
 			pParts->SetMotion(MOTION_NEUTRAL);
 		}
 	}
@@ -218,25 +224,15 @@ void CPlayer::PlayerAttack()
 	// 攻撃判定が真の場合、攻撃処理を読み込み続ける
 	if (m_bPlayer_Attack == true)
 	{
-		const int nWeaponType = m_nWeapon_type + CDrop_Weapon::MELEE_WEAPON_NONE;
+		const int nWeaponType = m_nWeapon_type + CDrop_Weapon::GUN_WEAPON_AR_AR40;
 
-		if (nWeaponType < CDrop_Weapon::MELEE_WEAPON_MAX)
+		if (nWeaponType >= CDrop_Weapon::GUN_WEAPON_MAX)
 		{
 			MeleeWeaponAttack();
 		}
 		else
 		{
-			// 情報の取得
-			D3DXVECTOR3 pos = GetCenterPos();
-			D3DXVECTOR3 rot = GetBulletRot();
-
-			D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
-
-			// 弾の生成
-			CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, PRIORITY_BACK);
-			/*CHoming_Bullet::Create(pos, rot, pos_vec, m_NearMob_Pos, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);
-			CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, PRIORITY_BACK);
-			CParabola_Bullet::Create(pos, pos_vec, m_fHypotenuse, rot, "Data/model/Weapon/knife.x", true, PRIORITY_BACK);*/
+			GunWeaponAttack();
 		}
 	}
 }
@@ -250,7 +246,7 @@ void CPlayer::MeleeWeaponAttack()
 	int nWeaponNumber = 0;
 
 	// 近接武器の最低値より大きい場合
-	if (m_nWeapon_type >= CWeapon::MELEE_WEAPON_STABBING_LANCE)
+	if (m_nWeapon_type >= CWeapon::MELEE_WEAPON_POKE_LANCE)
 	{
 		// 武器の最低値を初期値に設定
 		nWeaponNumber = MOTION_POKE_1;
@@ -275,7 +271,7 @@ void CPlayer::MeleeWeaponAttack()
 	CMotion* pMotion = CApplication::GetMotion();
 
 	// 攻撃開始処理
-	if (m_nAttackRate_Counter == 0)
+	if (m_fAttackRate_Counter == 0)
 	{
 		// (腕モーションの全フレーム数 - 1) を計測
 		CMotion::MotionPattern pMotionPattern = pMotion->GetMotionPattern(nMotion, CMotion::m_cMotionFileName[PARTS_ARMS]);
@@ -283,7 +279,7 @@ void CPlayer::MeleeWeaponAttack()
 		// モーション全体の秒数を設定
 		for (int nCnt = 0; nCnt < pMotionPattern.nMaxKey - 1; nCnt++)
 		{
-			m_nAttackRate_Max_Counter += pMotionPattern.aKeySet[nCnt].nFrame;
+			m_fAttackRate_Max_Counter += pMotionPattern.aKeySet[nCnt].nFrame;
 		}
 
 		// 攻撃モーションを設定
@@ -294,7 +290,7 @@ void CPlayer::MeleeWeaponAttack()
 		}
 	}
 	// 0番目の攻撃終了時に攻撃を行う
-	else if (m_nAttackRate_Counter == pMotion->GetMotionPattern(nMotion, CMotion::m_cMotionFileName[PARTS_ARMS]).aKeySet[0].nFrame)
+	else if (m_fAttackRate_Counter == pMotion->GetMotionPattern(nMotion, CMotion::m_cMotionFileName[PARTS_ARMS]).aKeySet[0].nFrame - 1)
 	{
 		// 現在のモード
 		CApplication::MODE Mode = CApplication::GetModeType();
@@ -315,7 +311,7 @@ void CPlayer::MeleeWeaponAttack()
 		}
 
 		// 武器パラメーター
-		Melee_Parameter = pWeapon_Parameter->GetParameterMeleeWeapon(m_nWeapon_type, m_nWeapon_Rarity);
+		Melee_Parameter = pWeapon_Parameter->GetParameterMeleeWeapon(m_nWeapon_type - CWeapon::WEAPON_KNUCKLE, m_nWeapon_Rarity);
 
 		// 情報の取得
 		D3DXVECTOR3 pos = GetCenterPos();
@@ -331,28 +327,250 @@ void CPlayer::MeleeWeaponAttack()
 
 		// 武器攻撃(位置、大きさ、サイド、威力, 寿命)
 		CWeapon_Attack::Create(pos, radiusSize, true, Melee_Parameter.nPower, 20);
+
+		// 追加攻撃の待機
+		m_bStandby_Attack = true;
 	}
 
 	// モーションが終了した場合
-	if (m_nAttackRate_Counter++ >= m_nAttackRate_Max_Counter)
+	if (m_fAttackRate_Counter >= m_fAttackRate_Max_Counter)
 	{
 		// 攻撃処理中に攻撃コマンドが選択された場合に追加攻撃をする
 		if (m_bAdditional_Attack == true && m_nAdditional_Attack < 2)
 		{
 			// 攻撃回数を増やす
 			m_nAdditional_Attack++;
+			m_bStandby_Attack = false;
+			m_bAdditional_Attack = false;
+			m_fAttackRate_Counter = 0;
+			m_fAttackRate_Max_Counter = 0;
 		}
 		// モーション終了時に追加コマンドが無い場合に終了する
 		else
 		{
 			m_nAdditional_Attack = 0;
+
+			// 通常モーションを設定
+			for (int nCnt = 0; nCnt < PARTS_MAX; nCnt++)
+			{
+				// 攻撃モーションの設定
+				GetParts(nCnt)->SetMotion(MOTION_NEUTRAL);
+			}
+			// 攻撃初期化処理
+			AttackInit();
 		}
-		// 初期化
-		m_bPlayer_Attack = false;
-		m_bAdditional_Attack = false;
-		m_nAttackRate_Counter = 0;
-		m_nAttackRate_Max_Counter = 0;
 	}
+	else
+	{
+		m_fAttackRate_Counter++;
+	}
+}
+
+//============================================================================
+// 銃武器の攻撃処理
+//============================================================================
+void CPlayer::GunWeaponAttack()
+{
+	// 武器番号
+	int nWeaponNumber = 0;
+
+	// 銃武器の最低値より大きい場合
+	if (m_nWeapon_type >= CWeapon::GUN_WEAPON_SR_WINTER5000)
+	{
+		// 武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_SNIPER_RIFLE;
+	}
+	// 銃武器の最低値より大きい場合
+	else if (m_nWeapon_type >= CWeapon::GUN_WEAPON_SG_12PUMP)
+	{
+		// 武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_SHOT_GUN;
+	}
+	// 銃武器の最低値より大きい場合
+	else if (m_nWeapon_type >= CWeapon::GUN_WEAPON_MG_LA2000)
+	{
+		// 武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_MACHIN_GUN;
+	}
+	// 銃武器の最低値より大きい場合
+	else if (m_nWeapon_type >= CWeapon::GUN_WEAPON_HG_HG37)
+	{
+		// 武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_HUND_GUN;
+	}
+	// 銃武器の最低値より大きい場合
+	else if (m_nWeapon_type >= CWeapon::GUN_WEAPON_SMG_MPC50)
+	{
+		// 武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_SUB_MACHIN_GUN;
+	}
+	// 銃武器の最低値より大きい場合
+	else
+	{
+		//銃武器の最低値を初期値に設定
+		nWeaponNumber = MOTION_ASSAULT_RIFLE;
+	}
+
+	// モーション情報
+	CMotion* pMotion = CApplication::GetMotion();
+
+	// 攻撃開始処理
+	if (m_fAttackRate_Counter == 0.0f)
+	{
+		// 追加攻撃が無い場合
+		if (m_nAdditional_Attack == 0)
+		{
+			// 攻撃モーションを設定
+			for (int nCnt = 0; nCnt < PARTS_MAX - 1; nCnt++)
+			{
+				// 攻撃モーションの設定
+				GetParts(nCnt)->SetMotion(nWeaponNumber);
+			}
+
+			// (腕モーションの全フレーム数 - 1) を計測
+			CMotion::MotionPattern pMotionPattern = pMotion->GetMotionPattern(nWeaponNumber, CMotion::m_cMotionFileName[PARTS_ARMS]);
+
+			// モーション全体の秒数を設定
+			for (int nCnt = 0; nCnt < pMotionPattern.nMaxKey; nCnt++)
+			{
+				m_fAttackRate_Max_Counter += pMotionPattern.aKeySet[nCnt].nFrame;
+			}
+		}
+	}
+	// 0番目の攻撃終了時に攻撃を行う && 最初の攻撃の場合
+	else if (m_fAttackRate_Counter == pMotion->GetMotionPattern(nWeaponNumber, CMotion::m_cMotionFileName[PARTS_ARMS]).aKeySet[0].nFrame
+		&& m_bStandby_Attack == false && m_nAdditional_Attack == 0)
+	{
+		// 弾攻撃処理
+		BulletAttack(nWeaponNumber);
+
+		// 攻撃モーションを設定
+		for (int nCnt = 0; nCnt < PARTS_MAX - 1; nCnt++)
+		{
+			// モーションの停止を設定
+			GetParts(nCnt)->SetMotionStop();
+		}
+	}
+
+	// モーションが終了した場合
+	if (m_fAttackRate_Counter >= m_fAttackRate_Max_Counter)
+	{
+		// 追加攻撃がある場合
+		if (m_bAdditional_Attack == true)
+		{
+			// 弾攻撃処理
+			BulletAttack(nWeaponNumber);
+		}
+		// 追加攻撃が存在しない場合
+		else
+		{
+			m_bPlayer_Attack = false;
+			m_bStandby_Attack = false;
+			m_fAttackRate_Counter = 0.0f;
+			m_fAttackRate_Max_Counter = 0.0f;
+
+			// 通常モーションを設定
+			for (int nCnt = 0; nCnt < PARTS_MAX - 1; nCnt++)
+			{
+				// 攻撃モーションの設定
+				GetParts(nCnt)->SetMotion(MOTION_NEUTRAL);
+			}
+		}
+		// 攻撃処理中に攻撃コマンドが選択された場合に追加攻撃をする
+		m_nAdditional_Attack = (int)m_bAdditional_Attack;
+
+		// 初期化
+		m_bAdditional_Attack = false;
+	}
+	// モーション中の場合
+	else
+	{
+		m_fAttackRate_Counter++;
+	}
+}
+
+//============================================================================
+// 弾攻撃処理
+//============================================================================
+void CPlayer::BulletAttack(const int weapon)
+{
+	// 現在のモード
+	CApplication::MODE Mode = CApplication::GetModeType();
+
+	CWeapon_Parameter::GUN_WEAPON_PARAMETERS Gun_Parameter = {};
+
+	CWeapon_Parameter* pWeapon_Parameter = nullptr;
+
+	//パラメータの取得
+	/*if (Mode == CApplication::MODE_TUTORIAL)
+	{
+	pWeapon_Parameter = CTutorial::GetWeaponParameter();
+	}
+	else*/
+	if (Mode == CApplication::MODE_GAME)
+	{
+		pWeapon_Parameter = CGame::GetWeaponParameter();
+	}
+
+	// 情報の取得
+	D3DXVECTOR3 pos = GetCenterPos();
+	D3DXVECTOR3 rot = GetBulletRot();
+
+	D3DXVECTOR3 pos_vec = { -sinf(rot.y), sinf(rot.x), -cosf(rot.y) };
+
+	// 武器パラメーター(nPower：威力, fFiring_Speed：発射速度, nGravity：重量, nBullet_Speed：弾速, nLife：寿命)
+	Gun_Parameter = pWeapon_Parameter->GetParameterGunWeapon(m_nWeapon_type, m_nWeapon_Rarity);
+
+	// 弾の速度を上げる
+	float fSpeed = BULLET_SPEED_SCALE * (1 + Gun_Parameter.nBullet_Speed);
+
+	// 弾の生成
+	if (weapon == MOTION_HUND_GUN)
+	{
+		pos.x -= 30.0f;
+		CNormal_Bullet::Create(pos, { 15.0f,15.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+		pos.x += 60.0f;
+		CNormal_Bullet::Create(pos, { 15.0f,15.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+	}
+	else if (weapon == MOTION_SHOT_GUN)
+	{
+		CDiffusion_Bullet::Create(pos, { 30.0f,30.0f }, pos_vec, 10, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+	}
+	else
+	{
+		CNormal_Bullet::Create(pos, { 60.0f,60.0f }, pos_vec, m_fHypotenuse, m_pEnemy, m_fEnemy_Speed, m_bReticle_Draw, true, Gun_Parameter.nPower, fSpeed, Gun_Parameter.nLife);
+	}
+
+	// クールタイムの派生
+	float fBulletSpeed = 1.0f / pWeapon_Parameter->GetParameterGunWeapon(m_nWeapon_type, m_nWeapon_Rarity).fFiring_Speed * 60.0f;
+	m_fAttackRate_Max_Counter = fBulletSpeed != 0.0f ? fBulletSpeed : 1.0f;
+
+	// 最初の場合
+	if(m_nAdditional_Attack == 0)
+	{
+		m_fAttackRate_Counter = 0;
+	}
+	// 弾を撃ち続ける場合
+	else
+	{
+		// 攻撃間隔から差し引く
+		m_fAttackRate_Counter -= m_fAttackRate_Max_Counter;
+	}
+
+	// 追加攻撃の待機
+	m_bStandby_Attack = true;
+}
+
+//============================================================================
+// 攻撃終了処理
+//============================================================================
+void CPlayer::AttackInit()
+{
+	m_bPlayer_Attack = false;
+	m_bStandby_Attack = false;
+	m_bAdditional_Attack = false;
+	m_fAttackRate_Counter = 0;
+	m_fAttackRate_Max_Counter = 0;
 }
 
 //============================================================================
@@ -445,9 +663,20 @@ void CPlayer::Hit(CMove_Object* pHit)
 			// 弾のダメージを返す
 			Damage(pHit->GetPower());
 			break;
+		case TAG_ATTACK:
+			// 弾のダメージを返す
+			Damage(pHit->GetPower());
+
+			// 無敵状態を付与する
+			SetCollisionNoneHit(true);
+			break;
 		case TAG_EXPLOSION:
 			// 爆発のダメージを返す
 			Damage(pHit->GetPower());
+
+			// 無敵状態を付与する
+			SetCollisionNoneHit(true);
+			break;
 		case TAG_MAP_OBJECT:
 			break;
 		default:
@@ -744,7 +973,7 @@ void CPlayer::DropGet(CDrop_Weapon* pDrop)
 	CPlayer::PARTS Parts = pDrop->GetPartsType();
 
 	// 武器の情報
-	const int nWeapon = pDrop->GetWeaponType();
+	int nWeapon = pDrop->GetWeaponType();
 
 	// レアリティの取得
 	const int nRarity = pDrop->GetRarity();
@@ -757,12 +986,21 @@ void CPlayer::DropGet(CDrop_Weapon* pDrop)
 	// 武器パーツの場合
 	else
 	{
+		// 近接武器の場合、番号を一つ減らす
+		if (nWeapon > CDrop_Weapon::GUN_WEAPON_MAX)
+		{
+			nWeapon--;
+		}
+
 		// 武器パーツの変更処理
-		SetPlayerWeapon(nWeapon - CDrop_Weapon::MELEE_WEAPON_NONE, nRarity);
+		SetPlayerWeapon(nWeapon - CDrop_Weapon::GUN_WEAPON_AR_AR40, nRarity);
 	}
 
 	// 落とし物の終了処理
 	pDrop->Uninit();
+
+	// 攻撃終了処理
+	AttackInit();
 }
 
 //============================================================================
@@ -826,8 +1064,8 @@ void CPlayer::CollisionDropWeapon()
 			// ピックアップ状態を返す
 			pNearDrop->SetPick_Up(true);
 
-			// 落とし物を入手する場合
-			if (m_bDrop_Get == true)
+			// 落とし物を入手する場合 && 攻撃中ではない場合
+			if (m_bDrop_Get == true && m_bPlayer_Attack == false)
 			{
 				// 落とし物を入手する処理
 				DropGet(pNearDrop);
@@ -843,12 +1081,10 @@ void CPlayer::CollisionDropWeapon()
 //============================================================================
 void CPlayer::SettingParameter()
 {
-
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
 	if (Mode != CApplication::MODE_RESULT)
 	{
-
 		// パラメーターの情報
 		CPlayer_Parameter::PARAMETERS Parameter = {};
 
@@ -1020,15 +1256,25 @@ void CPlayer::SetPlayerWeapon(const int weapon, const int rarity)
 	}
 	else
 	{
-		// 左手(腕[6])に素手を設定
-		m_pLeftWeapon->ChangeWeapon(CWeapon::WEAPON_KNUCKLE);
+		// ハンドガンの場合
+		if(weapon >= CWeapon::GUN_WEAPON_HG_HG37 && weapon <= CWeapon::GUN_WEAPON_HG_AKIMBO20)
+		{
+			// 左手(腕[6])に素手を設定
+			m_pLeftWeapon->ChangeWeapon(weapon);
+		}
+		// ハンドガンではない場合
+		else
+		{
+			// 左手(腕[6])に素手を設定
+			m_pLeftWeapon->ChangeWeapon(CWeapon::WEAPON_KNUCKLE);
+		}
 		m_pLeftWeapon->SetDrawFlag(true);
 	}
 
 	// 現在のモード
 	CApplication::MODE Mode = CApplication::GetModeType();
 
-	// 生成時に自身のポインタを敵キャラマネージャーに設定
+	// 生成時にプレイヤーUIを生成
 	/*if (Mode == CApplication::MODE_TUTORIAL)
 	{
 		CTutorial::SetPlayerUI(CPlayerUi::UITYPE_ATTACK, weapon);

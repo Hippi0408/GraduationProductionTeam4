@@ -149,10 +149,21 @@ void CEnemy::Hit(CMove_Object* pHit)
 		case TAG_BULLET:
 			// 弾のダメージを返す
 			Damage(pHit->GetPower());
+
+			break;
+		case TAG_ATTACK:
+			// 弾のダメージを返す
+			Damage(pHit->GetPower());
+
+			// 無敵状態を付与する
+			SetCollisionNoneHit(true);
 			break;
 		case TAG_EXPLOSION:
 			// 爆発のダメージを返す
 			Damage(pHit->GetPower());
+
+			// 無敵状態を付与する
+			SetCollisionNoneHit(true);
 			break;
 		case TAG_MAP_OBJECT:
 			break;

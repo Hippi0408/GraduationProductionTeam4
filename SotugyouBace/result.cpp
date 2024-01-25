@@ -27,6 +27,7 @@
 #include "time.h"
 #include "number.h"
 #include "mob.h"
+#include "sound.h"
 #include "texture.h"
 
 //==============================================================================================
@@ -110,6 +111,8 @@ HRESULT CResult::Init()
 		m_apDeathCount[nCnt] = nullptr;
 	}
 
+	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_RESULT);
+
 	return S_OK;
 }
 
@@ -169,6 +172,8 @@ void CResult::Uninit()
 			m_apDeathCount[nCnt] = nullptr;
 		}
 	}
+
+	CApplication::GetSound()->StopAll();
 }
 
 //==============================================================================================
@@ -232,8 +237,11 @@ void CResult::Update()
 			m_pPlayerManager->GetPlayer(m_PlayerIndex)->SetPos(m_pos);
 		}
 
-		if (pInput->Trigger(DIK_RETURN) && m_bCreateFlag == true)
+		if ((pInput->Trigger(DIK_RETURN) || pInput->Press(JOYPAD_B) || pInput->Press(JOYPAD_A)
+			|| pInput->Trigger(JOYPAD_START) && m_bCreateFlag == true))
 		{
+			// Œˆ’èSE
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_ENTER);
 			m_PlayerIndex++;
 			// ƒvƒŒƒCƒ„[î•ñ‚Ìíœ
 			if (m_PlayerIndex <= 3)

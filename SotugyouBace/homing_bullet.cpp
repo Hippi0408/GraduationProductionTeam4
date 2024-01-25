@@ -131,21 +131,23 @@ void CHoming_Bullet::Draw()
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CHoming_Bullet *CHoming_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, D3DXVECTOR3 move, D3DXVECTOR3 nearmob_pos, char *filename, const bool side, const CObject::PRIORITY priority)
+CHoming_Bullet *CHoming_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, D3DXVECTOR3 move, D3DXVECTOR3 nearmob_pos, char *filename, const bool side, const int power, const int life)
 {
 	//クラスの生成
-	CHoming_Bullet* pHoming_Bullet = new CHoming_Bullet(priority);
+	CHoming_Bullet* pHoming_Bullet = new CHoming_Bullet(PRIORITY_BACK);
 
 	if (pHoming_Bullet != nullptr)
 	{
 		pHoming_Bullet->SetPos(pos);
 		pHoming_Bullet->SetMove(move);
 		pHoming_Bullet->SetPlayerSide(side);
+		pHoming_Bullet->SetPower(power);
+		pHoming_Bullet->SetLife(life);
 		pHoming_Bullet->m_NearMob_Pos = nearmob_pos;
 		pHoming_Bullet->Init();
 
 		// 弾オブジェクトの生成
-		pHoming_Bullet->SetObjX(CObjectX::Create(pos, rot, nullptr, filename, priority));
+		pHoming_Bullet->SetObjX(CObjectX::Create(pos, rot, nullptr, filename, PRIORITY_BACK));
 	}
 	else
 		assert(false);

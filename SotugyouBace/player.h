@@ -31,6 +31,7 @@ class CPlayer : public CCharacter
 	static const float VIEW_SCOPE_ANGLE;			// 画面に映るぎりぎりの位置
 	static const float RETICLE_TRANSPARENCY_SIZE;	// レティクル透明時のサイズ
 	static const float RETICLE_SIZE;				// レティクルのサイズ
+	static const float BULLET_SPEED_SCALE;			// 弾速の倍率
 
 public:
 
@@ -56,7 +57,7 @@ public:
 
 		MOTION_ASSAULT_RIFLE,		// アサルトライフル射撃
 		MOTION_SUB_MACHIN_GUN,		// サブマシンガン射撃
-		MOTION_DUAL_PISTOLS,		// 二丁拳銃(ハンドガン)
+		MOTION_HUND_GUN,			// ハンドガン(二丁拳銃)
 		MOTION_MACHIN_GUN,			// マシンガン射撃
 		MOTION_SHOT_GUN,			// ショットガン射撃
 		MOTION_SNIPER_RIFLE,		// スナイパーライフル射撃
@@ -66,7 +67,7 @@ public:
 		MOTION_FIST_3,				// 拳モーション3
 		MOTION_FIST_4,				// 拳モーション4
 		MOTION_FIST_5,				// 拳モーション5
-		//MOTION_FIST_6,				// 拳モーション6
+		//MOTION_FIST_6,			// 拳モーション6
 
 		MOTION_SLASH_1,				// 斬撃モーション1
 		MOTION_SLASH_2,				// 斬撃モーション2
@@ -109,6 +110,9 @@ public:
 
 	void PlayerAttack();				// プレイヤーの攻撃処理
 	void MeleeWeaponAttack();			// 近接武器の攻撃処理
+	void GunWeaponAttack();				// 銃武器の攻撃処理
+	void BulletAttack(const int weapon);				// 弾攻撃処理
+	void AttackInit();					// 攻撃終了処理
 	void JumpStart();					// プレイヤーのジャンプ処理
 	void JumpBoost();					// プレイヤーのジャンプブースト処理
 	void Landing(const D3DXVECTOR3 pos) override;	// 着地処理
@@ -135,6 +139,7 @@ public:
 	const int GetCharaIndex() { return m_nCharaIndex; }
 	CEnergy_Gauge* GetEnergy_Gauge() { return m_pEnergy_Gauge; }
 	const bool GetPlayerAttack() { return m_bPlayer_Attack; }
+	const bool GetStandbyAttack() { return m_bStandby_Attack; }
 	const int GetWeaponType() { return m_nWeapon_type; }
 	const JOB GetJobIndex(const int index) { return  m_Parts_Job[index]; }
 
@@ -164,10 +169,11 @@ private:
 	int m_nStan_Tolerance;				// スタン許容値
 	int m_nGravity;						// 重量
 	bool m_bPlayer_Attack;				// プレイヤー判定の攻撃判定
+	bool m_bStandby_Attack;				// 追加攻撃の待機判定
 	bool m_bAdditional_Attack;			// 追加攻撃の判定
 	int m_nAdditional_Attack;			// 追加攻撃の回数
-	int m_nAttackRate_Counter;			// 攻撃間隔の経過時間
-	int m_nAttackRate_Max_Counter;		// 攻撃間隔の最大時間
+	float m_fAttackRate_Counter;		// 攻撃間隔の経過時間
+	float m_fAttackRate_Max_Counter;	// 攻撃間隔の最大時間
 
 	JOB m_Parts_Job[PARTS_MAX];			// プレイヤーのパーツ毎のジョブ種類
 	int m_nArms_Rarity;					// 腕のレアリティ

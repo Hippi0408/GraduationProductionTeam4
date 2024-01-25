@@ -22,7 +22,7 @@ public:
 	void Update() override;		// çXêVèàóù
 	void Draw() override;		// ï`âÊèàóù
 
-	static CHoming_Bullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, D3DXVECTOR3 move, D3DXVECTOR3 nearmob_pos, char *filename, const bool side, const CObject::PRIORITY priority);
+	static CHoming_Bullet *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, D3DXVECTOR3 move, D3DXVECTOR3 nearmob_pos, char *filename, const bool side, const int power, const int life);
 
 private:
 	D3DXVECTOR3 m_NearMob_Pos;

@@ -23,6 +23,7 @@ public:
 		TAG_NONE = 0,
 		TAG_CHARACTER,		// キャラクタータグ
 		TAG_BULLET,			// 弾タグ
+		TAG_ATTACK,			// 攻撃タグ
 		TAG_EXPLOSION,		// 爆発タグ
 		TAG_MAP_OBJECT,		// マップオブジェクト
 		TAG_MAX,

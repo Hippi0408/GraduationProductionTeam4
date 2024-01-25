@@ -25,8 +25,6 @@ class CObjectX;
 //==============================================
 class CBullet : public CMove_Object
 {
-	static const int BULLET_LIFE = 60;			// ’e‚Ìõ–½
-	static const int BULLET_POWER = 50;			// ’e‚ÌˆĞ—Í
 	static const float BULLET_SPEED_XZ;			// ’e‚Ì‘¬“x(XZÀ•W)
 	static const float BULLET_SPEED_Y;			// ’e‚Ì‘¬“x(YÀ•W)
 	static const float BULLET_COLLISION_RADIUS;	// ’e‚Ì“–‚½‚è”»’è‚Ì‘å‚«‚³

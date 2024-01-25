@@ -37,7 +37,7 @@ HRESULT CNormal_Bullet::Init()
 	// 弾が敵に届くまでの時間
 	float fHitCnt = m_fHypotenuse / GetSpeed_XZ();
 
-	if (m_bTarget)
+	if (m_bTarget && pChara != nullptr)
 	{
 		// ターゲットしている敵の位置
 		D3DXVECTOR3 Enemy_Pos = pChara->GetCenterPos();
@@ -84,10 +84,10 @@ void CNormal_Bullet::Draw()
 //==============================================================================================
 // 生成処理
 //==============================================================================================
-CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CCharacter *chara, float enemy_speed, bool target, const bool side, const CObject::PRIORITY priority)
+CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 size, D3DXVECTOR3 move, float hypotenuse, CCharacter *chara, float enemy_speed, bool target, const bool side, const int power, const float speed, const int life)
 {
 	//クラスの生成
-	CNormal_Bullet* pNormal_Bullet = new CNormal_Bullet(priority);
+	CNormal_Bullet* pNormal_Bullet = new CNormal_Bullet(PRIORITY_BACK);
 
 	//nullチェック
 	if (pNormal_Bullet != nullptr)
@@ -96,14 +96,17 @@ CNormal_Bullet *CNormal_Bullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR2 
 		pNormal_Bullet->SetSize(size);
 		pNormal_Bullet->SetMove(move);
 		pNormal_Bullet->SetPlayerSide(side);
+		pNormal_Bullet->SetPower(power);
 		pNormal_Bullet->m_fHypotenuse = hypotenuse;
 		pNormal_Bullet->pChara = chara;
 		pNormal_Bullet->m_fSpeed = enemy_speed;
+		pNormal_Bullet->SetSpeed(speed);
+		pNormal_Bullet->SetLife(life);
 		pNormal_Bullet->m_bTarget = target;
 		pNormal_Bullet->Init();
 
 		// 弾オブジェクトの生成
-		pNormal_Bullet->SetObj3D(CObject3D::Create(pos, size, priority));
+		pNormal_Bullet->SetObj3D(CObject3D::Create(pos, size, PRIORITY_BACK));
 		// 弾のテクスチャ
 		pNormal_Bullet->GetObj3D()->SetTexture(CTexture::TEXTURE_BULLET);
 
