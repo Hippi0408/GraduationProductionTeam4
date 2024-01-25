@@ -20,10 +20,10 @@ ALL_PARAM_SET
 		# 胴パーツ
 		#------------------
 		PARAM_SET
-			LIFE = 1000				# 体力
-			STAMINA = 10			# スタミナ
-			STAN_TOLERANCE = 5		# スタン許容値
-			GRAVITY = 1				# 重力
+			LIFE = 9000				# 体力
+			STAMINA = 60			# スタミナ
+			STAN_TOLERANCE = 50		# スタン許容値
+			GRAVITY = 3				# 重力
 		END_PARAM_SET
 
 	END_JOB_PARAM_SET
@@ -37,10 +37,10 @@ ALL_PARAM_SET
 		# 胴パーツ
 		#------------------
 		PARAM_SET
-			LIFE = 10000			# 体力
-			STAMINA = 100			# スタミナ
-			STAN_TOLERANCE = 50		# スタン許容値
-			GRAVITY = 4				# 重力
+			LIFE = 7500			# 体力
+			STAMINA = 75			# スタミナ
+			STAN_TOLERANCE = 60		# スタン許容値
+			GRAVITY = 3				# 重力
 		END_PARAM_SET
 
 	END_JOB_PARAM_SET
@@ -54,10 +54,10 @@ ALL_PARAM_SET
 		# 胴パーツ
 		#------------------
 		PARAM_SET
-			LIFE = 6000				# 体力
-			STAMINA = 80			# スタミナ
-			STAN_TOLERANCE = 35		# スタン許容値
-			GRAVITY = 2				# 重力
+			LIFE = 10000				# 体力
+			STAMINA = 50			# スタミナ
+			STAN_TOLERANCE = 80		# スタン許容値
+			GRAVITY = 4				# 重力
 		END_PARAM_SET
 
 	END_JOB_PARAM_SET
@@ -71,10 +71,10 @@ ALL_PARAM_SET
 		# 胴パーツ
 		#------------------
 		PARAM_SET
-			LIFE = 14000			# 体力
-			STAMINA = 70			# スタミナ
-			STAN_TOLERANCE = 75		# スタン許容値
-			GRAVITY = 4				# 重力
+			LIFE = 5000			# 体力
+			STAMINA = 100			# スタミナ
+			STAN_TOLERANCE = 40		# スタン許容値
+			GRAVITY = 2				# 重力
 		END_PARAM_SET
 
 	END_JOB_PARAM_SET
