@@ -161,7 +161,7 @@ HRESULT CGame::Init()
 	m_pMap->ReadMap("Data/text/map.txt");
 
 	// ˆÚ“®§ŒÀ
-	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 13000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	CRestrictions::Create({ 0.0f,0.0f,0.0f }, 5000, { 1000.0f,200.0f }, { 1.0f,1.0f,1.0f,1.0f });
 
 	CApplication::GetSound()->Play(CSound::SOUND_LABEL_BGM_GAME);
 
