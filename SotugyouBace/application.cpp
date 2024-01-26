@@ -110,7 +110,7 @@ HRESULT CApplication::Init(HINSTANCE hInstance, HWND hWnd)
 	}
 
 	//ウィンドウの設定
-	BOOL bWindow = TRUE;
+	BOOL bWindow = FALSE;
 
 #ifdef _DEBUG
 	bWindow = TRUE;
