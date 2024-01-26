@@ -53,11 +53,11 @@ ALL_PARAM_SET
 		# StarVerseAR
 		#------------------
 		PARAM_SET
-			POWER = 560 600 640		# 威力
+			POWER = 560 580 600		# 威力
 			FIRING_SPEED = 9.75		# 発射速度
 			GRAVITY = 3				# 重力
 			BULLET_SPEED = 2		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 25				# 寿命
+			LIFE = 15				# 寿命
 		END_PARAM_SET
 		
 		#------------------
