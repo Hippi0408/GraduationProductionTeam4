@@ -66,6 +66,8 @@ HRESULT CRestraint_Switch::Init()
 	m_Display_Key->SetTexture(CTexture::TEXTURE_KEY_E);
 	m_Display_Key->SetDrawFlag(false);
 
+	m_nCount_Switch = 0;
+
 	return S_OK;
 }
 
