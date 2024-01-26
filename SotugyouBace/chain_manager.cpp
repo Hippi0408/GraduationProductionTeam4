@@ -81,13 +81,16 @@ void CChain_Manager::Update()
 
 	for (int nCnt = 0; nCnt < m_nNumChain; nCnt++)
 	{
-		// 鎖を伸ばす長さ
-		m_pChain[0][nCnt]->SetVec(m_Vec);
-		m_pChain[1][nCnt]->SetVec(m_Vec);
+		if (m_pChain[0][nCnt] != nullptr || m_pChain[1][nCnt] != nullptr)
+		{
+			// 鎖を伸ばす長さ
+			m_pChain[0][nCnt]->SetVec(m_Vec);
+			m_pChain[1][nCnt]->SetVec(m_Vec);
 
-		// 次の鎖を付ける位置
-		m_pChain[0][nCnt]->SetPos(m_Pos + (float)nCnt * m_Vec);
-		m_pChain[1][nCnt]->SetPos(m_Pos + (float)nCnt * m_Vec);
+			// 次の鎖を付ける位置
+			m_pChain[0][nCnt]->SetPos(m_Pos + (float)nCnt * m_Vec);
+			m_pChain[1][nCnt]->SetPos(m_Pos + (float)nCnt * m_Vec);
+		}
 	}
 
 	// アンカーの位置
@@ -104,6 +107,10 @@ void CChain_Manager::Update()
 			// 数秒後に消える
 			m_pChain[0][nCnt]->Uninit();
 			m_pChain[1][nCnt]->Uninit();
+
+			m_pChain[0][nCnt] = nullptr;
+			m_pChain[1][nCnt] = nullptr;
+
 			m_pAnchor->Uninit();
 
 			// 拘束を解く
