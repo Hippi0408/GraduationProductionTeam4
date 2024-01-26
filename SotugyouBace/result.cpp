@@ -306,7 +306,7 @@ void CResult::ScaleExpansion()
 		if (m_size.x >= 700.0f && m_size.y >= 500.0f && m_bCreateFlag == false)
 		{
 			// タイムの生成
-			m_pTime = CTime::Create(D3DXVECTOR3(240.0f, 225.0f, 0.0f));
+			m_pTime = CTime::Create(D3DXVECTOR3(300.0f, 225.0f, 0.0f));
 			for (int nCnt = 0; nCnt < 6; nCnt++)
 			{
 				//ナンバーの初期化
