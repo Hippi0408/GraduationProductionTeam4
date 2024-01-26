@@ -27,6 +27,7 @@ const CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] =
 	{ "data/sounds/SE/game/BossEntry.wav", 0 },		// ボス登場
 	{ "data/sounds/SE/game/BreakBill.wav", 0 },		// ビル倒壊
 	{ "data/sounds/SE/game/Damage.wav", 0 },		// ダメージ
+	{ "data/sounds/SE/game/Bullet_Damage.wav", 0 },	// 弾ダメージ
 	{ "data/sounds/SE/game/Explosion.wav", 0 },		// 爆発
 
 	{ "data/sounds/SE/game/Warning.wav", 0 },		// 警告音

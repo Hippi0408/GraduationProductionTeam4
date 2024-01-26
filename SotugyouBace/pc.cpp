@@ -421,7 +421,7 @@ void CPC::Perspective()
 
 	if (pInput->Press(DIK_UP) || pInput->StickPress(JOYKEY_CROSS_UP, 0, true))
 	{	//UPキーを押しているとき
-		rotCamera.x -= 0.015f;		//カメラの上方向の加算
+		rotCamera.x -= 0.02f;		//カメラの上方向の加算
 		if (rotCamera.x <= -0.5f)
 		{
 			rotCamera.x = -0.5f;
@@ -430,7 +430,7 @@ void CPC::Perspective()
 	}
 	if (pInput->Press(DIK_DOWN) || pInput->StickPress(JOYKEY_CROSS_DOWN, 0, true))
 	{	//DOWNキーを押しているとき
-		rotCamera.x += 0.015f;		//カメラの上方向の加算
+		rotCamera.x += 0.02f;		//カメラの上方向の加算
 		if (rotCamera.x >= 0.5f)
 		{
 			rotCamera.x = 0.5f;
@@ -439,12 +439,12 @@ void CPC::Perspective()
 
 	if (pInput->Press(DIK_LEFT) || pInput->StickPress(JOYKEY_CROSS_LEFT, 0, true))
 	{	//LEFTキーを押しているとき
-		rotCamera.y -= 0.015f;		//カメラの上方向の加算
+		rotCamera.y -= 0.02f;		//カメラの上方向の加算
 	}
 
 	if (pInput->Press(DIK_RIGHT) || pInput->StickPress(JOYKEY_CROSS_RIGHT, 0, true))
 	{	//LEFTキーを押しているとき
-		rotCamera.y += 0.015f;		//カメラの上方向の加算
+		rotCamera.y += 0.02f;		//カメラの上方向の加算
 	}
 
 	D3DXVECTOR3 MouseMove;

@@ -738,6 +738,8 @@ void CPlayer::Hit(CMove_Object* pHit)
 		case TAG_BULLET:
 			// 弾のダメージを返す
 			Damage(pHit->GetPower());
+
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_DAMAGE);
 			break;
 		case TAG_ATTACK:
 			// 弾のダメージを返す

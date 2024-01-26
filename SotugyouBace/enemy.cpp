@@ -150,6 +150,8 @@ void CEnemy::Hit(CMove_Object* pHit)
 			// 弾のダメージを返す
 			Damage(pHit->GetPower());
 
+			// ダメージ
+			CApplication::GetSound()->Play(CSound::SOUND_LABEL_SE_BULLET_DAMAGE);
 			break;
 		case TAG_ATTACK:
 			// 弾のダメージを返す

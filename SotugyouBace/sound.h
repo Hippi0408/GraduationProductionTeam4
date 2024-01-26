@@ -37,6 +37,7 @@ public:
 		SOUND_LABEL_SE_BOSSENTRY,			// ボス登場
 		SOUND_LABEL_SE_BREAKBILL,			// ビル倒壊
 		SOUND_LABEL_SE_DAMAGE,				// ダメージ
+		SOUND_LABEL_SE_BULLET_DAMAGE,		// 弾ダメージ
 		SOUND_LABEL_SE_EXPLOSION,			// 爆発
 
 		SOUND_LABEL_SE_WARNING,				// 警告音
