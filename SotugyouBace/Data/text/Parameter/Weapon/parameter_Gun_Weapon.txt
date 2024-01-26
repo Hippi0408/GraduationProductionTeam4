@@ -184,7 +184,7 @@ ALL_PARAM_SET
 		# メタリカ255
 		#------------------
 		PARAM_SET
-			POWER = 480 520 560		# 威力
+			POWER = 280 320 360		# 威力
 			FIRING_SPEED = 12		# 発射速度
 			GRAVITY = 10			# 重力
 			BULLET_SPEED = 6		# 弾速(0:遅い ～ 4:速い)
