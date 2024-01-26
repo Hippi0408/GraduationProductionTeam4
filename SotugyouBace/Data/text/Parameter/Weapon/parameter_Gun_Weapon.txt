@@ -20,11 +20,11 @@ ALL_PARAM_SET
 		# AR40
 		#------------------
 		PARAM_SET
-			POWER = 360 400 440		# 威力
+			POWER = 330 360 390		# 威力
 			FIRING_SPEED = 8.25		# 発射速度
 			GRAVITY = 4				# 重力
 			BULLET_SPEED = 1		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 60				# 寿命
+			LIFE = 20				# 寿命
 		END_PARAM_SET
 		
 		#------------------
@@ -35,18 +35,18 @@ ALL_PARAM_SET
 			FIRING_SPEED = 6		# 発射速度
 			GRAVITY = 4				# 重力
 			BULLET_SPEED = 1		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 60				# 寿命
+			LIFE = 25				# 寿命
 		END_PARAM_SET
 		
 		#------------------
 		# DumpMan
 		#------------------
 		PARAM_SET
-			POWER = 250 260 270		# 威力
+			POWER = 290 320 350		# 威力
 			FIRING_SPEED = 8.75		# 発射速度
 			GRAVITY = 6				# 重力
 			BULLET_SPEED = 2		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 60				# 寿命
+			LIFE = 20				# 寿命
 		END_PARAM_SET
 		
 		#------------------
@@ -57,7 +57,7 @@ ALL_PARAM_SET
 			FIRING_SPEED = 9.75		# 発射速度
 			GRAVITY = 3				# 重力
 			BULLET_SPEED = 2		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 60				# 寿命
+			LIFE = 25				# 寿命
 		END_PARAM_SET
 		
 		#------------------
@@ -68,7 +68,7 @@ ALL_PARAM_SET
 			FIRING_SPEED = 4		# 発射速度
 			GRAVITY = 7				# 重力
 			BULLET_SPEED = 1		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 60				# 寿命
+			LIFE = 25				# 寿命
 		END_PARAM_SET
 
 	END_JOB_PARAM_SET
@@ -133,8 +133,8 @@ ALL_PARAM_SET
 		# HG37
 		#------------------
 		PARAM_SET
-			POWER = 450 470 490		# 威力
-			FIRING_SPEED = 4.5		# 発射速度
+			POWER = 350 370 390		# 威力
+			FIRING_SPEED = 2.5		# 発射速度
 			GRAVITY = 3				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
 			LIFE = 10				# 寿命
@@ -144,19 +144,19 @@ ALL_PARAM_SET
 		# Revolver
 		#------------------
 		PARAM_SET
-			POWER = 400 470 540		# 威力
-			FIRING_SPEED = 3.0		# 発射速度
+			POWER = 300 370 440		# 威力
+			FIRING_SPEED = 2.5		# 発射速度
 			GRAVITY = 5				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 12				# 寿命
+			LIFE = 10				# 寿命
 		END_PARAM_SET
 		
 		#------------------
 		# アキンボ2.0
 		#------------------
 		PARAM_SET
-			POWER = 480 500 520		# 威力
-			FIRING_SPEED = 5		# 発射速度
+			POWER = 380 400 420		# 威力
+			FIRING_SPEED = 3		# 発射速度
 			GRAVITY = 5				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
 			LIFE = 10				# 寿命
@@ -173,22 +173,22 @@ ALL_PARAM_SET
 		# LA2000
 		#------------------
 		PARAM_SET
-			POWER = 360 380 400		# 威力
-			FIRING_SPEED = 16		# 発射速度
-			GRAVITY = 8				# 重力
-			BULLET_SPEED = 6		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 15				# 寿命
+			POWER = 290 340 390		# 威力
+			FIRING_SPEED = 14		# 発射速度
+			GRAVITY = 9				# 重力
+			BULLET_SPEED = 1		# 弾速(0:遅い ～ 4:速い)
+			LIFE = 12				# 寿命
 		END_PARAM_SET
 	
 		#------------------
 		# メタリカ255
 		#------------------
 		PARAM_SET
-			POWER = 280 320 360		# 威力
-			FIRING_SPEED = 12		# 発射速度
+			POWER = 290 350 410		# 威力
+			FIRING_SPEED = 11		# 発射速度
 			GRAVITY = 10			# 重力
-			BULLET_SPEED = 6		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 15				# 寿命
+			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
+			LIFE = 10				# 寿命
 		END_PARAM_SET
 		
 	END_JOB_PARAM_SET
@@ -206,7 +206,7 @@ ALL_PARAM_SET
 			FIRING_SPEED = 1.75		# 発射速度
 			GRAVITY = 5				# 重力
 			BULLET_SPEED = 10		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 5				# 寿命
+			LIFE = 7				# 寿命
 		END_PARAM_SET
 		
 		#------------------
@@ -217,7 +217,7 @@ ALL_PARAM_SET
 			FIRING_SPEED = 1.5		# 発射速度
 			GRAVITY = 6				# 重力
 			BULLET_SPEED = 10		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 10				# 寿命
+			LIFE = 7				# 寿命
 		END_PARAM_SET
 		
 	END_JOB_PARAM_SET
@@ -231,11 +231,11 @@ ALL_PARAM_SET
 		# Winter5000
 		#------------------
 		PARAM_SET
-			POWER = 3000 3100 3200	# 威力
-			FIRING_SPEED = 1.2		# 発射速度
+			POWER = 2800 3000 3200	# 威力
+			FIRING_SPEED = 1.1		# 発射速度
 			GRAVITY = 7				# 重力
 			BULLET_SPEED = 6		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 25				# 寿命
+			LIFE = 30				# 寿命
 		END_PARAM_SET
 		
 		#------------------
@@ -246,7 +246,7 @@ ALL_PARAM_SET
 			FIRING_SPEED = 0.7		# 発射速度
 			GRAVITY = 10			# 重力
 			BULLET_SPEED = 8		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 30				# 寿命
+			LIFE = 40				# 寿命
 		END_PARAM_SET
 
 	END_JOB_PARAM_SET
