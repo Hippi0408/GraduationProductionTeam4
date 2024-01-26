@@ -416,7 +416,7 @@ void CGame::Update()
 						m_bSpawn_Boss = true;
 
 						// ボスキャラの生成
-						CBoss::Create({ 0.0f, 5000.0f, 6000.0f });
+						CBoss::Create({ 0.0f, 5000.0f, 0.0f });
 
 						// ボス登場SE
 						pSound->Play(CSound::SOUND_LABEL_SE_BOSSENTRY);
