@@ -148,39 +148,62 @@ void CRestrictions::Collision()
 	if (pPlayer != nullptr)
 	{
 		D3DXVECTOR3 Player_Pos = pPlayer->GetPos();
-		D3DXVECTOR3 Push = Player_Pos;
+		D3DXVECTOR3 Push_Player = Player_Pos;
 
 		if (Player_Pos.x > m_pDont_EnterPos[0].x - 500)
 		{
 			m_bHit = true;
 
 			if (Player_Pos.x > m_pDont_EnterPos[0].x)
-				Push.x = m_pDont_EnterPos[0].x;
+				Push_Player.x = m_pDont_EnterPos[0].x;
 		}
 		if (Player_Pos.z > m_pDont_EnterPos[1].z - 500)
 		{
 			m_bHit = true;
 
 			if (Player_Pos.z > m_pDont_EnterPos[1].z)
-				Push.z = m_pDont_EnterPos[1].z;
+				Push_Player.z = m_pDont_EnterPos[1].z;
 		}
 		if (Player_Pos.x < m_pDont_EnterPos[2].x + 500)
 		{
 			m_bHit = true;
 
 			if (Player_Pos.x < m_pDont_EnterPos[2].x)
-				Push.x = m_pDont_EnterPos[2].x;
+				Push_Player.x = m_pDont_EnterPos[2].x;
 		}
 		if (Player_Pos.z < m_pDont_EnterPos[3].z + 500)
 		{
 			m_bHit = true;
 
 			if (Player_Pos.z < m_pDont_EnterPos[3].z)
-				Push.z = m_pDont_EnterPos[3].z;
+				Push_Player.z = m_pDont_EnterPos[3].z;
 		}
 
 		// ‰Ÿ‚µo‚µ
-		pPlayer->SetPos(Push);
+		pPlayer->SetPos(Push_Player);
+
+		// “G‚Ìî•ñ
+		for (auto pEnemy : pEnemy_Manager->GetAllEnemy())
+		{
+			if (/*pEnemy->GetEnemyType() == CEnemy::ENEMY_TYPE_MOB
+				&& */pEnemy->GetLife() != 0)
+			{
+				D3DXVECTOR3 Mob_Pos = pEnemy->GetPos();
+				D3DXVECTOR3 Push_Enemy = Mob_Pos;
+
+				if (Mob_Pos.x > m_pDont_EnterPos[0].x)
+					Push_Enemy.x = m_pDont_EnterPos[0].x;
+				if (Mob_Pos.z > m_pDont_EnterPos[1].z)
+					Push_Enemy.z = m_pDont_EnterPos[1].z;
+				if (Mob_Pos.x < m_pDont_EnterPos[2].x)
+					Push_Enemy.x = m_pDont_EnterPos[2].x;
+				if (Mob_Pos.z < m_pDont_EnterPos[3].z)
+					Push_Enemy.z = m_pDont_EnterPos[3].z;
+
+				// ‰Ÿ‚µo‚µ
+				pEnemy->SetPos(Push_Enemy);
+			}
+		}
 	}
 }
 

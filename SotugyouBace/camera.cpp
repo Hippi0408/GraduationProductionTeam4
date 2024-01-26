@@ -309,7 +309,7 @@ void CCamera::Opening_Move()
 	}
 
 	// 行列を使ったカメラ制御
-	Matrix(m_rot, { 0.0f,0.0f,6000.0f });
+	Matrix(m_rot, { 0.0f,0.0f,0.0f });
 
 	if (!m_bOpening_step[0])
 	{// ステップ0
