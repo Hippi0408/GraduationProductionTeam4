@@ -86,7 +86,7 @@ ALL_PARAM_SET
 			FIRING_SPEED = 12.5		# 発射速度
 			GRAVITY = 3				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 15				# 寿命
+			LIFE = 12				# 寿命
 		END_PARAM_SET	
 		
 		#------------------
@@ -97,7 +97,7 @@ ALL_PARAM_SET
 			FIRING_SPEED = 14		# 発射速度
 			GRAVITY = 4				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 15				# 寿命
+			LIFE = 12				# 寿命
 		END_PARAM_SET
 	
 		#------------------
@@ -119,7 +119,7 @@ ALL_PARAM_SET
 			FIRING_SPEED = 16		# 発射速度
 			GRAVITY = 1				# 重力
 			BULLET_SPEED = 3		# 弾速(0:遅い ～ 4:速い)
-			LIFE = 15				# 寿命
+			LIFE = 12				# 寿命
 		END_PARAM_SET
 		
 	END_JOB_PARAM_SET
