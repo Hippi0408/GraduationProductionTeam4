@@ -74,6 +74,33 @@ ALL_PARAM_SET
 		# 腕パーツ
 		#------------------
 		PARAM_SET
+			LIFE = 16000 18000 20000	# 体力
+			STAMINA = 5000 6000 7000			# スタミナ
+			STAN_TOLERANCE = 75			# スタン許容値
+			GRAVITY = 4					# 重力
+		END_PARAM_SET
+		
+		#------------------
+		# 脚パーツ
+		#------------------
+		PARAM_SET
+			LIFE = 14000 17000 20000	# 体力
+			STAMINA = 4000 5000 6000			# スタミナ
+			STAN_TOLERANCE = 75			# スタン許容値
+			GRAVITY = 4					# 重力
+		END_PARAM_SET
+		
+	END_JOB_PARAM_SET
+	
+	#---------------------------------------
+	# ジョブ：イーグルアイ
+	#---------------------------------------
+	JOB_PARAM_SET
+
+		#------------------
+		# 腕パーツ
+		#------------------
+		PARAM_SET
 			LIFE = 8000 9000 10000		# 体力
 			STAMINA = 7000 8000 9000			# スタミナ
 			STAN_TOLERANCE = 35			# スタン許容値
@@ -88,33 +115,6 @@ ALL_PARAM_SET
 			STAMINA = 9000 10000 11000		# スタミナ
 			STAN_TOLERANCE = 35			# スタン許容値
 			GRAVITY = 2					# 重力
-		END_PARAM_SET
-		
-	END_JOB_PARAM_SET
-	
-	#---------------------------------------
-	# ジョブ：イーグルアイ
-	#---------------------------------------
-	JOB_PARAM_SET
-
-		#------------------
-		# 腕パーツ
-		#------------------
-		PARAM_SET
-			LIFE = 16000 18000 20000	# 体力
-			STAMINA = 5000 6000 7000			# スタミナ
-			STAN_TOLERANCE = 75			# スタン許容値
-			GRAVITY = 4					# 重力
-		END_PARAM_SET
-		
-		#------------------
-		# 脚パーツ
-		#------------------
-		PARAM_SET
-			LIFE = 14000 17000 20000	# 体力
-			STAMINA = 6000 7000 8000			# スタミナ
-			STAN_TOLERANCE = 75			# スタン許容値
-			GRAVITY = 4					# 重力
 		END_PARAM_SET
 		
 	END_JOB_PARAM_SET
